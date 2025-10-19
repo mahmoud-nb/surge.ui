@@ -35,7 +35,7 @@ const props = withDefaults(defineProps<BaseInputProps>(), {
   disabled: false,
   readonly: false,
   required: false,
-  textAlign: 'left'
+  textAlign: 'default'
 })
 
 const modelValue = defineModel<string | number>({ default: '' })

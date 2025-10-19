@@ -1,3 +1,4 @@
+import { ref } from 'vue'
 import type { Meta, StoryObj } from '@storybook/vue3'
 import { MagnifyingGlassIcon, AtSymbolIcon, LockClosedIcon, UserIcon } from '@heroicons/vue/24/outline'
 import Input from '../Input.vue'
@@ -60,7 +61,7 @@ const meta: Meta<typeof Input> = {
     },
     textAlign: {
       control: { type: 'select' },
-      options: ['left', 'center', 'right'],
+      options: ['default', 'left', 'center', 'right'],
       description: 'Alignement du texte'
     },
     dir: {
@@ -212,6 +213,32 @@ export const TextAlignment: Story = {
         <Input label="Alignement à gauche" textAlign="left" value="Aligné à gauche" />
         <Input label="Alignement centré" textAlign="center" value="Centré" />
         <Input label="Alignement à droite" textAlign="right" value="Aligné à droite" />
+      </div>
+    `
+  })
+}
+
+export const SupportRTL: Story = {
+  render: () => ({
+    components: { Input },
+    template: `
+      <div dir="rtl" style="display: flex; flex-direction: column; gap: 1rem; width: 300px;">
+        <Input 
+          label="Texte arabe (RTL)"
+          placeholder="أدخل النص هنا"
+          value="النص العربي"
+        />
+        <Input 
+          label="Texte hébreu (RTL)"
+          placeholder="הכנס טקסט כאן"
+          value="טקסט עברי"
+        />
+        <Input 
+          label="Prix (RTL avec suffixe)"
+          placeholder="0.00"
+          suffix="$"
+          type="number"
+        />
       </div>
     `
   })

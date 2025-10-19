@@ -5,7 +5,7 @@ export type State = 'default' | 'error' | 'success' | 'warning'
 export type Radius = 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'
 export type Gap = 'none' | 'sm' | 'md' | 'lg'
 export type Orientation = 'horizontal' | 'vertical'
-export type TextAlign = 'left' | 'center' | 'right'
+export type TextAlign = 'default' | 'left' | 'center' | 'right'
 export type LinkTarget = '_blank' | '_self' | '_parent' | '_top'
 
 // HTML natifs attributes
