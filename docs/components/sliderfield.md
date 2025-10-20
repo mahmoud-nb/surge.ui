@@ -83,6 +83,7 @@ const formatPrice = (value) => `${value}€`
 </template>
 ```
 
+
 ### Avec tooltips
 
 <div class="component-demo">
@@ -139,7 +140,6 @@ const range = ref([30, 70])
   />
 </template>
 ```
-
 ### Avec marques personnalisées
 
 <div class="component-demo">
@@ -193,6 +193,7 @@ const formatDifficulty = (value) => {
 </template>
 ```
 
+
 ### Avec graduations et labels
 
 <div class="component-demo">
@@ -233,6 +234,7 @@ const rating = ref(7)
   />
 </template>
 ```
+
 
 ### Orientation verticale
 
@@ -298,7 +300,7 @@ const verticalVolume = ref(75)
             <span style="font-size: 1.5rem;">🔊</span>
           </div>
         </template>
-      </SuSlider>
+      </SuSliderField>
     </div>
   </div>
 </div>
@@ -337,7 +339,7 @@ const volume = ref(60)
 <div class="component-demo">
   <div class="demo-section">
     <h4>Support des langues RTL</h4>
-    <div class="demo-inputs">
+    <div class="demo-inputs" dir="rtl">
       <SuSliderField 
         label="مستوى الصوت (RTL)"
         :min="0"

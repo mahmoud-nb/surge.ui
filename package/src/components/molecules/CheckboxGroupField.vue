@@ -15,7 +15,7 @@ export interface CheckboxOption {
   icon?: Component
 }
 
-export interface CheckboxGroupProps extends AccessibilityProps {
+export interface CheckboxGroupFieldProps extends AccessibilityProps {
   options: CheckboxOption[]
   value?: (string | number)[]
   size?: Size
@@ -30,7 +30,7 @@ export interface CheckboxGroupProps extends AccessibilityProps {
   maxHeight?: string | null
 }
 
-export interface Props extends Omit<CheckboxGroupProps, 'value'> {}
+export interface Props extends Omit<CheckboxGroupFieldProps, 'value'> {}
 
 const props = withDefaults(defineProps<Props>(), {
   options: () => [],

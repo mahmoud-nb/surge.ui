@@ -3,8 +3,8 @@ import { UserIcon, AtSymbolIcon, LockClosedIcon, BuildingOfficeIcon } from '@her
 import FormFields from '../FormFields.vue'
 import InputField from '../InputField.vue'
 import SelectBoxField from '@/components/molecules/SelectBoxField.vue'
-import RadioGroup from '@/components/molecules/RadioGroup.vue'
-import CheckboxGroup from '@/components/molecules/CheckboxGroup.vue'
+import RadioGroupField from '@/components/molecules/RadioGroupField.vue'
+import CheckboxGroupField from '@/components/molecules/CheckboxGroupField.vue'
 import SwitchField from '@/components/molecules/SwitchField.vue'
 import FileUploadField from '@/components/molecules/FileUploadField.vue'
 import TextareaField from '@/components/molecules/TextareaField.vue'
@@ -231,7 +231,7 @@ export const Horizontal: Story = {
 
 export const WithSections: Story = {
   render: () => ({
-    components: { FormFields, InputField, SelectBoxField, RadioGroup, SwitchField, Button },
+    components: { FormFields, InputField, SelectBoxField, RadioGroupField, SwitchField, Button },
     setup() {
       return { countryOptions, accountTypes, AtSymbolIcon, LockClosedIcon }
     },
@@ -278,7 +278,7 @@ export const WithSections: Story = {
           required
         />
         
-        <RadioGroup 
+        <RadioGroupField 
           :options="accountTypes"
           label="Type de compte"
           displayType="inline-card"
@@ -362,7 +362,7 @@ export const SectionGaps: Story = {
 
 export const ContactForm: Story = {
   render: () => ({
-    components: { FormFields, InputField, SelectBoxField, TextareaField, CheckboxGroup, Button },
+    components: { FormFields, InputField, SelectBoxField, TextareaField, CheckboxGroupField, Button },
     setup() {
       const subjects = [
         { value: 'support', label: 'Support technique' },
@@ -430,7 +430,7 @@ export const ContactForm: Story = {
           required
         />
         
-        <CheckboxGroup 
+        <CheckboxGroupField 
           :options="preferences"
           label="Préférences de contact"
           message="Comment souhaitez-vous être contacté ?"
@@ -449,7 +449,7 @@ export const ContactForm: Story = {
 
 export const UserProfile: Story = {
   render: () => ({
-    components: { FormFields, InputField, SelectBoxField, RadioGroup, SwitchField, SliderField, Button },
+    components: { FormFields, InputField, SelectBoxField, RadioGroupField, SwitchField, SliderField, Button },
     setup() {
       const languages = [
         { value: 'fr', label: 'Français' },
@@ -505,14 +505,14 @@ export const UserProfile: Story = {
           placeholder="Sélectionnez une langue"
         />
         
-        <RadioGroup 
+        <RadioGroupField 
           :options="accountTypes"
           label="Type de compte"
           displayType="inline-card"
           direction="horizontal"
         />
         
-        <RadioGroup 
+        <RadioGroupField 
           :options="themes"
           label="Thème"
           displayType="block-card"
@@ -598,7 +598,7 @@ export const HorizontalLayout: Story = {
 
 export const ComplexForm: Story = {
   render: () => ({
-    components: { FormFields, InputField, SelectBoxField, RadioGroup, CheckboxGroup, SwitchField, FileUploadField, TextareaField, SliderField, Button },
+    components: { FormFields, InputField, SelectBoxField, RadioGroupField, CheckboxGroupField, SwitchField, FileUploadField, TextareaField, SliderField, Button },
     setup() {
       const skills = [
         { value: 'js', label: 'JavaScript' },
@@ -663,7 +663,7 @@ export const ComplexForm: Story = {
         />
         
         <!-- Compétences -->
-        <CheckboxGroup 
+        <CheckboxGroupField 
           :options="skills"
           label="Compétences techniques"
           displayType="inline-card"
@@ -673,7 +673,7 @@ export const ComplexForm: Story = {
         />
         
         <!-- Expérience -->
-        <RadioGroup 
+        <RadioGroupField 
           :options="experience"
           label="Niveau d'expérience"
           displayType="block-card"
@@ -694,7 +694,7 @@ export const ComplexForm: Story = {
         />
         
         <!-- Avantages souhaités -->
-        <CheckboxGroup 
+        <CheckboxGroupField 
           :options="benefits"
           label="Avantages souhaités"
           message="Quels avantages vous intéressent le plus ?"

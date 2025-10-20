@@ -1,16 +1,16 @@
 import { ref } from 'vue'
 import type { Meta, StoryObj } from '@storybook/vue3'
 import { UserIcon, BuildingOfficeIcon, GlobeAltIcon } from '@heroicons/vue/24/outline'
-import RadioGroup from '../RadioGroup.vue'
+import RadioGroupField from '../RadioGroupField.vue'
 
-const meta: Meta<typeof RadioGroup> = {
-  title: 'Molecules/FormField - RadioGroup',
-  component: RadioGroup,
+const meta: Meta<typeof RadioGroupField> = {
+  title: 'Molecules/RadioGroupField',
+  component: RadioGroupField,
   parameters: {
     layout: 'centered',
     docs: {
       description: {
-        component: 'Composant RadioGroup pour la sélection unique avec deux styles d\'affichage : classique ou en cartes. Support complet de l\'accessibilité selon les normes W3C.'
+        component: 'Composant RadioGroupField pour la sélection unique avec deux styles d\'affichage : classique ou en cartes. Support complet de l\'accessibilité selon les normes W3C.'
       }
     }
   },
@@ -171,11 +171,11 @@ export const WithIcons: Story = {
     name: 'account-type-radio'
   },
   render: (args) => ({
-    components: { RadioGroup },
+    components: { RadioGroupField },
     setup() {
       return { args, accountOptions }
     },
-    template: '<RadioGroup v-bind="args" :options="accountOptions" />'
+    template: '<RadioGroupField v-bind="args" :options="accountOptions" />'
   })
 }
 
@@ -191,19 +191,19 @@ export const ScrollableList: Story = {
 
 export const States: Story = {
   render: () => ({
-    components: { RadioGroup },
+    components: { RadioGroupField },
     setup() {
       return { basicOptions }
     },
     template: `
       <div style="display: flex; flex-direction: column; gap: 2rem; width: 400px;">
-        <RadioGroup 
+        <RadioGroupField 
           :options="basicOptions"
           label="État par défaut"
           name="default-state"
           message="Sélectionnez une option"
         />
-        <RadioGroup 
+        <RadioGroupField 
           :options="basicOptions"
           state="error"
           label="État d'erreur"
@@ -211,7 +211,7 @@ export const States: Story = {
           message="Veuillez faire une sélection"
           :required="true"
         />
-        <RadioGroup 
+        <RadioGroupField 
           :options="basicOptions"
           state="success"
           label="État de succès"
@@ -226,15 +226,15 @@ export const States: Story = {
 
 export const Sizes: Story = {
   render: () => ({
-    components: { RadioGroup },
+    components: { RadioGroupField },
     setup() {
       return { basicOptions }
     },
     template: `
       <div style="display: flex; flex-direction: column; gap: 2rem; width: 400px;">
-        <RadioGroup size="sm" :options="basicOptions" label="Small" name="size-sm" />
-        <RadioGroup size="md" :options="basicOptions" label="Medium" name="size-md" />
-        <RadioGroup size="lg" :options="basicOptions" label="Large" name="size-lg" />
+        <RadioGroupField size="sm" :options="basicOptions" label="Small" name="size-sm" />
+        <RadioGroupField size="md" :options="basicOptions" label="Medium" name="size-md" />
+        <RadioGroupField size="lg" :options="basicOptions" label="Large" name="size-lg" />
       </div>
     `
   })
@@ -278,7 +278,7 @@ export const Required: Story = {
 
 export const WithSlots: Story = {
   render: () => ({
-    components: { RadioGroup },
+    components: { RadioGroupField },
     setup() {
       const plans = [
         { value: 'basic', label: 'Plan Basic', description: '9€/mois - Fonctionnalités de base' },
@@ -291,7 +291,7 @@ export const WithSlots: Story = {
     },
     template: `
       <div style="width: 500px;">
-        <RadioGroup 
+        <RadioGroupField 
           :options="plans"
           displayType="block-card"
           label="Choisissez votre plan"
@@ -312,7 +312,7 @@ export const WithSlots: Story = {
               </a>
             </div>
           </template>
-        </RadioGroup>
+        </RadioGroupField>
       </div>
     `
   })

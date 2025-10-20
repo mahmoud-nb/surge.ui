@@ -1,16 +1,16 @@
 import { ref } from 'vue'
 import type { Meta, StoryObj } from '@storybook/vue3'
 import { StarIcon, BuildingOfficeIcon, GlobeAltIcon } from '@heroicons/vue/24/outline'
-import CheckboxGroup from '../CheckboxGroup.vue'
+import CheckboxGroupField from '../CheckboxGroupField.vue'
 
-const meta: Meta<typeof CheckboxGroup> = {
-  title: 'Molecules/FormField - CheckboxGroup',
-  component: CheckboxGroup,
+const meta: Meta<typeof CheckboxGroupField> = {
+  title: 'Molecules/CheckboxGroupField',
+  component: CheckboxGroupField,
   parameters: {
     layout: 'centered',
     docs: {
       description: {
-        component: 'Composant CheckboxGroup pour la sélection multiple avec deux styles d\'affichage : classique ou en cartes. Support complet de l\'accessibilité selon les normes W3C.'
+        component: 'Composant CheckboxGroupField pour la sélection multiple avec deux styles d\'affichage : classique ou en cartes. Support complet de l\'accessibilité selon les normes W3C.'
       }
     }
   },
@@ -120,14 +120,14 @@ const longSkillsList = [
  */
 const createInteractiveStory = (args: any): Story => ({
   render: (renderArgs) => ({
-    components: { CheckboxGroup },
+    components: { CheckboxGroupField },
     setup() {
       // On crée une ref locale pour stocker la valeur, initialisée avec la valeur des args
       const modelValue = ref(renderArgs.modelValue);
       return { args: renderArgs, modelValue };
     },
     // On utilise v-model pour lier la ref locale au composant
-    template: '<CheckboxGroup v-bind="args" v-model="modelValue" @change="args[\'onUpdate:value\']" />',
+    template: '<CheckboxGroupField v-bind="args" v-model="modelValue" @change="args[\'onUpdate:value\']" />',
   }),
   args,
 });
@@ -165,12 +165,12 @@ export const InlineCard = createInteractiveStory({
 
 export const WithIcons: Story = {
   render: (args) => ({
-    components: { CheckboxGroup },
+    components: { CheckboxGroupField },
     setup() {
       const modelValue = ref(args.modelValue);
       return { args, permissionOptions, modelValue }
     },
-    template: '<CheckboxGroup v-bind="args" :options="permissionOptions" v-model="modelValue" @change="args[\'onUpdate:value\']" />'
+    template: '<CheckboxGroupField v-bind="args" :options="permissionOptions" v-model="modelValue" @change="args[\'onUpdate:value\']" />'
   }),
   args: {
     options: permissionOptions, // Nécessaire pour que les controls Storybook fonctionnent
@@ -217,25 +217,25 @@ export const Horizontal = createInteractiveStory({
 
 export const States: Story = {
   render: () => ({
-    components: { CheckboxGroup },
+    components: { CheckboxGroupField },
     setup() {
       return { basicOptions }
     },
     template: `
       <div style="display: flex; flex-direction: column; gap: 2rem; width: 400px;">
-        <CheckboxGroup 
+        <CheckboxGroupField 
           :options="basicOptions"
           label="État par défaut"
           message="Sélectionnez vos options"
         />
-        <CheckboxGroup 
+        <CheckboxGroupField 
           :options="basicOptions"
           state="error"
           label="État d'erreur"
           message="Veuillez sélectionner au moins une option"
           :required="true"
         />
-        <CheckboxGroup 
+        <CheckboxGroupField 
           :options="basicOptions"
           state="success"
           label="État de succès"
@@ -249,15 +249,15 @@ export const States: Story = {
 
 export const Sizes: Story = {
   render: () => ({
-    components: { CheckboxGroup },
+    components: { CheckboxGroupField },
     setup() {
       return { basicOptions }
     },
     template: `
       <div style="display: flex; flex-direction: column; gap: 2rem; width: 400px;">
-        <CheckboxGroup size="sm" :options="basicOptions" label="Small" />
-        <CheckboxGroup size="md" :options="basicOptions" label="Medium" />
-        <CheckboxGroup size="lg" :options="basicOptions" label="Large" />
+        <CheckboxGroupField size="sm" :options="basicOptions" label="Small" />
+        <CheckboxGroupField size="md" :options="basicOptions" label="Medium" />
+        <CheckboxGroupField size="lg" :options="basicOptions" label="Large" />
       </div>
     `
   })
@@ -285,7 +285,7 @@ export const Required = createInteractiveStory({
 
 export const WithSlots: Story = {
   render: () => ({
-    components: { CheckboxGroup },
+    components: { CheckboxGroupField },
     setup() {
       const features = [
         { value: 'notifications', label: 'Notifications push' },
@@ -307,7 +307,7 @@ export const WithSlots: Story = {
     },
     template: `
       <div style="width: 400px;">
-        <CheckboxGroup 
+        <CheckboxGroupField 
           :options="features"
           label="Fonctionnalités"
           v-model="modelValue"
@@ -337,7 +337,7 @@ export const WithSlots: Story = {
               </button>
             </div>
           </template>
-        </CheckboxGroup>
+        </CheckboxGroupField>
       </div>
     `
   })

@@ -1,16 +1,16 @@
-# RadioGroup
+# RadioGroupField
 
-Composant RadioGroup pour la sélection unique avec deux styles d'affichage : classique ou en cartes. Support complet de l'accessibilité selon les normes W3C.
+Composant RadioGroupField pour la sélection unique avec deux styles d'affichage : classique ou en cartes. Support complet de l'accessibilité selon les normes W3C.
 
 ## Exemples d'utilisation
 
-### RadioGroup de base
+### RadioGroupField de base
 
 <div class="component-demo">
   <div class="demo-section">
     <h4>Style par défaut</h4>
     <div class="demo-inputs">
-      <SuRadioGroup 
+      <SuRadioGroupField 
         :options="[
           { value: 'option1', label: 'Option 1' },
           { value: 'option2', label: 'Option 2' },
@@ -36,7 +36,7 @@ const options = [
 </script>
 
 <template>
-  <SuRadioGroup 
+  <SuRadioGroupField 
     :options="options"
     label="Sélection unique"
     name="basic-radio"
@@ -51,7 +51,7 @@ const options = [
   <div class="demo-section">
     <h4>Cartes en bloc</h4>
     <div class="demo-inputs">
-      <SuRadioGroup 
+      <SuRadioGroupField 
         :options="[
           { 
             value: 'basic', 
@@ -79,7 +79,7 @@ const options = [
 
 ```vue
 <template>
-  <SuRadioGroup 
+  <SuRadioGroupField 
     :options="[
       { 
         value: 'basic', 
@@ -111,7 +111,7 @@ const options = [
   <div class="demo-section">
     <h4>Cartes inline</h4>
     <div class="demo-inputs">
-      <SuRadioGroup 
+      <SuRadioGroupField 
         :options="[
           { value: 'small', label: 'Small', description: 'Jusqu\'à 5 utilisateurs' },
           { value: 'medium', label: 'Medium', description: 'Jusqu\'à 25 utilisateurs' },
@@ -128,7 +128,7 @@ const options = [
 
 ```vue
 <template>
-  <SuRadioGroup 
+  <SuRadioGroupField 
     :options="[
       { value: 'small', label: 'Small', description: 'Jusqu\'à 5 utilisateurs' },
       { value: 'medium', label: 'Medium', description: 'Jusqu\'à 25 utilisateurs' },
@@ -149,7 +149,7 @@ const options = [
   <div class="demo-section">
     <h4>Options avec icônes</h4>
     <div class="demo-inputs">
-      <SuRadioGroup 
+      <SuRadioGroupField 
         :options="[
           { value: 'user', label: 'Particulier', icon: 'UserIcon' },
           { value: 'business', label: 'Entreprise', icon: 'BuildingOfficeIcon' },
@@ -176,7 +176,7 @@ const accountOptions = [
 </script>
 
 <template>
-  <SuRadioGroup 
+  <SuRadioGroupField 
     :options="accountOptions"
     displayType="block-card"
     label="Type de compte"
@@ -192,7 +192,7 @@ const accountOptions = [
   <div class="demo-section">
     <h4>Tailles disponibles</h4>
     <div class="demo-inputs">
-      <SuRadioGroup 
+      <SuRadioGroupField 
         :options="[
           { value: 'sm', label: 'Small' },
           { value: 'md', label: 'Medium' }
@@ -201,7 +201,7 @@ const accountOptions = [
         label="Small"
         name="size-sm-radio"
       />
-      <SuRadioGroup 
+      <SuRadioGroupField 
         :options="[
           { value: 'sm', label: 'Small' },
           { value: 'md', label: 'Medium' }
@@ -210,7 +210,7 @@ const accountOptions = [
         label="Medium"
         name="size-md-radio"
       />
-      <SuRadioGroup 
+      <SuRadioGroupField 
         :options="[
           { value: 'sm', label: 'Small' },
           { value: 'md', label: 'Medium' }
@@ -225,9 +225,9 @@ const accountOptions = [
 
 ```vue
 <template>
-  <SuRadioGroup size="sm" label="Small" name="size-sm" />
-  <SuRadioGroup size="md" label="Medium" name="size-md" />
-  <SuRadioGroup size="lg" label="Large" name="size-lg" />
+  <SuRadioGroupField size="sm" label="Small" name="size-sm" />
+  <SuRadioGroupField size="md" label="Medium" name="size-md" />
+  <SuRadioGroupField size="lg" label="Large" name="size-lg" />
 </template>
 ```
 
@@ -237,7 +237,7 @@ const accountOptions = [
   <div class="demo-section">
     <h4>États de validation</h4>
     <div class="demo-inputs">
-      <SuRadioGroup 
+      <SuRadioGroupField 
         :options="[
           { value: 'valid', label: 'Option valide' },
           { value: 'invalid', label: 'Option invalide' }
@@ -246,7 +246,7 @@ const accountOptions = [
         name="default-state-radio"
         message="Sélectionnez une option"
       />
-      <SuRadioGroup 
+      <SuRadioGroupField 
         :options="[
           { value: 'valid', label: 'Option valide' },
           { value: 'invalid', label: 'Option invalide' }
@@ -257,7 +257,7 @@ const accountOptions = [
         message="Veuillez faire une sélection"
         :required="true"
       />
-      <SuRadioGroup 
+      <SuRadioGroupField 
         :options="[
           { value: 'valid', label: 'Option valide' },
           { value: 'invalid', label: 'Option invalide' }
@@ -274,18 +274,18 @@ const accountOptions = [
 
 ```vue
 <template>
-  <SuRadioGroup 
+  <SuRadioGroupField 
     state="default"
     label="État par défaut"
     message="Sélectionnez une option"
   />
-  <SuRadioGroup 
+  <SuRadioGroupField 
     state="error"
     label="État d'erreur"
     message="Veuillez faire une sélection"
     :required="true"
   />
-  <SuRadioGroup 
+  <SuRadioGroupField 
     state="success"
     label="État de succès"
     message="Sélection valide !"
@@ -299,7 +299,7 @@ const accountOptions = [
   <div class="demo-section">
     <h4>Disposition horizontale</h4>
     <div class="demo-inputs">
-      <SuRadioGroup 
+      <SuRadioGroupField 
         :options="[
           { value: 'yes', label: 'Oui' },
           { value: 'no', label: 'Non' },
@@ -315,7 +315,7 @@ const accountOptions = [
 
 ```vue
 <template>
-  <SuRadioGroup 
+  <SuRadioGroupField 
     :options="options"
     direction="horizontal"
     label="Acceptez-vous les conditions ?"
@@ -331,7 +331,7 @@ const accountOptions = [
   <div class="demo-section">
     <h4>Liste avec scroll vertical</h4>
     <div class="demo-inputs">
-      <SuRadioGroup 
+      <SuRadioGroupField 
         :options="[
           { value: 'country1', label: 'France' },
           { value: 'country2', label: 'Allemagne' },
@@ -355,7 +355,7 @@ const accountOptions = [
 
 ```vue
 <template>
-  <SuRadioGroup 
+  <SuRadioGroupField 
     :options="longCountriesList"
     maxHeight="180px"
     label="Pays (avec scroll)"
@@ -372,7 +372,7 @@ const accountOptions = [
   <div class="demo-section">
     <h4>Slots before et after</h4>
     <div class="demo-inputs">
-      <SuRadioGroup 
+      <SuRadioGroupField 
         :options="[
           { value: 'basic', label: 'Plan Basic', description: '9€/mois' },
           { value: 'pro', label: 'Plan Pro', description: '19€/mois' },
@@ -396,14 +396,14 @@ const accountOptions = [
             </a>
           </div>
         </template>
-      </SuRadioGroup>
+      </SuRadioGroupField>
     </div>
   </div>
 </div>
 
 ```vue
 <template>
-  <SuRadioGroup 
+  <SuRadioGroupField 
     :options="planOptions"
     displayType="block-card"
     label="Choisissez votre plan"
@@ -420,7 +420,7 @@ const accountOptions = [
         <a href="/plans/compare">Comparer tous les plans en détail →</a>
       </div>
     </template>
-  </SuRadioGroup>
+  </SuRadioGroupField>
 </template>
 ```
 
@@ -484,7 +484,7 @@ Le composant RadioGroup respecte les normes WCAG 2.1 AA :
 
 ```vue
 <!-- RadioGroup avec validation -->
-<SuRadioGroup 
+<SuRadioGroupField 
   :options="options"
   :required="true"
   label="Méthode de paiement"
@@ -495,7 +495,7 @@ Le composant RadioGroup respecte les normes WCAG 2.1 AA :
 />
 
 <!-- RadioGroup avec cartes et descriptions -->
-<SuRadioGroup 
+<SuRadioGroupField 
   :options="planOptions"
   displayType="block-card"
   label="Plan d'abonnement"
@@ -540,7 +540,7 @@ const privacyOptions = [
 
 <template>
   <form class="space-y-6">
-    <SuRadioGroup 
+    <SuRadioGroupField 
       :options="themeOptions"
       displayType="block-card"
       label="Thème"
@@ -548,7 +548,7 @@ const privacyOptions = [
       v-model:value="theme"
     />
     
-    <SuRadioGroup 
+    <SuRadioGroupField 
       :options="privacyOptions"
       displayType="inline-card"
       direction="horizontal"

@@ -1,16 +1,16 @@
-# RadioGroup
+# SuRadioGroup
 
-RadioGroup component for single selection with two display styles: classic or cards. Complete accessibility support according to W3C standards.
+SuRadioGroup component for single selection with two display styles: classic or cards. Complete accessibility support according to W3C standards.
 
 ## Usage examples
 
-### Basic RadioGroup
+### Basic SuRadioGroup
 
 <div class="component-demo">
   <div class="demo-section">
     <h4>Default style</h4>
     <div class="demo-inputs">
-      <SuRadioGroup 
+      <SuRadioGroupField 
         :options="[
           { value: 'option1', label: 'Option 1' },
           { value: 'option2', label: 'Option 2' },
@@ -36,7 +36,7 @@ const options = [
 </script>
 
 <template>
-  <SuRadioGroup 
+  <SuRadioGroupField 
     :options="options"
     label="Single selection"
     name="basic-radio"
@@ -51,7 +51,7 @@ const options = [
   <div class="demo-section">
     <h4>Block cards</h4>
     <div class="demo-inputs">
-      <SuRadioGroup 
+      <SuRadioGroupField 
         :options="[
           { 
             value: 'basic', 
@@ -79,7 +79,7 @@ const options = [
 
 ```vue
 <template>
-  <SuRadioGroup 
+  <SuRadioGroupField 
     :options="[
       { 
         value: 'basic', 
@@ -111,7 +111,7 @@ const options = [
   <div class="demo-section">
     <h4>Inline cards</h4>
     <div class="demo-inputs">
-      <SuRadioGroup 
+      <SuRadioGroupField 
         :options="[
           { value: 'small', label: 'Small', description: 'Up to 5 users' },
           { value: 'medium', label: 'Medium', description: 'Up to 25 users' },
@@ -128,7 +128,7 @@ const options = [
 
 ```vue
 <template>
-  <SuRadioGroup 
+  <SuRadioGroupField 
     :options="[
       { value: 'small', label: 'Small', description: 'Up to 5 users' },
       { value: 'medium', label: 'Medium', description: 'Up to 25 users' },
@@ -149,7 +149,7 @@ const options = [
   <div class="demo-section">
     <h4>Options with icons</h4>
     <div class="demo-inputs">
-      <SuRadioGroup 
+      <SuRadioGroupField 
         :options="[
           { value: 'user', label: 'Individual', icon: 'UserIcon' },
           { value: 'business', label: 'Business', icon: 'BuildingOfficeIcon' },
@@ -176,7 +176,7 @@ const accountOptions = [
 </script>
 
 <template>
-  <SuRadioGroup 
+  <SuRadioGroupField 
     :options="accountOptions"
     displayType="block-card"
     label="Account type"
@@ -246,7 +246,7 @@ The RadioGroup component follows WCAG 2.1 AA standards:
 
 ```vue
 <!-- RadioGroup with validation -->
-<SuRadioGroup 
+<SuRadioGroupField 
   :options="options"
   :required="true"
   label="Payment method"
@@ -257,7 +257,7 @@ The RadioGroup component follows WCAG 2.1 AA standards:
 />
 
 <!-- RadioGroup with cards and descriptions -->
-<SuRadioGroup 
+<SuRadioGroupField 
   :options="planOptions"
   displayType="block-card"
   label="Subscription plan"
@@ -301,7 +301,7 @@ const privacyOptions = [
 
 <template>
   <form class="space-y-6">
-    <SuRadioGroup 
+    <SuRadioGroupField 
       :options="themeOptions"
       displayType="block-card"
       label="Theme"
@@ -309,7 +309,7 @@ const privacyOptions = [
       v-model="theme"
     />
     
-    <SuRadioGroup 
+    <SuRadioGroupField 
       :options="privacyOptions"
       displayType="inline-card"
       direction="horizontal"

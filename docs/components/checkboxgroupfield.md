@@ -10,7 +10,7 @@ Composant CheckboxGroup pour la sélection multiple avec deux styles d'affichage
   <div class="demo-section">
     <h4>Style par défaut</h4>
     <div class="demo-inputs">
-      <SuCheckboxGroup 
+      <SuCheckboxGroupField 
         :options="[
           { value: 'option1', label: 'Option 1' },
           { value: 'option2', label: 'Option 2' },
@@ -35,7 +35,7 @@ const options = [
 </script>
 
 <template>
-  <SuCheckboxGroup 
+  <SuCheckboxGroupField 
     :options="options"
     label="Sélection multiple"
     v-model:value="selectedValues"
@@ -49,7 +49,7 @@ const options = [
   <div class="demo-section">
     <h4>Cartes en bloc</h4>
     <div class="demo-inputs">
-      <SuCheckboxGroup 
+      <SuCheckboxGroupField 
         :options="[
           { 
             value: 'js', 
@@ -76,7 +76,7 @@ const options = [
 
 ```vue
 <template>
-  <SuCheckboxGroup 
+  <SuCheckboxGroupField 
     :options="[
       { 
         value: 'js', 
@@ -107,7 +107,7 @@ const options = [
   <div class="demo-section">
     <h4>Cartes inline</h4>
     <div class="demo-inputs">
-      <SuCheckboxGroup 
+      <SuCheckboxGroupField 
         :options="[
           { value: 'email', label: 'Email', description: 'Notifications par email' },
           { value: 'sms', label: 'SMS', description: 'Notifications par SMS' },
@@ -123,7 +123,7 @@ const options = [
 
 ```vue
 <template>
-  <SuCheckboxGroup 
+  <SuCheckboxGroupField 
     :options="[
       { value: 'email', label: 'Email', description: 'Notifications par email' },
       { value: 'sms', label: 'SMS', description: 'Notifications par SMS' },
@@ -143,7 +143,7 @@ const options = [
   <div class="demo-section">
     <h4>Options avec icônes</h4>
     <div class="demo-inputs">
-      <SuCheckboxGroup 
+      <SuCheckboxGroupField 
         :options="[
           { value: 'read', label: 'Lecture', icon: 'StarIcon' },
           { value: 'write', label: 'Écriture', icon: 'BuildingOfficeIcon' },
@@ -169,7 +169,7 @@ const permissionOptions = [
 </script>
 
 <template>
-  <SuCheckboxGroup 
+  <SuCheckboxGroupField 
     :options="permissionOptions"
     displayType="card"
     label="Permissions"
@@ -184,7 +184,7 @@ const permissionOptions = [
   <div class="demo-section">
     <h4>Maximum 2 sélections</h4>
     <div class="demo-inputs">
-      <SuCheckboxGroup 
+      <SuCheckboxGroupField 
         :options="[
           { value: 'skill1', label: 'JavaScript' },
           { value: 'skill2', label: 'Python' },
@@ -202,7 +202,7 @@ const permissionOptions = [
 
 ```vue
 <template>
-  <SuCheckboxGroup 
+  <SuCheckboxGroupField 
     :options="skillOptions"
     :maxSelections="2"
     label="Compétences principales"
@@ -218,7 +218,7 @@ const permissionOptions = [
   <div class="demo-section">
     <h4>Tailles disponibles</h4>
     <div class="demo-inputs">
-      <SuCheckboxGroup 
+      <SuCheckboxGroupField 
         :options="[
           { value: 'sm', label: 'Small' },
           { value: 'md', label: 'Medium' }
@@ -226,7 +226,7 @@ const permissionOptions = [
         size="sm"
         label="Small"
       />
-      <SuCheckboxGroup 
+      <SuCheckboxGroupField 
         :options="[
           { value: 'sm', label: 'Small' },
           { value: 'md', label: 'Medium' }
@@ -234,7 +234,7 @@ const permissionOptions = [
         size="md"
         label="Medium"
       />
-      <SuCheckboxGroup 
+      <SuCheckboxGroupField 
         :options="[
           { value: 'sm', label: 'Small' },
           { value: 'md', label: 'Medium' }
@@ -248,9 +248,9 @@ const permissionOptions = [
 
 ```vue
 <template>
-  <SuCheckboxGroup size="sm" label="Small" />
-  <SuCheckboxGroup size="md" label="Medium" />
-  <SuCheckboxGroup size="lg" label="Large" />
+  <SuCheckboxGroupField size="sm" label="Small" />
+  <SuCheckboxGroupField size="md" label="Medium" />
+  <SuCheckboxGroupField size="lg" label="Large" />
 </template>
 ```
 
@@ -260,7 +260,7 @@ const permissionOptions = [
   <div class="demo-section">
     <h4>États de validation</h4>
     <div class="demo-inputs">
-      <SuCheckboxGroup 
+      <SuCheckboxGroupField 
         :options="[
           { value: 'terms', label: 'J\'accepte les conditions d\'utilisation' },
           { value: 'privacy', label: 'J\'accepte la politique de confidentialité' }
@@ -269,7 +269,7 @@ const permissionOptions = [
         message="Veuillez accepter les conditions"
         :required="true"
       />
-      <SuCheckboxGroup 
+      <SuCheckboxGroupField 
         :options="[
           { value: 'newsletter', label: 'Newsletter' },
           { value: 'promotions', label: 'Promotions' }
@@ -285,7 +285,7 @@ const permissionOptions = [
 
 ```vue
 <template>
-  <SuCheckboxGroup 
+  <SuCheckboxGroupField 
     :options="acceptanceOptions"
     :required="true"
     label="Acceptation"
@@ -293,7 +293,7 @@ const permissionOptions = [
     v-model:value="acceptance"
   />
   
-  <SuCheckboxGroup 
+  <SuCheckboxGroupField 
     :options="communicationOptions"
     state="success"
     label="Communications"
@@ -309,7 +309,7 @@ const permissionOptions = [
   <div class="demo-section">
     <h4>Disposition horizontale</h4>
     <div class="demo-inputs">
-      <SuCheckboxGroup 
+      <SuCheckboxGroupField 
         :options="[
           { value: 'monday', label: 'Lundi' },
           { value: 'tuesday', label: 'Mardi' },
@@ -326,7 +326,7 @@ const permissionOptions = [
 
 ```vue
 <template>
-  <SuCheckboxGroup 
+  <SuCheckboxGroupField 
     :options="dayOptions"
     direction="horizontal"
     label="Jours de travail"
@@ -341,7 +341,7 @@ const permissionOptions = [
   <div class="demo-section">
     <h4>Liste avec scroll vertical</h4>
     <div class="demo-inputs">
-      <SuCheckboxGroup 
+      <SuCheckboxGroupField 
         :options="[
           { value: 'skill1', label: 'JavaScript' },
           { value: 'skill2', label: 'TypeScript' },
@@ -364,7 +364,7 @@ const permissionOptions = [
 
 ```vue
 <template>
-  <SuCheckboxGroup 
+  <SuCheckboxGroupField 
     :options="longSkillsList"
     maxHeight="150px"
     label="Compétences (avec scroll)"
@@ -380,7 +380,7 @@ const permissionOptions = [
   <div class="demo-section">
     <h4>Slots before et after</h4>
     <div class="demo-inputs">
-      <SuCheckboxGroup 
+      <SuCheckboxGroupField 
         :options="[
           { value: 'feature1', label: 'Fonctionnalité 1' },
           { value: 'feature2', label: 'Fonctionnalité 2' },
@@ -405,14 +405,14 @@ const permissionOptions = [
             </button>
           </div>
         </template>
-      </SuCheckboxGroup>
+      </SuCheckboxGroupField>
     </div>
   </div>
 </div>
 
 ```vue
 <template>
-  <SuCheckboxGroup 
+  <SuCheckboxGroupField 
     :options="featureOptions"
     label="Fonctionnalités"
     v-model:value="selectedFeatures"
@@ -428,7 +428,7 @@ const permissionOptions = [
         <button @click="selectNone">Tout désélectionner</button>
       </div>
     </template>
-  </SuCheckboxGroup>
+  </SuCheckboxGroupField>
 </template>
 ```
 
@@ -500,7 +500,7 @@ Le composant CheckboxGroup respecte les normes WCAG 2.1 AA :
 
 ```vue
 <!-- CheckboxGroup avec validation -->
-<SuCheckboxGroup 
+<SuCheckboxGroupField 
   :options="options"
   :required="true"
   label="Conditions d'utilisation"
@@ -510,7 +510,7 @@ Le composant CheckboxGroup respecte les normes WCAG 2.1 AA :
 />
 
 <!-- CheckboxGroup avec limitation -->
-<SuCheckboxGroup 
+<SuCheckboxGroupField 
   :options="skillOptions"
   :maxSelections="3"
   label="Compétences"
@@ -554,7 +554,7 @@ const featureOptions = [
 
 <template>
   <form class="space-y-6">
-    <SuCheckboxGroup 
+    <SuCheckboxGroupField 
       :options="notificationOptions"
       displayType="block-card"
       label="Notifications"
@@ -562,7 +562,7 @@ const featureOptions = [
       v-model:value="notifications"
     />
     
-    <SuCheckboxGroup 
+    <SuCheckboxGroupField 
       :options="featureOptions"
       direction="horizontal"
       label="Fonctionnalités"
@@ -602,7 +602,7 @@ const message = computed(() => {
 </script>
 
 <template>
-  <SuCheckboxGroup 
+  <SuCheckboxGroupField 
     :options="skillOptions"
     :maxSelections="maxSkills"
     :state="remainingSelections === 0 ? 'warning' : 'default'"

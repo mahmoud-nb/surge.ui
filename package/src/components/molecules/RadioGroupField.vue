@@ -14,7 +14,7 @@ export interface RadioOption {
   icon?: Component
 }
 
-export interface RadioGroupProps extends AccessibilityProps {
+export interface RadioGroupFieldProps extends AccessibilityProps {
   options: RadioOption[]
   value?: string | number
   name?: string
@@ -29,7 +29,7 @@ export interface RadioGroupProps extends AccessibilityProps {
   maxHeight?: string | null
 }
 
-export interface Props extends Omit<RadioGroupProps, 'value'> {}
+export interface Props extends Omit<RadioGroupFieldProps, 'value'> {}
 
 const props = withDefaults(defineProps<Props>(), {
   options: () => [],

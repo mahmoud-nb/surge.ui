@@ -11,20 +11,20 @@ Composant FormFields pour organiser et aligner des champs de formulaire avec un 
     <h4>Formulaire simple</h4>
     <div class="demo-inputs">
       <SuFormFields style="width: 400px;">
-        <SuInput 
+        <SuInputField 
           label="Nom complet"
           placeholder="Entrez votre nom"
           :prefixIcon="UserIcon"
           required
         />
-        <SuInput 
+        <SuInputField 
           type="email"
           label="Email"
           placeholder="nom@exemple.com"
           :prefixIcon="AtSymbolIcon"
           required
         />
-        <SuSelectBox 
+        <SuSelectBoxField 
           :options="[
             { value: 'option1', label: 'Option 1' },
             { value: 'option2', label: 'Option 2' },
@@ -33,7 +33,7 @@ Composant FormFields pour organiser et aligner des champs de formulaire avec un 
           label="Préférence"
           placeholder="Choisissez une option"
         />
-        <SuSwitch 
+        <SuSwitchField 
           label="Notifications"
           rightLabel="Activées"
           message="Recevoir des notifications par email"
@@ -56,25 +56,25 @@ const options = [
 
 <template>
   <SuFormFields>
-    <SuInput 
+    <SuInputField 
       label="Nom complet"
       placeholder="Entrez votre nom"
       :prefixIcon="UserIcon"
       required
     />
-    <SuInput 
+    <SuInputField 
       type="email"
       label="Email"
       placeholder="nom@exemple.com"
       :prefixIcon="AtSymbolIcon"
       required
     />
-    <SuSelectBox 
+    <SuSelectBoxField 
       :options="options"
       label="Préférence"
       placeholder="Choisissez une option"
     />
-    <SuSwitch 
+    <SuSwitchField 
       label="Notifications"
       rightLabel="Activées"
       message="Recevoir des notifications par email"
@@ -92,33 +92,33 @@ const options = [
       <div>
         <p><strong>Gap Small</strong></p>
         <SuFormFields gap="sm" style="width: 300px;">
-          <SuInput label="Nom" placeholder="Votre nom" />
-          <SuInput type="email" label="Email" placeholder="email@exemple.com" />
-          <SuSwitch label="Newsletter" rightLabel="Oui" />
+          <SuInputField label="Nom" placeholder="Votre nom" />
+          <SuInputField type="email" label="Email" placeholder="email@exemple.com" />
+          <SuSwitchField label="Newsletter" rightLabel="Oui" />
         </SuFormFields>
       </div>
       <div>
         <p><strong>Gap Medium (défaut)</strong></p>
         <SuFormFields gap="md" style="width: 300px;">
-          <SuInput label="Nom" placeholder="Votre nom" />
-          <SuInput type="email" label="Email" placeholder="email@exemple.com" />
-          <SuSwitch label="Newsletter" rightLabel="Oui" />
+          <SuInputField label="Nom" placeholder="Votre nom" />
+          <SuInputField type="email" label="Email" placeholder="email@exemple.com" />
+          <SuSwitchField label="Newsletter" rightLabel="Oui" />
         </SuFormFields>
       </div>
       <div>
         <p><strong>Gap Large</strong></p>
         <SuFormFields gap="lg" style="width: 300px;">
-          <SuInput label="Nom" placeholder="Votre nom" />
-          <SuInput type="email" label="Email" placeholder="email@exemple.com" />
-          <SuSwitch label="Newsletter" rightLabel="Oui" />
+          <SuInputField label="Nom" placeholder="Votre nom" />
+          <SuInputField type="email" label="Email" placeholder="email@exemple.com" />
+          <SuSwitchField label="Newsletter" rightLabel="Oui" />
         </SuFormFields>
       </div>
       <div>
         <p><strong>Gap Extra Large</strong></p>
         <SuFormFields gap="xl" style="width: 300px;">
-          <SuInput label="Nom" placeholder="Votre nom" />
-          <SuInput type="email" label="Email" placeholder="email@exemple.com" />
-          <SuSwitch label="Newsletter" rightLabel="Oui" />
+          <SuInputField label="Nom" placeholder="Votre nom" />
+          <SuInputField type="email" label="Email" placeholder="email@exemple.com" />
+          <SuSwitchField label="Newsletter" rightLabel="Oui" />
         </SuFormFields>
       </div>
     </div>
@@ -129,30 +129,30 @@ const options = [
 <template>
   <!-- Espacement petit -->
   <SuFormFields gap="sm">
-    <SuInput label="Nom" placeholder="Votre nom" />
-    <SuInput type="email" label="Email" placeholder="email@exemple.com" />
-    <SuSwitch label="Newsletter" rightLabel="Oui" />
+    <SuInputField label="Nom" placeholder="Votre nom" />
+    <SuInputField type="email" label="Email" placeholder="email@exemple.com" />
+    <SuSwitchField label="Newsletter" rightLabel="Oui" />
   </SuFormFields>
   
   <!-- Espacement moyen (défaut) -->
   <SuFormFields gap="md">
-    <SuInput label="Nom" placeholder="Votre nom" />
-    <SuInput type="email" label="Email" placeholder="email@exemple.com" />
-    <SuSwitch label="Newsletter" rightLabel="Oui" />
+    <SuInputField label="Nom" placeholder="Votre nom" />
+    <SuInputField type="email" label="Email" placeholder="email@exemple.com" />
+    <SuSwitchField label="Newsletter" rightLabel="Oui" />
   </SuFormFields>
   
   <!-- Espacement large -->
   <SuFormFields gap="lg">
-    <SuInput label="Nom" placeholder="Votre nom" />
-    <SuInput type="email" label="Email" placeholder="email@exemple.com" />
-    <SuSwitch label="Newsletter" rightLabel="Oui" />
+    <SuInputField label="Nom" placeholder="Votre nom" />
+    <SuInputField type="email" label="Email" placeholder="email@exemple.com" />
+    <SuSwitchField label="Newsletter" rightLabel="Oui" />
   </SuFormFields>
   
   <!-- Espacement extra large -->
   <SuFormFields gap="xl">
-    <SuInput label="Nom" placeholder="Votre nom" />
-    <SuInput type="email" label="Email" placeholder="email@exemple.com" />
-    <SuSwitch label="Newsletter" rightLabel="Oui" />
+    <SuInputField label="Nom" placeholder="Votre nom" />
+    <SuInputField type="email" label="Email" placeholder="email@exemple.com" />
+    <SuSwitchField label="Newsletter" rightLabel="Oui" />
   </SuFormFields>
 </template>
 ```
@@ -166,8 +166,8 @@ const options = [
       <div>
         <p><strong>Taille Small forcée</strong></p>
         <SuFormFields size="sm" style="width: 300px;">
-          <SuInput label="Nom" placeholder="Petit champ" />
-          <SuSelectBox 
+          <SuInputField label="Nom" placeholder="Petit champ" />
+          <SuSelectBoxField 
             :options="[
               { value: 'sm', label: 'Small' },
               { value: 'md', label: 'Medium' }
@@ -175,14 +175,14 @@ const options = [
             label="Sélection" 
             placeholder="Petit select" 
           />
-          <SuTextarea label="Message" placeholder="Petit textarea" />
+          <SuTextareaField label="Message" placeholder="Petit textarea" />
         </SuFormFields>
       </div>
       <div>
         <p><strong>Taille Medium forcée</strong></p>
         <SuFormFields size="md" style="width: 300px;">
-          <SuInput label="Nom" placeholder="Champ moyen" />
-          <SuSelectBox 
+          <SuInputField label="Nom" placeholder="Champ moyen" />
+          <SuSelectBoxField 
             :options="[
               { value: 'sm', label: 'Small' },
               { value: 'md', label: 'Medium' }
@@ -190,14 +190,14 @@ const options = [
             label="Sélection" 
             placeholder="Select moyen" 
           />
-          <SuTextarea label="Message" placeholder="Textarea moyen" />
+          <SuTextareaField label="Message" placeholder="Textarea moyen" />
         </SuFormFields>
       </div>
       <div>
         <p><strong>Taille Large forcée</strong></p>
         <SuFormFields size="lg" style="width: 300px;">
-          <SuInput label="Nom" placeholder="Grand champ" />
-          <SuSelectBox 
+          <SuInputField label="Nom" placeholder="Grand champ" />
+          <SuSelectBoxField 
             :options="[
               { value: 'sm', label: 'Small' },
               { value: 'md', label: 'Medium' }
@@ -205,7 +205,7 @@ const options = [
             label="Sélection" 
             placeholder="Grand select" 
           />
-          <SuTextarea label="Message" placeholder="Grand textarea" />
+          <SuTextareaField label="Message" placeholder="Grand textarea" />
         </SuFormFields>
       </div>
     </div>
@@ -216,16 +216,16 @@ const options = [
 <template>
   <!-- Tous les champs seront en taille small -->
   <SuFormFields size="sm">
-    <SuInput label="Nom" placeholder="Petit champ" />
-    <SuSelectBox :options="options" label="Sélection" placeholder="Petit select" />
-    <SuTextarea label="Message" placeholder="Petit textarea" />
+    <SuInputField label="Nom" placeholder="Petit champ" />
+    <SuSelectBoxField :options="options" label="Sélection" placeholder="Petit select" />
+    <SuTextareaField label="Message" placeholder="Petit textarea" />
   </SuFormFields>
   
   <!-- Tous les champs seront en taille large -->
   <SuFormFields size="lg">
-    <SuInput label="Nom" placeholder="Grand champ" />
-    <SuSelectBox :options="options" label="Sélection" placeholder="Grand select" />
-    <SuTextarea label="Message" placeholder="Grand textarea" />
+    <SuInputField label="Nom" placeholder="Grand champ" />
+    <SuSelectBoxField :options="options" label="Sélection" placeholder="Grand select" />
+    <SuTextareaField label="Message" placeholder="Grand textarea" />
   </SuFormFields>
 </template>
 ```
@@ -237,17 +237,17 @@ const options = [
     <h4>Champs alignés horizontalement</h4>
     <div class="demo-inputs">
       <SuFormFields direction="horizontal" gap="md" style="width: 100%; max-width: 800px;">
-        <SuInput 
+        <SuInputField 
           label="Prénom"
           placeholder="Votre prénom"
           required
         />
-        <SuInput 
+        <SuInputField 
           label="Nom"
           placeholder="Votre nom"
           required
         />
-        <SuSelectBox 
+        <SuSelectBoxField 
           :options="[
             { value: 'fr', label: 'France' },
             { value: 'us', label: 'États-Unis' },
@@ -264,17 +264,17 @@ const options = [
 ```vue
 <template>
   <SuFormFields direction="horizontal" gap="md">
-    <SuInput 
+    <SuInputField 
       label="Prénom"
       placeholder="Votre prénom"
       required
     />
-    <SuInput 
+    <SuInputField 
       label="Nom"
       placeholder="Votre nom"
       required
     />
-    <SuSelectBox 
+    <SuSelectBoxField 
       :options="countryOptions"
       label="Pays"
       placeholder="Sélectionnez votre pays"
@@ -291,7 +291,7 @@ const options = [
     <div class="demo-inputs">
       <SuFormFields style="width: 500px;" sectionGap="lg" role="form" aria-label="Formulaire d'inscription">
         <template #head>
-          <div style="text-align: center; padding: 1.5rem; background-color: #f8fafc; border-radius: 0.5rem; border: 1px solid #e2e8f0;">
+          <div style="text-align: center; padding: 1.5rem; background-color: #f8fafc; border-radius: 0.5rem;">
             <h2 style="margin: 0 0 0.5rem 0; color: #1e293b; font-size: 1.5rem; font-weight: 600;">
               Créer un compte
             </h2>
@@ -300,27 +300,27 @@ const options = [
             </p>
           </div>
         </template>
-        <SuInput 
+        <SuInputField 
           label="Nom complet"
           placeholder="Entrez votre nom complet"
           :prefixIcon="UserIcon"
           required
         />
-        <SuInput 
+        <SuInputField 
           type="email"
           label="Adresse email"
           placeholder="nom@exemple.com"
           :prefixIcon="AtSymbolIcon"
           required
         />
-        <SuInput 
+        <SuInputField 
           type="password"
           label="Mot de passe"
           placeholder="••••••••"
           :prefixIcon="LockClosedIcon"
           required
         />
-        <SuSwitch 
+        <SuSwitchField 
           label="Conditions d'utilisation"
           rightLabel="J'accepte"
           message="Vous devez accepter les conditions d'utilisation"
@@ -356,14 +356,14 @@ import { UserIcon, AtSymbolIcon, LockClosedIcon } from '@heroicons/vue/24/outlin
       </div>
     </template>
 
-    <SuInput 
+    <SuInputField 
       label="Nom complet"
       placeholder="Entrez votre nom complet"
       :prefixIcon="UserIcon"
       required
     />
     
-    <SuInput 
+    <SuInputField 
       type="email"
       label="Adresse email"
       placeholder="nom@exemple.com"
@@ -371,7 +371,7 @@ import { UserIcon, AtSymbolIcon, LockClosedIcon } from '@heroicons/vue/24/outlin
       required
     />
     
-    <SuInput 
+    <SuInputField 
       type="password"
       label="Mot de passe"
       placeholder="••••••••"
@@ -379,7 +379,7 @@ import { UserIcon, AtSymbolIcon, LockClosedIcon } from '@heroicons/vue/24/outlin
       required
     />
     
-    <SuSwitch 
+    <SuSwitchField 
       label="Conditions d'utilisation"
       rightLabel="J'accepte"
       required
@@ -407,8 +407,8 @@ import { UserIcon, AtSymbolIcon, LockClosedIcon } from '@heroicons/vue/24/outlin
           <template #head>
             <h3 style="margin: 0; color: #374151;">Informations personnelles</h3>
           </template>
-          <SuInput label="Nom" placeholder="Votre nom" />
-          <SuInput label="Email" placeholder="votre@email.com" />
+          <SuInputField label="Nom" placeholder="Votre nom" />
+          <SuInputField label="Email" placeholder="votre@email.com" />
           <template #footer>
             <SuButton variant="primary" block>Sauvegarder</SuButton>
           </template>
@@ -420,8 +420,8 @@ import { UserIcon, AtSymbolIcon, LockClosedIcon } from '@heroicons/vue/24/outlin
           <template #head>
             <h3 style="margin: 0; color: #374151;">Informations personnelles</h3>
           </template>
-          <SuInput label="Nom" placeholder="Votre nom" />
-          <SuInput label="Email" placeholder="votre@email.com" />
+          <SuInputField label="Nom" placeholder="Votre nom" />
+          <SuInputField label="Email" placeholder="votre@email.com" />
           <template #footer>
             <SuButton variant="primary" block>Sauvegarder</SuButton>
           </template>
@@ -433,8 +433,8 @@ import { UserIcon, AtSymbolIcon, LockClosedIcon } from '@heroicons/vue/24/outlin
           <template #head>
             <h3 style="margin: 0; color: #374151;">Informations personnelles</h3>
           </template>
-          <SuInput label="Nom" placeholder="Votre nom" />
-          <SuInput label="Email" placeholder="votre@email.com" />
+          <SuInputField label="Nom" placeholder="Votre nom" />
+          <SuInputField label="Email" placeholder="votre@email.com" />
           <template #footer>
             <SuButton variant="primary" block>Sauvegarder</SuButton>
           </template>
@@ -451,8 +451,8 @@ import { UserIcon, AtSymbolIcon, LockClosedIcon } from '@heroicons/vue/24/outlin
     <template #head>
       <h3>Informations personnelles</h3>
     </template>
-    <SuInput label="Nom" placeholder="Votre nom" />
-    <SuInput label="Email" placeholder="votre@email.com" />
+    <SuInputField label="Nom" placeholder="Votre nom" />
+    <SuInputField label="Email" placeholder="votre@email.com" />
     <template #footer>
       <SuButton variant="primary" block>Sauvegarder</SuButton>
     </template>
@@ -463,8 +463,8 @@ import { UserIcon, AtSymbolIcon, LockClosedIcon } from '@heroicons/vue/24/outlin
     <template #head>
       <h3>Informations personnelles</h3>
     </template>
-    <SuInput label="Nom" placeholder="Votre nom" />
-    <SuInput label="Email" placeholder="votre@email.com" />
+    <SuInputField label="Nom" placeholder="Votre nom" />
+    <SuInputField label="Email" placeholder="votre@email.com" />
     <template #footer>
       <SuButton variant="primary" block>Sauvegarder</SuButton>
     </template>
@@ -489,13 +489,13 @@ import { UserIcon, AtSymbolIcon, LockClosedIcon } from '@heroicons/vue/24/outlin
             </p>
           </div>
         </template>
-        <SuInput 
+        <SuInputField 
           label="Nom d'utilisateur"
           placeholder="Choisissez un nom d'utilisateur"
           :prefixIcon="UserIcon"
           required
         />
-        <SuSelectBox 
+        <SuSelectBoxField 
           :options="[
             { value: 'fr', label: 'France' },
             { value: 'us', label: 'États-Unis' },
@@ -539,14 +539,14 @@ import { UserIcon, AtSymbolIcon, LockClosedIcon } from '@heroicons/vue/24/outlin
           :maxSize="2 * 1024 * 1024"
           placeholder="Téléchargez votre photo"
         />
-        <SuTextarea 
+        <SuTextareaField 
           label="Bio"
           placeholder="Parlez-nous de vous..."
           :maxLength="500"
           showCounter
           autoResize
         />
-        <SuSwitch 
+        <SuSwitchField 
           label="Profil public"
           leftLabel="Privé"
           rightLabel="Public"
@@ -572,14 +572,14 @@ import { UserIcon, AtSymbolIcon, LockClosedIcon } from '@heroicons/vue/24/outlin
       </div>
     </template>
 
-    <SuInput label="Nom d'utilisateur" placeholder="Nom d'utilisateur" required />
-    <SuSelectBox :options="countryOptions" label="Pays" searchable />
+    <SuInputField label="Nom d'utilisateur" placeholder="Nom d'utilisateur" required />
+    <SuSelectBoxField :options="countryOptions" label="Pays" searchable />
     <SuRadioGroup :options="accountTypes" label="Type de compte" />
     <SuCheckboxGroup :options="skills" label="Compétences" />
     <SuSlider label="Niveau d'expérience" :min="1" :max="10" />
     <SuFileUpload label="Photo de profil" accept="image/*" />
-    <SuTextarea label="Bio" placeholder="Parlez-nous de vous..." />
-    <SuSwitch label="Profil public" leftLabel="Privé" rightLabel="Public" />
+    <SuTextareaField label="Bio" placeholder="Parlez-nous de vous..." />
+    <SuSwitchField label="Profil public" leftLabel="Privé" rightLabel="Public" />
 
     <template #footer>
       <div class="form-actions">
@@ -627,9 +627,9 @@ Quand `size` est définie sur le `FormFields`, elle **surcharge** automatiquemen
 ```vue
 <!-- Les champs auront TOUS la taille 'lg' -->
 <SuFormFields size="lg">
-  <SuInput size="sm" label="Champ 1" />  <!-- Devient lg -->
-  <SuInput label="Champ 2" />            <!-- Devient lg -->
-  <SuSelectBox size="md" label="Select" /> <!-- Devient lg -->
+  <SuInputField size="sm" label="Champ 1" />  <!-- Devient lg -->
+  <SuInputField label="Champ 2" />            <!-- Devient lg -->
+  <SuSelectBoxField size="md" label="Select" /> <!-- Devient lg -->
 </SuFormFields>
 ```
 
@@ -637,7 +637,7 @@ Quand `size` est définie sur le `FormFields`, elle **surcharge** automatiquemen
 
 Le composant vérifie automatiquement que seuls des composants de formulaire sont passés dans le slot :
 
-- ✅ **Composants de formulaire** : `Input`, `SelectBox`, `RadioGroup`, `CheckboxGroup`, `Switch`, `FileUpload`, `Textarea`, `Slider`
+- ✅ **Composants de formulaire** : `InputField`, `SelectBoxField`, `RadioGroupField`, `CheckboxGroupField`, `SwitchField`, `FileUploadField`, `TextareaField`, `SliderField`
 - ⚠️ **Autres composants** : Avertissement dans la console et élément ignoré
 - ✅ **Commentaires/texte** : Ignorés silencieusement (comportement normal de Vue)
 
@@ -671,14 +671,14 @@ En mode horizontal, le composant passe automatiquement en vertical sur mobile (�
 ```vue
 <!-- Vertical -->
 <SuFormFields direction="vertical">
-  <SuInput label="Champ 1" />
-  <SuInput label="Champ 2" />
+  <SuInputField label="Champ 1" />
+  <SuInputField label="Champ 2" />
 </SuFormFields>
 
 <!-- Horizontal -->
 <SuFormFields direction="horizontal">
-  <SuInput label="Prénom" />
-  <SuInput label="Nom" />
+  <SuInputField label="Prénom" />
+  <SuInputField label="Nom" />
 </SuFormFields>
 ```
 
@@ -704,8 +704,8 @@ Le composant FormFields respecte les normes WCAG 2.1 AA :
   role="form" 
   aria-label="Formulaire d'inscription"
 >
-  <SuInput label="Email" type="email" required />
-  <SuInput label="Mot de passe" type="password" required />
+  <SuInputField label="Email" type="email" required />
+  <SuInputField label="Mot de passe" type="password" required />
 </SuFormFields>
 
 <!-- Section de paramètres -->
@@ -715,8 +715,8 @@ Le composant FormFields respecte les normes WCAG 2.1 AA :
   aria-label="Paramètres de notification"
   aria-describedby="notification-help"
 >
-  <SuSwitch label="Notifications email" />
-  <SuSwitch label="Notifications push" />
+  <SuSwitchField label="Notifications email" />
+  <SuSwitchField label="Notifications push" />
 </SuFormFields>
 <div id="notification-help">Configurez vos préférences de notification</div>
 
@@ -727,9 +727,9 @@ Le composant FormFields respecte les normes WCAG 2.1 AA :
   role="form"
   aria-label="Adresse de livraison"
 >
-  <SuInput label="Prénom" required />
-  <SuInput label="Nom" required />
-  <SuInput label="Code postal" required />
+  <SuInputField label="Prénom" required />
+  <SuInputField label="Nom" required />
+  <SuInputField label="Code postal" required />
 </SuFormFields>
 ```
 
@@ -775,27 +775,27 @@ const preferences = [
       </div>
     </template>
 
-    <SuInput 
+    <SuInputField 
       label="Nom complet"
       v-model="form.name"
       required
     />
     
-    <SuInput 
+    <SuInputField 
       type="email"
       label="Email"
       v-model="form.email"
       required
     />
     
-    <SuSelectBox 
+    <SuSelectBoxField 
       :options="subjects"
       label="Sujet"
       v-model="form.subject"
       required
     />
     
-    <SuTextarea 
+    <SuTextareaField 
       label="Message"
       v-model="form.message"
       :maxLength="1000"
@@ -868,20 +868,20 @@ const themes = [
       </div>
     </template>
 
-    <SuInput 
+    <SuInputField 
       label="Nom d'utilisateur"
       v-model="profile.username"
       required
     />
     
-    <SuInput 
+    <SuInputField 
       type="email"
       label="Email"
       v-model="profile.email"
       required
     />
     
-    <SuSelectBox 
+    <SuSelectBoxField 
       :options="countries"
       label="Localisation"
       v-model="profile.country"
@@ -903,13 +903,13 @@ const themes = [
       direction="horizontal"
     />
     
-    <SuSwitch 
+    <SuSwitchField 
       label="Notifications"
       rightLabel="Activées"
       v-model="profile.notifications"
     />
     
-    <SuSwitch 
+    <SuSwitchField 
       label="Profil public"
       leftLabel="Privé"
       rightLabel="Public"
@@ -972,16 +972,16 @@ const previousStep = () => {
 
     <!-- Étape 1 : Informations personnelles -->
     <template v-if="currentStep === 1">
-      <SuInput label="Prénom" placeholder="Votre prénom" required />
-      <SuInput label="Nom" placeholder="Votre nom" required />
-      <SuInput type="email" label="Email" placeholder="email@exemple.com" required />
+      <SuInputField label="Prénom" placeholder="Votre prénom" required />
+      <SuInputField label="Nom" placeholder="Votre nom" required />
+      <SuInputField type="email" label="Email" placeholder="email@exemple.com" required />
     </template>
 
     <!-- Étape 2 : Préférences -->
     <template v-if="currentStep === 2">
-      <SuSelectBox :options="countries" label="Pays" required />
+      <SuSelectBoxField :options="countries" label="Pays" required />
       <SuRadioGroup :options="accountTypes" label="Type de compte" required />
-      <SuSwitch label="Newsletter" rightLabel="S'abonner" />
+      <SuSwitchField label="Newsletter" rightLabel="S'abonner" />
     </template>
 
     <!-- Étape 3 : Confirmation -->
@@ -1019,7 +1019,7 @@ const previousStep = () => {
 Le composant `FormFields` vérifie automatiquement le contenu de son slot :
 
 ### ✅ Éléments acceptés
-- Composants de formulaire du design system : `Input`, `SelectBox`, `RadioGroup`, `CheckboxGroup`, `Switch`, `FileUpload`, `Textarea`, `Slider`
+- Composants de formulaire du design system : `InputField`, `SelectBoxField`, `RadioGroupField`, `CheckboxGroupField`, `SwitchField`, `FileUploadField`, `TextareaField`, `SliderField`
 - Commentaires Vue (ignorés)
 - Nœuds de texte vides (ignorés)
 
@@ -1033,16 +1033,16 @@ Le composant `FormFields` vérifie automatiquement le contenu de son slot :
 ```vue
 <!-- ✅ Correct -->
 <SuFormFields>
-  <SuInput label="Nom" />
-  <SuSelectBox :options="options" label="Choix" />
+  <SuInputField label="Nom" />
+  <SuSelectBoxField :options="options" label="Choix" />
   <!-- Commentaire ignoré -->
 </SuFormFields>
 
 <!-- ⚠️ Avertissement dans la console -->
 <SuFormFields>
-  <SuInput label="Champ valide" />
+  <SuInputField label="Champ valide" />
   <div>Élément non-champ</div> <!-- Ignoré avec avertissement -->
-  <SuSwitch label="Switch valide" />
+  <SuSwitchField label="Switch valide" />
 </SuFormFields>
 ```
 
