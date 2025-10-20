@@ -1,16 +1,16 @@
-# SelectBox
+# SelectBoxField
 
-Composant SelectBox personnalisé avec support de la sélection multiple, recherche intégrée, groupes d'options et accessibilité complète selon les normes W3C.
+Composant SelectBoxField personnalisé avec support de la sélection multiple, recherche intégrée, groupes d'options et accessibilité complète selon les normes W3C.
 
 ## Exemples d'utilisation
 
-### SelectBox de base
+### SelectBoxField de base
 
 <div class="component-demo">
   <div class="demo-section">
     <h4>SelectBox simple</h4>
     <div class="demo-inputs">
-      <SuSelectBox 
+      <SuSelectBoxField 
         :options="[
           { value: 'option1', label: 'Option 1' },
           { value: 'option2', label: 'Option 2' },
@@ -36,7 +36,7 @@ const options = [
 </script>
 
 <template>
-  <SuSelectBox 
+  <SuSelectBoxField 
     :options="options"
     label="Sélection simple"
     placeholder="Choisissez une option..."
@@ -51,7 +51,7 @@ const options = [
   <div class="demo-section">
     <h4>Sélection multiple avec tags</h4>
     <div class="demo-inputs">
-      <SuSelectBox 
+      <SuSelectBoxField 
         :options="[
           { value: 'js', label: 'JavaScript' },
           { value: 'ts', label: 'TypeScript' },
@@ -82,7 +82,7 @@ const technologies = [
 </script>
 
 <template>
-  <SuSelectBox 
+  <SuSelectBoxField 
     :options="technologies"
     :multiple="true"
     :clearable="true"
@@ -100,7 +100,7 @@ const technologies = [
   <div class="demo-section">
     <h4>SelectBox avec recherche</h4>
     <div class="demo-inputs">
-      <SuSelectBox 
+      <SuSelectBoxField 
         :options="[
           { value: 'fr', label: 'France' },
           { value: 'us', label: 'États-Unis' },
@@ -137,7 +137,7 @@ const countries = [
 </script>
 
 <template>
-  <SuSelectBox 
+  <SuSelectBoxField 
     :options="countries"
     :searchable="true"
     :clearable="true"
@@ -155,7 +155,7 @@ const countries = [
   <div class="demo-section">
     <h4>Options enrichies</h4>
     <div class="demo-inputs">
-      <SuSelectBox 
+      <SuSelectBoxField 
         :options="[
           { 
             value: 'basic', 
@@ -213,7 +213,7 @@ const plans = [
 </script>
 
 <template>
-  <SuSelectBox 
+  <SuSelectBoxField 
     :options="plans"
     :searchable="true"
     label="Plan d'abonnement"
@@ -229,7 +229,7 @@ const plans = [
   <div class="demo-section">
     <h4>Options organisées en groupes</h4>
     <div class="demo-inputs">
-      <SuSelectBox 
+      <SuSelectBoxField 
         :groups="[
           {
             label: 'Fruits',
@@ -259,7 +259,7 @@ const plans = [
 
 ```vue
 <template>
-  <SuSelectBox 
+  <SuSelectBoxField 
     :groups="[
       {
         label: 'Fruits',
@@ -293,7 +293,7 @@ const plans = [
   <div class="demo-section">
     <h4>Tailles disponibles</h4>
     <div class="demo-inputs">
-      <SuSelectBox 
+      <SuSelectBoxField 
         :options="[
           { value: 'sm', label: 'Small' },
           { value: 'md', label: 'Medium' },
@@ -303,7 +303,7 @@ const plans = [
         label="Small"
         placeholder="Petit SelectBox"
       />
-      <SuSelectBox 
+      <SuSelectBoxField 
         :options="[
           { value: 'sm', label: 'Small' },
           { value: 'md', label: 'Medium' },
@@ -313,7 +313,7 @@ const plans = [
         label="Medium"
         placeholder="SelectBox moyen"
       />
-      <SuSelectBox 
+      <SuSelectBoxField 
         :options="[
           { value: 'sm', label: 'Small' },
           { value: 'md', label: 'Medium' },
@@ -329,9 +329,9 @@ const plans = [
 
 ```vue
 <template>
-  <SuSelectBox size="sm" label="Small" placeholder="Petit SelectBox" />
-  <SuSelectBox size="md" label="Medium" placeholder="SelectBox moyen" />
-  <SuSelectBox size="lg" label="Large" placeholder="Grand SelectBox" />
+  <SuSelectBoxField size="sm" label="Small" placeholder="Petit SelectBox" />
+  <SuSelectBoxField size="md" label="Medium" placeholder="SelectBox moyen" />
+  <SuSelectBoxField size="lg" label="Large" placeholder="Grand SelectBox" />
 </template>
 ```
 
@@ -341,7 +341,7 @@ const plans = [
   <div class="demo-section">
     <h4>États de validation</h4>
     <div class="demo-inputs">
-      <SuSelectBox 
+      <SuSelectBoxField 
         :options="[
           { value: 'valid', label: 'Option valide' },
           { value: 'invalid', label: 'Option invalide' }
@@ -350,7 +350,7 @@ const plans = [
         placeholder="Sélectionnez une option"
         message="Texte d'aide pour guider l'utilisateur"
       />
-      <SuSelectBox 
+      <SuSelectBoxField 
         :options="[
           { value: 'valid', label: 'Option valide' },
           { value: 'invalid', label: 'Option invalide' }
@@ -361,7 +361,7 @@ const plans = [
         message="Cette sélection contient une erreur"
         value="invalid"
       />
-      <SuSelectBox 
+      <SuSelectBoxField 
         :options="[
           { value: 'valid', label: 'Option valide' },
           { value: 'invalid', label: 'Option invalide' }
@@ -372,7 +372,7 @@ const plans = [
         message="Sélection valide !"
         value="valid"
       />
-      <SuSelectBox 
+      <SuSelectBoxField 
         :options="[
           { value: 'valid', label: 'Option valide' },
           { value: 'invalid', label: 'Option invalide' }
@@ -389,22 +389,22 @@ const plans = [
 
 ```vue
 <template>
-  <SuSelectBox 
+  <SuSelectBoxField 
     state="default"
     label="État par défaut"
     message="Texte d'aide pour guider l'utilisateur"
   />
-  <SuSelectBox 
+  <SuSelectBoxField 
     state="error"
     label="État d'erreur"
     message="Cette sélection contient une erreur"
   />
-  <SuSelectBox 
+  <SuSelectBoxField 
     state="success"
     label="État de succès"
     message="Sélection valide !"
   />
-  <SuSelectBox 
+  <SuSelectBoxField 
     state="warning"
     label="État d'avertissement"
     message="Attention à cette sélection"
@@ -418,7 +418,7 @@ const plans = [
   <div class="demo-section">
     <h4>Support des langues RTL</h4>
     <div class="demo-inputs">
-      <SuSelectBox 
+      <SuSelectBoxField 
         :options="[
           { value: 'ar', label: 'العربية' },
           { value: 'he', label: 'עברית' },
@@ -428,7 +428,7 @@ const plans = [
         label="اللغة (RTL)"
         placeholder="اختر لغة..."
       />
-      <SuSelectBox 
+      <SuSelectBoxField 
         :options="[
           { value: 'left', label: 'Aligné à gauche' },
           { value: 'center', label: 'Centré' },
@@ -445,7 +445,7 @@ const plans = [
 ```vue
 <template>
   <!-- Support RTL -->
-  <SuSelectBox 
+  <SuSelectBoxField 
     :options="rtlOptions"
     dir="rtl"
     label="اللغة (RTL)"
@@ -453,7 +453,7 @@ const plans = [
   />
   
   <!-- Alignement personnalisé -->
-  <SuSelectBox 
+  <SuSelectBoxField 
     :options="options"
     textAlign="center"
     label="Alignement centré"
@@ -559,7 +559,7 @@ Le composant SelectBox respecte les normes WCAG 2.1 AA et les bonnes pratiques W
 
 ```vue
 <!-- SelectBox avec validation et accessibilité -->
-<SuSelectBox 
+<SuSelectBoxField 
   :options="options"
   :required="true"
   label="Catégorie"
@@ -570,7 +570,7 @@ Le composant SelectBox respecte les normes WCAG 2.1 AA et les bonnes pratiques W
 />
 
 <!-- SelectBox multiple avec limite -->
-<SuSelectBox 
+<SuSelectBoxField 
   :options="skills"
   :multiple="true"
   :maxSelectedItems="5"
@@ -583,7 +583,7 @@ Le composant SelectBox respecte les normes WCAG 2.1 AA et les bonnes pratiques W
 />
 
 <!-- SelectBox avec groupes et recherche -->
-<SuSelectBox 
+<SuSelectBoxField 
   :groups="categorizedOptions"
   :searchable="true"
   label="Produit"
@@ -644,7 +644,7 @@ const countries = [
 
 <template>
   <form class="space-y-6">
-    <SuSelectBox 
+    <SuSelectBoxField 
       :options="userTypes"
       :required="true"
       label="Type d'utilisateur"
@@ -652,7 +652,7 @@ const countries = [
       v-model:value="userType"
     />
     
-    <SuSelectBox 
+    <SuSelectBoxField 
       :options="skillOptions"
       :multiple="true"
       :searchable="true"
@@ -664,7 +664,7 @@ const countries = [
       v-model:value="skills"
     />
     
-    <SuSelectBox 
+    <SuSelectBoxField 
       :options="countries"
       :searchable="true"
       :clearable="true"
@@ -706,7 +706,7 @@ watch(searchQuery, (newQuery) => {
 </script>
 
 <template>
-  <SuSelectBox 
+  <SuSelectBoxField 
     :options="options"
     :searchable="true"
     :loading="loading"

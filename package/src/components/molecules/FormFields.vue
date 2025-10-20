@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { computed, h, Fragment, Comment, Text } from 'vue'
 import Input from './InputField.vue'
-import SelectBox from './SelectBox.vue'
+import SelectBox from './SelectBoxField.vue'
 import RadioGroup from './RadioGroup.vue'
 import CheckboxGroup from '../molecules/CheckboxGroup.vue'
 import Switch from './SwitchField.vue'
-import FileUpload from './FileUpload.vue'
+import FileUpload from './FileUploadField.vue'
 import Textarea from './TextareaField.vue'
-import Slider from '../molecules/Slider.vue'
+import Slider from './SliderField.vue'
 import type { AccessibilityProps, Size } from '@/types'
 
 export interface FormFieldsProps extends AccessibilityProps {

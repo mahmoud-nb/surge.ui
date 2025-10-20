@@ -4,7 +4,7 @@ import { announceToScreenReader } from '@/utils/accessibility'
 import FormField from '@/components/atoms/FormField.vue'
 import type { AccessibilityProps, Orientation, Size, State } from '@/types'
 
-export interface SliderProps extends AccessibilityProps {
+export interface SliderFieldProps extends AccessibilityProps {
   value?: number | [number, number]
   min?: number
   max?: number
@@ -29,7 +29,7 @@ export interface SliderProps extends AccessibilityProps {
   dir?: 'ltr' | 'rtl' | 'auto'
 }
 
-export interface Props extends Omit<SliderProps, 'value'> {}
+export interface Props extends Omit<SliderFieldProps, 'value'> {}
 
 const props = withDefaults(defineProps<Props>(), {
   min: 0,

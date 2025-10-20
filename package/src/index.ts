@@ -7,15 +7,16 @@ import Link, { LinkSize, LinkUnderline, LinkVariant } from './components/atoms/L
 import LinkGroup from './components/molecules/LinkGroup.vue'
 import InputField from './components/molecules/InputField.vue'
 import Input from './components/atoms/Input.vue'
-import SelectBox from './components/molecules/SelectBox.vue'
+import SelectBoxField from './components/molecules/SelectBoxField.vue'
 import RadioGroup from './components/molecules/RadioGroup.vue'
 import CheckboxGroup from './components/molecules/CheckboxGroup.vue'
 import SwitchField from './components/molecules/SwitchField.vue'
+import RangeField from './components/molecules/RangeField.vue'
 import Switch from './components/atoms/Switch.vue'
-import FileUpload from './components/molecules/FileUpload.vue'
+import FileUploadField from './components/molecules/FileUploadField.vue'
 import TextareaField from './components/molecules/TextareaField.vue'
 import Textarea from './components/atoms/Textarea.vue'
-import Slider from './components/molecules/Slider.vue'
+import SliderField from './components/molecules/SliderField.vue'
 import Dialog, { DialogDisplay } from './components/molecules/Dialog.vue'
 import FormFields from './components/molecules/FormFields.vue'
 import FloatButton from './components/molecules/FloatButton.vue'
@@ -29,7 +30,7 @@ import * as accessibility from './utils/accessibility'
 
 // Export des composants et de la fonction d'installation
 export { Input, Textarea, Switch }
-export { FormField, Password, ButtonGroup, InputField, SelectBox, RadioGroup, CheckboxGroup, SwitchField, FileUpload, TextareaField, Slider, FormFields }
+export { FormField, Password, ButtonGroup, InputField, SelectBoxField, RadioGroup, CheckboxGroup, RangeField, SwitchField, FileUploadField, TextareaField, SliderField, FormFields }
 export { Link, LinkGroup, Button, FloatButton, Dialog, Dropdown }
 export { Image, Avatar, AvatarGroup, Badge, Tabs }
 export { accessibility }
@@ -201,13 +202,14 @@ export default {
     app.component(`${prefix}Switch`, Switch)
     app.component(`${prefix}FormField`, FormField)
     app.component(`${prefix}InputField`, InputField)
-    app.component(`${prefix}SelectBox`, SelectBox)
+    app.component(`${prefix}SelectBoxField`, SelectBoxField)
     app.component(`${prefix}RadioGroup`, RadioGroup)
     app.component(`${prefix}CheckboxGroup`, CheckboxGroup)
     app.component(`${prefix}SwitchField`, SwitchField)
-    app.component(`${prefix}FileUpload`, FileUpload)
+    app.component(`${prefix}FileUploadField`, FileUploadField)
+    app.component(`${prefix}RangeField`, RangeField)
     app.component(`${prefix}TextareaField`, TextareaField)
-    app.component(`${prefix}Slider`, Slider)
+    app.component(`${prefix}SliderField`, SliderField)
     app.component(`${prefix}Password`, Password)
     app.component(`${prefix}FormFields`, FormFields)
 

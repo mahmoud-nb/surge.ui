@@ -21,7 +21,7 @@ export type FileUploadSize = 'sm' | 'md' | 'lg'
 export type FileUploadState = 'default' | 'error' | 'success' | 'warning'
 export type FileUploadVariant = 'default' | 'dashed' | 'solid' | 'minimal'
 
-export interface FileUploadProps extends AccessibilityProps {
+export interface FileUploadFieldProps extends AccessibilityProps {
   value?: UploadedFile[]
   variant?: FileUploadVariant
   multiple?: boolean
@@ -46,7 +46,7 @@ export interface FileUploadProps extends AccessibilityProps {
   loading?: boolean
 }
 
-export interface Props extends Omit<FileUploadProps, 'value'> {}
+export interface Props extends Omit<FileUploadFieldProps, 'value'> {}
 
 const props = withDefaults(defineProps<Props>(), {
   multiple: false,

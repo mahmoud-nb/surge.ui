@@ -2,13 +2,13 @@ import type { Meta, StoryObj } from '@storybook/vue3'
 import { UserIcon, AtSymbolIcon, LockClosedIcon, BuildingOfficeIcon } from '@heroicons/vue/24/outline'
 import FormFields from '../FormFields.vue'
 import InputField from '../InputField.vue'
-import SelectBox from '@/components/molecules/SelectBox.vue'
+import SelectBoxField from '@/components/molecules/SelectBoxField.vue'
 import RadioGroup from '@/components/molecules/RadioGroup.vue'
 import CheckboxGroup from '@/components/molecules/CheckboxGroup.vue'
 import SwitchField from '@/components/molecules/SwitchField.vue'
-import FileUpload from '@/components/molecules/FileUpload.vue'
+import FileUploadField from '@/components/molecules/FileUploadField.vue'
 import TextareaField from '@/components/molecules/TextareaField.vue'
-import Slider from '@/components/molecules/Slider.vue'
+import SliderField from '@/components/molecules/SliderField.vue'
 import Button from '@/components/atoms/Button.vue'
 
 const meta: Meta<typeof FormFields> = {
@@ -78,7 +78,7 @@ const accountTypes = [
 
 export const Default: Story = {
   render: () => ({
-    components: { FormFields, InputField, SelectBox, SwitchField },
+    components: { FormFields, InputField, SelectBoxField, SwitchField },
     setup() {
       return { basicOptions, AtSymbolIcon, LockClosedIcon }
     },
@@ -96,7 +96,7 @@ export const Default: Story = {
           :prefixIcon="AtSymbolIcon"
           required
         />
-        <SelectBox 
+        <SelectBoxField 
           :options="basicOptions"
           label="Préférence"
           placeholder="Choisissez une option"
@@ -161,7 +161,7 @@ export const WithGaps: Story = {
 
 export const ForcedSize: Story = {
   render: () => ({
-    components: { FormFields, InputField, SelectBox, TextareaField },
+    components: { FormFields, InputField, SelectBoxField, TextareaField },
     setup() {
       return { basicOptions }
     },
@@ -171,7 +171,7 @@ export const ForcedSize: Story = {
           <h4 style="margin-bottom: 1rem;">Taille Small forcée</h4>
           <FormFields size="sm" style="width: 300px;">
             <InputField label="Nom" placeholder="Petit champ" />
-            <SelectBox :options="basicOptions" label="Sélection" placeholder="Petit select" />
+            <SelectBoxField :options="basicOptions" label="Sélection" placeholder="Petit select" />
             <TextareaField label="Message" placeholder="Petit textarea" />
           </FormFields>
         </div>
@@ -180,7 +180,7 @@ export const ForcedSize: Story = {
           <h4 style="margin-bottom: 1rem;">Taille Medium forcée</h4>
           <FormFields size="md" style="width: 300px;">
             <InputField label="Nom" placeholder="Champ moyen" />
-            <SelectBox :options="basicOptions" label="Sélection" placeholder="Select moyen" />
+            <SelectBoxField :options="basicOptions" label="Sélection" placeholder="Select moyen" />
             <TextareaField label="Message" placeholder="Textarea moyen" />
           </FormFields>
         </div>
@@ -189,7 +189,7 @@ export const ForcedSize: Story = {
           <h4 style="margin-bottom: 1rem;">Taille Large forcée</h4>
           <FormFields size="lg" style="width: 300px;">
             <InputField label="Nom" placeholder="Grand champ" />
-            <SelectBox :options="basicOptions" label="Sélection" placeholder="Grand select" />
+            <SelectBoxField :options="basicOptions" label="Sélection" placeholder="Grand select" />
             <TextareaField label="Message" placeholder="Grand textarea" />
           </FormFields>
         </div>
@@ -200,7 +200,7 @@ export const ForcedSize: Story = {
 
 export const Horizontal: Story = {
   render: () => ({
-    components: { FormFields, InputField, SelectBox },
+    components: { FormFields, InputField, SelectBoxField },
     setup() {
       return { countryOptions }
     },
@@ -218,7 +218,7 @@ export const Horizontal: Story = {
             placeholder="Votre nom"
             required
           />
-          <SelectBox 
+          <SelectBoxField 
             :options="countryOptions"
             label="Pays"
             placeholder="Sélectionnez votre pays"
@@ -231,7 +231,7 @@ export const Horizontal: Story = {
 
 export const WithSections: Story = {
   render: () => ({
-    components: { FormFields, InputField, SelectBox, RadioGroup, SwitchField, Button },
+    components: { FormFields, InputField, SelectBoxField, RadioGroup, SwitchField, Button },
     setup() {
       return { countryOptions, accountTypes, AtSymbolIcon, LockClosedIcon }
     },
@@ -271,7 +271,7 @@ export const WithSections: Story = {
           required
         />
         
-        <SelectBox 
+        <SelectBoxField 
           :options="countryOptions"
           label="Pays"
           placeholder="Sélectionnez votre pays"
@@ -362,7 +362,7 @@ export const SectionGaps: Story = {
 
 export const ContactForm: Story = {
   render: () => ({
-    components: { FormFields, InputField, SelectBox, TextareaField, CheckboxGroup, Button },
+    components: { FormFields, InputField, SelectBoxField, TextareaField, CheckboxGroup, Button },
     setup() {
       const subjects = [
         { value: 'support', label: 'Support technique' },
@@ -412,7 +412,7 @@ export const ContactForm: Story = {
           required
         />
         
-        <SelectBox 
+        <SelectBoxField 
           :options="subjects"
           label="Sujet"
           placeholder="Sélectionnez un sujet"
@@ -449,7 +449,7 @@ export const ContactForm: Story = {
 
 export const UserProfile: Story = {
   render: () => ({
-    components: { FormFields, InputField, SelectBox, RadioGroup, SwitchField, Slider, Button },
+    components: { FormFields, InputField, SelectBoxField, RadioGroup, SwitchField, SliderField, Button },
     setup() {
       const languages = [
         { value: 'fr', label: 'Français' },
@@ -499,7 +499,7 @@ export const UserProfile: Story = {
           required
         />
         
-        <SelectBox 
+        <SelectBoxField 
           :options="languages"
           label="Langue préférée"
           placeholder="Sélectionnez une langue"
@@ -518,7 +518,7 @@ export const UserProfile: Story = {
           displayType="block-card"
         />
         
-        <Slider 
+        <SliderField 
           label="Volume des notifications"
           :min="0"
           :max="100"
@@ -553,7 +553,7 @@ export const UserProfile: Story = {
 
 export const HorizontalLayout: Story = {
   render: () => ({
-    components: { FormFields, InputField, SelectBox },
+    components: { FormFields, InputField, SelectBoxField },
     setup() {
       return { countryOptions }
     },
@@ -576,7 +576,7 @@ export const HorizontalLayout: Story = {
             required
           />
           
-          <SelectBox 
+          <SelectBoxField 
             :options="countryOptions"
             label="Pays"
             placeholder="Pays"
@@ -598,7 +598,7 @@ export const HorizontalLayout: Story = {
 
 export const ComplexForm: Story = {
   render: () => ({
-    components: { FormFields, InputField, SelectBox, RadioGroup, CheckboxGroup, SwitchField, FileUpload, TextareaField, Slider, Button },
+    components: { FormFields, InputField, SelectBoxField, RadioGroup, CheckboxGroup, SwitchField, FileUploadField, TextareaField, SliderField, Button },
     setup() {
       const skills = [
         { value: 'js', label: 'JavaScript' },
@@ -655,7 +655,7 @@ export const ComplexForm: Story = {
           required
         />
         
-        <SelectBox 
+        <SelectBoxField 
           :options="countryOptions"
           label="Localisation"
           placeholder="Sélectionnez votre pays"
@@ -681,7 +681,7 @@ export const ComplexForm: Story = {
         />
         
         <!-- Niveau de compétence -->
-        <Slider 
+        <SliderField 
           label="Auto-évaluation technique"
           :min="1"
           :max="10"
@@ -701,7 +701,7 @@ export const ComplexForm: Story = {
         />
         
         <!-- CV -->
-        <FileUpload 
+        <FileUploadField 
           label="CV (obligatoire)"
           accept=".pdf,.doc,.docx"
           :maxSize="5 * 1024 * 1024"
@@ -804,7 +804,7 @@ export const WithAccessibility: Story = {
 
 export const ResponsiveForm: Story = {
   render: () => ({
-    components: { FormFields, InputField, SelectBox, Button },
+    components: { FormFields, InputField, SelectBoxField, Button },
     setup() {
       return { countryOptions }
     },
@@ -836,7 +836,7 @@ export const ResponsiveForm: Story = {
             required
           />
           
-          <SelectBox 
+          <SelectBoxField 
             :options="countryOptions"
             label="Pays"
             placeholder="Pays"

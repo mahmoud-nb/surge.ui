@@ -1,16 +1,16 @@
-# Slider
+# SliderField
 
-Composant Slider pour la sélection de valeurs numériques avec support du dual-range automatique, orientation verticale/horizontale, tooltips, marques personnalisées et accessibilité complète selon les normes W3C.
+Composant SliderField pour la sélection de valeurs numériques avec support du dual-range automatique, orientation verticale/horizontale, tooltips, marques personnalisées et accessibilité complète selon les normes W3C.
 
 ## Exemples d'utilisation
 
-### Slider de base
+### SliderField de base
 
 <div class="component-demo">
   <div class="demo-section">
     <h4>Slider simple</h4>
     <div class="demo-inputs">
-      <SuSlider 
+      <SuSliderField 
         label="Volume"
         :min="0"
         :max="100"
@@ -28,7 +28,7 @@ const volume = ref(50)
 </script>
 
 <template>
-  <SuSlider 
+  <SuSliderField 
     label="Volume"
     :min="0"
     :max="100"
@@ -45,7 +45,7 @@ const volume = ref(50)
   <div class="demo-section">
     <h4>Sélection d'une plage</h4>
     <div class="demo-inputs">
-      <SuSlider 
+      <SuSliderField 
         label="Fourchette de prix"
         :min="0"
         :max="1000"
@@ -68,7 +68,7 @@ const formatPrice = (value) => `${value}€`
 </script>
 
 <template>
-  <SuSlider 
+  <SuSliderField 
     label="Fourchette de prix"
     :min="0"
     :max="1000"
@@ -89,7 +89,7 @@ const formatPrice = (value) => `${value}€`
   <div class="demo-section">
     <h4>Tooltips au survol</h4>
     <div class="demo-inputs">
-      <SuSlider 
+      <SuSliderField 
         label="Volume avec tooltip"
         :min="0"
         :max="100"
@@ -98,7 +98,7 @@ const formatPrice = (value) => `${value}€`
         :showValue="false"
         message="Survolez le curseur pour voir la valeur"
       />
-      <SuSlider 
+      <SuSliderField 
         label="Plage avec tooltips"
         :min="0"
         :max="100"
@@ -119,7 +119,7 @@ const range = ref([30, 70])
 
 <template>
   <!-- Tooltip en haut -->
-  <SuSlider 
+  <SuSliderField 
     label="Volume avec tooltip"
     :min="0"
     :max="100"
@@ -129,7 +129,7 @@ const range = ref([30, 70])
   />
   
   <!-- Tooltip en bas pour dual-range -->
-  <SuSlider 
+  <SuSliderField 
     label="Plage avec tooltips"
     :min="0"
     :max="100"
@@ -146,7 +146,7 @@ const range = ref([30, 70])
   <div class="demo-section">
     <h4>Marques sur le slider</h4>
     <div class="demo-inputs">
-      <SuSlider 
+      <SuSliderField 
         label="Niveau de difficulté"
         :min="0"
         :max="100"
@@ -181,7 +181,7 @@ const formatDifficulty = (value) => {
 </script>
 
 <template>
-  <SuSlider 
+  <SuSliderField 
     label="Niveau de difficulté"
     :min="0"
     :max="100"
@@ -199,7 +199,7 @@ const formatDifficulty = (value) => {
   <div class="demo-section">
     <h4>Slider avec graduations</h4>
     <div class="demo-inputs">
-      <SuSlider 
+      <SuSliderField 
         label="Note"
         :min="0"
         :max="10"
@@ -220,7 +220,7 @@ const rating = ref(7)
 </script>
 
 <template>
-  <SuSlider 
+  <SuSliderField 
     label="Note"
     :min="0"
     :max="10"
@@ -240,7 +240,7 @@ const rating = ref(7)
   <div class="demo-section">
     <h4>Slider vertical</h4>
     <div class="demo-inputs">
-      <SuSlider 
+      <SuSliderField 
         label="Volume vertical"
         :min="0"
         :max="100"
@@ -260,7 +260,7 @@ const verticalVolume = ref(75)
 </script>
 
 <template>
-  <SuSlider 
+  <SuSliderField 
     label="Volume vertical"
     :min="0"
     :max="100"
@@ -279,7 +279,7 @@ const verticalVolume = ref(75)
   <div class="demo-section">
     <h4>Slider avec contenu personnalisé</h4>
     <div class="demo-inputs">
-      <SuSlider 
+      <SuSliderField 
         label="Volume avec contrôles"
         :min="0"
         :max="100"
@@ -309,7 +309,7 @@ const volume = ref(60)
 </script>
 
 <template>
-  <SuSlider 
+  <SuSliderField 
     label="Volume avec contrôles"
     :min="0"
     :max="100"
@@ -338,7 +338,7 @@ const volume = ref(60)
   <div class="demo-section">
     <h4>Support des langues RTL</h4>
     <div class="demo-inputs">
-      <SuSlider 
+      <SuSliderField 
         label="مستوى الصوت (RTL)"
         :min="0"
         :max="100"
@@ -358,7 +358,7 @@ const volume = ref(70)
 </script>
 
 <template>
-  <SuSlider 
+  <SuSliderField 
     label="مستوى الصوت (RTL)"
     :min="0"
     :max="100"
@@ -440,10 +440,10 @@ Le composant détecte automatiquement s'il doit fonctionner en mode dual-range e
 
 ```vue
 <!-- Mode simple -->
-<SuSlider :value="50" />
+<SuSliderField :value="50" />
 
 <!-- Mode dual-range (détecté automatiquement) -->
-<SuSlider :value="[20, 80]" />
+<SuSliderField :value="[20, 80]" />
 ```
 
 ## Tooltips
@@ -458,13 +458,13 @@ Les tooltips affichent la valeur formatée au survol ou au focus des curseurs :
 
 ```vue
 <!-- Tooltip en haut -->
-<SuSlider tooltip="top" :value="50" />
+<SuSliderField tooltip="top" :value="50" />
 
 <!-- Tooltip en bas -->
-<SuSlider tooltip="bottom" :value="[20, 80]" />
+<SuSliderField tooltip="bottom" :value="[20, 80]" />
 
 <!-- Pas de tooltip, affichage statique -->
-<SuSlider tooltip="none" :showValue="true" :value="50" />
+<SuSliderField tooltip="none" :showValue="true" :value="50" />
 ```
 
 ## Marques personnalisées
@@ -486,7 +486,7 @@ const formatTemp = (value) => `${value}°C`
 </script>
 
 <template>
-  <SuSlider 
+  <SuSliderField 
     label="Température"
     :min="0"
     :max="40"
@@ -511,7 +511,7 @@ Les slots permettent d'ajouter du contenu personnalisé autour du slider :
 
 ```vue
 <template>
-  <SuSlider 
+  <SuSliderField 
     label="Luminosité"
     :min="0"
     :max="100"
@@ -546,7 +546,7 @@ Le composant gère automatiquement les langues de droite à gauche :
 
 ```vue
 <!-- Support RTL -->
-<SuSlider 
+<SuSliderField 
   label="مستوى الصوت"
   dir="rtl"
   :min="0"
@@ -556,7 +556,7 @@ Le composant gère automatiquement les langues de droite à gauche :
 />
 
 <!-- Auto-détection -->
-<SuSlider 
+<SuSliderField 
   label="Volume"
   dir="auto"
   :value="50"
@@ -586,7 +586,7 @@ Le composant Slider respecte les normes WCAG 2.1 AA et les bonnes pratiques W3C 
 
 ```vue
 <!-- Slider avec validation et accessibilité -->
-<SuSlider 
+<SuSliderField 
   label="Niveau de difficulté"
   :min="1"
   :max="10"
@@ -600,7 +600,7 @@ Le composant Slider respecte les normes WCAG 2.1 AA et les bonnes pratiques W3C 
 />
 
 <!-- Dual-range avec formatage -->
-<SuSlider 
+<SuSliderField 
   label="Fourchette de prix"
   :min="0"
   :max="5000"
@@ -614,7 +614,7 @@ Le composant Slider respecte les normes WCAG 2.1 AA et les bonnes pratiques W3C 
 />
 
 <!-- Slider vertical avec graduations -->
-<SuSlider 
+<SuSliderField 
   label="Température"
   :min="-10"
   :max="40"
@@ -694,7 +694,7 @@ const formatRating = (value) => '★'.repeat(Math.floor(value)) + (value % 1 ? '
   <div class="filters">
     <h3>Filtres de recherche</h3>
     
-    <SuSlider 
+    <SuSliderField 
       label="Fourchette de prix"
       :min="0"
       :max="1000"
@@ -707,7 +707,7 @@ const formatRating = (value) => '★'.repeat(Math.floor(value)) + (value % 1 ? '
       v-model="filters.price"
     />
     
-    <SuSlider 
+    <SuSliderField 
       label="Distance maximale"
       :min="0"
       :max="50"
@@ -720,7 +720,7 @@ const formatRating = (value) => '★'.repeat(Math.floor(value)) + (value % 1 ? '
       v-model="filters.distance"
     />
     
-    <SuSlider 
+    <SuSliderField 
       label="Note minimale"
       :min="1"
       :max="5"
@@ -761,7 +761,7 @@ const formatEQ = (value) => value > 0 ? `+${value}dB` : `${value}dB`
     <h3>Contrôles audio</h3>
     
     <div class="controls-grid">
-      <SuSlider 
+      <SuSliderField 
         label="Volume"
         :min="0"
         :max="100"
@@ -777,7 +777,7 @@ const formatEQ = (value) => value > 0 ? `+${value}dB` : `${value}dB`
         </template>
       </SuSlider>
       
-      <SuSlider 
+      <SuSliderField 
         label="Balance"
         :min="-100"
         :max="100"
@@ -789,7 +789,7 @@ const formatEQ = (value) => value > 0 ? `+${value}dB` : `${value}dB`
         v-model="audioControls.balance"
       />
       
-      <SuSlider 
+      <SuSliderField 
         label="Graves"
         :min="-12"
         :max="12"
@@ -800,7 +800,7 @@ const formatEQ = (value) => value > 0 ? `+${value}dB` : `${value}dB`
         v-model="audioControls.bass"
       />
       
-      <SuSlider 
+      <SuSliderField 
         label="Aigus"
         :min="-12"
         :max="12"
@@ -852,7 +852,7 @@ const getTemperatureState = (temp) => {
   <div class="temperature-control">
     <h3>Contrôle de température</h3>
     
-    <SuSlider 
+    <SuSliderField 
       label="Température cible"
       :min="-10"
       :max="40"

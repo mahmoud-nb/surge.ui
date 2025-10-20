@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
-import Slider from '../Slider.vue'
+import SliderField from '../SliderField.vue'
 
-const meta: Meta<typeof Slider> = {
-  title: 'Molecules/FormField - Slider',
-  component: Slider,
+const meta: Meta<typeof SliderField> = {
+  title: 'Molecules/SliderField',
+  component: SliderField,
   parameters: {
     layout: 'centered',
     docs: {
@@ -215,10 +215,10 @@ export const VerticalDual: Story = {
 
 export const WithSlots: Story = {
   render: () => ({
-    components: { Slider },
+    components: { SliderField },
     template: `
       <div style="width: 400px;">
-        <Slider 
+        <SliderField 
           label="Volume avec contrôles"
           :min="0"
           :max="100"
@@ -237,7 +237,7 @@ export const WithSlots: Story = {
               <span style="font-size: 1.5rem;">🔊</span>
             </div>
           </template>
-        </Slider>
+        </SliderField>
       </div>
     `
   })
@@ -258,10 +258,10 @@ export const RTLSupport: Story = {
 
 export const Sizes: Story = {
   render: () => ({
-    components: { Slider },
+    components: { SliderField },
     template: `
       <div style="display: flex; flex-direction: column; gap: 2rem; width: 300px;">
-        <Slider 
+        <SliderField 
           size="sm"
           label="Small"
           :min="0"
@@ -269,7 +269,7 @@ export const Sizes: Story = {
           :modelValue="25"
           tooltip="top"
         />
-        <Slider 
+        <SliderField 
           size="md"
           label="Medium"
           :min="0"
@@ -277,7 +277,7 @@ export const Sizes: Story = {
           :modelValue="50"
           tooltip="top"
         />
-        <Slider 
+        <SliderField 
           size="lg"
           label="Large"
           :min="0"
@@ -292,10 +292,10 @@ export const Sizes: Story = {
 
 export const States: Story = {
   render: () => ({
-    components: { Slider },
+    components: { SliderField },
     template: `
       <div style="display: flex; flex-direction: column; gap: 2rem; width: 300px;">
-        <Slider 
+        <SliderField 
           label="État par défaut"
           :min="0"
           :max="100"
@@ -303,7 +303,7 @@ export const States: Story = {
           tooltip="top"
           message="Ajustez la valeur"
         />
-        <Slider 
+        <SliderField 
           state="error"
           label="État d'erreur"
           :min="0"
@@ -312,7 +312,7 @@ export const States: Story = {
           tooltip="top"
           message="Valeur trop élevée"
         />
-        <Slider 
+        <SliderField 
           state="success"
           label="État de succès"
           :min="0"
@@ -321,7 +321,7 @@ export const States: Story = {
           tooltip="top"
           message="Valeur optimale !"
         />
-        <Slider 
+        <SliderField 
           state="warning"
           label="État d'avertissement"
           :min="0"
@@ -363,12 +363,12 @@ export const PriceRange: Story = {
 
 export const VolumeControl: Story = {
   render: () => ({
-    components: { Slider },
+    components: { SliderField },
     template: `
       <div style="display: flex; gap: 2rem; align-items: center;">
         <div>
           <h4 style="margin-bottom: 1rem;">Volume horizontal</h4>
-          <Slider 
+          <SliderField 
             label="Volume"
             :min="0"
             :max="100"
@@ -380,7 +380,7 @@ export const VolumeControl: Story = {
         
         <div>
           <h4 style="margin-bottom: 1rem;">Volume vertical</h4>
-          <Slider 
+          <SliderField 
             label="Volume"
             :min="0"
             :max="100"
@@ -434,13 +434,13 @@ export const Required: Story = {
 
 export const AdvancedExample: Story = {
   render: () => ({
-    components: { Slider },
+    components: { SliderField },
     template: `
       <div style="max-width: 500px; margin: 0 auto;">
         <h3 style="margin-bottom: 2rem;">Filtres de recherche</h3>
         
         <div style="display: flex; flex-direction: column; gap: 2rem;">
-          <Slider 
+          <SliderField 
             label="Fourchette de prix"
             :min="0"
             :max="5000"
@@ -453,7 +453,7 @@ export const AdvancedExample: Story = {
             message="Définissez votre budget"
           />
           
-          <Slider 
+          <SliderField 
             label="Distance maximale"
             :min="0"
             :max="50"
@@ -466,7 +466,7 @@ export const AdvancedExample: Story = {
             message="Rayon de recherche"
           />
           
-          <Slider 
+          <SliderField 
             label="Note minimale"
             :min="1"
             :max="5"
@@ -483,7 +483,7 @@ export const AdvancedExample: Story = {
                 <span>Excellent</span>
               </div>
             </template>
-          </Slider>
+          </SliderField>
         </div>
       </div>
     `

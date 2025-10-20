@@ -20,7 +20,7 @@ export interface SelectOption {
   description?: string
 }
 
-export interface SelectProps extends AccessibilityProps {
+export interface SelectFieldProps extends AccessibilityProps {
   options?: SelectOption[]
   groups?: SelectGroup[]
   value?: string | number | (string | number)[]
@@ -48,7 +48,7 @@ export interface SelectProps extends AccessibilityProps {
   loading?: boolean
 }
 
-export interface Props extends Omit<SelectProps, 'value'> {}
+export interface Props extends Omit<SelectFieldProps, 'value'> {}
 
 const props = withDefaults(defineProps<Props>(), {
   options: () => [],

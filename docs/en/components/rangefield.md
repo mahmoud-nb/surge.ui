@@ -1,6 +1,6 @@
-# Range
+# RangeField
 
-Range/Slider component for selecting numeric values with support for dual-range, vertical/horizontal orientation, ticks and complete accessibility according to W3C standards.
+Range/Slider Field component for selecting numeric values with support for dual-range, vertical/horizontal orientation, ticks and complete accessibility according to W3C standards.
 
 ## Usage examples
 
@@ -10,7 +10,7 @@ Range/Slider component for selecting numeric values with support for dual-range,
   <div class="demo-section">
     <h4>Simple slider</h4>
     <div class="demo-inputs">
-      <SuRange 
+      <SuRangeField 
         label="Volume"
         :min="0"
         :max="100"
@@ -28,7 +28,7 @@ const volume = ref(50)
 </script>
 
 <template>
-  <SuRange 
+  <SuRangeField 
     label="Volume"
     :min="0"
     :max="100"
@@ -45,7 +45,7 @@ const volume = ref(50)
   <div class="demo-section">
     <h4>Range selection</h4>
     <div class="demo-inputs">
-      <SuRange 
+      <SuRangeField 
         label="Price range"
         :min="0"
         :max="1000"
@@ -69,7 +69,7 @@ const formatPrice = (value) => `$${value}`
 </script>
 
 <template>
-  <SuRange 
+  <SuRangeField 
     label="Price range"
     :min="0"
     :max="1000"
@@ -90,7 +90,7 @@ const formatPrice = (value) => `$${value}`
   <div class="demo-section">
     <h4>Slider with ticks</h4>
     <div class="demo-inputs">
-      <SuRange 
+      <SuRangeField 
         label="Rating"
         :min="0"
         :max="10"
@@ -111,7 +111,7 @@ const rating = ref(7)
 </script>
 
 <template>
-  <SuRange 
+  <SuRangeField 
     label="Rating"
     :min="0"
     :max="10"
@@ -131,7 +131,7 @@ const rating = ref(7)
   <div class="demo-section">
     <h4>Vertical slider</h4>
     <div class="demo-inputs">
-      <SuRange 
+      <SuRangeField 
         label="Vertical volume"
         :min="0"
         :max="100"
@@ -151,7 +151,7 @@ const verticalVolume = ref(75)
 </script>
 
 <template>
-  <SuRange 
+  <SuRangeField 
     label="Vertical volume"
     :min="0"
     :max="100"
@@ -222,7 +222,7 @@ The Range component follows WCAG 2.1 AA standards and W3C best practices:
 
 ```vue
 <!-- Range with validation and accessibility -->
-<SuRange 
+<SuRangeField 
   label="Difficulty level"
   :min="1"
   :max="10"
@@ -236,7 +236,7 @@ The Range component follows WCAG 2.1 AA standards and W3C best practices:
 />
 
 <!-- Dual-range with formatting -->
-<SuRange 
+<SuRangeField 
   label="Price range"
   :min="0"
   :max="5000"

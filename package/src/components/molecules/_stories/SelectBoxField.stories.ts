@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import { StarIcon, BuildingOfficeIcon, GlobeAltIcon } from '@heroicons/vue/24/outline'
-import SelectBox from '../SelectBox.vue'
+import SelectBoxField from '../SelectBoxField.vue'
 import { ref } from 'vue'
 
-const meta: Meta<typeof SelectBox> = {
-  title: 'Molecules/FormField - SelectBox',
-  component: SelectBox,
+const meta: Meta<typeof SelectBoxField> = {
+  title: 'Molecules/SelectBoxField',
+  component: SelectBoxField,
   parameters: {
     layout: 'centered',
     docs: {
@@ -149,13 +149,13 @@ const groupedOptions = [
 
 const createInteractiveStory = (args: any): Story => ({
   render: (args) => ({
-    components: { SelectBox },
+    components: { SelectBoxField },
     setup() {
       const modelValue = ref(args.modelValue);
       return { args, modelValue };
     },
     // On utilise v-model pour lier la ref locale au composant
-    template: '<SelectBox v-bind="args" v-model="modelValue" @change="args[\'onUpdate:value\']" />',
+    template: '<SelectBoxField v-bind="args" v-model="modelValue" @change="args[\'onUpdate:value\']" />',
   }),
   args,
 });
@@ -208,28 +208,28 @@ export const Grouped: Story = createInteractiveStory({
 
 export const States: Story = {
   render: (args) => ({
-    components: { SelectBox },
+    components: { SelectBoxField },
     setup() {
       const value = ref(args.value)
       return { basicOptions, value }
     },
     template: `
       <div style="display: flex; flex-direction: column; gap: 2rem; width: 300px;">
-        <SelectBox 
+        <SelectBoxField 
           :options="basicOptions"
           label="État par défaut"
           placeholder="Sélectionnez une option"
           message="Texte d'aide pour guider l'utilisateur"
           v-model:value="value"
         />
-        <SelectBox 
+        <SelectBoxField 
           :options="basicOptions"
           state="error"
           label="État d'erreur"
           placeholder="Sélectionnez une option"
           message="Cette sélection contient une erreur"
         />
-        <SelectBox 
+        <SelectBoxField 
           :options="basicOptions"
           state="success"
           label="État de succès"
@@ -244,15 +244,15 @@ export const States: Story = {
 
 export const Sizes: Story = {
   render: () => ({
-    components: { SelectBox },
+    components: { SelectBoxField },
     setup() {
       return { basicOptions }
     },
     template: `
       <div style="display: flex; flex-direction: column; gap: 2rem; width: 300px;">
-        <SelectBox size="sm" :options="basicOptions" label="Small" placeholder="Petit SelectBox" />
-        <SelectBox size="md" :options="basicOptions" label="Medium" placeholder="SelectBox moyen" />
-        <SelectBox size="lg" :options="basicOptions" label="Large" placeholder="Grand SelectBox" />
+        <SelectBoxField size="sm" :options="basicOptions" label="Small" placeholder="Petit SelectBox" />
+        <SelectBoxField size="md" :options="basicOptions" label="Medium" placeholder="SelectBox moyen" />
+        <SelectBoxField size="lg" :options="basicOptions" label="Large" placeholder="Grand SelectBox" />
       </div>
     `
   })
@@ -287,7 +287,7 @@ export const Readonly: Story = {
 
 export const Required: Story = {
   render: (args) => ({
-    components: { SelectBox },
+    components: { SelectBoxField },
     setup() {
       const modelValue = ref(args.modelValue)
       const options = [
@@ -298,7 +298,7 @@ export const Required: Story = {
     },
     template: `
       <div style="width: 300px;">
-        <SelectBox 
+        <SelectBoxField 
           label="Champ requis"
           required
           placeholder="Sélection obligatoire" 

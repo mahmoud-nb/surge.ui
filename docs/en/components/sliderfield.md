@@ -1,16 +1,16 @@
-# Slider
+# SliderField
 
-Slider component for selecting numeric values with automatic dual-range support, vertical/horizontal orientation, tooltips, custom marks and complete accessibility according to W3C standards.
+SliderField component for selecting numeric values with automatic dual-range support, vertical/horizontal orientation, tooltips, custom marks and complete accessibility according to W3C standards.
 
 ## Usage examples
 
-### Basic Slider
+### Basic SliderField
 
 <div class="component-demo">
   <div class="demo-section">
     <h4>Simple slider</h4>
     <div class="demo-inputs">
-      <SuSlider 
+      <SuSliderField 
         label="Volume"
         :min="0"
         :max="100"
@@ -28,7 +28,7 @@ const volume = ref(50)
 </script>
 
 <template>
-  <SuSlider 
+  <SuSliderField 
     label="Volume"
     :min="0"
     :max="100"
@@ -45,7 +45,7 @@ const volume = ref(50)
   <div class="demo-section">
     <h4>Range selection</h4>
     <div class="demo-inputs">
-      <SuSlider 
+      <SuSliderField 
         label="Price range"
         :min="0"
         :max="1000"
@@ -68,7 +68,7 @@ const formatPrice = (value) => `$${value}`
 </script>
 
 <template>
-  <SuSlider 
+  <SuSliderField 
     label="Price range"
     :min="0"
     :max="1000"
@@ -89,7 +89,7 @@ const formatPrice = (value) => `$${value}`
   <div class="demo-section">
     <h4>Tooltips on hover</h4>
     <div class="demo-inputs">
-      <SuSlider 
+      <SuSliderField 
         label="Volume with tooltip"
         :min="0"
         :max="100"
@@ -98,7 +98,7 @@ const formatPrice = (value) => `$${value}`
         :showValue="false"
         message="Hover the cursor to see the value"
       />
-      <SuSlider 
+      <SuSliderField 
         label="Range with tooltips"
         :min="0"
         :max="100"
@@ -119,7 +119,7 @@ const range = ref([30, 70])
 
 <template>
   <!-- Top tooltip -->
-  <SuSlider 
+  <SuSliderField 
     label="Volume with tooltip"
     :min="0"
     :max="100"
@@ -129,7 +129,7 @@ const range = ref([30, 70])
   />
   
   <!-- Bottom tooltip for dual-range -->
-  <SuSlider 
+  <SuSliderField 
     label="Range with tooltips"
     :min="0"
     :max="100"
@@ -146,7 +146,7 @@ const range = ref([30, 70])
   <div class="demo-section">
     <h4>Marks on slider</h4>
     <div class="demo-inputs">
-      <SuSlider 
+      <SuSliderField 
         label="Difficulty level"
         :min="0"
         :max="100"
@@ -181,7 +181,7 @@ const formatDifficulty = (value) => {
 </script>
 
 <template>
-  <SuSlider 
+  <SuSliderField 
     label="Difficulty level"
     :min="0"
     :max="100"
@@ -243,10 +243,10 @@ The component automatically detects if it should work in dual-range mode by chec
 
 ```vue
 <!-- Single mode -->
-<SuSlider :value="50" />
+<SuSliderField :value="50" />
 
 <!-- Dual-range mode (automatically detected) -->
-<SuSlider :value="[20, 80]" />
+<SuSliderField :value="[20, 80]" />
 ```
 
 ## Tooltips
@@ -261,13 +261,13 @@ Tooltips display the formatted value on hover or focus of the thumbs:
 
 ```vue
 <!-- Top tooltip -->
-<SuSlider tooltip="top" :value="50" />
+<SuSliderField tooltip="top" :value="50" />
 
 <!-- Bottom tooltip -->
-<SuSlider tooltip="bottom" :value="[20, 80]" />
+<SuSliderField tooltip="bottom" :value="[20, 80]" />
 
 <!-- No tooltip, static display -->
-<SuSlider tooltip="none" :showValue="true" :value="50" />
+<SuSliderField tooltip="none" :showValue="true" :value="50" />
 ```
 
 ## Custom marks
@@ -289,7 +289,7 @@ const formatTemp = (value) => `${value}°C`
 </script>
 
 <template>
-  <SuSlider 
+  <SuSliderField 
     label="Temperature"
     :min="0"
     :max="40"
@@ -314,7 +314,7 @@ Slots allow adding custom content around the slider:
 
 ```vue
 <template>
-  <SuSlider 
+  <SuSliderField 
     label="Brightness"
     :min="0"
     :max="100"
@@ -349,7 +349,7 @@ The component automatically handles right-to-left languages:
 
 ```vue
 <!-- RTL support -->
-<SuSlider 
+<SuSliderField 
   label="مستوى الصوت"
   dir="rtl"
   :min="0"
@@ -359,7 +359,7 @@ The component automatically handles right-to-left languages:
 />
 
 <!-- Auto-detection -->
-<SuSlider 
+<SuSliderField 
   label="Volume"
   dir="auto"
   :value="50"

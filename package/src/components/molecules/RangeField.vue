@@ -4,8 +4,6 @@ import { announceToScreenReader } from '@/utils/accessibility'
 import FormField, { FormFieldProps } from '@/components/atoms/FormField.vue'
 import type { AccessibilityProps, Size, State, Orientation } from '@/types'
 
-//export interface Props extends Omit<RangeProps, 'value'> {}
-
 export interface BaseRangeProps extends AccessibilityProps {
   min?: number
   max?: number
@@ -23,9 +21,9 @@ export interface BaseRangeProps extends AccessibilityProps {
   formatValue?(value: number): string
 }
 
-export type RangeProps = FormFieldProps & BaseRangeProps
+export type RangeFieldProps = FormFieldProps & BaseRangeProps
 
-const props = withDefaults(defineProps<RangeProps>(), {
+const props = withDefaults(defineProps<RangeFieldProps>(), {
   min: 0,
   max: 100,
   step: 1,

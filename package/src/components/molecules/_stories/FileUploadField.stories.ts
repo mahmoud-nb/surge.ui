@@ -1,14 +1,14 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
-import FileUpload from '../FileUpload.vue'
+import FileUploadField from '../FileUploadField.vue'
 
-const meta: Meta<typeof FileUpload> = {
-  title: 'Molecules/FormField - FileUpload',
-  component: FileUpload,
+const meta: Meta<typeof FileUploadField> = {
+  title: 'Molecules/FileUploadField',
+  component: FileUploadField,
   parameters: {
     layout: 'centered',
     docs: {
       description: {
-        component: 'Composant FileUpload pour le téléchargement de fichiers avec support du drag & drop, validation des formats et tailles, et accessibilité complète selon les normes W3C.'
+        component: 'Composant FileUploadField pour le téléchargement de fichiers avec support du drag & drop, validation des formats et tailles, et accessibilité complète selon les normes W3C.'
       }
     }
   },
@@ -146,27 +146,27 @@ export const Videos: Story = {
 
 export const States: Story = {
   render: () => ({
-    components: { FileUpload },
+    components: { FileUploadField },
     template: `
       <div style="display: flex; flex-direction: column; gap: 2rem; width: 400px;">
-        <FileUpload 
+        <FileUploadField 
           label="État par défaut"
           placeholder="Sélectionnez des fichiers"
           message="Glissez-déposez ou cliquez pour parcourir"
         />
-        <FileUpload 
+        <FileUploadField 
           state="error"
           label="État d'erreur"
           placeholder="Fichiers non valides"
           message="Erreur : format de fichier non supporté"
         />
-        <FileUpload 
+        <FileUploadField 
           state="success"
           label="État de succès"
           placeholder="Fichiers téléchargés"
           message="Tous les fichiers ont été téléchargés avec succès"
         />
-        <FileUpload 
+        <FileUploadField 
           state="warning"
           label="État d'avertissement"
           placeholder="Attention aux fichiers"
@@ -179,20 +179,20 @@ export const States: Story = {
 
 export const Sizes: Story = {
   render: () => ({
-    components: { FileUpload },
+    components: { FileUploadField },
     template: `
       <div style="display: flex; flex-direction: column; gap: 2rem; width: 400px;">
-        <FileUpload 
+        <FileUploadField 
           size="sm"
           label="Small"
           placeholder="Petit upload"
         />
-        <FileUpload 
+        <FileUploadField 
           size="md"
           label="Medium"
           placeholder="Upload moyen"
         />
-        <FileUpload 
+        <FileUploadField 
           size="lg"
           label="Large"
           placeholder="Grand upload"
@@ -231,12 +231,12 @@ export const Required: Story = {
 
 export const Variants: Story = {
   render: () => ({
-    components: { FileUpload },
+    components: { FileUploadField },
     template: `
       <div style="display: flex; flex-direction: column; gap: 2rem; width: 400px;">
         <div>
           <h4 style="margin-bottom: 0.5rem;">Default</h4>
-          <FileUpload 
+          <FileUploadField 
             variant="default"
             label="Upload default"
             placeholder="Style par défaut"
@@ -245,7 +245,7 @@ export const Variants: Story = {
         
         <div>
           <h4 style="margin-bottom: 0.5rem;">Dashed</h4>
-          <FileUpload 
+          <FileUploadField 
             variant="dashed"
             label="Upload dashed"
             placeholder="Style avec bordures pointillées"
@@ -254,7 +254,7 @@ export const Variants: Story = {
         
         <div>
           <h4 style="margin-bottom: 0.5rem;">Solid</h4>
-          <FileUpload 
+          <FileUploadField 
             variant="solid"
             label="Upload solid"
             placeholder="Style avec bordures pleines"
@@ -263,7 +263,7 @@ export const Variants: Story = {
         
         <div>
           <h4 style="margin-bottom: 0.5rem;">Minimal</h4>
-          <FileUpload 
+          <FileUploadField 
             variant="minimal"
             label="Upload minimal"
             placeholder="Style minimaliste"
@@ -276,10 +276,10 @@ export const Variants: Story = {
 
 export const WithProgress: Story = {
   render: () => ({
-    components: { FileUpload },
+    components: { FileUploadField },
     template: `
       <div style="width: 400px;">
-        <FileUpload 
+        <FileUploadField 
           label="Upload avec progression"
           placeholder="Téléchargez vos fichiers"
           message="La progression sera affichée pour chaque fichier"
@@ -302,12 +302,12 @@ export const Loading: Story = {
 
 export const ApplicationForm: Story = {
   render: () => ({
-    components: { FileUpload },
+    components: { FileUploadField },
     template: `
       <form style="max-width: 500px; margin: 0 auto; display: flex; flex-direction: column; gap: 1.5rem;">
         <h2>Candidature</h2>
         
-        <FileUpload 
+        <FileUploadField 
           label="CV (obligatoire)"
           accept=".pdf,.doc,.docx"
           :maxSize="5 * 1024 * 1024"
@@ -317,7 +317,7 @@ export const ApplicationForm: Story = {
           message="Format PDF ou Word, maximum 5MB"
         />
         
-        <FileUpload 
+        <FileUploadField 
           label="Lettre de motivation"
           accept=".pdf,.doc,.docx"
           :maxSize="5 * 1024 * 1024"
@@ -326,7 +326,7 @@ export const ApplicationForm: Story = {
           message="Format PDF ou Word, maximum 5MB"
         />
         
-        <FileUpload 
+        <FileUploadField 
           label="Portfolio (optionnel)"
           accept="image/*,.pdf"
           :maxSize="20 * 1024 * 1024"

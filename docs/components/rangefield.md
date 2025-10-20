@@ -1,16 +1,16 @@
-# Range
+# RangeField
 
-Composant Range/Slider pour la sélection de valeurs numériques avec support du dual-range, orientation verticale/horizontale, graduations et accessibilité complète selon les normes W3C.
+Composant Range/Slider Field pour la sélection de valeurs numériques avec support du dual-range, orientation verticale/horizontale, graduations et accessibilité complète selon les normes W3C.
 
 ## Exemples d'utilisation
 
-### Range de base
+### RangeField de base
 
 <div class="component-demo">
   <div class="demo-section">
     <h4>Slider simple</h4>
     <div class="demo-inputs">
-      <SuRange 
+      <SuRangeField 
         label="Volume"
         :min="0"
         :max="100"
@@ -28,7 +28,7 @@ const volume = ref(50)
 </script>
 
 <template>
-  <SuRange 
+  <SuRangeField 
     label="Volume"
     :min="0"
     :max="100"
@@ -45,7 +45,7 @@ const volume = ref(50)
   <div class="demo-section">
     <h4>Sélection d'une plage</h4>
     <div class="demo-inputs">
-      <SuRange 
+      <SuRangeField 
         label="Fourchette de prix"
         :min="0"
         :max="1000"
@@ -69,7 +69,7 @@ const formatPrice = (value) => `${value}€`
 </script>
 
 <template>
-  <SuRange 
+  <SuRangeField 
     label="Fourchette de prix"
     :min="0"
     :max="1000"
@@ -90,7 +90,7 @@ const formatPrice = (value) => `${value}€`
   <div class="demo-section">
     <h4>Slider avec graduations</h4>
     <div class="demo-inputs">
-      <SuRange 
+      <SuRangeField 
         label="Note"
         :min="0"
         :max="10"
@@ -111,7 +111,7 @@ const rating = ref(7)
 </script>
 
 <template>
-  <SuRange 
+  <SuRangeField 
     label="Note"
     :min="0"
     :max="10"
@@ -131,7 +131,7 @@ const rating = ref(7)
   <div class="demo-section">
     <h4>Slider vertical</h4>
     <div class="demo-inputs">
-      <SuRange 
+      <SuRangeField 
         label="Volume vertical"
         :min="0"
         :max="100"
@@ -151,7 +151,7 @@ const verticalVolume = ref(75)
 </script>
 
 <template>
-  <SuRange 
+  <SuRangeField 
     label="Volume vertical"
     :min="0"
     :max="100"
@@ -170,7 +170,7 @@ const verticalVolume = ref(75)
   <div class="demo-section">
     <h4>Formatage des valeurs</h4>
     <div class="demo-inputs">
-      <SuRange 
+      <SuRangeField 
         label="Pourcentage"
         :min="0"
         :max="1"
@@ -194,7 +194,7 @@ const formatPercentage = (value) => {
 </script>
 
 <template>
-  <SuRange 
+  <SuRangeField 
     label="Pourcentage"
     :min="0"
     :max="1"
@@ -213,7 +213,7 @@ const formatPercentage = (value) => {
   <div class="demo-section">
     <h4>Tailles disponibles</h4>
     <div class="demo-inputs">
-      <SuRange 
+      <SuRangeField 
         size="sm"
         label="Small"
         :min="0"
@@ -221,7 +221,7 @@ const formatPercentage = (value) => {
         :value="25"
         :showValue="true"
       />
-      <SuRange 
+      <SuRangeField 
         size="md"
         label="Medium"
         :min="0"
@@ -229,7 +229,7 @@ const formatPercentage = (value) => {
         :value="50"
         :showValue="true"
       />
-      <SuRange 
+      <SuRangeField 
         size="lg"
         label="Large"
         :min="0"
@@ -243,9 +243,9 @@ const formatPercentage = (value) => {
 
 ```vue
 <template>
-  <SuRange size="sm" label="Small" :min="0" :max="100" :value="25" />
-  <SuRange size="md" label="Medium" :min="0" :max="100" :value="50" />
-  <SuRange size="lg" label="Large" :min="0" :max="100" :value="75" />
+  <SuRangeField size="sm" label="Small" :min="0" :max="100" :value="25" />
+  <SuRangeField size="md" label="Medium" :min="0" :max="100" :value="50" />
+  <SuRangeField size="lg" label="Large" :min="0" :max="100" :value="75" />
 </template>
 ```
 
@@ -255,7 +255,7 @@ const formatPercentage = (value) => {
   <div class="demo-section">
     <h4>États de validation</h4>
     <div class="demo-inputs">
-      <SuRange 
+      <SuRangeField 
         label="État par défaut"
         :min="0"
         :max="100"
@@ -263,7 +263,7 @@ const formatPercentage = (value) => {
         :showValue="true"
         message="Ajustez la valeur"
       />
-      <SuRange 
+      <SuRangeField 
         state="error"
         label="État d'erreur"
         :min="0"
@@ -272,7 +272,7 @@ const formatPercentage = (value) => {
         :showValue="true"
         message="Valeur trop élevée"
       />
-      <SuRange 
+      <SuRangeField 
         state="success"
         label="État de succès"
         :min="0"
@@ -281,7 +281,7 @@ const formatPercentage = (value) => {
         :showValue="true"
         message="Valeur optimale !"
       />
-      <SuRange 
+      <SuRangeField 
         state="warning"
         label="État d'avertissement"
         :min="0"
@@ -296,22 +296,22 @@ const formatPercentage = (value) => {
 
 ```vue
 <template>
-  <SuRange 
+  <SuRangeField 
     state="default"
     label="État par défaut"
     message="Ajustez la valeur"
   />
-  <SuRange 
+  <SuRangeField 
     state="error"
     label="État d'erreur"
     message="Valeur trop élevée"
   />
-  <SuRange 
+  <SuRangeField 
     state="success"
     label="État de succès"
     message="Valeur optimale !"
   />
-  <SuRange 
+  <SuRangeField 
     state="warning"
     label="État d'avertissement"
     message="Valeur proche de la limite"
@@ -325,7 +325,7 @@ const formatPercentage = (value) => {
   <div class="demo-section">
     <h4>États spéciaux</h4>
     <div class="demo-inputs">
-      <SuRange 
+      <SuRangeField 
         label="Slider désactivé"
         :disabled="true"
         :min="0"
@@ -334,7 +334,7 @@ const formatPercentage = (value) => {
         :showValue="true"
         message="Ce slider est désactivé"
       />
-      <SuRange 
+      <SuRangeField 
         label="Slider en lecture seule"
         :readonly="true"
         :min="0"
@@ -343,7 +343,7 @@ const formatPercentage = (value) => {
         :showValue="true"
         message="Cette valeur ne peut pas être modifiée"
       />
-      <SuRange 
+      <SuRangeField 
         label="Niveau requis"
         :required="true"
         :min="1"
@@ -359,19 +359,19 @@ const formatPercentage = (value) => {
 
 ```vue
 <template>
-  <SuRange 
+  <SuRangeField 
     label="Slider désactivé"
     :disabled="true"
     :value="50"
     message="Ce slider est désactivé"
   />
-  <SuRange 
+  <SuRangeField 
     label="Slider en lecture seule"
     :readonly="true"
     :value="75"
     message="Cette valeur ne peut pas être modifiée"
   />
-  <SuRange 
+  <SuRangeField 
     label="Niveau requis"
     :required="true"
     :min="1"
@@ -459,7 +459,7 @@ Le composant Range respecte les normes WCAG 2.1 AA et les bonnes pratiques W3C :
 
 ```vue
 <!-- Range avec validation et accessibilité -->
-<SuRange 
+<SuRangeField 
   label="Niveau de difficulté"
   :min="1"
   :max="10"
@@ -473,7 +473,7 @@ Le composant Range respecte les normes WCAG 2.1 AA et les bonnes pratiques W3C :
 />
 
 <!-- Dual-range avec formatage -->
-<SuRange 
+<SuRangeField 
   label="Fourchette de prix"
   :min="0"
   :max="5000"
@@ -487,7 +487,7 @@ Le composant Range respecte les normes WCAG 2.1 AA et les bonnes pratiques W3C :
 />
 
 <!-- Range vertical avec graduations -->
-<SuRange 
+<SuRangeField 
   label="Température"
   :min="-10"
   :max="40"
@@ -558,7 +558,7 @@ const formatRating = (value) => '★'.repeat(Math.floor(value)) + (value % 1 ? '
   <div class="filters">
     <h3>Filtres de recherche</h3>
     
-    <SuRange 
+    <SuRangeField 
       label="Fourchette de prix"
       :min="0"
       :max="1000"
@@ -571,7 +571,7 @@ const formatRating = (value) => '★'.repeat(Math.floor(value)) + (value % 1 ? '
       v-model="filters.price"
     />
     
-    <SuRange 
+    <SuRangeField 
       label="Distance maximale"
       :min="0"
       :max="50"
@@ -584,7 +584,7 @@ const formatRating = (value) => '★'.repeat(Math.floor(value)) + (value % 1 ? '
       v-model="filters.distance"
     />
     
-    <SuRange 
+    <SuRangeField 
       label="Note minimale"
       :min="1"
       :max="5"
@@ -625,7 +625,7 @@ const formatEQ = (value) => value > 0 ? `+${value}dB` : `${value}dB`
     <h3>Contrôles audio</h3>
     
     <div class="controls-grid">
-      <SuRange 
+      <SuRangeField 
         label="Volume"
         :min="0"
         :max="100"
@@ -634,7 +634,7 @@ const formatEQ = (value) => value > 0 ? `+${value}dB` : `${value}dB`
         v-model="audioControls.volume"
       />
       
-      <SuRange 
+      <SuRangeField 
         label="Balance"
         :min="-100"
         :max="100"
@@ -645,7 +645,7 @@ const formatEQ = (value) => value > 0 ? `+${value}dB` : `${value}dB`
         v-model="audioControls.balance"
       />
       
-      <SuRange 
+      <SuRangeField 
         label="Graves"
         :min="-12"
         :max="12"
@@ -656,7 +656,7 @@ const formatEQ = (value) => value > 0 ? `+${value}dB` : `${value}dB`
         v-model="audioControls.bass"
       />
       
-      <SuRange 
+      <SuRangeField 
         label="Aigus"
         :min="-12"
         :max="12"
@@ -714,7 +714,7 @@ const getTemperatureState = (temp) => {
       </div>
     </div>
     
-    <SuRange 
+    <SuRangeField 
       label="Température cible"
       :min="-10"
       :max="40"

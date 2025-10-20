@@ -1,16 +1,16 @@
-# SelectBox
+# SelectBoxField
 
 Custom SelectBox component with support for multiple selection, integrated search, option groups and complete accessibility according to W3C standards.
 
 ## Usage examples
 
-### Basic SelectBox
+### Basic SelectBoxField
 
 <div class="component-demo">
   <div class="demo-section">
     <h4>Simple SelectBox</h4>
     <div class="demo-inputs">
-      <SuSelectBox 
+      <SuSelectBoxField 
         :options="[
           { value: 'option1', label: 'Option 1' },
           { value: 'option2', label: 'Option 2' },
@@ -36,7 +36,7 @@ const options = [
 </script>
 
 <template>
-  <SuSelectBox 
+  <SuSelectBoxField 
     :options="options"
     label="Simple selection"
     placeholder="Choose an option..."
@@ -51,7 +51,7 @@ const options = [
   <div class="demo-section">
     <h4>Multiple selection with tags</h4>
     <div class="demo-inputs">
-      <SuSelectBox 
+      <SuSelectBoxField 
         :options="[
           { value: 'js', label: 'JavaScript' },
           { value: 'ts', label: 'TypeScript' },
@@ -82,7 +82,7 @@ const technologies = [
 </script>
 
 <template>
-  <SuSelectBox 
+  <SuSelectBoxField 
     :options="technologies"
     :multiple="true"
     :clearable="true"
@@ -100,7 +100,7 @@ const technologies = [
   <div class="demo-section">
     <h4>SelectBox with search</h4>
     <div class="demo-inputs">
-      <SuSelectBox 
+      <SuSelectBoxField 
         :options="[
           { value: 'fr', label: 'France' },
           { value: 'us', label: 'United States' },
@@ -137,7 +137,7 @@ const countries = [
 </script>
 
 <template>
-  <SuSelectBox 
+  <SuSelectBoxField 
     :options="countries"
     :searchable="true"
     :clearable="true"
@@ -155,7 +155,7 @@ const countries = [
   <div class="demo-section">
     <h4>Rich options</h4>
     <div class="demo-inputs">
-      <SuSelectBox 
+      <SuSelectBoxField 
         :options="[
           { 
             value: 'basic', 
@@ -213,7 +213,7 @@ const plans = [
 </script>
 
 <template>
-  <SuSelectBox 
+  <SuSelectBoxField 
     :options="plans"
     :searchable="true"
     label="Subscription plan"
@@ -229,7 +229,7 @@ const plans = [
   <div class="demo-section">
     <h4>Options organized in groups</h4>
     <div class="demo-inputs">
-      <SuSelectBox 
+      <SuSelectBoxField 
         :groups="[
           {
             label: 'Fruits',
@@ -259,7 +259,7 @@ const plans = [
 
 ```vue
 <template>
-  <SuSelectBox 
+  <SuSelectBoxField 
     :groups="[
       {
         label: 'Fruits',
@@ -372,7 +372,7 @@ The SelectBox component follows WCAG 2.1 AA standards and W3C best practices:
 
 ```vue
 <!-- SelectBox with validation and accessibility -->
-<SuSelectBox 
+<SuSelectBoxField 
   :options="options"
   :required="true"
   label="Category"
@@ -383,7 +383,7 @@ The SelectBox component follows WCAG 2.1 AA standards and W3C best practices:
 />
 
 <!-- Multiple SelectBox with limit -->
-<SuSelectBox 
+<SuSelectBoxField 
   :options="skills"
   :multiple="true"
   :maxSelectedItems="5"
@@ -396,7 +396,7 @@ The SelectBox component follows WCAG 2.1 AA standards and W3C best practices:
 />
 
 <!-- SelectBox with groups and search -->
-<SuSelectBox 
+<SuSelectBoxField 
   :groups="categorizedOptions"
   :searchable="true"
   label="Product"
@@ -457,7 +457,7 @@ const countries = [
 
 <template>
   <form class="space-y-6">
-    <SuSelectBox 
+    <SuSelectBoxField 
       :options="userTypes"
       :required="true"
       label="User type"
@@ -465,7 +465,7 @@ const countries = [
       v-model="userType"
     />
     
-    <SuSelectBox 
+    <SuSelectBoxField 
       :options="skillOptions"
       :multiple="true"
       :searchable="true"
@@ -477,7 +477,7 @@ const countries = [
       v-model="skills"
     />
     
-    <SuSelectBox 
+    <SuSelectBoxField 
       :options="countries"
       :searchable="true"
       :clearable="true"
@@ -519,7 +519,7 @@ watch(searchQuery, (newQuery) => {
 </script>
 
 <template>
-  <SuSelectBox 
+  <SuSelectBoxField 
     :options="options"
     :searchable="true"
     :loading="loading"

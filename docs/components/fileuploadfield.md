@@ -1,16 +1,16 @@
-# FileUpload
+# FileUploadField
 
-Composant FileUpload pour le téléchargement de fichiers avec support du drag & drop, validation des formats et tailles, et accessibilité complète selon les normes W3C.
+Composant FileUploadField pour le téléchargement de fichiers avec support du drag & drop, validation des formats et tailles, et accessibilité complète selon les normes W3C.
 
 ## Exemples d'utilisation
 
-### FileUpload de base
+### FileUploadField de base
 
 <div class="component-demo">
   <div class="demo-section">
     <h4>Upload simple</h4>
     <div class="demo-inputs">
-      <SuFileUpload 
+      <SuFileUploadField 
         label="Documents"
         placeholder="Sélectionnez vos documents ou glissez-les ici"
         message="Formats acceptés : PDF, DOC, DOCX"
@@ -27,7 +27,7 @@ const files = ref([])
 </script>
 
 <template>
-  <SuFileUpload 
+  <SuFileUploadField 
     label="Documents"
     placeholder="Sélectionnez vos documents ou glissez-les ici"
     message="Formats acceptés : PDF, DOC, DOCX"
@@ -42,7 +42,7 @@ const files = ref([])
   <div class="demo-section">
     <h4>Upload multiple avec restrictions</h4>
     <div class="demo-inputs">
-      <SuFileUpload 
+      <SuFileUploadField 
         :multiple="true"
         :maxFiles="3"
         :maxSize="5 * 1024 * 1024"
@@ -61,7 +61,7 @@ const images = ref([])
 </script>
 
 <template>
-  <SuFileUpload 
+  <SuFileUploadField 
     :multiple="true"
     :maxFiles="3"
     :maxSize="5 * 1024 * 1024"
@@ -80,17 +80,17 @@ const images = ref([])
   <div class="demo-section">
     <h4>Tailles disponibles</h4>
     <div class="demo-inputs">
-      <SuFileUpload 
+      <SuFileUploadField 
         size="sm"
         label="Small"
         placeholder="Petit upload"
       />
-      <SuFileUpload 
+      <SuFileUploadField 
         size="md"
         label="Medium"
         placeholder="Upload moyen"
       />
-      <SuFileUpload 
+      <SuFileUploadField 
         size="lg"
         label="Large"
         placeholder="Grand upload"
@@ -101,9 +101,9 @@ const images = ref([])
 
 ```vue
 <template>
-  <SuFileUpload size="sm" label="Small" placeholder="Petit upload" />
-  <SuFileUpload size="md" label="Medium" placeholder="Upload moyen" />
-  <SuFileUpload size="lg" label="Large" placeholder="Grand upload" />
+  <SuFileUploadField size="sm" label="Small" placeholder="Petit upload" />
+  <SuFileUploadField size="md" label="Medium" placeholder="Upload moyen" />
+  <SuFileUploadField size="lg" label="Large" placeholder="Grand upload" />
 </template>
 ```
 
@@ -113,24 +113,24 @@ const images = ref([])
   <div class="demo-section">
     <h4>États de validation</h4>
     <div class="demo-inputs">
-      <SuFileUpload 
+      <SuFileUploadField 
         label="État par défaut"
         placeholder="Sélectionnez des fichiers"
         message="Glissez-déposez ou cliquez pour parcourir"
       />
-      <SuFileUpload 
+      <SuFileUploadField 
         state="error"
         label="État d'erreur"
         placeholder="Fichiers non valides"
         message="Erreur : format de fichier non supporté"
       />
-      <SuFileUpload 
+      <SuFileUploadField 
         state="success"
         label="État de succès"
         placeholder="Fichiers téléchargés"
         message="Tous les fichiers ont été téléchargés avec succès"
       />
-      <SuFileUpload 
+      <SuFileUploadField 
         state="warning"
         label="État d'avertissement"
         placeholder="Attention aux fichiers"
@@ -142,22 +142,22 @@ const images = ref([])
 
 ```vue
 <template>
-  <SuFileUpload 
+  <SuFileUploadField 
     state="default"
     label="État par défaut"
     message="Glissez-déposez ou cliquez pour parcourir"
   />
-  <SuFileUpload 
+  <SuFileUploadField 
     state="error"
     label="État d'erreur"
     message="Erreur : format de fichier non supporté"
   />
-  <SuFileUpload 
+  <SuFileUploadField 
     state="success"
     label="État de succès"
     message="Tous les fichiers ont été téléchargés avec succès"
   />
-  <SuFileUpload 
+  <SuFileUploadField 
     state="warning"
     label="État d'avertissement"
     message="Certains fichiers dépassent la taille recommandée"
@@ -171,19 +171,19 @@ const images = ref([])
   <div class="demo-section">
     <h4>Restrictions par type de fichier</h4>
     <div class="demo-inputs">
-      <SuFileUpload 
+      <SuFileUploadField 
         accept="image/jpeg,image/png,image/gif"
         label="Images uniquement"
         placeholder="JPG, PNG, GIF seulement"
         message="Formats acceptés : JPEG, PNG, GIF"
       />
-      <SuFileUpload 
+      <SuFileUploadField 
         accept=".pdf,.doc,.docx"
         label="Documents"
         placeholder="PDF et documents Word"
         message="Formats acceptés : PDF, DOC, DOCX"
       />
-      <SuFileUpload 
+      <SuFileUploadField 
         accept="video/*"
         :maxSize="50 * 1024 * 1024"
         label="Vidéos"
@@ -197,7 +197,7 @@ const images = ref([])
 ```vue
 <template>
   <!-- Images uniquement -->
-  <SuFileUpload 
+  <SuFileUploadField 
     accept="image/jpeg,image/png,image/gif"
     label="Images uniquement"
     placeholder="JPG, PNG, GIF seulement"
@@ -205,7 +205,7 @@ const images = ref([])
   />
   
   <!-- Documents -->
-  <SuFileUpload 
+  <SuFileUploadField 
     accept=".pdf,.doc,.docx"
     label="Documents"
     placeholder="PDF et documents Word"
@@ -213,7 +213,7 @@ const images = ref([])
   />
   
   <!-- Vidéos -->
-  <SuFileUpload 
+  <SuFileUploadField 
     accept="video/*"
     :maxSize="50 * 1024 * 1024"
     label="Vidéos"
@@ -229,22 +229,22 @@ const images = ref([])
   <div class="demo-section">
     <h4>Variantes visuelles</h4>
     <div class="demo-inputs">
-      <SuFileUpload 
+      <SuFileUploadField 
         variant="default"
         label="Default"
         placeholder="Style par défaut"
       />
-      <SuFileUpload 
+      <SuFileUploadField 
         variant="dashed"
         label="Dashed"
         placeholder="Style avec bordures pointillées"
       />
-      <SuFileUpload 
+      <SuFileUploadField 
         variant="solid"
         label="Solid"
         placeholder="Style avec bordures pleines"
       />
-      <SuFileUpload 
+      <SuFileUploadField 
         variant="minimal"
         label="Minimal"
         placeholder="Style minimaliste"
@@ -255,10 +255,10 @@ const images = ref([])
 
 ```vue
 <template>
-  <SuFileUpload variant="default" label="Default" />
-  <SuFileUpload variant="dashed" label="Dashed" />
-  <SuFileUpload variant="solid" label="Solid" />
-  <SuFileUpload variant="minimal" label="Minimal" />
+  <SuFileUploadField variant="default" label="Default" />
+  <SuFileUploadField variant="dashed" label="Dashed" />
+  <SuFileUploadField variant="solid" label="Solid" />
+  <SuFileUploadField variant="minimal" label="Minimal" />
 </template>
 ```
 
@@ -268,7 +268,7 @@ const images = ref([])
   <div class="demo-section">
     <h4>Upload avec barre de progression</h4>
     <div class="demo-inputs">
-      <SuFileUpload 
+      <SuFileUploadField 
         label="Upload avec progression"
         placeholder="Téléchargez vos fichiers"
         message="La progression sera affichée pour chaque fichier"
@@ -281,7 +281,7 @@ const images = ref([])
 
 ```vue
 <template>
-  <SuFileUpload 
+  <SuFileUploadField 
     label="Upload avec progression"
     :multiple="true"
     :showProgress="true"
@@ -296,7 +296,7 @@ const images = ref([])
   <div class="demo-section">
     <h4>Upload en chargement</h4>
     <div class="demo-inputs">
-      <SuFileUpload 
+      <SuFileUploadField 
         label="Upload en chargement"
         placeholder="Chargement en cours..."
         :loading="true"
@@ -308,7 +308,7 @@ const images = ref([])
 
 ```vue
 <template>
-  <SuFileUpload 
+  <SuFileUploadField 
     label="Upload en chargement"
     :loading="true"
     message="Préparation de l'upload"
@@ -322,19 +322,19 @@ const images = ref([])
   <div class="demo-section">
     <h4>États spéciaux</h4>
     <div class="demo-inputs">
-      <SuFileUpload 
+      <SuFileUploadField 
         label="Upload désactivé"
         :disabled="true"
         placeholder="Upload non disponible"
         message="Cette fonctionnalité est temporairement désactivée"
       />
-      <SuFileUpload 
+      <SuFileUploadField 
         label="Upload en lecture seule"
         :readonly="true"
         placeholder="Consultation uniquement"
         message="Vous pouvez voir les fichiers mais pas en ajouter"
       />
-      <SuFileUpload 
+      <SuFileUploadField 
         label="Upload requis"
         :required="true"
         placeholder="Fichiers obligatoires"
@@ -346,17 +346,17 @@ const images = ref([])
 
 ```vue
 <template>
-  <SuFileUpload 
+  <SuFileUploadField 
     label="Upload désactivé"
     :disabled="true"
     message="Cette fonctionnalité est temporairement désactivée"
   />
-  <SuFileUpload 
+  <SuFileUploadField 
     label="Upload en lecture seule"
     :readonly="true"
     message="Vous pouvez voir les fichiers mais pas en ajouter"
   />
-  <SuFileUpload 
+  <SuFileUploadField 
     label="Upload requis"
     :required="true"
     message="Au moins un fichier doit être téléchargé"
@@ -447,7 +447,7 @@ Le composant FileUpload respecte les normes WCAG 2.1 AA :
 
 ```vue
 <!-- Upload avec validation complète -->
-<SuFileUpload 
+<SuFileUploadField 
   :multiple="true"
   :maxFiles="5"
   :maxSize="10 * 1024 * 1024"
@@ -500,13 +500,13 @@ Le composant effectue plusieurs validations automatiques :
 
 ```vue
 <!-- Extensions spécifiques -->
-<SuFileUpload accept=".jpg,.png,.pdf" />
+<SuFileUploadField accept=".jpg,.png,.pdf" />
 
 <!-- Types MIME -->
-<SuFileUpload accept="image/*,application/pdf" />
+<SuFileUploadField accept="image/*,application/pdf" />
 
 <!-- Combinaison -->
-<SuFileUpload accept="image/*,.pdf,.doc,.docx" />
+<SuFileUploadField accept="image/*,.pdf,.doc,.docx" />
 ```
 
 ## Exemples d'usage avancés
@@ -536,7 +536,7 @@ const handleError = (error, file) => {
   <form class="application-form">
     <h2>Candidature</h2>
     
-    <SuFileUpload 
+    <SuFileUploadField 
       label="CV (obligatoire)"
       accept=".pdf,.doc,.docx"
       :maxSize="5 * 1024 * 1024"
@@ -549,7 +549,7 @@ const handleError = (error, file) => {
       @error="handleError"
     />
     
-    <SuFileUpload 
+    <SuFileUploadField 
       label="Lettre de motivation"
       accept=".pdf,.doc,.docx"
       :maxSize="5 * 1024 * 1024"
@@ -560,7 +560,7 @@ const handleError = (error, file) => {
       @error="handleError"
     />
     
-    <SuFileUpload 
+    <SuFileUploadField 
       label="Portfolio (optionnel)"
       accept="image/*,.pdf"
       :maxSize="20 * 1024 * 1024"
@@ -605,7 +605,7 @@ const handleFileUpload = (file) => {
 </script>
 
 <template>
-  <SuFileUpload 
+  <SuFileUploadField 
     :multiple="true"
     label="Upload avec progression"
     placeholder="Téléchargez vos fichiers"

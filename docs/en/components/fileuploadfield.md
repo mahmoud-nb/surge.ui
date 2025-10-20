@@ -1,16 +1,16 @@
-# FileUpload
+# FileUploadField
 
-FileUpload component for file uploading with drag & drop support, format and size validation, and complete accessibility according to W3C standards.
+FileUploadField component for file uploading with drag & drop support, format and size validation, and complete accessibility according to W3C standards.
 
 ## Usage examples
 
-### Basic FileUpload
+### Basic FileUploadField
 
 <div class="component-demo">
   <div class="demo-section">
     <h4>Simple upload</h4>
     <div class="demo-inputs">
-      <SuFileUpload 
+      <SuFileUploadField 
         label="Documents"
         placeholder="Select your documents or drag them here"
         message="Accepted formats: PDF, DOC, DOCX"
@@ -27,7 +27,7 @@ const files = ref([])
 </script>
 
 <template>
-  <SuFileUpload 
+  <SuFileUploadField 
     label="Documents"
     placeholder="Select your documents or drag them here"
     message="Accepted formats: PDF, DOC, DOCX"
@@ -42,7 +42,7 @@ const files = ref([])
   <div class="demo-section">
     <h4>Multiple upload with restrictions</h4>
     <div class="demo-inputs">
-      <SuFileUpload 
+      <SuFileUploadField 
         :multiple="true"
         :maxFiles="3"
         :maxSize="5 * 1024 * 1024"
@@ -61,7 +61,7 @@ const images = ref([])
 </script>
 
 <template>
-  <SuFileUpload 
+  <SuFileUploadField 
     :multiple="true"
     :maxFiles="3"
     :maxSize="5 * 1024 * 1024"
@@ -80,19 +80,19 @@ const images = ref([])
   <div class="demo-section">
     <h4>File type restrictions</h4>
     <div class="demo-inputs">
-      <SuFileUpload 
+      <SuFileUploadField 
         accept="image/jpeg,image/png,image/gif"
         label="Images only"
         placeholder="JPG, PNG, GIF only"
         message="Accepted formats: JPEG, PNG, GIF"
       />
-      <SuFileUpload 
+      <SuFileUploadField 
         accept=".pdf,.doc,.docx"
         label="Documents"
         placeholder="PDF and Word documents"
         message="Accepted formats: PDF, DOC, DOCX"
       />
-      <SuFileUpload 
+      <SuFileUploadField 
         accept="video/*"
         :maxSize="50 * 1024 * 1024"
         label="Videos"
@@ -106,7 +106,7 @@ const images = ref([])
 ```vue
 <template>
   <!-- Images only -->
-  <SuFileUpload 
+  <SuFileUploadField 
     accept="image/jpeg,image/png,image/gif"
     label="Images only"
     placeholder="JPG, PNG, GIF only"
@@ -114,7 +114,7 @@ const images = ref([])
   />
   
   <!-- Documents -->
-  <SuFileUpload 
+  <SuFileUploadField 
     accept=".pdf,.doc,.docx"
     label="Documents"
     placeholder="PDF and Word documents"
@@ -122,7 +122,7 @@ const images = ref([])
   />
   
   <!-- Videos -->
-  <SuFileUpload 
+  <SuFileUploadField 
     accept="video/*"
     :maxSize="50 * 1024 * 1024"
     label="Videos"
@@ -200,13 +200,13 @@ The component performs several automatic validations:
 
 ```vue
 <!-- Specific extensions -->
-<SuFileUpload accept=".jpg,.png,.pdf" />
+<SuFileUploadField accept=".jpg,.png,.pdf" />
 
 <!-- MIME types -->
-<SuFileUpload accept="image/*,application/pdf" />
+<SuFileUploadField accept="image/*,application/pdf" />
 
 <!-- Combination -->
-<SuFileUpload accept="image/*,.pdf,.doc,.docx" />
+<SuFileUploadField accept="image/*,.pdf,.doc,.docx" />
 ```
 
 ## Accessibility
@@ -230,7 +230,7 @@ The FileUpload component follows WCAG 2.1 AA standards:
 
 ```vue
 <!-- Upload with complete validation -->
-<SuFileUpload 
+<SuFileUploadField 
   :multiple="true"
   :maxFiles="5"
   :maxSize="10 * 1024 * 1024"
@@ -295,7 +295,7 @@ const handleError = (error, file) => {
   <form class="application-form">
     <h2>Application</h2>
     
-    <SuFileUpload 
+    <SuFileUploadField 
       label="CV (required)"
       accept=".pdf,.doc,.docx"
       :maxSize="5 * 1024 * 1024"
@@ -308,7 +308,7 @@ const handleError = (error, file) => {
       @error="handleError"
     />
     
-    <SuFileUpload 
+    <SuFileUploadField 
       label="Cover letter"
       accept=".pdf,.doc,.docx"
       :maxSize="5 * 1024 * 1024"
@@ -319,7 +319,7 @@ const handleError = (error, file) => {
       @error="handleError"
     />
     
-    <SuFileUpload 
+    <SuFileUploadField 
       label="Portfolio (optional)"
       accept="image/*,.pdf"
       :maxSize="20 * 1024 * 1024"
