@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import { CheckIcon, XMarkIcon, SunIcon, MoonIcon } from '@heroicons/vue/24/outline'
-import Switch from '../Switch.vue'
+import SwitchField from '../SwitchField.vue'
 
-const meta: Meta<typeof Switch> = {
-  title: 'Molecules/FormField - Switch',
-  component: Switch,
+const meta: Meta<typeof SwitchField> = {
+  title: 'Molecules/SwitchField',
+  component: SwitchField,
   parameters: {
     layout: 'centered',
     docs: {
@@ -15,7 +15,7 @@ const meta: Meta<typeof Switch> = {
   },
   tags: ['autodocs'],
   argTypes: {
-    value: {
+    modelValue: {
       control: 'boolean',
       description: 'État du switch (activé/désactivé)'
     },
@@ -110,29 +110,29 @@ export const WithBothLabels: Story = {
 
 export const States: Story = {
   render: () => ({
-    components: { Switch },
+    components: { SwitchField },
     template: `
       <div style="display: flex; flex-direction: column; gap: 2rem; width: 400px;">
-        <Switch 
+        <SwitchField 
           label="État par défaut"
           rightLabel="Normal"
           message="Fonctionnement normal"
         />
-        <Switch 
+        <SwitchField 
           state="error"
           label="État d'erreur"
           rightLabel="Erreur"
           message="Une erreur s'est produite"
           :modelValue="true"
         />
-        <Switch 
+        <SwitchField 
           state="success"
           label="État de succès"
           rightLabel="Succès"
           message="Configuration sauvegardée !"
           :modelValue="true"
         />
-        <Switch 
+        <SwitchField 
           state="warning"
           label="État d'avertissement"
           rightLabel="Attention"
@@ -146,20 +146,20 @@ export const States: Story = {
 
 export const Sizes: Story = {
   render: () => ({
-    components: { Switch },
+    components: { SwitchField },
     template: `
       <div style="display: flex; flex-direction: column; gap: 2rem; width: 400px;">
-        <Switch 
+        <SwitchField 
           size="sm"
           label="Small"
           rightLabel="Petit"
         />
-        <Switch 
+        <SwitchField 
           size="md"
           label="Medium"
           rightLabel="Moyen"
         />
-        <Switch 
+        <SwitchField 
           size="lg"
           label="Large"
           rightLabel="Grand"
@@ -200,19 +200,19 @@ export const Required: Story = {
 
 export const WithCustomIcons: Story = {
   render: () => ({
-    components: { Switch },
+    components: { SwitchField },
     setup() {
-      return { SunIcon, MoonIcon }
+      return { SunIcon, MoonIcon, XMarkIcon, CheckIcon }
     },
     template: `
       <div style="display: flex; flex-direction: column; gap: 2rem; width: 400px;">
-        <Switch 
+        <SwitchField 
           label="Mode sombre avec icônes"
           :leftIcon="SunIcon"
           :rightIcon="MoonIcon"
           message="Basculer entre les thèmes"
         />
-        <Switch 
+        <SwitchField 
           label="Notifications avec icônes"
           :leftIcon="XMarkIcon"
           :rightIcon="CheckIcon"
@@ -225,7 +225,7 @@ export const WithCustomIcons: Story = {
 
 export const LabelPositions: Story = {
   render: () => ({
-    components: { Switch },
+    components: { SwitchField },
     setup() {
       return { SunIcon, MoonIcon }
     },
@@ -233,7 +233,7 @@ export const LabelPositions: Story = {
       <div style="display: flex; flex-direction: column; gap: 2rem; width: 400px;">
         <div>
           <h4 style="margin-bottom: 1rem;">Labels à l'extérieur (défaut)</h4>
-          <Switch 
+          <SwitchField 
             label="Mode sombre"
             leftLabel="Clair"
             rightLabel="Sombre"
@@ -245,7 +245,7 @@ export const LabelPositions: Story = {
         
         <div>
           <h4 style="margin-bottom: 1rem;">Labels à l'intérieur</h4>
-          <Switch 
+          <SwitchField 
             label="Mode sombre"
             leftLabel="Clair"
             rightLabel="Sombre"
@@ -261,7 +261,7 @@ export const LabelPositions: Story = {
 
 export const SettingsPanel: Story = {
   render: () => ({
-    components: { Switch },
+    components: { SwitchField },
     template: `
       <div style="max-width: 500px; margin: 0 auto;">
         <h3 style="margin-bottom: 2rem;">Paramètres</h3>
@@ -269,13 +269,13 @@ export const SettingsPanel: Story = {
         <div style="margin-bottom: 2rem;">
           <h4 style="margin-bottom: 1rem; color: #374151; font-weight: 600;">Interface</h4>
           <div style="display: flex; flex-direction: column; gap: 1rem;">
-            <Switch 
+            <SwitchField 
               label="Mode sombre"
               leftLabel="Clair"
               rightLabel="Sombre"
               message="Basculer entre les thèmes clair et sombre"
             />
-            <Switch 
+            <SwitchField 
               label="Sauvegarde automatique"
               rightLabel="Activée"
               message="Sauvegarder automatiquement vos modifications"
@@ -285,7 +285,7 @@ export const SettingsPanel: Story = {
         
         <div style="margin-bottom: 2rem;">
           <h4 style="margin-bottom: 1rem; color: #374151; font-weight: 600;">Confidentialité</h4>
-          <Switch 
+          <SwitchField 
             label="Profil public"
             leftLabel="Privé"
             rightLabel="Public"
@@ -296,12 +296,12 @@ export const SettingsPanel: Story = {
         <div>
           <h4 style="margin-bottom: 1rem; color: #374151; font-weight: 600;">Notifications</h4>
           <div style="display: flex; flex-direction: column; gap: 1rem;">
-            <Switch 
+            <SwitchField 
               label="Notifications push"
               rightLabel="Activées"
               message="Recevoir des notifications en temps réel"
             />
-            <Switch 
+            <SwitchField 
               label="Mises à jour par email"
               rightLabel="Activées"
               message="Recevoir les nouveautés par email"

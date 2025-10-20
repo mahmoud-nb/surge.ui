@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { computed, useAttrs, useId } from 'vue'
 import FormField, { FormFieldProps } from '@/components/atoms/FormField.vue'
-import BaseSwitch, { BaseSwitchProps } from '../atoms/BaseSwitch.vue'
+import Switch, { SwitchProps } from '../atoms/Switch.vue'
 
-export type SwitchProps = FormFieldProps & BaseSwitchProps
+export type SwitchFieldProps = FormFieldProps & SwitchProps
 
-const props = withDefaults(defineProps<SwitchProps>(), {
+const props = withDefaults(defineProps<SwitchFieldProps>(), {
   size: 'md',
   state: 'default',
   disabled: false,
@@ -27,7 +27,7 @@ const attrs = useAttrs()
 const fieldId = 'switch-' + useId()
 const switchId = computed(() => attrs.id as string || fieldId)
 
-const baseSwitchProps = computed(() => {
+const switchProps = computed(() => {
   const { label, message, ...rest } = props
   return rest
 })
@@ -43,11 +43,11 @@ const baseSwitchProps = computed(() => {
     :disabled="disabled"
   >
     <template #default="{ fieldId: id, messageId }">
-      <BaseSwitch
+      <Switch
         :id="id"
         v-model="modelValue"
         :aria-describedby="messageId"
-        v-bind="{ ...baseSwitchProps }"
+        v-bind="{ ...switchProps }"
         @change="(value) => emit('change', value)"
         @focus="(event) => emit('focus', event)"
         @blur="(event) => emit('blur', event)"

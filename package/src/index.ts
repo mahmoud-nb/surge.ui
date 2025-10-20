@@ -10,7 +10,8 @@ import Input from './components/atoms/Input.vue'
 import SelectBox from './components/molecules/SelectBox.vue'
 import RadioGroup from './components/molecules/RadioGroup.vue'
 import CheckboxGroup from './components/molecules/CheckboxGroup.vue'
-import Switch from './components/molecules/Switch.vue'
+import SwitchField from './components/molecules/SwitchField.vue'
+import Switch from './components/atoms/Switch.vue'
 import FileUpload from './components/molecules/FileUpload.vue'
 import TextareaField from './components/molecules/TextareaField.vue'
 import Textarea from './components/atoms/Textarea.vue'
@@ -27,9 +28,9 @@ import Tabs from './components/molecules/Tabs.vue'
 import * as accessibility from './utils/accessibility'
 
 // Export des composants et de la fonction d'installation
-export { Input, Textarea }
-export { FormField, Button, Password, ButtonGroup, InputField, SelectBox, RadioGroup, CheckboxGroup, Switch, FileUpload, TextareaField, Slider, FormFields }
-export { Link, LinkGroup, FloatButton, Dialog, Dropdown }
+export { Input, Textarea, Switch }
+export { FormField, Password, ButtonGroup, InputField, SelectBox, RadioGroup, CheckboxGroup, SwitchField, FileUpload, TextareaField, Slider, FormFields }
+export { Link, LinkGroup, Button, FloatButton, Dialog, Dropdown }
 export { Image, Avatar, AvatarGroup, Badge, Tabs }
 export { accessibility }
 
@@ -197,12 +198,13 @@ export default {
     // ## Form Components
     app.component(`${prefix}Input`, Input)
     app.component(`${prefix}Textarea`, Textarea)
+    app.component(`${prefix}Switch`, Switch)
     app.component(`${prefix}FormField`, FormField)
     app.component(`${prefix}InputField`, InputField)
     app.component(`${prefix}SelectBox`, SelectBox)
     app.component(`${prefix}RadioGroup`, RadioGroup)
     app.component(`${prefix}CheckboxGroup`, CheckboxGroup)
-    app.component(`${prefix}Switch`, Switch)
+    app.component(`${prefix}SwitchField`, SwitchField)
     app.component(`${prefix}FileUpload`, FileUpload)
     app.component(`${prefix}TextareaField`, TextareaField)
     app.component(`${prefix}Slider`, Slider)

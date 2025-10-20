@@ -5,7 +5,7 @@ import InputField from '../InputField.vue'
 import SelectBox from '@/components/molecules/SelectBox.vue'
 import RadioGroup from '@/components/molecules/RadioGroup.vue'
 import CheckboxGroup from '@/components/molecules/CheckboxGroup.vue'
-import Switch from '@/components/molecules/Switch.vue'
+import SwitchField from '@/components/molecules/SwitchField.vue'
 import FileUpload from '@/components/molecules/FileUpload.vue'
 import TextareaField from '@/components/molecules/TextareaField.vue'
 import Slider from '@/components/molecules/Slider.vue'
@@ -78,7 +78,7 @@ const accountTypes = [
 
 export const Default: Story = {
   render: () => ({
-    components: { FormFields, InputField, SelectBox, Switch },
+    components: { FormFields, InputField, SelectBox, SwitchField },
     setup() {
       return { basicOptions, AtSymbolIcon, LockClosedIcon }
     },
@@ -101,7 +101,7 @@ export const Default: Story = {
           label="Préférence"
           placeholder="Choisissez une option"
         />
-        <Switch 
+        <SwitchField 
           label="Notifications"
           rightLabel="Activées"
           message="Recevoir des notifications par email"
@@ -113,7 +113,7 @@ export const Default: Story = {
 
 export const WithGaps: Story = {
   render: () => ({
-    components: { FormFields, InputField, Switch },
+    components: { FormFields, InputField, SwitchField },
     setup() {
       return { AtSymbolIcon }
     },
@@ -124,7 +124,7 @@ export const WithGaps: Story = {
           <FormFields gap="sm" style="width: 300px;">
             <InputField label="Nom" placeholder="Votre nom" />
             <InputField type="email" label="Email" placeholder="email@exemple.com" :prefixIcon="AtSymbolIcon" />
-            <Switch label="Newsletter" rightLabel="Oui" />
+            <SwitchField label="Newsletter" rightLabel="Oui" />
           </FormFields>
         </div>
         
@@ -133,7 +133,7 @@ export const WithGaps: Story = {
           <FormFields gap="md" style="width: 300px;">
             <InputField label="Nom" placeholder="Votre nom" />
             <InputField type="email" label="Email" placeholder="email@exemple.com" :prefixIcon="AtSymbolIcon" />
-            <Switch label="Newsletter" rightLabel="Oui" />
+            <SwitchField label="Newsletter" rightLabel="Oui" />
           </FormFields>
         </div>
         
@@ -142,7 +142,7 @@ export const WithGaps: Story = {
           <FormFields gap="lg" style="width: 300px;">
             <InputField label="Nom" placeholder="Votre nom" />
             <InputField type="email" label="Email" placeholder="email@exemple.com" :prefixIcon="AtSymbolIcon" />
-            <Switch label="Newsletter" rightLabel="Oui" />
+            <SwitchField label="Newsletter" rightLabel="Oui" />
           </FormFields>
         </div>
         
@@ -151,7 +151,7 @@ export const WithGaps: Story = {
           <FormFields gap="xl" style="width: 300px;">
             <InputField label="Nom" placeholder="Votre nom" />
             <InputField type="email" label="Email" placeholder="email@exemple.com" :prefixIcon="AtSymbolIcon" />
-            <Switch label="Newsletter" rightLabel="Oui" />
+            <SwitchField label="Newsletter" rightLabel="Oui" />
           </FormFields>
         </div>
       </div>
@@ -231,7 +231,7 @@ export const Horizontal: Story = {
 
 export const WithSections: Story = {
   render: () => ({
-    components: { FormFields, InputField, SelectBox, RadioGroup, Switch, Button },
+    components: { FormFields, InputField, SelectBox, RadioGroup, SwitchField, Button },
     setup() {
       return { countryOptions, accountTypes, AtSymbolIcon, LockClosedIcon }
     },
@@ -286,7 +286,7 @@ export const WithSections: Story = {
           required
         />
         
-        <Switch 
+        <SwitchField 
           label="Conditions d'utilisation"
           rightLabel="J'accepte"
           message="Vous devez accepter les conditions d'utilisation"
@@ -449,7 +449,7 @@ export const ContactForm: Story = {
 
 export const UserProfile: Story = {
   render: () => ({
-    components: { FormFields, InputField, SelectBox, RadioGroup, Switch, Slider, Button },
+    components: { FormFields, InputField, SelectBox, RadioGroup, SwitchField, Slider, Button },
     setup() {
       const languages = [
         { value: 'fr', label: 'Français' },
@@ -528,7 +528,7 @@ export const UserProfile: Story = {
           message="Contrôlez le volume des notifications sonores"
         />
         
-        <Switch 
+        <SwitchField 
           label="Profil public"
           leftLabel="Privé"
           rightLabel="Public"
@@ -598,7 +598,7 @@ export const HorizontalLayout: Story = {
 
 export const ComplexForm: Story = {
   render: () => ({
-    components: { FormFields, InputField, SelectBox, RadioGroup, CheckboxGroup, Switch, FileUpload, TextareaField, Slider, Button },
+    components: { FormFields, InputField, SelectBox, RadioGroup, CheckboxGroup, SwitchField, FileUpload, TextareaField, Slider, Button },
     setup() {
       const skills = [
         { value: 'js', label: 'JavaScript' },
@@ -724,7 +724,7 @@ export const ComplexForm: Story = {
         />
         
         <!-- Disponibilité -->
-        <Switch 
+        <SwitchField 
           label="Disponibilité immédiate"
           rightLabel="Disponible"
           message="Pouvez-vous commencer dans les 2 semaines ?"
@@ -757,7 +757,7 @@ export const ComplexForm: Story = {
 
 export const WithAccessibility: Story = {
   render: () => ({
-    components: { FormFields, InputField, Switch, Button },
+    components: { FormFields, InputField, SwitchField, Button },
     template: `
       <div style="display: flex; flex-direction: column; gap: 3rem; align-items: flex-start;">
         <div>
@@ -768,7 +768,7 @@ export const WithAccessibility: Story = {
             aria-label="Paramètres de compte"
           >
             <InputField label="Nom d'utilisateur" placeholder="Votre nom d'utilisateur" />
-            <Switch label="Notifications" rightLabel="Activées" />
+            <SwitchField label="Notifications" rightLabel="Activées" />
           </FormFields>
         </div>
         
@@ -790,7 +790,7 @@ export const WithAccessibility: Story = {
             
             <InputField type="password" label="Mot de passe actuel" placeholder="••••••••" />
             <InputField type="password" label="Nouveau mot de passe" placeholder="••••••••" />
-            <Switch label="Authentification à deux facteurs" rightLabel="Activée" />
+            <SwitchField label="Authentification à deux facteurs" rightLabel="Activée" />
             
             <template #footer>
               <Button variant="primary" block>Mettre à jour la sécurité</Button>

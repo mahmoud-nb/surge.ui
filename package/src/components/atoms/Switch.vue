@@ -6,7 +6,7 @@ import { AccessibilityProps, Size, State } from '@/types'
 
 defineOptions({ inheritAttrs: false })
 
-export interface BaseSwitchProps extends AccessibilityProps {
+export interface SwitchProps extends AccessibilityProps {
   //modelValue?: boolean
   leftLabel?: string
   rightLabel?: string
@@ -19,7 +19,7 @@ export interface BaseSwitchProps extends AccessibilityProps {
   required?: boolean
 }
 
-const props = withDefaults(defineProps<BaseSwitchProps>(), {
+const props = withDefaults(defineProps<SwitchProps>(), {
   modelValue: false,
   size: 'md',
   state: 'default',

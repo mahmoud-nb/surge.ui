@@ -1,6 +1,6 @@
-# Switch
+# SwitchField
 
-Switch component for on/off toggle actions. Compliant with W3C standards with complete accessibility support and intelligent label positioning.
+SwitchField component for on/off toggle actions. Compliant with W3C standards with complete accessibility support and intelligent label positioning.
 
 ## Usage examples
 
@@ -10,7 +10,7 @@ Switch component for on/off toggle actions. Compliant with W3C standards with co
   <div class="demo-section">
     <h4>Simple switch</h4>
     <div class="demo-inputs">
-      <SuSwitch 
+      <SuSwitchField
         label="Notifications"
         message="Enable push notifications"
       />
@@ -24,7 +24,7 @@ const notifications = ref(false)
 </script>
 
 <template>
-  <SuSwitch 
+  <SuSwitchField
     label="Notifications"
     message="Enable push notifications"
     v-model="notifications"
@@ -38,7 +38,7 @@ const notifications = ref(false)
   <div class="demo-section">
     <h4>With single label (aligned beside)</h4>
     <div class="demo-inputs">
-      <SuSwitch 
+      <SuSwitchField
         label="Dark mode"
         rightLabel="Enabled"
         message="Switch to dark theme"
@@ -49,7 +49,7 @@ const notifications = ref(false)
 
 ```vue
 <template>
-  <SuSwitch 
+  <SuSwitchField
     label="Dark mode"
     rightLabel="Enabled"
     message="Switch to dark theme"
@@ -64,7 +64,7 @@ const notifications = ref(false)
   <div class="demo-section">
     <h4>With left and right labels (centered)</h4>
     <div class="demo-inputs">
-      <SuSwitch 
+      <SuSwitchField
         label="Profile visibility"
         leftLabel="Private"
         rightLabel="Public"
@@ -76,7 +76,7 @@ const notifications = ref(false)
 
 ```vue
 <template>
-  <SuSwitch 
+  <SuSwitchField
     label="Profile visibility"
     leftLabel="Private"
     rightLabel="Public"
@@ -92,17 +92,17 @@ const notifications = ref(false)
   <div class="demo-section">
     <h4>Available sizes</h4>
     <div class="demo-inputs">
-      <SuSwitch 
+      <SuSwitchField
         size="sm"
         label="Small"
         rightLabel="Small"
       />
-      <SuSwitch 
+      <SuSwitchField
         size="md"
         label="Medium"
         rightLabel="Medium"
       />
-      <SuSwitch 
+      <SuSwitchField
         size="lg"
         label="Large"
         rightLabel="Large"
@@ -113,9 +113,9 @@ const notifications = ref(false)
 
 ```vue
 <template>
-  <SuSwitch size="sm" label="Small" rightLabel="Small" />
-  <SuSwitch size="md" label="Medium" rightLabel="Medium" />
-  <SuSwitch size="lg" label="Large" rightLabel="Large" />
+  <SuSwitchFieldsize="sm" label="Small" rightLabel="Small" />
+  <SuSwitchFieldsize="md" label="Medium" rightLabel="Medium" />
+  <SuSwitchFieldsize="lg" label="Large" rightLabel="Large" />
 </template>
 ```
 
@@ -125,26 +125,26 @@ const notifications = ref(false)
   <div class="demo-section">
     <h4>Validation states</h4>
     <div class="demo-inputs">
-      <SuSwitch 
+      <SuSwitchField
         label="Default state"
         rightLabel="Normal"
         message="Normal operation"
       />
-      <SuSwitch 
+      <SuSwitchField
         state="error"
         label="Error state"
         rightLabel="Error"
         message="An error occurred"
         :value="true"
       />
-      <SuSwitch 
+      <SuSwitchField
         state="success"
         label="Success state"
         rightLabel="Success"
         message="Configuration saved!"
         :value="true"
       />
-      <SuSwitch 
+      <SuSwitchField
         state="warning"
         label="Warning state"
         rightLabel="Warning"
@@ -157,22 +157,22 @@ const notifications = ref(false)
 
 ```vue
 <template>
-  <SuSwitch 
+  <SuSwitchField
     state="default"
     label="Default state"
     message="Normal operation"
   />
-  <SuSwitch 
+  <SuSwitchField
     state="error"
     label="Error state"
     message="An error occurred"
   />
-  <SuSwitch 
+  <SuSwitchField
     state="success"
     label="Success state"
     message="Configuration saved!"
   />
-  <SuSwitch 
+  <SuSwitchField
     state="warning"
     label="Warning state"
     message="This action requires confirmation"
@@ -219,13 +219,13 @@ The Switch component automatically adapts positioning based on provided labels:
 
 ```vue
 <!-- Switch to the left -->
-<SuSwitch label="Notifications" />
+<SuSwitchFieldlabel="Notifications" />
 
 <!-- Switch next to label -->
-<SuSwitch label="Dark mode" rightLabel="Enabled" />
+<SuSwitchFieldlabel="Dark mode" rightLabel="Enabled" />
 
 <!-- Switch centered -->
-<SuSwitch label="Visibility" leftLabel="Private" rightLabel="Public" />
+<SuSwitchFieldlabel="Visibility" leftLabel="Private" rightLabel="Public" />
 ```
 
 ## Accessibility
@@ -249,7 +249,7 @@ The Switch component follows WCAG 2.1 AA standards and W3C best practices:
 
 ```vue
 <!-- Switch with complete accessibility -->
-<SuSwitch 
+<SuSwitchField
   label="Push notifications"
   rightLabel="Enabled"
   :required="true"
@@ -259,7 +259,7 @@ The Switch component follows WCAG 2.1 AA standards and W3C best practices:
 />
 
 <!-- Switch with error handling -->
-<SuSwitch 
+<SuSwitchField
   label="Synchronization"
   leftLabel="Disabled"
   rightLabel="Enabled"
@@ -269,7 +269,7 @@ The Switch component follows WCAG 2.1 AA standards and W3C best practices:
 />
 
 <!-- Switch with validation -->
-<SuSwitch 
+<SuSwitchField
   label="Accept terms"
   rightLabel="I accept"
   :required="true"
@@ -310,14 +310,14 @@ const settings = ref({
     
     <div class="settings-group">
       <h3>Interface</h3>
-      <SuSwitch 
+      <SuSwitchField
         label="Dark mode"
         leftLabel="Light"
         rightLabel="Dark"
         message="Switch between light and dark themes"
         v-model="settings.darkMode"
       />
-      <SuSwitch 
+      <SuSwitchField
         label="Auto save"
         rightLabel="Enabled"
         message="Automatically save your changes"
@@ -327,7 +327,7 @@ const settings = ref({
     
     <div class="settings-group">
       <h3>Privacy</h3>
-      <SuSwitch 
+      <SuSwitchField
         label="Public profile"
         leftLabel="Private"
         rightLabel="Public"
@@ -338,13 +338,13 @@ const settings = ref({
     
     <div class="settings-group">
       <h3>Notifications</h3>
-      <SuSwitch 
+      <SuSwitchField
         label="Push notifications"
         rightLabel="Enabled"
         message="Receive real-time notifications"
         v-model="settings.notifications"
       />
-      <SuSwitch 
+      <SuSwitchField
         label="Email updates"
         rightLabel="Enabled"
         message="Receive news by email"

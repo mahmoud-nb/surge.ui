@@ -51,7 +51,7 @@ export default defineConfig({
                   { text: 'TextareaField', link: '/components/textareafield' },
                   { text: 'FileUpload', link: '/components/fileupload' },
                   { text: 'Range', link: '/components/range' },
-                  { text: 'Switch', link: '/components/switch' },
+                  { text: 'SwitchField', link: '/components/switchfield' },
                   { text: 'Password', link: '/components/password' },
                   { text: 'FormFields', link: '/components/formfields' },
                 ]
@@ -115,7 +115,7 @@ export default defineConfig({
                   { text: 'TextareaField', link: '/en/components/textareafield' },
                   { text: 'FileUpload', link: '/en/components/fileupload' },
                   { text: 'Range', link: '/en/components/range' },
-                  { text: 'Switch', link: '/en/components/switch' },
+                  { text: 'SwitchField', link: '/en/components/switchfield' },
                   { text: 'Password', link: '/en/components/password' },
                   { text: 'FormFields', link: '/en/components/formfields' },
                 ]
