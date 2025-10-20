@@ -14,6 +14,8 @@ Modern Vue.js 3 component library with Composition API, designed to create moder
 - 🎯 **Composition API** - Uses Vue 3 Composition API
 - 📱 **Responsive** - Components adapted to all screen sizes
 - 🌙 **Dark Mode** - Native dark mode support
+- 🔄 **RTL & LTR** – Native support for both right-to-left and left-to-right text directions 
+- ♿ **Accessibility** – Accessibility-friendly and built with best practices in mind
 - ⚡ **Performance** - Optimized for best performance
 
 ## 🚀 Quick Installation

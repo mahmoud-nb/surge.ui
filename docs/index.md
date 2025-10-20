@@ -14,6 +14,8 @@ Bibliothèque de composants Vue.js 3 avec Composition API, conçue pour créer d
 - 🎯 **Composition API** - Utilise la Composition API de Vue 3
 - 📱 **Responsive** - Composants adaptés à tous les écrans
 - 🌙 **Mode sombre** - Support natif du mode sombre
+- 🔄 **RTL & LTR** – Support natif des directions de texte droite-gauche et gauche-droite 
+- ♿ **Accessibilité** – Conçu pour être accessible à tous, conforme aux bonnes pratiques
 - ⚡ **Performance** - Optimisé pour les meilleures performances
 
 ## 🚀 Installation rapide
