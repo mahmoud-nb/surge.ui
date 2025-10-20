@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import { EyeIcon, EyeSlashIcon } from '@heroicons/vue/24/outline'
-import Input from '../molecules/Input.vue'
-import type { InputProps } from '../molecules/Input.vue'
+import Input from './InputField.vue'
+import type { InputProps } from './InputField.vue'
 
 export interface PasswordValidation {
   isValid: boolean

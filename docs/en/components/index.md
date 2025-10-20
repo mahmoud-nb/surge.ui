@@ -13,11 +13,11 @@ This section contains the documentation for all components available in the Surg
 
 ## Forms
 
-- [Input](/en/components/input) - Input component with multiple variants
+- [InputField](/en/components/inputfield) - InputField component with multiple variants
 - [Password](/en/components/password) - Password component with validation and progress bar
 - [Switch](/en/components/switch) - Switch component for toggle actions
 - [FileUpload](/en/components/fileupload) - File upload component with drag & drop
-- [Textarea](/en/components/textarea) - Textarea component with counter and auto-resize
+- [TextareaField](/en/components/textareafield) - Textarea field component with counter and auto-resize
 - [Slider](/en/components/slider) - Slider component for numeric values
 
 ## Actions

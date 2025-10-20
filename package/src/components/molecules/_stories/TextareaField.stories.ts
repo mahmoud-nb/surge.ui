@@ -1,14 +1,14 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
-import Textarea from '../Textarea.vue'
+import TextareaField from '../TextareaField.vue'
 
-const meta: Meta<typeof Textarea> = {
-  title: 'Molecules/FormField - Textarea',
-  component: Textarea,
+const meta: Meta<typeof TextareaField> = {
+  title: 'Molecules/TextareaField',
+  component: TextareaField,
   parameters: {
     layout: 'centered',
     docs: {
       description: {
-        component: 'Composant Textarea flexible avec compteur de caractères, ajustement automatique de hauteur et conformité aux normes W3C d\'accessibilité.'
+        component: 'Composant TextareaField flexible avec compteur de caractères, ajustement automatique de hauteur et conformité aux normes W3C d\'accessibilité.'
       }
     }
   },
@@ -26,11 +26,11 @@ const meta: Meta<typeof Textarea> = {
     },
     disabled: {
       control: 'boolean',
-      description: 'Désactive le textarea'
+      description: 'Désactive le textarea field'
     },
     readonly: {
       control: 'boolean',
-      description: 'Textarea en lecture seule'
+      description: 'Textarea field en lecture seule'
     },
     required: {
       control: 'boolean',
@@ -79,7 +79,7 @@ const meta: Meta<typeof Textarea> = {
     },
     label: {
       control: 'text',
-      description: 'Label du textarea'
+      description: 'Label du textarea field'
     },
     message: {
       control: 'text',
@@ -143,29 +143,29 @@ export const Tweet: Story = {
 
 export const States: Story = {
   render: () => ({
-    components: { Textarea },
+    components: { TextareaField },
     template: `
       <div style="display: flex; flex-direction: column; gap: 2rem; width: 400px;">
-        <Textarea 
+        <TextareaField
           label="État par défaut"
           placeholder="Entrez du texte"
           message="Texte d'aide pour guider l'utilisateur"
         />
-        <Textarea 
+        <TextareaField
           state="error"
           label="État d'erreur"
           placeholder="Entrez du texte"
           message="Ce champ contient une erreur"
           modelValue="Texte avec erreur"
         />
-        <Textarea 
+        <TextareaField
           state="success"
           label="État de succès"
           placeholder="Entrez du texte"
           message="Contenu valide !"
           modelValue="Texte validé avec succès"
         />
-        <Textarea 
+        <TextareaField
           state="warning"
           label="État d'avertissement"
           placeholder="Entrez du texte"
@@ -179,22 +179,22 @@ export const States: Story = {
 
 export const Sizes: Story = {
   render: () => ({
-    components: { Textarea },
+    components: { TextareaField },
     template: `
       <div style="display: flex; flex-direction: column; gap: 2rem; width: 400px;">
-        <Textarea 
+        <TextareaField
           size="sm"
           label="Small"
           placeholder="Petit textarea"
           :rows="2"
         />
-        <Textarea 
+        <TextareaField
           size="md"
           label="Medium"
           placeholder="Textarea moyen"
           :rows="3"
         />
-        <Textarea 
+        <TextareaField
           size="lg"
           label="Large"
           placeholder="Grand textarea"
@@ -207,7 +207,7 @@ export const Sizes: Story = {
 
 export const Disabled: Story = {
   args: {
-    label: 'Textarea désactivé',
+    label: 'Textarea field désactivé',
     disabled: true,
     modelValue: 'Ce contenu est désactivé',
     message: 'Ce champ est temporairement indisponible'
@@ -216,7 +216,7 @@ export const Disabled: Story = {
 
 export const Readonly: Story = {
   args: {
-    label: 'Textarea en lecture seule',
+    label: 'Textarea field en lecture seule',
     readonly: true,
     modelValue: 'Ce contenu ne peut pas être modifié',
     message: 'Consultation uniquement'
@@ -234,12 +234,12 @@ export const Required: Story = {
 
 export const ContactForm: Story = {
   render: () => ({
-    components: { Textarea },
+    components: { TextareaField },
     template: `
       <form style="width: 360px; max-width: 100%; margin: 0 auto; display: flex; flex-direction: column; gap: 1.5rem;">
         <h2>Nous contacter</h2>
         
-        <Textarea 
+        <TextareaField 
           label="Message"
           :required="true"
           :maxLength="2000"
@@ -264,7 +264,7 @@ export const ContactForm: Story = {
 
 export const Editor: Story = {
   render: () => ({
-    components: { Textarea },
+    components: { TextareaField },
     template: `
       <div style="max-width: 800px; margin: 0 auto;">
         <div style="display: flex; justify-content: space-between; align-items: center; gap:24px; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid #e5e7eb;">
@@ -275,8 +275,8 @@ export const Editor: Story = {
             <span>~0 min de lecture</span>
           </div>
         </div>
-        
-        <Textarea 
+
+        <TextareaField
           label="Contenu"
           :autoResize="true"
           :minRows="8"

@@ -5,7 +5,7 @@ import type { Component } from 'vue'
 import type { Size, State, TextAlign, AccessibilityProps } from '@/types'
 
 export type InputType = 'text' | 'email' | 'password' | 'number' | 'tel' | 'url' | 'search' | 'date' | 'time' | 'datetime-local' | 'month' | 'week'
-export interface BaseInputProps extends AccessibilityProps {
+export interface InputProps extends AccessibilityProps {
   type?: InputType
   size?: Size
   state?: State
@@ -28,7 +28,7 @@ export interface BaseInputProps extends AccessibilityProps {
   pattern?: string
 }
 
-const props = withDefaults(defineProps<BaseInputProps>(), {
+const props = withDefaults(defineProps<InputProps>(), {
   type: 'text',
   size: 'md',
   state: 'default',

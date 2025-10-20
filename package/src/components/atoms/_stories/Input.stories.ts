@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import { MagnifyingGlassIcon, AtSymbolIcon, LockClosedIcon, UserIcon } from '@heroicons/vue/24/outline'
-import BaseInput from '../BaseInput.vue'
+import Input from '../Input.vue'
 
-const meta: Meta<typeof BaseInput> = {
-  title: 'Atoms/BaseInput',
-  component: BaseInput,
+const meta: Meta<typeof Input> = {
+  title: 'Atoms/Input',
+  component: Input,
   parameters: {
     layout: 'centered',
     docs: {
@@ -127,14 +127,14 @@ export const ClickablePrefix: Story = {
     prefixIcon: MagnifyingGlassIcon
   },
   render: (args) => ({
-    components: { BaseInput },
+    components: { Input },
     setup() {
       const handlePrefixIconClick = () => {
         alert('Icône de recherche cliquée!')
       }
       return { args, MagnifyingGlassIcon, handlePrefixIconClick }
     },
-    template: '<BaseInput v-bind="args" :prefixIcon="MagnifyingGlassIcon" @prefix-icon-click="handlePrefixIconClick" />'
+    template: '<Input v-bind="args" :prefixIcon="MagnifyingGlassIcon" @prefix-icon-click="handlePrefixIconClick" />'
   })
 }
 
@@ -145,25 +145,25 @@ export const ClickableSuffix: Story = {
     suffix: '€'
   },
   render: (args) => ({
-    components: { BaseInput },
+    components: { Input },
     setup() {
       const handleSuffixClick = () => {
         alert('Suffixe € cliqué!')
       }
       return { args, handleSuffixClick }
     },
-    template: '<BaseInput v-bind="args" @suffix-click="handleSuffixClick" />'
+    template: '<Input v-bind="args" @suffix-click="handleSuffixClick" />'
   })
 }
 export const States: Story = {
   render: () => ({
-    components: { BaseInput },
+    components: { Input },
     template: `
       <div style="display: flex; flex-direction: column; gap: 1rem; width: 300px;">
-        <BaseInput placeholder="État par défaut" />
-        <BaseInput state="error" placeholder="État d'erreur" />
-        <BaseInput state="success" placeholder="État de succès" />
-        <BaseInput state="warning" placeholder="État d'avertissement" />
+        <Input placeholder="État par défaut" />
+        <Input state="error" placeholder="État d'erreur" />
+        <Input state="success" placeholder="État de succès" />
+        <Input state="warning" placeholder="État d'avertissement" />
       </div>
     `
   })
@@ -171,12 +171,12 @@ export const States: Story = {
 
 export const Sizes: Story = {
   render: () => ({
-    components: { BaseInput },
+    components: { Input },
     template: `
       <div style="display: flex; flex-direction: column; gap: 1rem; width: 300px;">
-        <BaseInput size="sm" placeholder="Petit input" />
-        <BaseInput size="md" placeholder="Input moyen" />
-        <BaseInput size="lg" placeholder="Grand input" />
+        <Input size="sm" placeholder="Petit input" />
+        <Input size="md" placeholder="Input moyen" />
+        <Input size="lg" placeholder="Grand input" />
       </div>
     `
   })
@@ -184,12 +184,12 @@ export const Sizes: Story = {
 
 export const TextAlignment: Story = {
   render: () => ({
-    components: { BaseInput },
+    components: { Input },
     template: `
       <div style="display: flex; flex-direction: column; gap: 1rem; width: 300px;">
-        <BaseInput placeholder="Alignement à gauche" textAlign="left" value="Aligné à gauche" />
-        <BaseInput placeholder="Alignement centré" textAlign="center" value="Centré" />
-        <BaseInput placeholder="Alignement à droite" textAlign="right" value="Aligné à droite" />
+        <Input placeholder="Alignement à gauche" textAlign="left" value="Aligné à gauche" />
+        <Input placeholder="Alignement centré" textAlign="center" value="Centré" />
+        <Input placeholder="Alignement à droite" textAlign="right" value="Aligné à droite" />
       </div>
     `
   })

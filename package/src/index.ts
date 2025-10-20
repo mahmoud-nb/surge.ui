@@ -5,13 +5,15 @@ import Password from './components/molecules/Password.vue'
 import ButtonGroup from './components/molecules/ButtonGroup.vue'
 import Link, { LinkSize, LinkUnderline, LinkVariant } from './components/atoms/Link.vue'
 import LinkGroup from './components/molecules/LinkGroup.vue'
-import Input from './components/molecules/Input.vue'
+import InputField from './components/molecules/InputField.vue'
+import Input from './components/atoms/Input.vue'
 import SelectBox from './components/molecules/SelectBox.vue'
 import RadioGroup from './components/molecules/RadioGroup.vue'
 import CheckboxGroup from './components/molecules/CheckboxGroup.vue'
 import Switch from './components/molecules/Switch.vue'
 import FileUpload from './components/molecules/FileUpload.vue'
-import Textarea from './components/molecules/Textarea.vue'
+import TextareaField from './components/molecules/TextareaField.vue'
+import Textarea from './components/atoms/Textarea.vue'
 import Slider from './components/molecules/Slider.vue'
 import Dialog, { DialogDisplay } from './components/molecules/Dialog.vue'
 import FormFields from './components/molecules/FormFields.vue'
@@ -21,11 +23,14 @@ import Avatar from './components/atoms/Avatar.vue'
 import AvatarGroup from './components/molecules/AvatarGroup.vue'
 import Dropdown from './components/molecules/Dropdown.vue'
 import Badge from './components/atoms/Badge.vue'
+import Tabs from './components/molecules/Tabs.vue'  
 import * as accessibility from './utils/accessibility'
 
-export { FormField, Button, Password, ButtonGroup, Input, SelectBox, RadioGroup, CheckboxGroup, Switch, FileUpload, Textarea, Slider, FormFields }
+// Export des composants et de la fonction d'installation
+export { Input, Textarea }
+export { FormField, Button, Password, ButtonGroup, InputField, SelectBox, RadioGroup, CheckboxGroup, Switch, FileUpload, TextareaField, Slider, FormFields }
 export { Link, LinkGroup, FloatButton, Dialog, Dropdown }
-export { Image, Avatar, AvatarGroup, Badge }
+export { Image, Avatar, AvatarGroup, Badge, Tabs }
 export { accessibility }
 
 export interface SurgeUpDSOptions {
@@ -176,28 +181,41 @@ export default {
       root.style.setProperty('--su-link-default-underline', options.linkUnderline)
     }
     
-    app.component(`${prefix}FormField`, FormField)
-    app.component(`${prefix}Button`, Button)
-    app.component(`${prefix}Password`, Password)
-    app.component(`${prefix}ButtonGroup`, ButtonGroup)
-    app.component(`${prefix}Link`, Link)
-    app.component(`${prefix}LinkGroup`, LinkGroup)
+    // Configuration de l'affichage par défaut des dialogues
+    if (options.dialogDisplay) {
+      root.style.setProperty('--su-dialog-default-display', options.dialogDisplay)
+    }
+
+    // ## Display Components
+    app.component(`${prefix}Badge`, Badge)
+    app.component(`${prefix}Dialog`, Dialog)
+    app.component(`${prefix}Image`, Image)
+    app.component(`${prefix}Avatar`, Avatar)
+    app.component(`${prefix}AvatarGroup`, AvatarGroup)
+    app.component(`${prefix}Tabs`, Tabs)
+
+    // ## Form Components
     app.component(`${prefix}Input`, Input)
+    app.component(`${prefix}Textarea`, Textarea)
+    app.component(`${prefix}FormField`, FormField)
+    app.component(`${prefix}InputField`, InputField)
     app.component(`${prefix}SelectBox`, SelectBox)
     app.component(`${prefix}RadioGroup`, RadioGroup)
     app.component(`${prefix}CheckboxGroup`, CheckboxGroup)
     app.component(`${prefix}Switch`, Switch)
     app.component(`${prefix}FileUpload`, FileUpload)
-    app.component(`${prefix}Textarea`, Textarea)
+    app.component(`${prefix}TextareaField`, TextareaField)
     app.component(`${prefix}Slider`, Slider)
+    app.component(`${prefix}Password`, Password)
     app.component(`${prefix}FormFields`, FormFields)
+
+    // ## Action Components
+    app.component(`${prefix}Button`, Button)
+    app.component(`${prefix}ButtonGroup`, ButtonGroup)
+    app.component(`${prefix}Link`, Link)
+    app.component(`${prefix}LinkGroup`, LinkGroup)
     app.component(`${prefix}FloatButton`, FloatButton)
-    app.component(`${prefix}Dialog`, Dialog)
     app.component(`${prefix}Dropdown`, Dropdown)
-    app.component(`${prefix}Image`, Image)
-    app.component(`${prefix}Avatar`, Avatar)
-    app.component(`${prefix}AvatarGroup`, AvatarGroup)
-    app.component(`${prefix}Badge`, Badge)
   }
 }
 export * from './types'

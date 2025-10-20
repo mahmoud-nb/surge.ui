@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { computed, h, Fragment, Comment, Text } from 'vue'
-import Input from './Input.vue'
+import Input from './InputField.vue'
 import SelectBox from './SelectBox.vue'
 import RadioGroup from './RadioGroup.vue'
 import CheckboxGroup from '../molecules/CheckboxGroup.vue'
 import Switch from '../molecules/Switch.vue'
 import FileUpload from './FileUpload.vue'
-import Textarea from '../molecules/Textarea.vue'
+import Textarea from './TextareaField.vue'
 import Slider from '../molecules/Slider.vue'
 import type { AccessibilityProps, Size } from '@/types'
 

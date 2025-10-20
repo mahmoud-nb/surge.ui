@@ -44,11 +44,11 @@ export default defineConfig({
               {
                 text: '# Formulaires', 
                 items: [
-                  { text: 'Input', link: '/components/input' },
+                  { text: 'InputField', link: '/components/inputfield' },
                   { text: 'SelectBox', link: '/components/selectbox' },
                   { text: 'RadioGroup', link: '/components/radiogroup' },
                   { text: 'CheckboxGroup', link: '/components/checkboxgroup' },
-                  { text: 'Textarea', link: '/components/textarea' },
+                  { text: 'TextareaField', link: '/components/textareafield' },
                   { text: 'FileUpload', link: '/components/fileupload' },
                   { text: 'Range', link: '/components/range' },
                   { text: 'Switch', link: '/components/switch' },
@@ -108,11 +108,11 @@ export default defineConfig({
               {
                 text: '# Forms', 
                 items: [
-                  { text: 'Input', link: '/en/components/input' },
+                  { text: 'InputField', link: '/en/components/inputfield' },
                   { text: 'SelectBox', link: '/en/components/selectbox' },
                   { text: 'RadioGroup', link: '/en/components/radiogroup' },
                   { text: 'CheckboxGroup', link: '/en/components/checkboxgroup' },
-                  { text: 'Textarea', link: '/en/components/textarea' },
+                  { text: 'TextareaField', link: '/en/components/textareafield' },
                   { text: 'FileUpload', link: '/en/components/fileupload' },
                   { text: 'Range', link: '/en/components/range' },
                   { text: 'Switch', link: '/en/components/switch' },

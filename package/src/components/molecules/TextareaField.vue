@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { computed, ref, useId, useAttrs } from 'vue'
 import FormField from '../atoms/FormField.vue'
-import BaseTextarea from '../atoms/BaseTextarea.vue';
+import Textarea from '../atoms/Textarea.vue';
 import type { FormFieldProps } from '../atoms/FormField.vue'
-import type { BaseTextareaProps } from '../atoms/BaseTextarea.vue'
+import type { TextareaProps } from '../atoms/Textarea.vue'
 
-export type TextareaProps = FormFieldProps & BaseTextareaProps
+export type TextareaFieldProps = FormFieldProps & TextareaProps
 
-const props = withDefaults(defineProps<TextareaProps>(), {
+const props = withDefaults(defineProps<TextareaFieldProps>(), {
   size: 'md',
   state: 'default',
   disabled: false,
@@ -38,7 +38,7 @@ const attrs = useAttrs()
 const fieldId = 'textarea-' + useId()
 const textareaId = computed(() => attrs.id as string || fieldId)
 
-const baseTextareaProps = computed(() => {
+const textareaProps = computed(() => {
   const { label, message, value, ...rest } = props
   return rest
 })
@@ -52,15 +52,15 @@ const handleKeydown = (event: KeyboardEvent) => emit('keydown', event)
 const handleKeyup = (event: KeyboardEvent) => emit('keyup', event)
 
 // Méthodes exposées
-const baseTextareaRef = ref<InstanceType<typeof BaseTextarea>>()
+const textareaRef = ref<InstanceType<typeof Textarea>>()
 
-const focus = () => baseTextareaRef.value?.focus()
-const select = () => baseTextareaRef.value?.select()
+const focus = () => textareaRef.value?.focus()
+const select = () => textareaRef.value?.select()
 
 defineExpose({
   focus,
   select,
-  textareaRef: baseTextareaRef?.value?.textareaRef
+  textareaRef: textareaRef?.value?.textareaRef
 })
 </script>
 
@@ -74,12 +74,12 @@ defineExpose({
     :disabled="disabled"
   >
     <template #default="{ messageId }">
-      <BaseTextarea
-        ref="baseTextareaRef"
+      <Textarea
+        ref="textareaRef"
         :id="textareaId"
         :value="modelValue"
         :aria-describedby="messageId"
-        v-bind="{ ...baseTextareaProps }"
+        v-bind="{ ...textareaProps }"
 
         @input="handleInput"
         @change="handleChange"

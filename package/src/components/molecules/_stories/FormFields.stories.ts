@@ -1,13 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import { UserIcon, AtSymbolIcon, LockClosedIcon, BuildingOfficeIcon } from '@heroicons/vue/24/outline'
 import FormFields from '../FormFields.vue'
-import Input from '../Input.vue'
+import InputField from '../InputField.vue'
 import SelectBox from '@/components/molecules/SelectBox.vue'
 import RadioGroup from '@/components/molecules/RadioGroup.vue'
 import CheckboxGroup from '@/components/molecules/CheckboxGroup.vue'
 import Switch from '@/components/molecules/Switch.vue'
 import FileUpload from '@/components/molecules/FileUpload.vue'
-import Textarea from '@/components/molecules/Textarea.vue'
+import TextareaField from '@/components/molecules/TextareaField.vue'
 import Slider from '@/components/molecules/Slider.vue'
 import Button from '@/components/atoms/Button.vue'
 
@@ -78,18 +78,18 @@ const accountTypes = [
 
 export const Default: Story = {
   render: () => ({
-    components: { FormFields, Input, SelectBox, Switch },
+    components: { FormFields, InputField, SelectBox, Switch },
     setup() {
       return { basicOptions, AtSymbolIcon, LockClosedIcon }
     },
     template: `
       <FormFields style="width: 400px;">
-        <Input 
+        <InputField 
           label="Nom complet"
           placeholder="Entrez votre nom"
           required
         />
-        <Input 
+        <InputField 
           type="email"
           label="Email"
           placeholder="nom@exemple.com"
@@ -113,7 +113,7 @@ export const Default: Story = {
 
 export const WithGaps: Story = {
   render: () => ({
-    components: { FormFields, Input, Switch },
+    components: { FormFields, InputField, Switch },
     setup() {
       return { AtSymbolIcon }
     },
@@ -122,8 +122,8 @@ export const WithGaps: Story = {
         <div>
           <h4 style="margin-bottom: 1rem;">Gap Small</h4>
           <FormFields gap="sm" style="width: 300px;">
-            <Input label="Nom" placeholder="Votre nom" />
-            <Input type="email" label="Email" placeholder="email@exemple.com" :prefixIcon="AtSymbolIcon" />
+            <InputField label="Nom" placeholder="Votre nom" />
+            <InputField type="email" label="Email" placeholder="email@exemple.com" :prefixIcon="AtSymbolIcon" />
             <Switch label="Newsletter" rightLabel="Oui" />
           </FormFields>
         </div>
@@ -131,8 +131,8 @@ export const WithGaps: Story = {
         <div>
           <h4 style="margin-bottom: 1rem;">Gap Medium (défaut)</h4>
           <FormFields gap="md" style="width: 300px;">
-            <Input label="Nom" placeholder="Votre nom" />
-            <Input type="email" label="Email" placeholder="email@exemple.com" :prefixIcon="AtSymbolIcon" />
+            <InputField label="Nom" placeholder="Votre nom" />
+            <InputField type="email" label="Email" placeholder="email@exemple.com" :prefixIcon="AtSymbolIcon" />
             <Switch label="Newsletter" rightLabel="Oui" />
           </FormFields>
         </div>
@@ -140,8 +140,8 @@ export const WithGaps: Story = {
         <div>
           <h4 style="margin-bottom: 1rem;">Gap Large</h4>
           <FormFields gap="lg" style="width: 300px;">
-            <Input label="Nom" placeholder="Votre nom" />
-            <Input type="email" label="Email" placeholder="email@exemple.com" :prefixIcon="AtSymbolIcon" />
+            <InputField label="Nom" placeholder="Votre nom" />
+            <InputField type="email" label="Email" placeholder="email@exemple.com" :prefixIcon="AtSymbolIcon" />
             <Switch label="Newsletter" rightLabel="Oui" />
           </FormFields>
         </div>
@@ -149,8 +149,8 @@ export const WithGaps: Story = {
         <div>
           <h4 style="margin-bottom: 1rem;">Gap Extra Large</h4>
           <FormFields gap="xl" style="width: 300px;">
-            <Input label="Nom" placeholder="Votre nom" />
-            <Input type="email" label="Email" placeholder="email@exemple.com" :prefixIcon="AtSymbolIcon" />
+            <InputField label="Nom" placeholder="Votre nom" />
+            <InputField type="email" label="Email" placeholder="email@exemple.com" :prefixIcon="AtSymbolIcon" />
             <Switch label="Newsletter" rightLabel="Oui" />
           </FormFields>
         </div>
@@ -161,7 +161,7 @@ export const WithGaps: Story = {
 
 export const ForcedSize: Story = {
   render: () => ({
-    components: { FormFields, Input, SelectBox, Textarea },
+    components: { FormFields, InputField, SelectBox, TextareaField },
     setup() {
       return { basicOptions }
     },
@@ -170,27 +170,27 @@ export const ForcedSize: Story = {
         <div>
           <h4 style="margin-bottom: 1rem;">Taille Small forcée</h4>
           <FormFields size="sm" style="width: 300px;">
-            <Input label="Nom" placeholder="Petit champ" />
+            <InputField label="Nom" placeholder="Petit champ" />
             <SelectBox :options="basicOptions" label="Sélection" placeholder="Petit select" />
-            <Textarea label="Message" placeholder="Petit textarea" />
+            <TextareaField label="Message" placeholder="Petit textarea" />
           </FormFields>
         </div>
         
         <div>
           <h4 style="margin-bottom: 1rem;">Taille Medium forcée</h4>
           <FormFields size="md" style="width: 300px;">
-            <Input label="Nom" placeholder="Champ moyen" />
+            <InputField label="Nom" placeholder="Champ moyen" />
             <SelectBox :options="basicOptions" label="Sélection" placeholder="Select moyen" />
-            <Textarea label="Message" placeholder="Textarea moyen" />
+            <TextareaField label="Message" placeholder="Textarea moyen" />
           </FormFields>
         </div>
         
         <div>
           <h4 style="margin-bottom: 1rem;">Taille Large forcée</h4>
           <FormFields size="lg" style="width: 300px;">
-            <Input label="Nom" placeholder="Grand champ" />
+            <InputField label="Nom" placeholder="Grand champ" />
             <SelectBox :options="basicOptions" label="Sélection" placeholder="Grand select" />
-            <Textarea label="Message" placeholder="Grand textarea" />
+            <TextareaField label="Message" placeholder="Grand textarea" />
           </FormFields>
         </div>
       </div>
@@ -200,7 +200,7 @@ export const ForcedSize: Story = {
 
 export const Horizontal: Story = {
   render: () => ({
-    components: { FormFields, Input, SelectBox },
+    components: { FormFields, InputField, SelectBox },
     setup() {
       return { countryOptions }
     },
@@ -208,12 +208,12 @@ export const Horizontal: Story = {
       <div style="width: 100%; max-width: 800px;">
         <h4 style="margin-bottom: 1rem;">Direction horizontale</h4>
         <FormFields direction="horizontal" gap="md">
-          <Input 
+          <InputField 
             label="Prénom"
             placeholder="Votre prénom"
             required
           />
-          <Input 
+          <InputField 
             label="Nom"
             placeholder="Votre nom"
             required
@@ -231,7 +231,7 @@ export const Horizontal: Story = {
 
 export const WithSections: Story = {
   render: () => ({
-    components: { FormFields, Input, SelectBox, RadioGroup, Switch, Button },
+    components: { FormFields, InputField, SelectBox, RadioGroup, Switch, Button },
     setup() {
       return { countryOptions, accountTypes, AtSymbolIcon, LockClosedIcon }
     },
@@ -248,14 +248,14 @@ export const WithSections: Story = {
           </div>
         </template>
 
-        <Input 
+        <InputField 
           label="Nom complet"
           placeholder="Entrez votre nom complet"
           :prefixIcon="UserIcon"
           required
         />
         
-        <Input 
+        <InputField 
           type="email"
           label="Adresse email"
           placeholder="nom@exemple.com"
@@ -263,7 +263,7 @@ export const WithSections: Story = {
           required
         />
         
-        <Input 
+        <InputField 
           type="password"
           label="Mot de passe"
           placeholder="••••••••"
@@ -311,7 +311,7 @@ export const WithSections: Story = {
 
 export const SectionGaps: Story = {
   render: () => ({
-    components: { FormFields, Input, Button },
+    components: { FormFields, InputField, Button },
     template: `
       <div style="display: flex; flex-direction: column; gap: 3rem; align-items: flex-start;">
         <div>
@@ -320,8 +320,8 @@ export const SectionGaps: Story = {
             <template #head>
               <h3 style="margin: 0; color: #374151;">Informations personnelles</h3>
             </template>
-            <Input label="Nom" placeholder="Votre nom" />
-            <Input label="Email" placeholder="votre@email.com" />
+            <InputField label="Nom" placeholder="Votre nom" />
+            <InputField label="Email" placeholder="votre@email.com" />
             <template #footer>
               <Button variant="primary" block>Sauvegarder</Button>
             </template>
@@ -334,8 +334,8 @@ export const SectionGaps: Story = {
             <template #head>
               <h3 style="margin: 0; color: #374151;">Informations personnelles</h3>
             </template>
-            <Input label="Nom" placeholder="Votre nom" />
-            <Input label="Email" placeholder="votre@email.com" />
+            <InputField label="Nom" placeholder="Votre nom" />
+            <InputField label="Email" placeholder="votre@email.com" />
             <template #footer>
               <Button variant="primary" block>Sauvegarder</Button>
             </template>
@@ -348,8 +348,8 @@ export const SectionGaps: Story = {
             <template #head>
               <h3 style="margin: 0; color: #374151;">Informations personnelles</h3>
             </template>
-            <Input label="Nom" placeholder="Votre nom" />
-            <Input label="Email" placeholder="votre@email.com" />
+            <InputField label="Nom" placeholder="Votre nom" />
+            <InputField label="Email" placeholder="votre@email.com" />
             <template #footer>
               <Button variant="primary" block>Sauvegarder</Button>
             </template>
@@ -362,7 +362,7 @@ export const SectionGaps: Story = {
 
 export const ContactForm: Story = {
   render: () => ({
-    components: { FormFields, Input, SelectBox, Textarea, CheckboxGroup, Button },
+    components: { FormFields, InputField, SelectBox, TextareaField, CheckboxGroup, Button },
     setup() {
       const subjects = [
         { value: 'support', label: 'Support technique' },
@@ -397,14 +397,14 @@ export const ContactForm: Story = {
           </div>
         </template>
 
-        <Input 
+        <InputField 
           label="Nom complet"
           placeholder="Entrez votre nom complet"
           :prefixIcon="UserIcon"
           required
         />
         
-        <Input 
+        <InputField 
           type="email"
           label="Adresse email"
           placeholder="nom@exemple.com"
@@ -419,7 +419,7 @@ export const ContactForm: Story = {
           required
         />
         
-        <Textarea 
+        <TextareaField 
           label="Message"
           placeholder="Décrivez votre demande en détail..."
           :maxLength="1000"
@@ -449,7 +449,7 @@ export const ContactForm: Story = {
 
 export const UserProfile: Story = {
   render: () => ({
-    components: { FormFields, Input, SelectBox, RadioGroup, Switch, Slider, Button },
+    components: { FormFields, InputField, SelectBox, RadioGroup, Switch, Slider, Button },
     setup() {
       const languages = [
         { value: 'fr', label: 'Français' },
@@ -484,14 +484,14 @@ export const UserProfile: Story = {
           </div>
         </template>
 
-        <Input 
+        <InputField 
           label="Nom d'utilisateur"
           placeholder="Choisissez un nom d'utilisateur"
           :prefixIcon="UserIcon"
           required
         />
         
-        <Input 
+        <InputField 
           type="email"
           label="Email"
           placeholder="votre@email.com"
@@ -553,7 +553,7 @@ export const UserProfile: Story = {
 
 export const HorizontalLayout: Story = {
   render: () => ({
-    components: { FormFields, Input, SelectBox },
+    components: { FormFields, InputField, SelectBox },
     setup() {
       return { countryOptions }
     },
@@ -564,13 +564,13 @@ export const HorizontalLayout: Story = {
             <h3 style="margin: 0; color: #374151; text-align: center;">Adresse de livraison</h3>
           </template>
 
-          <Input 
+          <InputField 
             label="Prénom"
             placeholder="Votre prénom"
             required
           />
           
-          <Input 
+          <InputField 
             label="Nom"
             placeholder="Votre nom"
             required
@@ -598,7 +598,7 @@ export const HorizontalLayout: Story = {
 
 export const ComplexForm: Story = {
   render: () => ({
-    components: { FormFields, Input, SelectBox, RadioGroup, CheckboxGroup, Switch, FileUpload, Textarea, Slider, Button },
+    components: { FormFields, InputField, SelectBox, RadioGroup, CheckboxGroup, Switch, FileUpload, TextareaField, Slider, Button },
     setup() {
       const skills = [
         { value: 'js', label: 'JavaScript' },
@@ -642,13 +642,13 @@ export const ComplexForm: Story = {
         </template>
 
         <!-- Informations personnelles -->
-        <Input 
+        <InputField 
           label="Nom complet"
           placeholder="Entrez votre nom complet"
           required
         />
         
-        <Input 
+        <InputField 
           type="email"
           label="Email professionnel"
           placeholder="nom@exemple.com"
@@ -712,7 +712,7 @@ export const ComplexForm: Story = {
         />
         
         <!-- Lettre de motivation -->
-        <Textarea 
+        <TextareaField 
           label="Lettre de motivation"
           placeholder="Expliquez pourquoi vous souhaitez rejoindre notre équipe..."
           :maxLength="2000"
@@ -757,7 +757,7 @@ export const ComplexForm: Story = {
 
 export const WithAccessibility: Story = {
   render: () => ({
-    components: { FormFields, Input, Switch, Button },
+    components: { FormFields, InputField, Switch, Button },
     template: `
       <div style="display: flex; flex-direction: column; gap: 3rem; align-items: flex-start;">
         <div>
@@ -767,7 +767,7 @@ export const WithAccessibility: Story = {
             role="form" 
             aria-label="Paramètres de compte"
           >
-            <Input label="Nom d'utilisateur" placeholder="Votre nom d'utilisateur" />
+            <InputField label="Nom d'utilisateur" placeholder="Votre nom d'utilisateur" />
             <Switch label="Notifications" rightLabel="Activées" />
           </FormFields>
         </div>
@@ -788,8 +788,8 @@ export const WithAccessibility: Story = {
               </div>
             </template>
             
-            <Input type="password" label="Mot de passe actuel" placeholder="••••••••" />
-            <Input type="password" label="Nouveau mot de passe" placeholder="••••••••" />
+            <InputField type="password" label="Mot de passe actuel" placeholder="••••••••" />
+            <InputField type="password" label="Nouveau mot de passe" placeholder="••••••••" />
             <Switch label="Authentification à deux facteurs" rightLabel="Activée" />
             
             <template #footer>
@@ -804,7 +804,7 @@ export const WithAccessibility: Story = {
 
 export const ResponsiveForm: Story = {
   render: () => ({
-    components: { FormFields, Input, SelectBox, Button },
+    components: { FormFields, InputField, SelectBox, Button },
     setup() {
       return { countryOptions }
     },
@@ -818,19 +818,19 @@ export const ResponsiveForm: Story = {
             </div>
           </template>
 
-          <Input 
+          <InputField 
             label="Prénom"
             placeholder="Prénom"
             required
           />
           
-          <Input 
+          <InputField 
             label="Nom"
             placeholder="Nom"
             required
           />
           
-          <Input 
+          <InputField 
             label="Code postal"
             placeholder="12345"
             required

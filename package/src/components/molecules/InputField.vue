@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { computed, ref, useId, useAttrs } from 'vue'
 import FormField from '../atoms/FormField.vue'
-import BaseInput from '../atoms/BaseInput.vue'
+import Input from '../atoms/Input.vue'
 import type { FormFieldProps } from '../atoms/FormField.vue'
-import type { BaseInputProps } from '../atoms/BaseInput.vue'
+import type { InputProps } from '../atoms/Input.vue'
 
-export type InputProps = FormFieldProps & BaseInputProps
+export type InputFieldProps = FormFieldProps & InputProps
 
-const props = withDefaults(defineProps<InputProps>(), {
+const props = withDefaults(defineProps<InputFieldProps>(), {
   type: 'text',
   size: 'md',
   state: 'default',
@@ -37,7 +37,7 @@ const attrs = useAttrs()
 const fieldId = 'input-' + useId()
 const inputId = computed(() => attrs.id as string || fieldId)
 
-const baseInputProps = computed(() => {
+const inputProps = computed(() => {
   const { label, message, value, ...rest } = props
   return rest
 })
@@ -51,15 +51,15 @@ const handleKeydown = (event: KeyboardEvent) => emit('keydown', event)
 const handleKeyup = (event: KeyboardEvent) => emit('keyup', event)
 
 // Méthodes exposées
-const baseInputRef = ref<InstanceType<typeof BaseInput>>()
+const inputRef = ref<InstanceType<typeof Input>>()
 
-const focus = () => baseInputRef.value?.focus()
-const select = () => baseInputRef.value?.select()
+const focus = () => inputRef.value?.focus()
+const select = () => inputRef.value?.select()
 
 defineExpose({
   focus,
   select,
-  inputRef: baseInputRef?.value?.inputRef
+  inputRef: inputRef?.value?.inputRef
 })
 </script>
 
@@ -73,12 +73,12 @@ defineExpose({
     :disabled="disabled"
   >
     <template #default="{ messageId }">
-      <BaseInput 
-        ref="baseInputRef"
+      <Input 
+        ref="inputRef"
         :id="inputId"
         :value="modelValue"
         :aria-describedby="messageId"
-        v-bind="{ ...baseInputProps }"
+        v-bind="{ ...inputProps }"
         @input="handleInput"
         @change="handleChange"
         @focus="handleFocus"

@@ -1,10 +1,10 @@
 <script setup lang="ts">
-defineOptions({ inheritAttrs: false }) // name: 'BaseTextarea'
-
 import { computed, ref, watch, nextTick, useAttrs } from 'vue'
 import type { AccessibilityProps, Size, State } from '@/types'
 
-export interface BaseTextareaProps extends AccessibilityProps {
+defineOptions({ inheritAttrs: false }) // name: 'Textarea'
+
+export interface TextareaProps extends AccessibilityProps {
   size?: Size
   state?: State
   disabled?: boolean
@@ -23,7 +23,7 @@ export interface BaseTextareaProps extends AccessibilityProps {
   wrap?: 'soft' | 'hard' | 'off'
 }
 
-const props = withDefaults(defineProps<BaseTextareaProps>(), {
+const props = withDefaults(defineProps<TextareaProps>(), {
   size: 'md',
   state: 'default',
   disabled: false,
@@ -38,7 +38,6 @@ const props = withDefaults(defineProps<BaseTextareaProps>(), {
   wrap: 'soft'
 })
 
-// Utilisation de defineModel pour v-model
 const modelValue = defineModel<string>({ default: '' })
 
 const emit = defineEmits<{

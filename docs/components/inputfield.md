@@ -1,6 +1,6 @@
-# Input
+# InputField
 
-Composant Input flexible avec support complet des types HTML, préfixes/suffixes, alignement de texte, direction RTL/LTR et accessibilité selon les normes W3C.
+Composant InputField flexible avec support complet des types HTML, préfixes/suffixes, alignement de texte, direction RTL/LTR et accessibilité selon les normes W3C.
 
 ## Exemples d'utilisation
 
@@ -10,28 +10,28 @@ Composant Input flexible avec support complet des types HTML, préfixes/suffixes
   <div class="demo-section">
     <h4>Types d'input supportés</h4>
     <div class="demo-inputs">
-      <SuInput type="text" label="Texte" placeholder="Entrez du texte" />
-      <SuInput type="email" label="Email" placeholder="nom@exemple.com" />
-      <SuInput type="password" label="Mot de passe" placeholder="••••••••" />
-      <SuInput type="number" label="Nombre" placeholder="123" />
-      <SuInput type="tel" label="Téléphone" placeholder="+33 1 23 45 67 89" />
-      <SuInput type="url" label="URL" placeholder="https://exemple.com" />
-      <SuInput type="search" label="Recherche" placeholder="Rechercher..." />
-      <SuInput type="date" label="Date" />
+      <SuInputField type="text" label="Texte" placeholder="Entrez du texte" />
+      <SuInputField type="email" label="Email" placeholder="nom@exemple.com" />
+      <SuInputField type="password" label="Mot de passe" placeholder="••••••••" />
+      <SuInputField type="number" label="Nombre" placeholder="123" />
+      <SuInputField type="tel" label="Téléphone" placeholder="+33 1 23 45 67 89" />
+      <SuInputField type="url" label="URL" placeholder="https://exemple.com" />
+      <SuInputField type="search" label="Recherche" placeholder="Rechercher..." />
+      <SuInputField type="date" label="Date" />
     </div>
   </div>
 </div>
 
 ```vue
 <template>
-  <SuInput type="text" label="Texte" placeholder="Entrez du texte" />
-  <SuInput type="email" label="Email" placeholder="nom@exemple.com" />
-  <SuInput type="password" label="Mot de passe" placeholder="••••••••" />
-  <SuInput type="number" label="Nombre" placeholder="123" />
-  <SuInput type="tel" label="Téléphone" placeholder="+33 1 23 45 67 89" />
-  <SuInput type="url" label="URL" placeholder="https://exemple.com" />
-  <SuInput type="search" label="Recherche" placeholder="Rechercher..." />
-  <SuInput type="date" label="Date" />
+  <SuInputField type="text" label="Texte" placeholder="Entrez du texte" />
+  <SuInputField type="email" label="Email" placeholder="nom@exemple.com" />
+  <SuInputField type="password" label="Mot de passe" placeholder="••••••••" />
+  <SuInputField type="number" label="Nombre" placeholder="123" />
+  <SuInputField type="tel" label="Téléphone" placeholder="+33 1 23 45 67 89" />
+  <SuInputField type="url" label="URL" placeholder="https://exemple.com" />
+  <SuInputField type="search" label="Recherche" placeholder="Rechercher..." />
+  <SuInputField type="date" label="Date" />
 </template>
 ```
 
@@ -41,20 +41,20 @@ Composant Input flexible avec support complet des types HTML, préfixes/suffixes
   <div class="demo-section">
     <h4>Préfixes et suffixes texte</h4>
     <div class="demo-inputs">
-      <SuInput label="Prix" placeholder="0.00" suffix="€" type="number" />
-      <SuInput label="Email" placeholder="nom" suffix="@entreprise.com" />
-      <SuInput label="Site web" placeholder="monsite" prefix="https://" suffix=".com" />
-      <SuInput label="Téléphone" placeholder="123456789" prefix="+33" />
+      <SuInputField label="Prix" placeholder="0.00" suffix="€" type="number" />
+      <SuInputField label="Email" placeholder="nom" suffix="@entreprise.com" />
+      <SuInputField label="Site web" placeholder="monsite" prefix="https://" suffix=".com" />
+      <SuInputField label="Téléphone" placeholder="123456789" prefix="+33" />
     </div>
   </div>
 </div>
 
 ```vue
 <template>
-  <SuInput label="Prix" placeholder="0.00" suffix="€" type="number" />
-  <SuInput label="Email" placeholder="nom" suffix="@entreprise.com" />
-  <SuInput label="Site web" placeholder="monsite" prefix="https://" suffix=".com" />
-  <SuInput label="Téléphone" placeholder="123456789" prefix="+33" />
+  <SuInputField label="Prix" placeholder="0.00" suffix="€" type="number" />
+  <SuInputField label="Email" placeholder="nom" suffix="@entreprise.com" />
+  <SuInputField label="Site web" placeholder="monsite" prefix="https://" suffix=".com" />
+  <SuInputField label="Téléphone" placeholder="123456789" prefix="+33" />
 </template>
 ```
 
@@ -64,10 +64,10 @@ Composant Input flexible avec support complet des types HTML, préfixes/suffixes
   <div class="demo-section">
     <h4>Préfixes et suffixes avec icônes</h4>
     <div class="demo-inputs">
-      <SuInput label="Recherche" placeholder="Rechercher..." :prefixIcon="MagnifyingGlassIcon" />
-      <SuInput label="Email" placeholder="votre@email.com" :prefixIcon="AtSymbolIcon" />
-      <SuInput label="Mot de passe" placeholder="••••••••" type="password" :prefixIcon="LockClosedIcon" />
-      <SuInput label="Utilisateur" placeholder="Nom d'utilisateur" :prefixIcon="UserIcon" />
+      <SuInputField label="Recherche" placeholder="Rechercher..." :prefixIcon="MagnifyingGlassIcon" />
+      <SuInputField label="Email" placeholder="votre@email.com" :prefixIcon="AtSymbolIcon" />
+      <SuInputField label="Mot de passe" placeholder="••••••••" type="password" :prefixIcon="LockClosedIcon" />
+      <SuInputField label="Utilisateur" placeholder="Nom d'utilisateur" :prefixIcon="UserIcon" />
     </div>
   </div>
 </div>
@@ -83,10 +83,10 @@ import {
 </script>
 
 <template>
-  <SuInput label="Recherche" placeholder="Rechercher..." :prefixIcon="MagnifyingGlassIcon" />
-  <SuInput label="Email" placeholder="votre@email.com" :prefixIcon="AtSymbolIcon" />
-  <SuInput label="Mot de passe" placeholder="••••••••" type="password" :prefixIcon="LockClosedIcon" />
-  <SuInput label="Utilisateur" placeholder="Nom d'utilisateur" :prefixIcon="UserIcon" />
+  <SuInputField label="Recherche" placeholder="Rechercher..." :prefixIcon="MagnifyingGlassIcon" />
+  <SuInputField label="Email" placeholder="votre@email.com" :prefixIcon="AtSymbolIcon" />
+  <SuInputField label="Mot de passe" placeholder="••••••••" type="password" :prefixIcon="LockClosedIcon" />
+  <SuInputField label="Utilisateur" placeholder="Nom d'utilisateur" :prefixIcon="UserIcon" />
 </template>
 ```
 
@@ -96,18 +96,18 @@ import {
   <div class="demo-section">
     <h4>Tailles disponibles</h4>
     <div class="demo-inputs">
-      <SuInput size="sm" label="Small" placeholder="Petit input" />
-      <SuInput size="md" label="Medium" placeholder="Input moyen" />
-      <SuInput size="lg" label="Large" placeholder="Grand input" />
+      <SuInputField size="sm" label="Small" placeholder="Petit input" />
+      <SuInputField size="md" label="Medium" placeholder="Input moyen" />
+      <SuInputField size="lg" label="Large" placeholder="Grand input" />
     </div>
   </div>
 </div>
 
 ```vue
 <template>
-  <SuInput size="sm" label="Small" placeholder="Petit input" />
-  <SuInput size="md" label="Medium" placeholder="Input moyen" />
-  <SuInput size="lg" label="Large" placeholder="Grand input" />
+  <SuInputField size="sm" label="Small" placeholder="Petit input" />
+  <SuInputField size="md" label="Medium" placeholder="Input moyen" />
+  <SuInputField size="lg" label="Large" placeholder="Grand input" />
 </template>
 ```
 
@@ -117,26 +117,26 @@ import {
   <div class="demo-section">
     <h4>États de validation</h4>
     <div class="demo-inputs">
-      <SuInput 
+      <SuInputField 
         label="État par défaut" 
         placeholder="Entrez du texte"
         message="Texte d'aide pour guider l'utilisateur"
       />
-      <SuInput 
+      <SuInputField 
         state="error"
         label="État d'erreur" 
         placeholder="Entrez du texte"
         message="Ce champ contient une erreur"
         value="valeur incorrecte"
       />
-      <SuInput 
+      <SuInputField 
         state="success"
         label="État de succès" 
         placeholder="Entrez du texte"
         message="Valeur valide !"
         value="valeur correcte"
       />
-      <SuInput 
+      <SuInputField 
         state="warning"
         label="État d'avertissement" 
         placeholder="Entrez du texte"
@@ -149,24 +149,24 @@ import {
 
 ```vue
 <template>
-  <SuInput 
+  <SuInputField 
     label="État par défaut" 
     placeholder="Entrez du texte"
     message="Texte d'aide pour guider l'utilisateur"
   />
-  <SuInput 
+  <SuInputField 
     state="error"
     label="État d'erreur" 
     placeholder="Entrez du texte"
     message="Ce champ contient une erreur"
   />
-  <SuInput 
+  <SuInputField 
     state="success"
     label="État de succès" 
     placeholder="Entrez du texte"
     message="Valeur valide !"
   />
-  <SuInput 
+  <SuInputField 
     state="warning"
     label="État d'avertissement" 
     placeholder="Entrez du texte"
@@ -181,18 +181,18 @@ import {
   <div class="demo-section">
     <h4>Alignement du texte</h4>
     <div class="demo-inputs">
-      <SuInput label="Alignement à gauche" textAlign="left" value="Aligné à gauche" />
-      <SuInput label="Alignement centré" textAlign="center" value="Centré" />
-      <SuInput label="Alignement à droite" textAlign="right" value="Aligné à droite" />
+      <SuInputField label="Alignement à gauche" textAlign="left" value="Aligné à gauche" />
+      <SuInputField label="Alignement centré" textAlign="center" value="Centré" />
+      <SuInputField label="Alignement à droite" textAlign="right" value="Aligné à droite" />
     </div>
   </div>
 </div>
 
 ```vue
 <template>
-  <SuInput label="Alignement à gauche" textAlign="left" value="Aligné à gauche" />
-  <SuInput label="Alignement centré" textAlign="center" value="Centré" />
-  <SuInput label="Alignement à droite" textAlign="right" value="Aligné à droite" />
+  <SuInputField label="Alignement à gauche" textAlign="left" value="Aligné à gauche" />
+  <SuInputField label="Alignement centré" textAlign="center" value="Centré" />
+  <SuInputField label="Alignement à droite" textAlign="right" value="Aligné à droite" />
 </template>
 ```
 
@@ -202,17 +202,17 @@ import {
   <div class="demo-section">
     <h4>Support des langues RTL</h4>
     <div class="demo-inputs" dir="rtl">
-      <SuInput 
+      <SuInputField 
         label="Texte arabe (RTL)"
         placeholder="أدخل النص هنا"
         value="النص العربي"
       />
-      <SuInput 
+      <SuInputField 
         label="Texte hébreu (RTL)"
         placeholder="הכנס טקסט כאן"
         value="טקסט עברי"
       />
-      <SuInput 
+      <SuInputField 
         label="Prix (RTL avec suffixe)"
         placeholder="0.00"
         suffix="$"
@@ -225,17 +225,17 @@ import {
 ```vue
 <template>
   <div dir="rtl">
-    <SuInput 
+    <SuInputField 
       label="Texte arabe (RTL)"
       placeholder="أدخل النص هنا"
       value="النص العربي"
     />
-    <SuInput 
+    <SuInputField 
       label="Texte hébreu (RTL)"
       placeholder="הכנס טקסט כאן"
       value="טקסט עברי"
     />
-    <SuInput 
+    <SuInputField 
       label="Prix (RTL avec suffixe)"
       placeholder="0.00"
       suffix="$"
@@ -251,18 +251,18 @@ import {
   <div class="demo-section">
     <h4>États spéciaux</h4>
     <div class="demo-inputs">
-      <SuInput 
+      <SuInputField 
         label="Input désactivé"
         :disabled="true"
         value="Valeur désactivée"
       />
-      <SuInput 
+      <SuInputField 
         label="Input en lecture seule"
         :readonly="true"
         helpText="Cette valeur ne peut pas être modifiée"
         value="Valeur en lecture seule"
       />
-      <SuInput 
+      <SuInputField 
         label="Champ requis"
         :required="true"
         placeholder="Ce champ est obligatoire"
@@ -273,18 +273,18 @@ import {
 
 ```vue
 <template>
-  <SuInput 
+  <SuInputField 
     label="Input désactivé"
     :disabled="true"
     value="Valeur désactivée"
   />
-  <SuInput 
+  <SuInputField 
     label="Input en lecture seule"
     :readonly="true"
     helpText="Cette valeur ne peut pas être modifiée"
     value="Valeur en lecture seule"
   />
-  <SuInput 
+  <SuInputField 
     label="Champ requis"
     :required="true"
     placeholder="Ce champ est obligatoire"
@@ -376,7 +376,7 @@ Le composant Input respecte les normes WCAG 2.1 AA et les bonnes pratiques W3C :
 
 ```vue
 <!-- Input avec validation et accessibilité -->
-<SuInput 
+<SuInputField 
   type="email"
   label="Adresse email"
   :required="true"
@@ -387,7 +387,7 @@ Le composant Input respecte les normes WCAG 2.1 AA et les bonnes pratiques W3C :
 />
 
 <!-- Input avec gestion d'erreur -->
-<SuInput 
+<SuInputField 
   type="password"
   label="Mot de passe"
   :required="true"
@@ -399,7 +399,7 @@ Le composant Input respecte les normes WCAG 2.1 AA et les bonnes pratiques W3C :
 />
 
 <!-- Input avec préfixe et validation numérique -->
-<SuInput 
+<SuInputField 
   type="number"
   label="Âge"
   :required="true"
@@ -452,7 +452,7 @@ const validateForm = () => {
 
 <template>
   <form @submit.prevent="validateForm">
-    <SuInput 
+    <SuInputField 
       type="email"
       label="Email"
       :required="true"
@@ -464,7 +464,7 @@ const validateForm = () => {
       v-model:value="email"
     />
     
-    <SuInput 
+    <SuInputField 
       type="password"
       label="Mot de passe"
       :required="true"
@@ -499,7 +499,7 @@ const formattedPrice = computed({
 </script>
 
 <template>
-  <SuInput 
+  <SuInputField 
     type="number"
     label="Prix"
     suffix="€"

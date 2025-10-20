@@ -1,6 +1,6 @@
-# Textarea
+# Textarea Field
 
-Composant Textarea flexible avec compteur de caractères, ajustement automatique de hauteur et conformité aux normes W3C d'accessibilité.
+Composant **TextareaField** flexible avec compteur de caractères, ajustement automatique de hauteur et conformité aux normes W3C d'accessibilité.
 
 ## Exemples d'utilisation
 
