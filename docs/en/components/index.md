@@ -9,6 +9,7 @@ This section contains the documentation for all components available in the Surg
 - [AvatarGroup](/en/components/avatargroup) - Avatar group with overflow management
 - [Badge](/en/components/badge) - Modern badge component with variants and icons
 - [Dialog](/en/components/dialog) - Versatile modal/drawer component
+- [Tabs](/components/tabs) - tabs component
 
 ## Forms
 

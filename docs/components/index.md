@@ -9,6 +9,7 @@ Cette section contient la documentation de tous les composants disponibles dans 
 - [AvatarGroup](/components/avatargroup) - Groupe d'avatars avec gestion du surplus
 - [Badge](/components/badge) - Composant badge moderne avec variantes et icônes
 - [Dialog](/components/dialog) - Composant modale/tiroir polyvalent
+- [Tabs](/components/tabs) - Composant tabs
 
 ## Formulaires
 
