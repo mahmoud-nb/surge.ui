@@ -14,7 +14,7 @@ const meta: Meta<typeof SliderField> = {
   },
   tags: ['autodocs'],
   argTypes: {
-    value: {
+    modelValue: {
       control: 'object',
       description: 'Valeur du slider (nombre ou tableau pour dual-range)'
     },
@@ -78,11 +78,6 @@ const meta: Meta<typeof SliderField> = {
       control: 'boolean',
       description: 'Afficher les labels min/max'
     },
-    dir: {
-      control: { type: 'select' },
-      options: ['ltr', 'rtl', 'auto'],
-      description: 'Direction du texte'
-    },
     label: {
       control: 'text',
       description: 'Label du slider'
@@ -96,6 +91,21 @@ const meta: Meta<typeof SliderField> = {
 
 export default meta
 type Story = StoryObj<typeof meta>
+
+const Template: Story = {
+  render: (args) => ({
+    components: { Switch },
+    setup() {
+      const value = ref(args.modelValue)
+      return { args, value }
+    },
+    template: `
+      <div style="width: 400px;">
+        <Switch v-model="value" v-bind="args" />
+      </div>
+    `
+  })
+}
 
 export const Default: Story = {
   args: {
@@ -243,17 +253,35 @@ export const WithSlots: Story = {
   })
 }
 
-export const RTLSupport: Story = {
+export const RTLSupport2: Story = {
   args: {
     label: 'مستوى الصوت (RTL)',
     min: 0,
     max: 100,
     modelValue: 70,
-    dir: 'rtl',
     tooltip: 'top',
     showLabels: true,
     formatValue: (value: number) => `${value}%`
   }
+}
+
+export const RTLSupport: Story = {
+  render: () => ({
+    components: { SliderField },
+    template: `
+      <div dir="rtl" style="display: flex; flex-direction: column; gap: 2rem; width: 400px;">
+        <SliderField 
+          label="مستوى الصوت (RTL)"
+          :min="0"
+          :max="100"
+          :modelValue="70"
+          tooltip="top"
+          showLabels
+          formatValue="(value) => \`\${value}%\`"
+        />
+      </div>
+    `
+  })
 }
 
 export const Sizes: Story = {

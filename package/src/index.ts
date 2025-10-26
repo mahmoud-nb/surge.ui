@@ -25,14 +25,15 @@ import Avatar from './components/atoms/Avatar.vue'
 import AvatarGroup from './components/molecules/AvatarGroup.vue'
 import Dropdown from './components/molecules/Dropdown.vue'
 import Badge from './components/atoms/Badge.vue'
-import Tabs from './components/molecules/Tabs.vue'  
+import Tabs from './components/molecules/Tabs.vue' 
+import Progress from './components/atoms/Progress.vue' 
 import * as accessibility from './utils/accessibility'
 
 // Export des composants et de la fonction d'installation
 export { Input, Textarea, Switch }
 export { FormField, Password, ButtonGroup, InputField, SelectBoxField, RadioGroupField, CheckboxGroupField, RangeField, SwitchField, FileUploadField, TextareaField, SliderField, FormFields }
 export { Link, LinkGroup, Button, FloatButton, Dialog, Dropdown }
-export { Image, Avatar, AvatarGroup, Badge, Tabs }
+export { Image, Avatar, AvatarGroup, Badge, Tabs, Progress }
 export { accessibility }
 
 export interface SurgeUpDSOptions {
@@ -195,6 +196,7 @@ export default {
     app.component(`${prefix}Avatar`, Avatar)
     app.component(`${prefix}AvatarGroup`, AvatarGroup)
     app.component(`${prefix}Tabs`, Tabs)
+    app.component(`${prefix}Progress`, Progress)
 
     // ## Form Components
     app.component(`${prefix}Input`, Input)

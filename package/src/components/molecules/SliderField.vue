@@ -5,7 +5,7 @@ import FormField from '@/components/atoms/FormField.vue'
 import type { AccessibilityProps, Orientation, Size, State } from '@/types'
 
 export interface SliderFieldProps extends AccessibilityProps {
-  value?: number | [number, number]
+  //value?: number | [number, number]
   min?: number
   max?: number
   step?: number
@@ -26,7 +26,6 @@ export interface SliderFieldProps extends AccessibilityProps {
   ariaInvalid?: boolean
   ariaRequired?: boolean
   ariaValueText?: string
-  dir?: 'ltr' | 'rtl' | 'auto'
 }
 
 export interface Props extends Omit<SliderFieldProps, 'value'> {}
@@ -45,8 +44,7 @@ const props = withDefaults(defineProps<Props>(), {
   marks: () => [],
   showValue: true,
   showTicks: false,
-  showLabels: false,
-  dir: 'auto'
+  showLabels: false
 })
 
 // Utilisation de defineModel pour v-model
@@ -114,13 +112,11 @@ const formatValue = (value: number): string => {
 
 // Calcul des pourcentages
 const minPercent = computed(() => {
-  const percent = ((minValue.value - props.min) / (props.max - props.min)) * 100
-  return props.dir === 'rtl' ? 100 - percent : percent
+  return ((minValue.value - props.min) / (props.max - props.min)) * 100
 })
 
 const maxPercent = computed(() => {
-  const percent = ((maxValue.value - props.min) / (props.max - props.min)) * 100
-  return props.dir === 'rtl' ? 100 - percent : percent
+  return ((maxValue.value - props.min) / (props.max - props.min)) * 100
 })
 
 // Classes CSS
@@ -133,8 +129,7 @@ const containerClasses = computed(() => [
     'su-slider-container--disabled': props.disabled,
     'su-slider-container--readonly': props.readonly,
     'su-slider-container--dual': isDualRange.value,
-    'su-slider-container--dragging': isDragging.value,
-    'su-slider-container--rtl': props.dir === 'rtl'
+    'su-slider-container--dragging': isDragging.value
   }
 ])
 
@@ -200,9 +195,6 @@ const getValueFromPosition = (clientX: number, clientY: number): number => {
   
   if (props.orientation === 'horizontal') {
     percent = (clientX - rect.left) / rect.width
-    if (props.dir === 'rtl') {
-      percent = 1 - percent
-    }
   } else {
     percent = 1 - (clientY - rect.top) / rect.height
   }
@@ -370,8 +362,7 @@ const ticks = computed(() => {
   return Array.from({ length: tickCount }, (_, i) => {
     const value = props.min + (i * tickStep)
     const percent = ((value - props.min) / (props.max - props.min)) * 100
-    const adjustedPercent = props.dir === 'rtl' ? 100 - percent : percent
-    return { value: snapToStep(value), percent: adjustedPercent }
+    return { value: snapToStep(value), percent }
   })
 })
 
@@ -383,8 +374,7 @@ const processedMarks = computed(() => {
     .filter(mark => mark >= props.min && mark <= props.max)
     .map(mark => {
       const percent = ((mark - props.min) / (props.max - props.min)) * 100
-      const adjustedPercent = props.dir === 'rtl' ? 100 - percent : percent
-      return { value: mark, percent: adjustedPercent }
+      return { value: mark, percent }
     })
 })
 
@@ -411,7 +401,7 @@ defineExpose({
     :disabled="disabled"
   >
     <template #default="{ fieldId: id, messageId }">
-      <div :class="containerClasses" :dir="dir">
+      <div :class="containerClasses">
         <!-- Slot before -->
         <div v-if="$slots.before" class="su-slider-before">
           <slot name="before" />
@@ -590,10 +580,6 @@ defineExpose({
   &--disabled {
     opacity: 0.6;
     cursor: not-allowed;
-  }
-  
-  &--rtl {
-    direction: rtl;
   }
 }
 

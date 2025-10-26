@@ -10,6 +10,7 @@ Cette section contient la documentation de tous les composants disponibles dans 
 - [Badge](/components/badge) - Composant badge moderne avec variantes et icônes
 - [Dialog](/components/dialog) - Composant modale/tiroir polyvalent
 - [Tabs](/components/tabs) - Composant tabs
+- [Progress](/components/progress) - Composant Progress
 
 ## Formulaires
 
@@ -36,3 +37,9 @@ Cette section contient la documentation de tous les composants disponibles dans 
 ## Navigation
 
 *Composants de navigation à venir...*
+
+
+---
+
+
+~ 📘 Dernière mise à jour : {{new Date('2025-10-25').toLocaleDateString()}} ~

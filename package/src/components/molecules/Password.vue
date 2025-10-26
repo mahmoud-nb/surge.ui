@@ -2,7 +2,7 @@
 import { computed, ref, watch } from 'vue'
 import { EyeIcon, EyeSlashIcon } from '@heroicons/vue/24/outline'
 import Input from './InputField.vue'
-import type { InputProps } from './InputField.vue'
+import type { InputProps } from '../atoms/Input.vue'
 
 export interface PasswordValidation {
   isValid: boolean
