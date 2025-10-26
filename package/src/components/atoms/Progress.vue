@@ -204,6 +204,18 @@ $su-progress-size-lg: 1rem;
       }
     }
   }
+
+  // Mode sombre
+  @media (prefers-color-scheme: dark) {
+    .su-progress__label {
+      color: $gray-300;
+    }
+
+    .su-progress__bar {
+      /* adjust default background for dark mode */
+      // background-color: lighten($gray-700, 20%);
+    }
+  }
 }
 
 /* Keyframes: slide the block from left to right in the track */

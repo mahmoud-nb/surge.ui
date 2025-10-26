@@ -33,10 +33,6 @@ const emit = defineEmits<{
   'suffix-icon-click': [event: MouseEvent]
 }>()
 
-const attrs = useAttrs()
-const fieldId = 'input-' + useId()
-const inputId = computed(() => attrs.id as string || fieldId)
-
 const inputProps = computed(() => {
   const { label, message, value, ...rest } = props
   return rest
@@ -65,17 +61,16 @@ defineExpose({
 
 <template>
   <FormField
-    :fieldId="inputId"
     :label="label"
     :message="message"
     :state="state"
     :required="required"
     :disabled="disabled"
   >
-    <template #default="{ messageId }">
+    <template #default="{ fieldId, messageId }">
       <Input 
         ref="inputRef"
-        :id="inputId"
+        :id="fieldId"
         :value="modelValue"
         :aria-describedby="messageId"
         v-bind="{ ...inputProps }"

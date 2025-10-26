@@ -14,7 +14,6 @@ export interface InputProps extends AccessibilityProps {
   readonly?: boolean
   required?: boolean
   placeholder?: string
-  value?: string | number
   prefix?: string
   suffix?: string
   prefixIcon?: Component
@@ -39,8 +38,6 @@ const props = withDefaults(defineProps<InputProps>(), {
   textAlign: 'default'
 })
 
-const modelValue = defineModel<string | number>({ default: '' })
-
 const emit = defineEmits<{
   input: [event: Event]
   change: [event: Event]
@@ -54,8 +51,9 @@ const emit = defineEmits<{
   'suffix-icon-click': [event: MouseEvent]
 }>()
 
+const modelValue = defineModel<string | number>({ default: '' })
+
 const attrs = useAttrs()
-const inputRef = ref<HTMLInputElement>()
 const inputId = computed(() => (attrs.id as string) || undefined)
 
 // Détection des écouteurs d'événements pour l'accessibilité conditionnelle
@@ -156,6 +154,8 @@ const handleSuffixIconClick = (event: MouseEvent | KeyboardEvent) => {
   emit('suffix-icon-click', event as MouseEvent)
 }
 
+// Référence au champ input
+const inputRef = ref<HTMLInputElement>()
 const focus = () => inputRef.value?.focus()
 const select = () => inputRef.value?.select()
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { State } from '@/types'
-import { computed } from 'vue'
+import { computed, useAttrs, useId } from 'vue'
 
 export interface FormFieldProps {
   fieldId?: string
@@ -14,11 +14,16 @@ export interface FormFieldProps {
 const props = withDefaults(defineProps<FormFieldProps>(), {
   state: 'default',
   required: false,
-  disabled: false
+  disabled: false,
+  message: ''
 })
 
+const attrs = useAttrs()
+const uniqueId = 'su-form-field-' + useId()
+const formFieldId = computed(() => (attrs.id as string) || props.fieldId || uniqueId)
+
 // Génération de l'ID du message si nécessaire
-const messageId = computed(() => props.message ? `${props.fieldId}-message` : undefined)
+const messageId = computed(() => props.message ? `${formFieldId.value}-message` : undefined)
 
 // Attributs ARIA pour le message
 const messageAriaAttributes = computed(() => {
@@ -53,7 +58,7 @@ const labelClasses = computed(() => [
     <!-- Label -->
     <label 
       v-if="label" 
-      :for="fieldId" 
+      :for="formFieldId" 
       :class="labelClasses"
     >
       {{ label }}
@@ -62,7 +67,7 @@ const labelClasses = computed(() => [
 
     <!-- Slot pour l'élément de formulaire -->
     <slot 
-      :fieldId="fieldId"
+      :fieldId="formFieldId"
       :messageId="messageId"
     />
 

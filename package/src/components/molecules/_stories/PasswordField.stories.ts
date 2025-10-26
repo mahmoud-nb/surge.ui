@@ -1,11 +1,11 @@
 import { ref } from 'vue'
 import type { Meta, StoryObj } from '@storybook/vue3'
 import { LockClosedIcon } from '@heroicons/vue/24/outline'
-import Password from '../Password.vue'
+import PasswordField from '../PasswordField.vue'
 
-const meta: Meta<typeof Password> = {
-  title: 'Molecules/Password',
-  component: Password,
+const meta: Meta<typeof PasswordField> = {
+  title: 'Molecules/PasswordField',
+  component: PasswordField,
   parameters: {
     layout: 'centered',
     docs: {
@@ -100,6 +100,7 @@ export const WithIcon: Story = {
 
 export const CustomRules: Story = {
   args: {
+    label: 'Mot de passe sécurisé',
     placeholder: 'Entrez un mot de passe très sécurisé',
     showProgress: true,
     rules: {
@@ -114,6 +115,7 @@ export const CustomRules: Story = {
 
 export const SimpleRules: Story = {
   args: {
+    label: 'Mot de passe simple',
     placeholder: 'Entrez un mot de passe simple',
     showProgress: true,
     rules: {
@@ -128,6 +130,7 @@ export const SimpleRules: Story = {
 
 export const WithoutToggle: Story = {
   args: {
+    label: 'Mot de passe sans toggle',
     placeholder: 'Mot de passe toujours masqué',
     showToggle: false,
     showProgress: true
@@ -136,22 +139,100 @@ export const WithoutToggle: Story = {
 
 export const WithoutProgress: Story = {
   args: {
+    label: 'Mot de passe sans barre',
     placeholder: 'Pas de barre de progression',
     showProgress: false
   }
 }
 
+export const WithCustomMessage: Story = {
+  render: () => ({
+    components: { PasswordField },
+    setup() {
+      const password = ref('')
+      
+      return { password, LockClosedIcon }
+    },
+    template: `
+      <div style="width: 400px;">
+        <PasswordField 
+          label="Mot de passe avec message personnalisé"
+          placeholder="Entrez votre mot de passe"
+          :prefixIcon="LockClosedIcon"
+          showProgress
+          v-model="password"
+        >
+          <template #default="{ validation, isValid, score, satisfied, unsatisfied, details }">
+            <div style="margin-top: 0.5rem;">
+              <div v-if="!password" style="color: #6b7280; font-size: 0.875rem;">
+                Entrez un mot de passe pour voir les critères
+              </div>
+              <div v-else>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                  <span style="font-weight: 600; font-size: 0.875rem;" :style="{ color: isValid ? '#059669' : '#dc2626' }">
+                    {{ isValid ? '✓ Mot de passe valide' : '⚠ Mot de passe invalide' }}
+                  </span>
+                  <span style="font-size: 0.75rem; color: #6b7280;">
+                    Force : {{ score }}%
+                  </span>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; font-size: 0.75rem;">
+                  <div style="display: flex; align-items: center; gap: 0.25rem;">
+                    <span :style="{ color: details.length.satisfied ? '#059669' : '#dc2626' }">
+                      {{ details.length.satisfied ? '✓' : '✗' }}
+                    </span>
+                    <span>{{ details.length.current }}/{{ details.length.required }} caractères</span>
+                  </div>
+                  
+                  <div style="display: flex; align-items: center; gap: 0.25rem;">
+                    <span :style="{ color: details.uppercase.satisfied ? '#059669' : '#dc2626' }">
+                      {{ details.uppercase.satisfied ? '✓' : '✗' }}
+                    </span>
+                    <span>{{ details.uppercase.current }}/{{ details.uppercase.required }} majuscules</span>
+                  </div>
+                  
+                  <div style="display: flex; align-items: center; gap: 0.25rem;">
+                    <span :style="{ color: details.lowercase.satisfied ? '#059669' : '#dc2626' }">
+                      {{ details.lowercase.satisfied ? '✓' : '✗' }}
+                    </span>
+                    <span>{{ details.lowercase.current }}/{{ details.lowercase.required }} minuscules</span>
+                  </div>
+                  
+                  <div style="display: flex; align-items: center; gap: 0.25rem;">
+                    <span :style="{ color: details.digits.satisfied ? '#059669' : '#dc2626' }">
+                      {{ details.digits.satisfied ? '✓' : '✗' }}
+                    </span>
+                    <span>{{ details.digits.current }}/{{ details.digits.required }} chiffres</span>
+                  </div>
+                  
+                  <div style="display: flex; align-items: center; gap: 0.25rem;">
+                    <span :style="{ color: details.specialChars.satisfied ? '#059669' : '#dc2626' }">
+                      {{ details.specialChars.satisfied ? '✓' : '✗' }}
+                    </span>
+                    <span>{{ details.specialChars.current }}/{{ details.specialChars.required }} spéciaux</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </template>
+        </Password>
+      </div>
+    `
+  })
+}
+
 export const States: Story = {
   render: () => ({
-    components: { Password },
+    components: { PasswordField },
     template: `
       <div style="display: flex; flex-direction: column; gap: 2rem; width: 400px;">
-        <Password 
+        <PasswordField 
           label="État par défaut"
           placeholder="Entrez votre mot de passe"
           showProgress
         />
-        <Password 
+        <PasswordField 
           state="error"
           label="État d'erreur"
           placeholder="Mot de passe invalide"
@@ -159,7 +240,7 @@ export const States: Story = {
           showProgress
           message="Le mot de passe ne respecte pas les critères"
         />
-        <Password 
+        <PasswordField 
           state="success"
           label="État de succès"
           placeholder="Mot de passe valide"
@@ -167,7 +248,7 @@ export const States: Story = {
           showProgress
           message="Mot de passe sécurisé !"
         />
-        <Password 
+        <PasswordField 
           state="warning"
           label="État d'avertissement"
           placeholder="Mot de passe moyen"
@@ -182,22 +263,22 @@ export const States: Story = {
 
 export const Sizes: Story = {
   render: () => ({
-    components: { Password },
+    components: { PasswordField },
     template: `
       <div style="display: flex; flex-direction: column; gap: 2rem; width: 400px;">
-        <Password 
+        <PasswordField 
           size="sm"
           label="Small"
           placeholder="Petit champ password"
           showProgress
         />
-        <Password 
+        <PasswordField 
           size="md"
           label="Medium"
           placeholder="Champ password moyen"
           showProgress
         />
-        <Password 
+        <PasswordField 
           size="lg"
           label="Large"
           placeholder="Grand champ password"
@@ -210,6 +291,7 @@ export const Sizes: Story = {
 
 export const Disabled: Story = {
   args: {
+    label: 'Password désactivé',
     disabled: true,
     modelValue: 'MotDePasseDesactive123!',
     showProgress: true,
@@ -219,6 +301,7 @@ export const Disabled: Story = {
 
 export const Readonly: Story = {
   args: {
+    label: 'Password en lecture seule',
     readonly: true,
     modelValue: 'MotDePasseLectureSeule123!',
     showProgress: true,
@@ -228,6 +311,7 @@ export const Readonly: Story = {
 
 export const Required: Story = {
   args: {
+    label: 'Mot de passe requis',
     required: true,
     placeholder: 'Ce champ est obligatoire',
     showProgress: true,
@@ -237,7 +321,7 @@ export const Required: Story = {
 
 export const RegistrationForm: Story = {
   render: () => ({
-    components: { Password },
+    components: { PasswordField },
     setup() {
       const password = ref('')
       const confirmPassword = ref('')
@@ -252,7 +336,7 @@ export const RegistrationForm: Story = {
       <form style="max-width: 500px; margin: 0 auto; display: flex; flex-direction: column; gap: 1.5rem;">
         <h2>Créer un compte</h2>
         
-        <Password 
+        <PasswordField 
           label="Mot de passe"
           placeholder="Choisissez un mot de passe sécurisé"
           :prefixIcon="LockClosedIcon"
@@ -302,7 +386,7 @@ export const RegistrationForm: Story = {
           </template>
         </Password>
         
-        <Password 
+        <PasswordField 
           label="Confirmer le mot de passe"
           placeholder="Confirmez votre mot de passe"
           :prefixIcon="LockClosedIcon"
@@ -324,12 +408,12 @@ export const RegistrationForm: Story = {
 
 export const ValidationStates: Story = {
   render: () => ({
-    components: { Password },
+    components: { PasswordField },
     template: `
       <div style="display: flex; flex-direction: column; gap: 2rem; width: 400px;">
         <div>
           <h4 style="margin-bottom: 0.5rem;">Mot de passe faible</h4>
-          <Password 
+          <PasswordField 
             label="Faible"
             modelValue="123"
             showProgress
@@ -338,7 +422,7 @@ export const ValidationStates: Story = {
         
         <div>
           <h4 style="margin-bottom: 0.5rem;">Mot de passe moyen</h4>
-          <Password 
+          <PasswordField 
             label="Moyen"
             modelValue="Password1"
             showProgress
@@ -347,7 +431,7 @@ export const ValidationStates: Story = {
         
         <div>
           <h4 style="margin-bottom: 0.5rem;">Mot de passe bon</h4>
-          <Password 
+          <PasswordField 
             label="Bon"
             modelValue="MyPassword123"
             showProgress
@@ -356,7 +440,7 @@ export const ValidationStates: Story = {
         
         <div>
           <h4 style="margin-bottom: 0.5rem;">Mot de passe fort</h4>
-          <Password 
+          <PasswordField 
             label="Fort"
             modelValue="MySecurePassword123!"
             showProgress
@@ -369,12 +453,12 @@ export const ValidationStates: Story = {
 
 export const DifferentRules: Story = {
   render: () => ({
-    components: { Password },
+    components: { PasswordField },
     template: `
       <div style="display: flex; flex-direction: column; gap: 2rem; width: 400px;">
         <div>
           <h4 style="margin-bottom: 0.5rem;">Règles basiques</h4>
-          <Password 
+          <PasswordField 
             label="Mot de passe basique"
             placeholder="6 caractères minimum"
             showProgress
@@ -384,7 +468,7 @@ export const DifferentRules: Story = {
         
         <div>
           <h4 style="margin-bottom: 0.5rem;">Règles standard</h4>
-          <Password 
+          <PasswordField 
             label="Mot de passe standard"
             placeholder="8 caractères avec variété"
             showProgress
@@ -394,7 +478,7 @@ export const DifferentRules: Story = {
         
         <div>
           <h4 style="margin-bottom: 0.5rem;">Règles strictes</h4>
-          <Password 
+          <PasswordField 
             label="Mot de passe strict"
             placeholder="12 caractères très sécurisé"
             showProgress
@@ -408,7 +492,7 @@ export const DifferentRules: Story = {
 
 export const Interactive: Story = {
   render: () => ({
-    components: { Password },
+    components: { PasswordField },
     setup() {
       const password = ref('')
       const validation = ref(null)
@@ -427,7 +511,7 @@ export const Interactive: Story = {
       <div style="max-width: 500px; margin: 0 auto;">
         <h3 style="margin-bottom: 1.5rem;">Test interactif du composant Password</h3>
         
-        <Password 
+        <PasswordField 
           label="Mot de passe interactif"
           placeholder="Tapez pour voir la validation en temps réel"
           showProgress

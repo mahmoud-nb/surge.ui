@@ -292,7 +292,7 @@ const plans = [
 <div class="component-demo">
   <div class="demo-section">
     <h4>Tailles disponibles</h4>
-    <div class="demo-inputs">
+    <div class="demo-inputs" style="display: flex; flex-direction: column; gap: 24px;">
       <SuSelectBoxField 
         :options="[
           { value: 'sm', label: 'Small' },
@@ -340,7 +340,7 @@ const plans = [
 <div class="component-demo">
   <div class="demo-section">
     <h4>États de validation</h4>
-    <div class="demo-inputs">
+    <div class="demo-inputs" style="display: flex; flex-direction: column; gap: 24px;">
       <SuSelectBoxField 
         :options="[
           { value: 'valid', label: 'Option valide' },
@@ -417,7 +417,7 @@ const plans = [
 <div class="component-demo">
   <div class="demo-section">
     <h4>Support des langues RTL</h4>
-    <div class="demo-inputs">
+    <div class="demo-inputs" dir="rtl" style="display: flex; flex-direction: column; gap: 24px;">
       <SuSelectBoxField 
         :options="[
           { value: 'ar', label: 'العربية' },

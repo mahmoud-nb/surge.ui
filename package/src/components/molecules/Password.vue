@@ -2,11 +2,15 @@
 import { computed, ref, watch } from 'vue'
 import { EyeIcon, EyeSlashIcon } from '@heroicons/vue/24/outline'
 import Input from './InputField.vue'
+import Progress from '../atoms/Progress.vue'
 import type { InputProps } from '../atoms/Input.vue'
+
+defineOptions({ inheritAttrs: false })
 
 export interface PasswordValidation {
   isValid: boolean
   score: number // 0-100
+  progressState?: 'empty' | 'weak' | 'fair' | 'good' | 'strong'
   satisfied: string[]
   unsatisfied: string[]
   details: {
@@ -51,9 +55,6 @@ const props = withDefaults(defineProps<Props>(), {
   })
 })
 
-// Utilisation de defineModel pour v-model
-const modelValue = defineModel<string>({ default: '' })
-
 const emit = defineEmits<{
   validation: [validation: PasswordValidation]
   input: [event: Event]
@@ -63,7 +64,11 @@ const emit = defineEmits<{
   keydown: [event: KeyboardEvent]
   keyup: [event: KeyboardEvent]
   'toggle-visibility': [visible: boolean]
+  'update:modelValue': [value: string]
 }>()
+
+// Utilisation de defineModel pour v-model
+const modelValue = defineModel<string>({ default: '' })
 
 // État local
 const isVisible = ref(false)
@@ -132,6 +137,10 @@ const validatePassword = (password: string): PasswordValidation => {
   const totalRules = Object.values(checks).filter(check => check.required > 0).length
   const satisfiedRules = satisfied.length
   const score = totalRules > 0 ? Math.round((satisfiedRules / totalRules) * 100) : 100
+  const progressState = !password ? 'empty' :
+                   score < 25 ? 'weak' :
+                   score < 50 ? 'fair' :
+                   score < 75 ? 'good' : 'strong'
   
   // Validation globale
   const isValid = unsatisfied.length === 0 && password.length > 0
@@ -139,6 +148,7 @@ const validatePassword = (password: string): PasswordValidation => {
   return {
     isValid,
     score,
+    progressState,
     satisfied,
     unsatisfied,
     details: checks
@@ -160,17 +170,16 @@ const computedState = computed(() => {
 })
 
 // Classes pour la barre de progression
-const progressClasses = computed(() => [
-  'su-password-progress',
-  `su-password-progress--${computedState.value}`,
-  {
-    'su-password-progress--empty': !modelValue.value,
-    'su-password-progress--weak': validation.value.score < 25,
-    'su-password-progress--fair': validation.value.score >= 25 && validation.value.score < 50,
-    'su-password-progress--good': validation.value.score >= 50 && validation.value.score < 75,
-    'su-password-progress--strong': validation.value.score >= 75
+const progressColor = computed(() => {
+  const progressColorMap: Record<string, string> = {
+    empty: '#d1d5db', // gris
+    weak: '#ef4444',  // rouge
+    fair: '#f59e0b',  // orange
+    good: '#eab308',  // jaune
+    strong: '#10b981' // vert
   }
-])
+  return progressColorMap[validation.value.progressState || 'empty']
+})
 
 // Gestionnaires d'événements
 const toggleVisibility = () => {
@@ -185,6 +194,8 @@ const handleSuffixIconClick = () => {
 }
 
 const handleInput = (event: Event) => {
+  //console.log('Password handleInput', (event.target as HTMLInputElement).value)
+  modelValue.value = (event.target as HTMLInputElement).value
   emit('input', event)
 }
 
@@ -221,7 +232,6 @@ watch(validation, (newValidation) => {
 
 <template>
   <div class="su-password-wrapper">
-    <!-- Input avec toggle de visibilité -->
     <Input
       v-model="modelValue"
       :type="inputType"
@@ -235,8 +245,6 @@ watch(validation, (newValidation) => {
       :prefixIcon="prefixIcon"
       :suffixIcon="showToggle ? suffixIcon : undefined"
       :textAlign="textAlign"
-      :label="label"
-      :message="message"
       :ariaLabel="ariaLabel"
       :ariaDescribedBy="ariaDescribedBy"
       :ariaInvalid="ariaInvalid"
@@ -266,37 +274,13 @@ watch(validation, (newValidation) => {
       </template>
     </Input>
 
-    <!-- Barre de progression (si activée) -->
-    <div 
+    <Progress 
       v-if="showProgress && modelValue" 
-      class="su-password-progress-container"
-      role="progressbar"
-      :aria-valuenow="validation.score"
-      aria-valuemin="0"
-      aria-valuemax="100"
-      :aria-label="`Force du mot de passe : ${validation.score}%`"
-    >
-      <div 
-        :class="progressClasses"
-        :style="{ width: `${validation.score}%` }"
-      />
-      
-      <!-- Label de force (optionnel) -->
-      <div class="su-password-strength-label">
-        <span v-if="validation.score < 25" class="su-password-strength-text su-password-strength-text--weak">
-          Faible
-        </span>
-        <span v-else-if="validation.score < 50" class="su-password-strength-text su-password-strength-text--fair">
-          Moyen
-        </span>
-        <span v-else-if="validation.score < 75" class="su-password-strength-text su-password-strength-text--good">
-          Bon
-        </span>
-        <span v-else class="su-password-strength-text su-password-strength-text--strong">
-          Fort
-        </span>
-      </div>
-    </div>
+      size="sm" 
+      :color="progressColor" 
+      v-model="validation.score" 
+      :aria-label="`Force du mot de passe : ${validation.score}%`" 
+    />
 
     <!-- Message d'accessibilité pour les lecteurs d'écran -->
     <div 
@@ -322,151 +306,6 @@ watch(validation, (newValidation) => {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-}
-
-.su-password-progress-container {
-  position: relative;
-  height: 0.25rem;
-  background-color: $gray-200;
-  border-radius: 9999px;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.su-password-progress {
-  height: 100%;
-  border-radius: inherit;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  min-width: 0.25rem;
-  
-  &--empty {
-    width: 0 !important;
-  }
-  
-  &--weak {
-    background-color: $error-500;
-  }
-  
-  &--fair {
-    background-color: $warning-500;
-  }
-  
-  &--good {
-    background-color: $warning-400;
-  }
-  
-  &--strong {
-    background-color: $success-500;
-  }
-  
-  // États basés sur le state du composant
-  &--error {
-    background-color: $error-500;
-  }
-  
-  &--success {
-    background-color: $success-500;
-  }
-  
-  &--warning {
-    background-color: $warning-500;
-  }
-  
-  &--default {
-    background-color: $primary-500;
-  }
-}
-
-.su-password-strength-label {
-  position: absolute;
-  right: 0.5rem;
-  top: 50%;
-  transform: translateY(-50%);
-  pointer-events: none;
-}
-
-.su-password-strength-text {
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.025em;
-  
-  &--weak {
-    color: $error-600;
-  }
-  
-  &--fair {
-    color: $warning-600;
-  }
-  
-  &--good {
-    color: $warning-500;
-  }
-  
-  &--strong {
-    color: $success-600;
-  }
-}
-
-// Mode sombre
-@media (prefers-color-scheme: dark) {
-  .su-password-progress-container {
-    background-color: $gray-600;
-  }
-  
-  .su-password-progress {
-    &--weak {
-      background-color: $error-400;
-    }
-    
-    &--fair {
-      background-color: $warning-400;
-    }
-    
-    &--good {
-      background-color: $warning-300;
-    }
-    
-    &--strong {
-      background-color: $success-400;
-    }
-    
-    &--error {
-      background-color: $error-400;
-    }
-    
-    &--success {
-      background-color: $success-400;
-    }
-    
-    &--warning {
-      background-color: $warning-400;
-    }
-    
-    &--default {
-      background-color: $primary-400;
-    }
-  }
-  
-  .su-password-strength-text {
-    &--weak {
-      color: $error-400;
-    }
-    
-    &--fair {
-      color: $warning-400;
-    }
-    
-    &--good {
-      color: $warning-300;
-    }
-    
-    &--strong {
-      color: $success-400;
-    }
-  }
 }
 
 // Support de la réduction des animations
