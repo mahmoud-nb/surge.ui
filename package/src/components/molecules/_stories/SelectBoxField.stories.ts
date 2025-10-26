@@ -24,7 +24,7 @@ const meta: Meta<typeof SelectBoxField> = {
       control: 'object',
       description: 'Options organisées en groupes'
     },
-    value: {
+    modelValue: {
       control: 'text',
       description: 'Valeur sélectionnée'
     },
@@ -155,7 +155,9 @@ const createInteractiveStory = (args: any): Story => ({
       return { args, modelValue };
     },
     // On utilise v-model pour lier la ref locale au composant
-    template: '<SelectBoxField v-bind="args" v-model="modelValue" @change="args[\'onUpdate:value\']" />',
+    template: `<div style="width: 300px; min-height: 250px;">
+      <SelectBoxField v-bind="args" v-model="modelValue" @change="args[\'onUpdate:modelValue\']" />
+    </div>`,
   }),
   args,
 });

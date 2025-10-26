@@ -1,8 +1,9 @@
 <script setup lang="ts">
-defineOptions({ inheritAttrs: false })
 import { computed, ref, useAttrs } from 'vue'
 import type { Component } from 'vue'
 import type { Size, State, TextAlign, AccessibilityProps } from '@/types'
+
+defineOptions({ inheritAttrs: false })
 
 export type InputType = 'text' | 'email' | 'password' | 'number' | 'tel' | 'url' | 'search' | 'date' | 'time' | 'datetime-local' | 'month' | 'week'
 export interface InputProps extends AccessibilityProps {
