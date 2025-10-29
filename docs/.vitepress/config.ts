@@ -33,12 +33,15 @@ export default defineConfig({
               { 
                 text: '# Affichage', 
                 items: [
+                  { text: 'Heading', link: '/components/heading' },
+                  { text: 'Panel', link: '/components/panel' },
                   { text: 'Image', link: '/components/image' },
                   { text: 'Avatar', link: '/components/avatar' },
                   { text: 'AvatarGroup', link: '/components/avatargroup' },
                   { text: 'Badge', link: '/components/badge' },
                   { text: 'Dialog', link: '/components/dialog' },
                   { text: 'Tabs', link: '/components/tabs' },
+                  { text: 'Accordion', link: '/components/accordion' },
                   { text: 'Progress', link: '/components/progress' }
                 ]
               },
@@ -98,13 +101,16 @@ export default defineConfig({
               { 
                 text: '# Display', 
                 items: [
+                  { text: 'Heading', link: '/en/components/heading' },
+                  { text: 'Panel', link: '/en/components/panel' },
                   { text: 'Image', link: '/en/components/image' },
                   { text: 'Avatar', link: '/en/components/avatar' },
                   { text: 'AvatarGroup', link: '/en/components/avatargroup' },
                   { text: 'Badge', link: '/en/components/badge' },
                   { text: 'Dialog', link: '/en/components/dialog' },
                   { text: 'Tabs', link: '/en/components/tabs' },
-                  { text: 'Progress', link: '/en/components/progress'}
+                  { text: 'Accordion', link: '/en/components/accordion' },
+                  { text: 'Progress', link: '/en/components/progress' }
                 ]
               },
               {
