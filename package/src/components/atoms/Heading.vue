@@ -3,7 +3,7 @@ import { computed } from 'vue'
 
 export interface HeadingProps {
   level?: number | string
-  color?: 'primary' | 'secondary' | 'tertiary'
+  variant?: 'primary' | 'secondary' | 'tertiary'
   truncate?: boolean
 }
 
@@ -16,7 +16,7 @@ const props = defineProps({
       return (n >= 1 && n <= 6) || value === 'div'
     }
   },
-  color: {
+  variant: {
     type: String,
     default: 'primary',
     validator: (val: string) => ['primary', 'secondary', 'tertiary'].includes(val)
@@ -36,13 +36,19 @@ const tag = computed(() => (props.level === 'div' ? 'div' : `h${props.level}`))
     class="su-heading"
     :class="[
       `su-heading--level-${level}`,
-      `su-heading--${color}`,
+      `su-heading--${variant}`,
       { 'su-heading--with-slots': $slots.before || $slots.after, 'su-heading--truncate': truncate }
     ]"
   >
-    <slot name="before" />
+    <div v-if="$slots.before" class="su-heading__slot">
+      <slot name="before" />
+    </div>
+
     <slot />
-    <slot name="after" />
+    
+    <div v-if="$slots.after" class="su-heading__slot">
+      <slot name="after" />
+    </div>
   </component>
 </template>
 
@@ -50,34 +56,25 @@ const tag = computed(() => (props.level === 'div' ? 'div' : `h${props.level}`))
 @use '../../styles/variables' as *;
 
 .su-heading {
+  $self: &;
   color: var(--su-heading-color, $text-primary);
   font-weight: 600;
   margin: 0;
+
+  &__slot {
+    display: inline-flex;
+  }
 
   &--with-slots {
     display: flex;
     align-items: center;
     gap: $spacing-2;
 
-    & > *:first-child {
-      margin-left: 0;
-    }
-
-    & > *:last-child {
-      margin-right: 0;
-    }
-
-    & > svg {
+    svg {
       display: inline-block;
       width: 1.5rem;
       height: 1.5rem;
     }
-  }
-
-  &--truncate {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
   }
 
   &--primary {
@@ -90,6 +87,13 @@ const tag = computed(() => (props.level === 'div' ? 'div' : `h${props.level}`))
 
   &--tertiary {
     color: $text-tertiary;
+  }
+
+  &--truncate {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   // Dark mode
