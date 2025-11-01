@@ -4,8 +4,6 @@ Le composant `Accordion` permet d’afficher plusieurs sections de contenu repli
 Chaque section est gérée par un sous-composant `AccordionItem`, qui contient un `Heading` et un `Panel`.  
 Il est idéal pour présenter des informations hiérarchisées sans surcharger la page.
 
----
-
 ## ✨ Fonctionnalités
 
 - Ouvre ou ferme un ou plusieurs panneaux (`single` ou `multiple`)

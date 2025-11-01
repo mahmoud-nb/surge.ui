@@ -26,6 +26,7 @@ import Textarea from './components/atoms/Textarea.vue'
 import SelectBox from './components/atoms/SelectBox.vue'
 import RadioGroup from './components/atoms/RadioGroup.vue'
 import CheckboxGroup from './components/atoms/CheckboxGroup.vue'
+import FileUpload from './components/atoms/FileUpload.vue'
 import Switch from './components/atoms/Switch.vue'
 import Slider from './components/atoms/Slider.vue'
 import Password from './components/molecules/Password.vue'
@@ -49,7 +50,7 @@ import * as accessibility from './utils/accessibility'
 // Export des composants et de la fonction d'installation
 export { Heading, Panel, Image, Avatar, AvatarGroup, Badge, Tabs, Accordion, AccordionItem, Dialog, Progress }
 export { Link, LinkGroup, Button, ButtonGroup, FloatButton, Dropdown }
-export { Input, Textarea, SelectBox, RadioGroup, CheckboxGroup, Switch, Slider, Password }
+export { Input, Textarea, SelectBox, RadioGroup, CheckboxGroup, FileUpload, Switch, Slider, Password }
 export { InputField, SelectBoxField, RadioGroupField, CheckboxGroupField, RangeField, SwitchField, FileUploadField, TextareaField, SliderField }
 export { FormField, FormFields }
 export { accessibility }
@@ -234,6 +235,7 @@ export default {
     app.component(`${prefix}SelectBox`, SelectBox)
     app.component(`${prefix}RadioGroup`, RadioGroup)
     app.component(`${prefix}CheckboxGroup`, CheckboxGroup)
+    app.component(`${prefix}FileUpload`, FileUpload)
     app.component(`${prefix}Switch`, Switch)
     app.component(`${prefix}Slider`, Slider)
     
