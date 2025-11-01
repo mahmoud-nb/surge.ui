@@ -1,11 +1,15 @@
 import type { App } from 'vue'
 // ## Display Components ................................................
+import Heading from './components/atoms/Heading.vue'
+import Panel from './components/atoms/Panel.vue'
 import Image from './components/atoms/Image.vue'
 import Avatar from './components/atoms/Avatar.vue'
 import AvatarGroup from './components/molecules/AvatarGroup.vue'
 import Badge from './components/atoms/Badge.vue'
-import Dialog, { DialogDisplay } from './components/molecules/Dialog.vue'
-import Tabs from './components/molecules/Tabs.vue' 
+import Dialog, { DialogDisplay } from './components/organisms/Dialog.vue'
+import Tabs from './components/organisms/Tabs.vue' 
+import Accordion from './components/organisms/Accordion.vue'
+import AccordionItem from './components/molecules/AccordionItem.vue'
 import Progress from './components/atoms/Progress.vue' 
 
 // ## Action Components .................................................
@@ -43,7 +47,7 @@ import FormFields from './components/molecules/FormFields.vue'
 import * as accessibility from './utils/accessibility'
 
 // Export des composants et de la fonction d'installation
-export { Image, Avatar, AvatarGroup, Badge, Tabs, Dialog, Progress }
+export { Heading, Panel, Image, Avatar, AvatarGroup, Badge, Tabs, Accordion, AccordionItem, Dialog, Progress }
 export { Link, LinkGroup, Button, ButtonGroup, FloatButton, Dropdown }
 export { Input, Textarea, SelectBox, RadioGroup, CheckboxGroup, Switch, Slider, Password }
 export { InputField, SelectBoxField, RadioGroupField, CheckboxGroupField, RangeField, SwitchField, FileUploadField, TextareaField, SliderField }
@@ -204,12 +208,16 @@ export default {
     }
 
     // ## Display Components
+    app.component(`${prefix}Heading`, Heading)
+    app.component(`${prefix}Panel`, Panel)
     app.component(`${prefix}Badge`, Badge)
     app.component(`${prefix}Dialog`, Dialog)
     app.component(`${prefix}Image`, Image)
     app.component(`${prefix}Avatar`, Avatar)
     app.component(`${prefix}AvatarGroup`, AvatarGroup)
     app.component(`${prefix}Tabs`, Tabs)
+    app.component(`${prefix}Accordion`, Accordion)
+    app.component(`${prefix}AccordionItem`, AccordionItem)
     app.component(`${prefix}Progress`, Progress)
 
     // ## Action Components

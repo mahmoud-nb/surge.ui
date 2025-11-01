@@ -13,6 +13,7 @@ export interface LinkProps extends AccessibilityProps {
   rel?: string
   variant?: LinkVariant
   size?: LinkSize
+  block?: boolean
   underline?: LinkUnderline
   disabled?: boolean
   icon?: any
@@ -84,6 +85,7 @@ const linkClasses = computed(() => [
   {
     'su-link--disabled': props.disabled,
     'su-link--external': isExternalLink.value,
+    'su-link--block': props.block,
     'su-link--icon-only': props.icon && props.iconDisplay === 'only',
     'su-link--icon-right': props.icon && props.iconDisplay === 'right'
   }
@@ -194,6 +196,11 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel) {
     &:hover:not(&--disabled) {
       transform: none;
     }
+  }
+
+  &--block {
+    display: flex;
+    width: 100%;
   }
 
   // Tailles

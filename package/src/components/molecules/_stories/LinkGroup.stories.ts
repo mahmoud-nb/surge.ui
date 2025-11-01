@@ -61,10 +61,13 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
-  render: () => ({
+  render: (args) => ({
     components: { LinkGroup, Link },
+    setup() {
+      return { args }
+    },
     template: `
-      <LinkGroup>
+      <LinkGroup v-bind="args">
         <Link href="/home">Accueil</Link>
         <Link href="/about">À propos</Link>
         <Link href="/contact">Contact</Link>
@@ -292,9 +295,9 @@ export const Vertical: Story = {
         <div>
           <h4 style="margin-bottom: 1rem;">Menu connecté vertical</h4>
           <LinkGroup direction="vertical" gap="none" variant="primary">
-            <Link href="/overview">Vue d'ensemble</Link>
-            <Link href="/analytics">Analytics</Link>
-            <Link href="/reports">Rapports</Link>
+            <Link block href="/overview">Vue d'ensemble</Link>
+            <Link block href="/analytics">Analytics</Link>
+            <Link block href="/reports">Rapports</Link>
           </LinkGroup>
         </div>
       </div>
@@ -380,7 +383,7 @@ export const NavigationExamples: Story = {
   render: () => ({
     components: { LinkGroup, Link },
     setup() {
-      return { HomeIcon, UserIcon, CogIcon }
+      return { HomeIcon, UserIcon, CogIcon, QuestionMarkCircleIcon }
     },
     template: `
       <div style="display: flex; flex-direction: column; gap: 3rem; align-items: flex-start;">

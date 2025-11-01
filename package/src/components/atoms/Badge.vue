@@ -172,7 +172,7 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !slots.def
     
     &.su-badge--dot-with-text {
       gap: 0.375rem;
-      padding: 0.125rem 0.5rem 0.125rem 0.125rem;
+      padding: 0.125rem 0.5rem;
       
       .su-badge-dot {
         width: 0.5rem;
@@ -205,7 +205,7 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !slots.def
     
     &.su-badge--dot-with-text {
       gap: 0.5rem;
-      padding: 0.25rem 0.75rem 0.25rem 0.25rem;
+      padding: 0.25rem 0.75rem;
       
       .su-badge-dot {
         width: 0.625rem;
@@ -238,7 +238,7 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !slots.def
     
     &.su-badge--dot-with-text {
       gap: 0.625rem;
-      padding: 0.375rem 1rem 0.375rem 0.375rem;
+      padding: 0.375rem 1rem;
       
       .su-badge-dot {
         width: 0.75rem;

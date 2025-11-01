@@ -4,7 +4,7 @@ import Dialog from '../Dialog.vue'
 import Button from '../../atoms/Button.vue'
 
 const meta: Meta<typeof Dialog> = {
-  title: 'Molecules/Dialog',
+  title: 'Organisms/Dialog',
   component: Dialog,
   parameters: {
     layout: 'fullscreen', // Utiliser fullscreen pour mieux visualiser les modales/tiroirs

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch, useSlots } from 'vue'
+import { ref, watch } from 'vue'
 import type { Component } from 'vue'
 
 export interface TabItem {
@@ -26,7 +26,6 @@ const props = withDefaults(defineProps<TabsProps>(), {
 const emit = defineEmits<{ (e: 'update:modelValue', value: number): void }>()
 
 const activeIndex = ref(props.modelValue)
-const slots = useSlots()
 
 watch(() => props.modelValue, v => (activeIndex.value = v))
 watch(activeIndex, v => emit('update:modelValue', v))

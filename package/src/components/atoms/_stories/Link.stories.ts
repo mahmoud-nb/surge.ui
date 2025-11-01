@@ -120,6 +120,26 @@ export const IconOnly: Story = {
   })
 }
 
+export const linkBlock: Story = {
+  args: {
+    href: '#',
+    variant: 'primary',
+    icon: HomeIcon,
+    external: true,
+    block: true
+  },
+  render: (args) => ({
+    components: { Link
+     },
+    setup() {
+      return { args, HomeIcon }
+    },
+    template: `<div style="width: 300px; border: 1px dotted #DEDEDE; padding: 0.5rem;">
+      <Link v-bind="args" :icon="HomeIcon">Lien en bloc</Link>
+    </div>`
+  })
+}
+
 export const Variants: Story = {
   render: () => ({
     components: { Link },

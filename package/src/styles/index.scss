@@ -2,6 +2,7 @@
 @use './mixins' as *;
 
 // Styles globaux pour l'accessibilité
+/* Styles pour les annonces des lecteurs d'écran */
 .sr-only {
   position: absolute;
   width: 1px;

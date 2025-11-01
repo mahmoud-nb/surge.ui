@@ -3,10 +3,10 @@ import { UserIcon, Cog6ToothIcon } from '@heroicons/vue/24/outline'
 import Tabs from '../Tabs.vue'
 
 const meta: Meta<typeof Tabs> = {
-  title: 'Molecules/Tabs',
+  title: 'Organisms/Tabs',
   component: Tabs,
   parameters: {
-    layout: 'centered',
+    layout: 'left-aligned',
     docs: {
       description: {
         component: 'Composant d’onglets accessible et flexible, permettant un rendu par défaut ou personnalisé via slots.'
