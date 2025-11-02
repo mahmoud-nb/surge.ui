@@ -253,56 +253,30 @@ defineExpose({ focus, select, inputRef })
 @use '../../styles/variables' as *;
 @use '../../styles/mixins' as *;
 
+@mixin su-input-container-size($name, $fontSize, $padding, $minHeight) {
+  &--#{$name} {
+    min-height: $minHeight; // calc(#{$padding} * 2 + 1rem);
+    .su-input {
+      padding: $padding;
+      font-size: $fontSize;
+    }
+    .su-input-prefix,
+    .su-input-suffix {
+      padding: $padding;
+      font-size: $fontSize;
+    }
+  }
+}
+
 .su-input-container {
   display: flex;
   align-items: center;
   @include su-form-field-container;
   
   // Tailles
-  &--sm {
-    min-height: 2rem;
-    
-    .su-input {
-      padding: 0.375rem 0.75rem;
-      font-size: $font-size-sm;
-    }
-    
-    .su-input-prefix,
-    .su-input-suffix {
-      padding: 0.375rem 0.5rem;
-      font-size: $font-size-sm;
-    }
-  }
-  
-  &--md {
-    min-height: 2.5rem;
-    
-    .su-input {
-      padding: 0.5rem 0.75rem;
-      font-size: $font-size-base;
-    }
-    
-    .su-input-prefix,
-    .su-input-suffix {
-      padding: 0.5rem 0.75rem;
-      font-size: $font-size-base;
-    }
-  }
-  
-  &--lg {
-    min-height: 3rem;
-    
-    .su-input {
-      padding: 0.75rem 1rem;
-      font-size: $font-size-lg;
-    }
-    
-    .su-input-prefix,
-    .su-input-suffix {
-      padding: 0.75rem 1rem;
-      font-size: $font-size-lg;
-    }
-  }
+  @include su-input-container-size(sm, $font-size-sm, 0.375rem 0.5rem, 2rem);
+  @include su-input-container-size(md, $font-size-base, 0.5rem 0.75rem, 2.5rem);
+  @include su-input-container-size(lg, $font-size-sm, 0.75rem 1rem, 3rem);
 }
 
 .su-input {

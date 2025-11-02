@@ -27,7 +27,7 @@ const meta: Meta<typeof Button> = {
     },
     radius: {
       control: { type: 'select' },
-      options: ['none', 'sm', 'md', 'lg', 'xl', 'full', 'default'],
+      options: ['none', 'xs', 'sm', 'md', 'lg', 'xl', 'full', 'default'],
       description: 'Rayon de bordure du bouton'
     },
     disabled: {
@@ -143,12 +143,12 @@ export const RadiusVariations: Story = {
       <div style="display: flex; flex-direction: column; gap: 1rem; align-items: flex-start;">
         <div style="display: flex; gap: 1rem; align-items: center;">
           <Button radius="none">None</Button>
+          <Button radius="xs">xSmall</Button>
           <Button radius="sm">Small</Button>
           <Button radius="md">Medium</Button>
           <Button radius="lg">Large</Button>
           <Button radius="xl">Extra Large</Button>
-          <Button radius="full">Full</Button>
-          <Button radius="default">Default</Button>
+          <Button radius="full">Full...</Button>
         </div>
       </div>
     `
@@ -265,11 +265,11 @@ export const Sizes: Story = {
   render: () => ({
     components: { Button },
     template: `
-      <div style="display: flex; gap: 1rem; align-items: center;">
-        <Button size="sm">Small</Button>
-        <Button size="md">Medium</Button>
-        <Button size="lg">Large</Button>
-      </div>
+        <div style="display: flex; gap: 1rem; align-items: center;">
+          <Button size="sm">Small</Button>
+          <Button size="md">Medium</Button>
+          <Button size="lg">Large</Button>
+        </div>
     `
   })
 }

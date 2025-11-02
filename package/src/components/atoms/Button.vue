@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import type { Component } from 'vue'
+import { computed, type Component } from 'vue'
 import type { AccessibilityProps } from '@/types'
 
 export type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'default'
 export type ButtonSize = 'sm' | 'md' | 'lg' | 'default'
-export type ButtonRadius = 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full' | 'default'
+export type ButtonRadius = 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'full' | 'default'
 export interface ButtonProps extends AccessibilityProps {
   variant?: ButtonVariant
   size?: ButtonSize
@@ -22,9 +21,9 @@ export interface ButtonProps extends AccessibilityProps {
 export interface Props extends ButtonProps {}
 
 const props = withDefaults(defineProps<Props>(), {
-  variant: 'default',
-  size: 'default',
-  radius: 'default',
+  variant: 'primary',
+  size: 'md',
+  radius: 'md',
   disabled: false,
   loading: false,
   block: false,
@@ -157,7 +156,7 @@ const ariaAttributes = computed(() => {
       />
       
       <!-- Contenu textuel -->
-      <span v-if="hasText" class="su-button__content">
+      <span v-if="hasText && $slots.default" class="su-button__content">
         <slot />
       </span>
     </template>
@@ -211,151 +210,97 @@ const ariaAttributes = computed(() => {
     }
   }
 
-  // Radius configurations
-  &--radius-none {
-    border-radius: var(--su-border-radius-none);
-  }
-  
-  &--radius-sm {
-    border-radius: var(--su-border-radius-sm);
-  }
-  
-  &--radius-md {
-    border-radius: var(--su-border-radius-md);
-  }
-  
-  &--radius-lg {
-    border-radius: var(--su-border-radius-lg);
-  }
-  
-  &--radius-xl {
-    border-radius: var(--su-border-radius-xl);
-  }
+  @include generate-border-radius();
 
-  &--radius-full {
-    border-radius: var(--su-border-radius-full);
-  }
-  
   &--default-radius {
     border-radius: var(--su-button-default-radius);
   }
 
   // Sizes
-  &--default-size {
-    padding: var(--su-button-size-md-padding);
-    font-size: var(--su-button-size-md-font-size);
-    line-height: var(--su-button-size-md-line-height);
-    min-height: var(--su-button-size-md-min-height);
-    
-    &.su-button--icon-only {
-      padding: var(--su-button-size-md-icon-only-padding);
-      width: var(--su-button-size-md-icon-only-width);
-    }
-  }
-  
   &--sm {
-    padding: var(--su-button-size-sm-padding);
-    font-size: var(--su-button-size-sm-font-size);
-    line-height: var(--su-button-size-sm-line-height);
-    min-height: var(--su-button-size-sm-min-height);
+    padding: 0.125rem 0.625rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    min-height: 2rem; // 32px minimum pour l'accessibilité
     
     &.su-button--icon-only {
-      padding: var(--su-button-size-sm-icon-only-padding);
-      width: var(--su-button-size-sm-icon-only-width);
+      padding: 0.125rem;
+      width: 2rem;
     }
   }
 
   &--md {
-    padding: var(--su-button-size-md-padding);
-    font-size: var(--su-button-size-md-font-size);
-    line-height: var(--su-button-size-md-line-height);
-    min-height: var(--su-button-size-md-min-height);
+    padding: 0.625rem 1rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    min-height: 2.5rem; // 40px minimum pour l'accessibilité
     
     &.su-button--icon-only {
-      padding: var(--su-button-size-md-icon-only-padding);
-      width: var(--su-button-size-md-icon-only-width);
+      padding: 0.625rem;
+      width: 2.5rem;
     }
   }
 
   &--lg {
-    padding: var(--su-button-size-lg-padding);
-    font-size: var(--su-button-size-lg-font-size);
-    line-height: var(--su-button-size-lg-line-height);
-    min-height: var(--su-button-size-lg-min-height);
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    min-height: 3rem; // 48px minimum pour l'accessibilité
     
     &.su-button--icon-only {
-      padding: var(--su-button-size-lg-icon-only-padding);
-      width: var(--su-button-size-lg-icon-only-width);
+      padding: 0.75rem;
+      width: 3rem;
     }
   }
 
   // Variants
-  &--default-variant {
-    background-color: var(--su-button-variant-primary-bg);
-    color: var(--su-button-variant-primary-color);
-    border-color: var(--su-button-variant-primary-border);
-    
-    &:hover:not(&--disabled):not(&--loading) {
-      background-color: var(--su-button-variant-primary-hover-bg);
-      transform: translateY(-1px);
-      box-shadow: var(--su-button-variant-primary-hover-shadow);
-    }
-
-    &:active:not(&--disabled):not(&--loading) {
-      transform: translateY(0);
-      box-shadow: 0 2px 4px rgba(59, 130, 246, 0.4);
-    }
-  }
-  
   &--primary {
-    background-color: var(--su-button-variant-primary-bg);
-    color: var(--su-button-variant-primary-color);
-    border-color: var(--su-button-variant-primary-border);
+    background-color: $primary-600;
+    color: white;
     
     &:hover:not(&--disabled):not(&--loading) {
-      background-color: var(--su-button-variant-primary-hover-bg);
+      background-color: $primary-700;
       transform: translateY(-1px);
-      box-shadow: var(--su-button-variant-primary-hover-shadow);
+      box-shadow: 0 4px 12px rgba($primary-600, 0.4);
     }
 
     &:active:not(&--disabled):not(&--loading) {
       transform: translateY(0);
-      box-shadow: 0 2px 4px rgba(59, 130, 246, 0.4);
+      box-shadow: 0 2px 4px rgba($primary-600, 0.4);
     }
   }
 
   &--secondary {
-    background-color: var(--su-button-variant-secondary-bg);
-    color: var(--su-button-variant-secondary-color);
-    border-color: var(--su-button-variant-secondary-border);
+    background-color: $gray-100;
+    color: $gray-900;
+    border-color: $gray-200;
 
     &:hover:not(&--disabled):not(&--loading) {
-      background-color: var(--su-button-variant-secondary-hover-bg);
-      border-color: var(--su-button-variant-secondary-hover-border);
+      background-color: $gray-200;
+      border-color: $gray-300;
       transform: translateY(-1px);
-      box-shadow: var(--su-button-variant-secondary-hover-shadow);
+      box-shadow: 0 4px 12px rgba($gray-500, 0.15);
     }
   }
 
   &--outline {
-    background-color: var(--su-button-variant-outline-bg);
-    color: var(--su-button-variant-outline-color);
-    border-color: var(--su-button-variant-outline-border);
+    background-color: transparent;
+    color: $primary-600;
+    border-color: $primary-200;
 
     &:hover:not(&--disabled):not(&--loading) {
-      background-color: var(--su-button-variant-outline-hover-bg);
-      border-color: var(--su-button-variant-outline-hover-border);
+      background-color: $primary-50;
+      border-color: $primary-300;
       transform: translateY(-1px);
     }
   }
 
   &--ghost {
-    background-color: var(--su-button-variant-ghost-bg);
-    color: var(--su-button-variant-ghost-color);
-    border-color: var(--su-button-variant-ghost-border);
+    background-color: transparent;
+    color: $primary-600;
 
     &:hover:not(&--disabled):not(&--loading) {
-      background-color: var(--su-button-variant-ghost-hover-bg);
+      background-color: $primary-50;
       transform: translateY(-1px);
     }
   }

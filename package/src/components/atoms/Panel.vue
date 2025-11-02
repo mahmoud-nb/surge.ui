@@ -1,35 +1,20 @@
 <script setup lang="ts">
-const props = defineProps({
-  /**
-   * Définit la balise du conteneur principal
-   */
-  tag: {
-    type: String,
-    default: 'section',
-    validator: (value: string) => ['div', 'section', 'article'].includes(value)
-  },
-  /**
-   * Ajoute une bordure visible
-   */
-  bordered: {
-    type: Boolean,
-    default: false
-  },
-  /**
-   * Définit si le panel a une ombre
-   */
-  elevated: {
-    type: Boolean,
-    default: false
-  },
-  /**
-   * Active un fond alternatif
-   */
-  variant: {
-    type: String,
-    default: 'default',
-    validator: (value: string) => ['default', 'subtle', 'highlight'].includes(value)
-  }
+import type { Radius } from '@/types/index'
+
+export interface PanelProps {
+  tag?: 'div' | 'section' | 'article'
+  radius?: Radius
+  bordered?: boolean
+  elevated?: boolean
+  variant?: 'default' | 'subtle' | 'highlight'
+}
+
+withDefaults(defineProps<PanelProps>(), {
+  tag: 'div',
+  radius: 'sm',
+  bordered: false,
+  elevated: false,
+  variant: 'default'
 })
 </script>
 
@@ -61,6 +46,9 @@ const props = defineProps({
 @use '../../styles/variables' as *;
 
 .su-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
   background-color: $gray-50;
   border-radius: $border-radius-md;
   padding: $spacing-4;
@@ -92,18 +80,6 @@ const props = defineProps({
     &--highlight {
       background-color: rgba($primary-600, 0.15);
     }
-  }
-
-  &[dir='rtl'] {
-    text-align: right;
-  }
-
-  &__head {
-    margin-bottom: $spacing-3;
-  }
-
-  &__footer {
-    margin-top: $spacing-3;
   }
 }
 </style>

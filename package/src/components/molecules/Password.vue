@@ -64,7 +64,6 @@ const emit = defineEmits<{
   keydown: [event: KeyboardEvent]
   keyup: [event: KeyboardEvent]
   'toggle-visibility': [visible: boolean]
-  'update:modelValue': [value: string]
 }>()
 
 // Utilisation de defineModel pour v-model
@@ -194,7 +193,6 @@ const handleSuffixIconClick = () => {
 }
 
 const handleInput = (event: Event) => {
-  //console.log('Password handleInput', (event.target as HTMLInputElement).value)
   modelValue.value = (event.target as HTMLInputElement).value
   emit('input', event)
 }
@@ -260,26 +258,23 @@ watch(validation, (newValidation) => {
       @keydown="handleKeydown"
       @keyup="handleKeyup"
       @suffix-icon-click="handleSuffixIconClick"
-    >
-      <!-- Slot pour message personnalisé basé sur la validation -->
-      <template v-if="$slots.default" #message>
-        <slot 
-          :validation="validation"
-          :isValid="validation.isValid"
-          :score="validation.score"
-          :satisfied="validation.satisfied"
-          :unsatisfied="validation.unsatisfied"
-          :details="validation.details"
-        />
-      </template>
-    </Input>
+    />
 
     <Progress 
       v-if="showProgress && modelValue" 
       size="sm" 
       :color="progressColor" 
       v-model="validation.score" 
-      :aria-label="`Force du mot de passe : ${validation.score}%`" 
+      :aria-label="`Force du mot de passe : ${validation.score}%`"
+    />
+
+    <slot 
+      :validation="validation"
+      :isValid="validation.isValid"
+      :score="validation.score"
+      :satisfied="validation.satisfied"
+      :unsatisfied="validation.unsatisfied"
+      :details="validation.details"
     />
 
     <!-- Message d'accessibilité pour les lecteurs d'écran -->

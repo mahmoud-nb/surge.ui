@@ -1,7 +1,10 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import  FormField, { FormFieldProps } from '../atoms/FormField.vue';
-import Password, { PasswordProps, PasswordValidation } from './Password.vue';
+import { PasswordProps, PasswordValidation } from './Password.vue';
+import { EyeIcon, EyeSlashIcon } from '@heroicons/vue/24/outline'
+import Input from '../atoms/Input.vue';
+import Progress from '../atoms/Progress.vue';
 
 export type PasswordFieldProps = FormFieldProps & PasswordProps
 
@@ -37,17 +40,163 @@ const emit = defineEmits<{
 // Utilisation de defineModel pour v-model
 const modelValue = defineModel<string>({ default: '' })
 
-const passwordProps = computed(() => {
-  console.log('PasswordField::::', props, modelValue.value)
-  const { label, message, ...rest } = props
-  return rest
+// État local
+const isVisible = ref(false)
+
+// Type d'input calculé
+const inputType = computed(() => isVisible.value ? 'text' : 'password')
+
+// Icône de suffixe calculée
+const suffixIcon = computed(() => isVisible.value ? EyeSlashIcon : EyeIcon)
+
+// Validation du mot de passe
+const validatePassword = (password: string): PasswordValidation => {
+  const rules = props.rules || {}
+  
+  // Compteurs
+  const length = password.length
+  const uppercase = (password.match(/[A-Z]/g) || []).length
+  const lowercase = (password.match(/[a-z]/g) || []).length
+  const digits = (password.match(/[0-9]/g) || []).length
+  const specialChars = (password.match(/[^A-Za-z0-9]/g) || []).length
+  
+  // Vérification des règles
+  const checks = {
+    length: {
+      required: rules.minLength || 0,
+      current: length,
+      satisfied: length >= (rules.minLength || 0)
+    },
+    uppercase: {
+      required: rules.minUppercase || 0,
+      current: uppercase,
+      satisfied: uppercase >= (rules.minUppercase || 0)
+    },
+    lowercase: {
+      required: rules.minLowercase || 0,
+      current: lowercase,
+      satisfied: lowercase >= (rules.minLowercase || 0)
+    },
+    digits: {
+      required: rules.minDigits || 0,
+      current: digits,
+      satisfied: digits >= (rules.minDigits || 0)
+    },
+    specialChars: {
+      required: rules.minSpecialChars || 0,
+      current: specialChars,
+      satisfied: specialChars >= (rules.minSpecialChars || 0)
+    }
+  }
+  
+  // Règles satisfaites et non satisfaites
+  const satisfied: string[] = []
+  const unsatisfied: string[] = []
+  
+  Object.entries(checks).forEach(([key, check]) => {
+    if (check.required > 0) {
+      if (check.satisfied) {
+        satisfied.push(key)
+      } else {
+        unsatisfied.push(key)
+      }
+    }
+  })
+  
+  // Calcul du score (0-100)
+  const totalRules = Object.values(checks).filter(check => check.required > 0).length
+  const satisfiedRules = satisfied.length
+  const score = totalRules > 0 ? Math.round((satisfiedRules / totalRules) * 100) : 100
+  const progressState = !password ? 'empty' :
+                   score < 25 ? 'weak' :
+                   score < 50 ? 'fair' :
+                   score < 75 ? 'good' : 'strong'
+  
+  // Validation globale
+  const isValid = unsatisfied.length === 0 && password.length > 0
+  
+  return {
+    isValid,
+    score,
+    progressState,
+    satisfied,
+    unsatisfied,
+    details: checks
+  }
+}
+
+// Validation réactive
+const validation = computed(() => validatePassword(modelValue.value || ''))
+
+// État calculé basé sur la validation
+const computedState = computed(() => {
+  if (props.state !== 'default') return props.state
+  if (!modelValue.value) return 'default'
+  
+  if (validation.value.isValid) return 'success'
+  if (validation.value.score < 25) return 'error'
+  if (validation.value.score < 75) return 'warning'
+  return 'default'
 })
 
+// Classes pour la barre de progression
+const progressColor = computed(() => {
+  const progressColorMap: Record<string, string> = {
+    empty: '#d1d5db', // gris
+    weak: '#ef4444',  // rouge
+    fair: '#f59e0b',  // orange
+    good: '#eab308',  // jaune
+    strong: '#10b981' // vert
+  }
+  return progressColorMap[validation.value.progressState || 'empty']
+})
+
+// Gestionnaires d'événements
+const toggleVisibility = () => {
+  if (props.disabled || props.readonly) return
+  
+  isVisible.value = !isVisible.value
+  emit('toggle-visibility', isVisible.value)
+}
+
+const handleSuffixIconClick = () => {
+  toggleVisibility()
+}
+
 const handleInput = (event: Event) => {
-  //console.log('PasswordField handleInput', (event.target as HTMLInputElement).value)
   modelValue.value = (event.target as HTMLInputElement).value
   emit('input', event)
 }
+
+const handleChange = (event: Event) => {
+  emit('change', event)
+}
+
+const handleFocus = (event: FocusEvent) => {
+  emit('focus', event)
+}
+
+const handleBlur = (event: FocusEvent) => {
+  emit('blur', event)
+}
+
+const handleKeydown = (event: KeyboardEvent) => {
+  emit('keydown', event)
+}
+
+const handleKeyup = (event: KeyboardEvent) => {
+  emit('keyup', event)
+}
+
+// Watcher pour émettre la validation
+watch(validation, (newValidation) => {
+  emit('validation', newValidation)
+}, { immediate: true })
+
+// Calcul du label du bouton toggle
+// const toggleLabel = computed(() => {
+//   return isVisible.value ? 'Masquer le mot de passe' : 'Afficher le mot de passe'
+// })
 </script>
 
 <template>
@@ -59,19 +208,69 @@ const handleInput = (event: Event) => {
     :disabled="disabled"
   >
     <template #default="{ fieldId, messageId }">
-      <Password 
-        :id="fieldId"
-        v-model="modelValue"
-        v-bind="{ ...passwordProps }"
-        :aria-describedby="messageId"
-        @toggle-visibility="$emit('toggle-visibility', $event)"
-        @input="handleInput"
-        @change="$emit('change', $event)"
-        @focus="$emit('focus', $event)"
-        @blur="$emit('blur', $event)"
-        @keydown="$emit('keydown', $event)"
-        @keyup="$emit('keyup', $event)"
-      />
+      <div class="su-password-wrapper">
+        <Input
+          v-model="modelValue"
+          :id="fieldId"
+          :type="inputType"
+          :size="size"
+          :state="computedState"
+          :disabled="disabled"
+          :readonly="readonly"
+          :required="required"
+          :placeholder="placeholder"
+          :prefix="prefix"
+          :prefixIcon="prefixIcon"
+          :suffixIcon="showToggle ? suffixIcon : undefined"
+          :textAlign="textAlign"
+          :aria-label="ariaLabel"
+          :aria-describedBy="messageId"
+          :aria-invalid="ariaInvalid"
+          :aria-required="ariaRequired"
+          :autocomplete="autocomplete"
+          :minLength="minLength"
+          :maxLength="maxLength"
+          :pattern="pattern"
+          @input="handleInput"
+          @change="handleChange"
+          @focus="handleFocus"
+          @blur="handleBlur"
+          @keydown="handleKeydown"
+          @keyup="handleKeyup"
+          @suffix-icon-click="handleSuffixIconClick"
+        />
+
+        <Progress 
+          v-if="showProgress && modelValue" 
+          size="sm" 
+          :color="progressColor" 
+          v-model="validation.score" 
+          :aria-label="`Force du mot de passe : ${validation.score}%`"
+        />
+
+        <slot 
+          :validation="validation"
+          :isValid="validation.isValid"
+          :score="validation.score"
+          :satisfied="validation.satisfied"
+          :unsatisfied="validation.unsatisfied"
+          :details="validation.details"
+        />
+
+        <!-- Message d'accessibilité pour les lecteurs d'écran -->
+        <div 
+          class="sr-only" 
+          aria-live="polite"
+          :aria-atomic="true"
+        >
+          <span v-if="modelValue">
+            Mot de passe {{ validation.isValid ? 'valide' : 'invalide' }}. 
+            Force : {{ validation.score }}%. 
+            {{ validation.satisfied.length }} règle(s) respectée(s), 
+            {{ validation.unsatisfied.length }} règle(s) non respectée(s).
+          </span>
+        </div>
+      </div>
     </template>
   </FormField>
 </template>

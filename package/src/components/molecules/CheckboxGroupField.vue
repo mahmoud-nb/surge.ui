@@ -21,7 +21,7 @@ const props = withDefaults(defineProps<Props>(), {
 // Utilisation de defineModel pour v-model
 const modelValue = defineModel<(string | number)[]>({ default: () => [] })
 
-const emit = defineEmits<{
+defineEmits<{
   change: [value: (string | number)[]]
   focus: [event: FocusEvent]
   blur: [event: FocusEvent]

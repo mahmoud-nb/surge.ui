@@ -112,7 +112,7 @@ const ariaAttributes = computed(() => {
   // Style connecté pour gap='none'
   &--connected {
     .su-buttons-group__button {
-      @include connected-elements($border-radius-md);
+      @include connected-elements();
     }
   }
 }

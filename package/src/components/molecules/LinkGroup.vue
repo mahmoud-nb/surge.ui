@@ -176,7 +176,7 @@ const ariaAttributes = computed(() => {
   // Style connecté pour gap='none'
   &--connected {
     .su-links-group__link {
-      @include connected-elements($border-radius-sm);
+      @include connected-elements();
       border: 1px solid transparent;
       
       // Bordures pour l'effet connecté

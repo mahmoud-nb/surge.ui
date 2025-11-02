@@ -6,15 +6,15 @@ import Image from './components/atoms/Image.vue'
 import Avatar from './components/atoms/Avatar.vue'
 import AvatarGroup from './components/molecules/AvatarGroup.vue'
 import Badge from './components/atoms/Badge.vue'
-import Dialog, { DialogDisplay } from './components/organisms/Dialog.vue'
+import Dialog from './components/organisms/Dialog.vue'
 import Tabs from './components/organisms/Tabs.vue' 
 import Accordion from './components/organisms/Accordion.vue'
 import AccordionItem from './components/molecules/AccordionItem.vue'
 import Progress from './components/atoms/Progress.vue' 
 
 // ## Action Components .................................................
-import Link, { LinkSize, LinkUnderline, LinkVariant } from './components/atoms/Link.vue'
-import Button, { ButtonRadius, ButtonSize, ButtonVariant } from './components/atoms/Button.vue'
+import Link from './components/atoms/Link.vue'
+import Button from './components/atoms/Button.vue'
 import Dropdown from './components/molecules/Dropdown.vue'
 import LinkGroup from './components/molecules/LinkGroup.vue'
 import ButtonGroup from './components/molecules/ButtonGroup.vue'
@@ -46,6 +46,7 @@ import FileUploadField from './components/molecules/FileUploadField.vue'
 import FormFields from './components/molecules/FormFields.vue'
 
 import * as accessibility from './utils/accessibility'
+import { SurgeuiTheme, ThemeSymbol } from './plugin/theme'
 
 // Export des composants et de la fonction d'installation
 export { Heading, Panel, Image, Avatar, AvatarGroup, Badge, Tabs, Accordion, AccordionItem, Dialog, Progress }
@@ -57,32 +58,30 @@ export { accessibility }
 
 export interface SurgeUpDSOptions {
   prefix?: string
-  // Configuration globale des boutons
-  buttonRadius?: Exclude<ButtonRadius, 'default'>
-  buttonVariant?: Exclude<ButtonVariant, 'default'>
-  buttonSize?: Exclude<ButtonSize, 'default'>
-  // Configuration globale des liens
-  linkVariant?: Exclude<LinkVariant, 'default'>
-  linkSize?: Exclude<LinkSize, 'default'>
-  linkUnderline?: Exclude<LinkUnderline, 'default'>
-  dialogDisplay?: Exclude<DialogDisplay, 'center'>
+  theme?: SurgeuiTheme
 }
+
+const defaultTheme: SurgeuiTheme = {}
 
 export default {
   install(app: App, options: SurgeUpDSOptions = {}) {
-    const prefix = options.prefix || 'Su'
+    const { prefix = 'Su', theme = {} } = options
+    const mergedTheme = { ...defaultTheme, ...theme }
     const root = document.documentElement
+
+    // injection globale
+    app.provide(ThemeSymbol, mergedTheme)
     
     // Configuration globale des valeurs par défaut des boutons
     if (typeof document !== 'undefined') {
       
       // Configuration du radius par défaut
-      if (options.buttonRadius) {
-        root.style.setProperty('--su-button-default-radius', `var(--su-border-radius-${options.buttonRadius})`)
+      if (mergedTheme?.buttonRadius) {
+        root.style.setProperty('--su-button-default-radius', `var(--su-border-radius-${mergedTheme?.buttonRadius})`)
       }
       
       // Configuration de la variante par défaut
-      if (options.buttonVariant) {
+      if (mergedTheme?.buttonVariant) {
         const variantMap = {
           primary: {
             bg: 'var(--su-button-variant-primary-bg)',
@@ -114,7 +113,7 @@ export default {
           }
         }
         
-        const variant = variantMap[options.buttonVariant]
+        const variant = variantMap[mergedTheme?.buttonVariant]
         if (variant) {
           // Mise à jour des variables CSS pour la variante par défaut
           root.style.setProperty('--su-button-variant-primary-bg', variant.bg)
@@ -126,17 +125,17 @@ export default {
       }
       
       // Configuration de la taille par défaut
-      if (options.buttonSize) {
+      if (mergedTheme?.buttonSize) {
         const sizeMap = {
           sm: 'sm',
           md: 'md',
           lg: 'lg'
         }
         
-        const size = sizeMap[options.buttonSize]
-        if (size) {
+        const size = sizeMap[mergedTheme?.buttonSize]
+        if (size) { // --su-button-default-size-padding
           // Mise à jour des variables CSS pour la taille par défaut
-          root.style.setProperty('--su-button-size-md-padding', `var(--su-button-size-${size}-padding)`)
+          // root.style.setProperty('--su-button-size-md-padding', `var(--su-button-size-${size}-padding)`)
           root.style.setProperty('--su-button-size-md-font-size', `var(--su-button-size-${size}-font-size)`)
           root.style.setProperty('--su-button-size-md-line-height', `var(--su-button-size-${size}-line-height)`)
           root.style.setProperty('--su-button-size-md-min-height', `var(--su-button-size-${size}-min-height)`)
@@ -147,7 +146,7 @@ export default {
     }
     
     // Configuration de la variante par défaut des liens
-    if (options.linkVariant) {
+    if (mergedTheme?.linkVariant) {
       const variantMap = {
         default: {
           color: 'var(--su-link-variant-default-color)',
@@ -171,7 +170,7 @@ export default {
         }
       }
       
-      const variant = variantMap[options.linkVariant]
+      const variant = variantMap[mergedTheme?.linkVariant]
       if (variant) {
         root.style.setProperty('--su-link-variant-default-color', variant.color)
         root.style.setProperty('--su-link-variant-default-hover-color', variant.hoverColor)
@@ -180,14 +179,14 @@ export default {
     }
     
     // Configuration de la taille par défaut des liens
-    if (options.linkSize) {
+    if (mergedTheme?.linkSize) {
       const sizeMap = {
         sm: 'sm',
         md: 'md',
         lg: 'lg'
       }
       
-      const size = sizeMap[options.linkSize]
+      const size = sizeMap[mergedTheme?.linkSize]
       if (size) {
         root.style.setProperty('--su-link-size-md-font-size', `var(--su-link-size-${size}-font-size)`)
         root.style.setProperty('--su-link-size-md-line-height', `var(--su-link-size-${size}-line-height)`)
@@ -199,13 +198,13 @@ export default {
     }
     
     // Configuration du soulignement par défaut des liens
-    if (options.linkUnderline) {
-      root.style.setProperty('--su-link-default-underline', options.linkUnderline)
+    if (mergedTheme?.linkUnderline) {
+      root.style.setProperty('--su-link-default-underline', mergedTheme?.linkUnderline)
     }
     
     // Configuration de l'affichage par défaut des dialogues
-    if (options.dialogDisplay) {
-      root.style.setProperty('--su-dialog-default-display', options.dialogDisplay)
+    if (mergedTheme?.dialogDisplay) {
+      root.style.setProperty('--su-dialog-default-display', mergedTheme?.dialogDisplay)
     }
 
     // ## Display Components

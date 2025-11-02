@@ -16,6 +16,10 @@ const meta: Meta<typeof Password> = {
   },
   tags: ['autodocs'],
   argTypes: {
+    modelValue: {
+      control: 'text',
+      description: 'Valeur du modèle'
+    },
     size: {
       control: { type: 'select' },
       options: ['sm', 'md', 'lg'],

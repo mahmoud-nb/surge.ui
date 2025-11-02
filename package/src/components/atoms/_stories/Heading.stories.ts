@@ -1,9 +1,6 @@
 import type { Meta, StoryFn } from '@storybook/vue3'
 import Heading from '@/components/atoms/Heading.vue'
-import Icon from '@/components/atoms/Icon.vue'
 import { AtSymbolIcon, UserIcon } from '@heroicons/vue/24/outline'
-
-
 
 const meta: Meta<typeof Heading> = {
   title: 'Atoms/Heading',

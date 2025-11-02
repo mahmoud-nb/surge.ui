@@ -178,24 +178,18 @@
 }
 
 // Mixin pour les éléments connectés (gap: none)
-@mixin connected-elements($border-radius: $border-radius-md) {
-  margin-left: -1px;
-  border-radius: 0;
+@mixin connected-elements() {
   position: relative;
-  
-  &:first-child {
-    margin-left: 0;
-    border-top-left-radius: $border-radius;
-    border-bottom-left-radius: $border-radius;
+
+  &:not(:first-child) {
+    margin-left: -1px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
   }
-  
-  &:last-child {
-    border-top-right-radius: $border-radius;
-    border-bottom-right-radius: $border-radius;
-  }
-  
-  &:only-child {
-    border-radius: $border-radius;
+
+  &:not(:last-child) {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
   }
   
   &:focus-visible,

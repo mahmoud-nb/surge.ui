@@ -33,8 +33,12 @@ const emit = defineEmits<{
   'suffix-icon-click': [event: MouseEvent]
 }>()
 
+const attrs = useAttrs()
+const fieldId = 'input-' + useId()
+const inputId = computed(() => attrs.id as string || fieldId)
+
 const inputProps = computed(() => {
-  const { label, message, value, ...rest } = props
+  const { label, message, ...rest } = props
   return rest
 })
 
@@ -67,10 +71,10 @@ defineExpose({
     :required="required"
     :disabled="disabled"
   >
-    <template #default="{ fieldId, messageId }">
+    <template #default="{ messageId }">
       <Input 
         ref="inputRef"
-        :id="fieldId"
+        :id="inputId"
         :value="modelValue"
         :aria-describedby="messageId"
         v-bind="{ ...inputProps }"
