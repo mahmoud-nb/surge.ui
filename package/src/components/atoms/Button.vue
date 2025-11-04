@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, type Component } from 'vue'
 import type { AccessibilityProps } from '@/types'
+import Spinner from './Spinner.vue'
 
 export type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'default'
 export type ButtonSize = 'sm' | 'md' | 'lg' | 'default'
@@ -123,28 +124,7 @@ const ariaAttributes = computed(() => {
     @focus="handleFocus"
     @blur="handleBlur"
   >
-    <span v-if="loading" class="su-button__spinner">
-      <svg class="su-spinner" viewBox="0 0 24 24">
-        <circle 
-          cx="12" 
-          cy="12" 
-          r="10" 
-          fill="none" 
-          stroke="currentColor" 
-          stroke-width="2"
-          aria-hidden="true"
-        />
-        <path 
-          d="M12 2a10 10 0 0 1 10 10" 
-          fill="none" 
-          stroke="currentColor" 
-          stroke-width="2" 
-          stroke-linecap="round"
-          aria-hidden="true"
-        />
-      </svg>
-      <span class="sr-only">Chargement en cours...</span>
-    </span>
+    <Spinner v-if="loading" :label="'Chargement en cours...'" hide-label />
     
     <template v-if="!loading">
       <!-- Icône -->
@@ -170,6 +150,7 @@ const ariaAttributes = computed(() => {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 0.5rem;
   font-family: inherit;
   font-weight: 500;
   border: 1px solid transparent;
@@ -179,7 +160,6 @@ const ariaAttributes = computed(() => {
   white-space: nowrap;
   user-select: none;
   position: relative;
-  gap: 0.5rem;
   
   // Focus visible amélioré pour l'accessibilité
   &:focus-visible {
@@ -204,12 +184,9 @@ const ariaAttributes = computed(() => {
     &:hover:not(&--disabled):not(&--loading) {
       transform: none;
     }
-    
-    .su-spinner {
-      animation: none;
-    }
   }
 
+  // Raius
   @include generate-border-radius();
 
   &--default-radius {
@@ -348,19 +325,6 @@ const ariaAttributes = computed(() => {
       width: 1.25em;
       height: 1.25em;
     }
-  }
-
-  // Spinner
-  &__spinner {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .su-spinner {
-    width: 1em;
-    height: 1em;
-    animation: spin 1s linear infinite;
   }
 
   // Classe pour le texte accessible aux lecteurs d'écran uniquement

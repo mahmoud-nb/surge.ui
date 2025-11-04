@@ -42,7 +42,8 @@ export default defineConfig({
                   { text: 'Dialog', link: '/components/dialog' },
                   { text: 'Tabs', link: '/components/tabs' },
                   { text: 'Accordion', link: '/components/accordion' },
-                  { text: 'Progress', link: '/components/progress' }
+                  { text: 'Progress', link: '/components/progress' },
+                  { text: 'Spinner', link: '/components/spinner'}
                 ]
               },
               {
@@ -110,7 +111,8 @@ export default defineConfig({
                   { text: 'Dialog', link: '/en/components/dialog' },
                   { text: 'Tabs', link: '/en/components/tabs' },
                   { text: 'Accordion', link: '/en/components/accordion' },
-                  { text: 'Progress', link: '/en/components/progress' }
+                  { text: 'Progress', link: '/en/components/progress' },
+                  { text: 'Spinner', link: '/en/components/spinner'}
                 ]
               },
               {
