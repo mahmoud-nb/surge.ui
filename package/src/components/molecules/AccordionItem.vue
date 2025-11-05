@@ -181,7 +181,7 @@ onUnmounted(() => {
 <!-- Le style reste identique à la version précédente -->
 
 <style lang="scss" scoped>
-@use '../../styles/variables' as *;
+@use '../../styles/main' as *;
 
 .su-accordion-item {
   border: 1px solid $gray-200;

@@ -121,7 +121,7 @@ const trackStyle = computed(() => ({
 </template>
 
 <style lang="scss" scoped>
-@use '../../styles/variables' as *;
+@use '../../styles/main' as *;
 
 /* Sizes */
 $su-progress-size-sm: 0.25rem;

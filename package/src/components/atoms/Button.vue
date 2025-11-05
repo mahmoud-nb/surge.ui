@@ -44,7 +44,7 @@ const classes = computed(() => {
     'su-button',
     props.variant !== 'default' ? `su-button--${props.variant}` : 'su-button--default-variant',
     props.size !== 'default' ? `su-button--${props.size}` : 'su-button--default-size',
-    props.radius !== 'default' ? `su-button--radius-${props.radius}` : 'su-button--default-radius',
+    props.radius && `su-button--radius-${props.radius}`,
     {
       'su-button--disabled': props.disabled,
       'su-button--loading': props.loading,
@@ -144,7 +144,7 @@ const ariaAttributes = computed(() => {
 </template>
 
 <style lang="scss">
-@use '../../styles/variables' as *;
+@use '../../styles/main' as *;
 
 .su-button {
   display: inline-flex;
@@ -154,6 +154,7 @@ const ariaAttributes = computed(() => {
   font-family: inherit;
   font-weight: 500;
   border: 1px solid transparent;
+  border-radius: var(--su-default-radius);
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   text-decoration: none;
@@ -190,7 +191,7 @@ const ariaAttributes = computed(() => {
   @include generate-border-radius();
 
   &--default-radius {
-    border-radius: var(--su-button-default-radius);
+    border-radius: var(--su-default-radius);
   }
 
   // Sizes

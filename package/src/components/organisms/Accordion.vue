@@ -263,7 +263,7 @@ onUnmounted(() => {
 </template>
 
 <style lang="scss" scoped>
-@use '../../styles/variables' as *;
+@use '../../styles/main' as *;
 
 .su-accordion {
   width: 100%;

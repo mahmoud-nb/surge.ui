@@ -79,8 +79,7 @@ const labelClasses = computed(() => [
 </template>
 
 <style lang="scss">
-@use '../../styles/variables' as *;
-@use '../../styles/mixins' as *;
+@use '../../styles/main' as *;
 
 .su-form-field-wrapper {
   @include su-form-field-wrapper;
@@ -93,4 +92,8 @@ const labelClasses = computed(() => [
 .su-form-field-message {
   @include su-form-field-message;
 }
+
+// Inclusion des modes sombre et contraste élevé pour les champs de formulaire
+@include dark-mode-form-field;
+@include high-contrast-form-field;
 </style>

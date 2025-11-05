@@ -162,7 +162,7 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel) {
 </template>
 
 <style lang="scss">
-@use '../../styles/variables' as *;
+@use '../../styles/main' as *;
 
 .su-link {
   display: inline-flex;

@@ -1,0 +1,17 @@
+
+@use '../colors' as *;
+@use '../tokens' as *;
+
+:root {
+  @include theme-vars($su-text-variants);
+
+  --su-default-radius: #{$su-default-radius};
+
+  @media (prefers-color-scheme: dark) {
+    @include theme-vars($su-text-variants-dark);
+  }
+}
+
+.dark, [theme=dark] {
+  @include theme-vars($su-text-variants-dark);
+}

@@ -294,8 +294,7 @@ watch(validation, (newValidation) => {
 </template>
 
 <style lang="scss">
-@use '../../styles/variables' as *;
-@use '../../styles/mixins' as *;
+@use '../../styles/main' as *;
 
 .su-password-wrapper {
   display: flex;

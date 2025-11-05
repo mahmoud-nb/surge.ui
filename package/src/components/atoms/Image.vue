@@ -238,7 +238,7 @@ onMounted(() => {
 </template>
 
 <style lang="scss">
-@use '../../styles/variables' as *;
+@use '../../styles/main' as *;
 
 .su-image-container {
   position: relative;

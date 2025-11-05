@@ -1,5 +1,5 @@
 import type { Preview } from '@storybook/vue3'
-import '../src/styles/index.scss'
+import '../src/styles/storybook.scss'
 import SurgeUpDS from '../src/index'
 
 // Import de la police Nunito Sans depuis Google Fonts
@@ -65,8 +65,37 @@ const preview: Preview = {
         items: ['light', 'dark'],
         dynamicTitle: true
       }
+    },
+    direction: {
+      name: 'Direction',
+      description: 'Sens de lecture',
+      defaultValue: 'ltr',
+      toolbar: {
+        icon: 'transfer',
+        items: [
+          { value: 'ltr', title: 'LTR' },
+          { value: 'rtl', title: 'RTL' },
+        ],
+      },
     }
-  }
+  },
+  decorators: [
+    (story, context) => {
+      const theme = context.globals.theme
+      const dir = context.globals.direction
+      return {
+        components: { story },
+        template: `
+          <div :class="theme" :dir="dir">
+            <story />
+          </div>
+        `,
+        setup() {
+          return { theme, dir }
+        },
+      }
+    },
+  ]
 }
 
 export const setup = (app) => {

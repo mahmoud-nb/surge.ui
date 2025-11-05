@@ -138,8 +138,7 @@ const ariaAttributes = computed(() => {
 </template>
 
 <style lang="scss">
-@use '../../styles/variables' as *;
-@use '../../styles/mixins' as *;
+@use '../../styles/main' as *;
 
 .su-form-fields {
   display: flex;

@@ -112,7 +112,7 @@ onMounted(() => nextTick(() => (headers.value = Array.from(document.querySelecto
 </template>
 
 <style lang="scss" scoped>
-@use '../../styles/variables' as *;
+@use '../../styles/main' as *;
 
 .su-accordion {
   border: 1px solid $gray-200;

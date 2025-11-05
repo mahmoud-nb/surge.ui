@@ -11,6 +11,8 @@ import Tabs from './components/organisms/Tabs.vue'
 import Accordion from './components/organisms/Accordion.vue'
 import AccordionItem from './components/molecules/AccordionItem.vue'
 import Progress from './components/atoms/Progress.vue' 
+import Spinner from './components/atoms/Spinner.vue'
+import Alert from './components/organisms/Alert.vue'
 
 // ## Action Components .................................................
 import Link from './components/atoms/Link.vue'
@@ -49,7 +51,8 @@ import * as accessibility from './utils/accessibility'
 import { SurgeuiTheme, ThemeSymbol } from './plugin/theme'
 
 // Export des composants et de la fonction d'installation
-export { Heading, Panel, Image, Avatar, AvatarGroup, Badge, Tabs, Accordion, AccordionItem, Dialog, Progress }
+export { Heading, Panel, Image, Avatar, AvatarGroup, Badge, Dialog, Progress, Spinner }
+export { Tabs, Accordion, AccordionItem, Alert }
 export { Link, LinkGroup, Button, ButtonGroup, FloatButton, Dropdown }
 export { Input, Textarea, SelectBox, RadioGroup, CheckboxGroup, FileUpload, Switch, Slider, Password }
 export { InputField, SelectBoxField, RadioGroupField, CheckboxGroupField, RangeField, SwitchField, FileUploadField, TextareaField, SliderField }
@@ -219,6 +222,8 @@ export default {
     app.component(`${prefix}Accordion`, Accordion)
     app.component(`${prefix}AccordionItem`, AccordionItem)
     app.component(`${prefix}Progress`, Progress)
+    app.component(`${prefix}Spinner`, Spinner)
+    app.component(`${prefix}Spinner`, Alert)
 
     // ## Action Components
     app.component(`${prefix}Button`, Button)

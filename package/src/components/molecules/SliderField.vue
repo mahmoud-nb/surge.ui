@@ -544,8 +544,7 @@ defineExpose({
 </template>
 
 <style lang="scss">
-@use '../../styles/variables' as *;
-@use '../../styles/mixins' as *;
+@use '../../styles/main' as *;
 
 .su-slider-container {
   display: flex;

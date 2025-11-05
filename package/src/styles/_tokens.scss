@@ -1,0 +1,122 @@
+@use 'sass:map';
+@use './colors' as *;
+
+// Accessibility colors (WCAG AA compliant)
+$text-primary: #111827; // Contraste 16.75:1 sur blanc
+$text-secondary: #374151; // Contraste 9.25:1 sur blanc
+$text-tertiary: #6b7280; // Contraste 4.69:1 sur blanc (minimum AA)
+
+$text-primary-dark: #f9fafb; // Contraste 17.09:1 sur noir
+$text-secondary-dark: #e5e7eb; // Contraste 12.63:1 sur noir
+$text-tertiary-dark: #9ca3af; // Contraste 4.54:1 sur noir (minimum AA)
+
+$su-text-variants: (
+  primary: #111827,
+  secondary: #374151,
+  tertiary: #6b7280
+);
+
+$su-text-variants-dark: (
+  primary: #f9fafb,
+  secondary: #e5e7eb,
+  tertiary: #9ca3af
+);
+
+@mixin theme-vars($colors) {
+  @each $name, $value in $colors {
+    --text-#{$name}: #{$value};
+  }
+  --su-default-radius: #{$su-default-radius};
+}
+
+@mixin generate-text-variants($base: '&') {
+  @each $key, $value in $su-text-variants {
+    @if $base != '&' {
+      #{$base}--#{$key} {
+        color: $value;
+      }
+    } @else {
+      &--#{$key} {
+        color: $value;
+      }
+    }
+  }
+}
+
+// Typography
+$font-size-sm: 0.875rem;
+$font-size-base: 1rem;
+$font-size-lg: 1.125rem;
+$font-size-xl: 1.25rem;
+$font-size-2xl: 1.5rem;
+$font-size-3xl: 1.875rem;
+
+$line-height-tight: 1.25;
+$line-height-normal: 1.5;
+$line-height-relaxed: 1.625;
+
+// Spacing ...................
+$spacing-1: 0.25rem;
+$spacing-2: 0.5rem;
+$spacing-3: 0.75rem;
+$spacing-4: 1rem;
+$spacing-6: 1.5rem;
+$spacing-8: 2rem;
+
+$su-spacing: (
+  '1': 0.25rem,
+  '2': 0.5rem,
+  '3': 0.75rem,
+  '4': 1rem,
+  '6': 1.5rem,
+  '8': 2rem
+) !default;
+
+// Radius ....................
+$border-radius-none: 0;
+$border-radius-sm: 0.125rem;
+$border-radius-md: 0.375rem;
+$border-radius-lg: 0.5rem;
+$border-radius-xl: 0.75rem;
+$border-radius-full: 999rem;
+
+$su-radius : (
+  'none': 0,
+  'xs': 0.125rem,
+  'sm': 0.25rem,
+  'md': 0.375rem,
+  'lg': 0.5rem,
+  'xl': 0.75rem,
+  'full': 999rem
+) !default;
+
+$su-default-radius: map.get($su-radius, 'md');
+
+@mixin generate-border-radius($base: '&') {
+  @each $key, $value in $su-radius {
+    @if $base != '&' {
+      #{$base}--radius-#{$key} {
+        border-radius: $value;
+      }
+    } @else {
+      &--radius-#{$key} {
+        border-radius: $value;
+      }
+    }
+  }
+}
+
+// Shadows
+$shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+$shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+$shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+
+// Focus styles
+$focus-ring-width: 2px;
+$focus-ring-offset: 2px;
+$focus-ring-color: $primary-600;
+$focus-ring-shadow: 0 0 0 4px rgba($primary-600, 0.2);
+
+// Minimum touch targets (44px selon WCAG)
+$min-touch-target: 2.75rem; // 44px
+$min-touch-target-sm: 2rem; // 32px (acceptable pour les éléments secondaires)

@@ -226,8 +226,7 @@ const isDisabled = (option: any) => {
 </template>
 
 <style lang="scss">
-@use '../../styles/variables' as *;
-@use '../../styles/mixins' as *;
+@use '../../styles/main' as *;
 
 .su-checkbox-group-wrapper {
   display: flex;

@@ -1,0 +1,19 @@
+@forward './colors';
+@forward './tokens';
+@forward './mixins';
+@use './themes/default' as *;
+
+// Styles globaux pour l'accessibilité
+/* Styles pour les annonces des lecteurs d'écran */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+

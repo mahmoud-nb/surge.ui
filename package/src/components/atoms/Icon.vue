@@ -38,7 +38,7 @@ const ariaAttributes = computed(() => {
 </template>
 
 <style lang="scss" scoped>
-@use '../../styles/variables' as *;
+@use '../../styles/main' as *;
 
 .su-icon {
   display: inline-block;

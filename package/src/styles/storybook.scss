@@ -1,4 +1,5 @@
-@use './variables' as *;
+@use './colors' as *;
+@use './tokens' as *;
 
 // Styles globaux pour le body
 .su-preview-wrapper {

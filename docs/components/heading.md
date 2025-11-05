@@ -3,8 +3,6 @@
 Le composant `Heading` fournit une manière cohérente et flexible d’afficher les titres typographiques dans tout le design system.  
 Il prend en charge différents niveaux de titres (`h1` à `h6`) ou des balises personnalisées, tout en conservant un style visuel uniforme.
 
----
-
 ## ✨ Fonctionnalités
 
 - Supporte les niveaux de titres HTML : `h1` à `h6`
@@ -13,17 +11,21 @@ Il prend en charge différents niveaux de titres (`h1` à `h6`) ou des balises p
 - Compatible avec les thèmes clair et sombre
 - Entièrement compatible avec les mises en page RTL (Right-To-Left)
 
----
-
 ## 🚀 Utilisation
 
 ### Exemple de base
 
+<div class="component-demo">
+  <suHeading level="1">Titre principal</SuHeading>
+  <suHeading level="2">Titre de section</SuHeading>
+  <suHeading level="3">Sous-section</SuHeading>
+</div>
+
 ```vue
 <template>
-  <Heading level="1">Titre principal</Heading>
-  <Heading level="2">Titre de section</Heading>
-  <Heading level="3">Sous-section</Heading>
+  <suHeading level="1">Titre principal</SuHeading>
+  <suHeading level="2">Titre de section</SuHeading>
+  <suHeading level="3">Sous-section</SuHeading>
 </template>
 ```
 

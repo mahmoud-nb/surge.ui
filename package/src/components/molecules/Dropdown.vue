@@ -439,8 +439,7 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !props.lab
 </template>
 
 <style lang="scss">
-@use '../../styles/variables' as *;
-@use '../../styles/mixins' as *;
+@use '../../styles/main' as *;
 
 .su-dropdown-container {
   position: relative;

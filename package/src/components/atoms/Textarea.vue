@@ -252,8 +252,7 @@ watch(() => props.autoResize, (newValue) => {
 </template>
 
 <style lang="scss">
-@use '../../styles/variables' as *;
-@use '../../styles/mixins' as *;
+@use '../../styles/main' as *;
 
 .su-textarea-container {
   @include su-form-field-container;

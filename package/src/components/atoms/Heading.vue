@@ -53,11 +53,11 @@ const tag = computed(() => (props.level === 'div' ? 'div' : `h${props.level}`))
 </template>
 
 <style lang="scss" scoped>
-@use '../../styles/variables' as *;
+@use '../../styles/main' as *;
 
 .su-heading {
   $self: &;
-  color: var(--su-heading-color, $text-primary);
+  color: var(--text-primary);
   font-weight: 600;
   margin: 0;
 
@@ -78,15 +78,15 @@ const tag = computed(() => (props.level === 'div' ? 'div' : `h${props.level}`))
   }
 
   &--primary {
-    color: $text-primary;
+    color: var(--text-primary);
   }
 
   &--secondary {
-    color: $text-secondary;
+    color: var(--text-secondary);
   }
 
   &--tertiary {
-    color: $text-tertiary;
+    color: var(--text-tertiary);
   }
 
   &--truncate {
@@ -110,11 +110,11 @@ const tag = computed(() => (props.level === 'div' ? 'div' : `h${props.level}`))
   }
 
   // Levels
-  &--level-1 { font-size: $font-size-3xl; line-height: $line-height-tight; }
-  &--level-2 { font-size: $font-size-2xl; line-height: $line-height-tight; }
+  &--level-1 { font-size: $font-size-3xl; line-height: $line-height-relaxed; }
+  &--level-2 { font-size: $font-size-2xl; line-height: $line-height-relaxed; }
   &--level-3 { font-size: $font-size-xl; line-height: $line-height-normal; }
   &--level-4 { font-size: $font-size-lg; line-height: $line-height-normal; }
-  &--level-5 { font-size: $font-size-base; line-height: $line-height-relaxed; }
-  &--level-6 { font-size: $font-size-sm; line-height: $line-height-relaxed; }
+  &--level-5 { font-size: $font-size-base; line-height: $line-height-tight; }
+  &--level-6 { font-size: $font-size-sm; line-height: $line-height-tight; }
 }
 </style>
