@@ -29,14 +29,6 @@ Il prend en charge différents niveaux de titres (`h1` à `h6`) ou des balises p
 </template>
 ```
 
-Ce code produira :
-
-```html
-<h1 class="heading heading--h1">Titre principal</h1>
-<h2 class="heading heading--h2">Titre de section</h2>
-<h3 class="heading heading--h3">Sous-section</h3>
-```
-
 ### Props
 
 | Prop    | Type                         | Par défaut | Description                                                                                                         |

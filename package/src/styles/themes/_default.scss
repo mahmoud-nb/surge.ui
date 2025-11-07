@@ -5,7 +5,9 @@
 :root {
   @include theme-vars($su-text-variants);
 
-  --su-default-radius: #{$su-default-radius};
+  --su-default-box-bg-color: #{$gray-50};
+  --su-default-box-border-color: #{$gray-50};
+  --su-default-box-border-radius: #{$su-default-radius};
 
   @media (prefers-color-scheme: dark) {
     @include theme-vars($su-text-variants-dark);
@@ -14,4 +16,7 @@
 
 .dark, [theme=dark] {
   @include theme-vars($su-text-variants-dark);
+
+  --su-default-box-bg-color: #{$gray-800};
+  --su-default-box-border-color: #{$gray-600};
 }

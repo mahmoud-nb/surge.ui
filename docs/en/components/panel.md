@@ -3,8 +3,6 @@
 The `Panel` component provides a structured and accessible container to group semantically related content.  
 It can be rendered as either a `<section>` or a `<div>`, and includes dedicated slots for the header, main content, and footer.
 
----
-
 ## ✨ Features
 
 - Rendered as `<section>` or `<div>`
@@ -14,11 +12,21 @@ It can be rendered as either a `<section>` or a `<div>`, and includes dedicated 
 - Compliant with WCAG 2.1 AA accessibility standards
 - Supports ARIA roles and accessible titles
 
----
-
 ## 🚀 Usage examples
 
 ### Basic example
+
+<div class="component-demo">
+  <SuPanel>
+    <template #head>
+      <SuHeading level="2">Main Information</SuHeading>
+    </template>
+    <p>This is the main content of the panel.</p>
+    <template #footer>
+      <button>Learn more</button>
+    </template>
+  </SuPanel>
+</div>
 
 ```vue
 <template>
@@ -34,22 +42,6 @@ It can be rendered as either a `<section>` or a `<div>`, and includes dedicated 
     </template>
   </SuPanel>
 </template>
-```
-
-This will render the following accessible structure:
-
-```html
-<section class="su-panel">
-  <header class="su-panel__head">
-    <h2>Main Information</h2>
-  </header>
-  <div class="su-panel__body">
-    <p>This is the main content of the panel.</p>
-  </div>
-  <footer class="su-panel__footer">
-    <button>Learn more</button>
-  </footer>
-</section>
 ```
 
 ## API
@@ -73,6 +65,18 @@ This will render the following accessible structure:
 | `footer`  | Footer area (buttons, links, summary, etc.)   |
 
 ## Example with style options
+
+<div class="component-demo">
+<SuPanel outlined elevated>
+  <template #head>
+    <SuHeading level="3">Order Summary</SuHeading>
+  </template>
+  <p>Total amount: €85.90</p>
+  <template #footer>
+    <button>Confirm</button>
+  </template>
+</SuPanel>
+</div>
 
 ```vue
 <SuPanel outlined elevated>

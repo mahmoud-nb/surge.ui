@@ -33,11 +33,11 @@ $su-text-variants-dark: (
   @each $key, $value in $su-text-variants {
     @if $base != '&' {
       #{$base}--#{$key} {
-        color: $value;
+        color: var(--text-#{$key});
       }
     } @else {
       &--#{$key} {
-        color: $value;
+        color: var(--text-#{$key});
       }
     }
   }
@@ -120,3 +120,17 @@ $focus-ring-shadow: 0 0 0 4px rgba($primary-600, 0.2);
 // Minimum touch targets (44px selon WCAG)
 $min-touch-target: 2.75rem; // 44px
 $min-touch-target-sm: 2rem; // 32px (acceptable pour les éléments secondaires)
+
+// Box default style
+$box-style : (
+  default: (
+    backgroundColor: $gray-50,
+    borderColor: $gray-200,
+    borderRadius: $su-default-radius,
+  ),
+  dark: (
+    backgroundColor: $gray-800,
+    borderColor: $gray-600,
+    borderRadius: $su-default-radius,
+  )
+)

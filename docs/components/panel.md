@@ -3,8 +3,6 @@
 Le composant `Panel` fournit un conteneur structuré et accessible pour regrouper du contenu sémantiquement cohérent.  
 Il peut être rendu sous forme de `<section>` ou de `<div>` selon le contexte, et inclut des slots dédiés pour la tête, le contenu principal et le pied.
 
----
-
 ## ✨ Fonctionnalités
 
 - Rendu sous `<section>` ou `<div>`
@@ -14,17 +12,27 @@ Il peut être rendu sous forme de `<section>` ou de `<div>` selon le contexte, e
 - Respecte les recommandations WCAG 2.1 AA
 - Prend en charge les rôles ARIA et les titres accessibles
 
----
-
 ## 🚀 Exemples d’utilisation
 
 ### Exemple de base
 
+<div class="component-demo">
+  <SuPanel>
+    <template #head>
+      <SuHeading level="3">Informations principales</SuHeading>
+    </template>
+    <p>Voici le contenu principal du panneau.</p>
+    <template #footer>
+      <button>En savoir plus</button>
+    </template>
+  </SuPanel>
+</div>
+
 ```vue
 <template>
-  <Panel>
+  <SuPanel>
     <template #head>
-      <Heading level="2">Informations principales</Heading>
+      <SuHeading level="3">Informations principales</SuHeading>
     </template>
 
     <p>Voici le contenu principal du panneau.</p>
@@ -32,24 +40,8 @@ Il peut être rendu sous forme de `<section>` ou de `<div>` selon le contexte, e
     <template #footer>
       <button>En savoir plus</button>
     </template>
-  </Panel>
+  </SuPanel>
 </template>
-```
-
-Ce code produit une structure claire et accessible :
-
-```html
-<section class="su-panel">
-  <header class="su-panel__head">
-    <h2>Informations principales</h2>
-  </header>
-  <div class="su-panel__body">
-    <p>Voici le contenu principal du panneau.</p>
-  </div>
-  <footer class="su-panel__footer">
-    <button>En savoir plus</button>
-  </footer>
-</section>
 ```
 
 ## API
@@ -74,10 +66,22 @@ Ce code produit une structure claire et accessible :
 
 ## 🧱 Exemple avec options de style
 
+<div class="component-demo">
+  <SuPanel outlined elevated>
+    <template #head>
+      <SuHeading level="3">Résumé de la commande</SuHeading>
+    </template>
+    <p>Montant total : 85,90 €</p>
+    <template #footer>
+      <button>Valider</button>
+    </template>
+  </SuPanel>
+</div>
+
 ```vue
-<Panel outlined elevated>
+<SuPanel outlined elevated>
   <template #head>
-    <Heading level="3">Résumé de la commande</Heading>
+    <SuHeading level="3">Résumé de la commande</SuHeading>
   </template>
 
   <p>Montant total : 85,90 €</p>
@@ -85,7 +89,7 @@ Ce code produit une structure claire et accessible :
   <template #footer>
     <button>Valider</button>
   </template>
-</Panel>
+</SuPanel>
 ```
 
 ## Bonnes pratiques
@@ -128,31 +132,45 @@ Le composant Panel respecte les critères WCAG 2.1 niveau AA et suit les bonnes 
 
 **Panneaux imbriqués**
 
-```vue
-<Panel outlined>
-  <template #head>
-    <Heading level="2">Section principale</Heading>
-  </template>
-  <Panel as="div" outlined>
+<div class="component-demo">
+  <SuPanel outlined>
     <template #head>
-      <Heading level="3">Sous-section</Heading>
+      <SuHeading level="3">Section principale</SuHeading>
+    </template>
+    <SuPanel as="div" outlined>
+      <template #head>
+        <SuHeading level="3">Sous-section</SuHeading>
+      </template>
+      <p>Contenu secondaire.</p>
+    </SuPanel>
+  </SuPanel>
+</div>
+
+```vue
+<SuPanel outlined>
+  <template #head>
+    <SuHeading level="3">Section principale</SuHeading>
+  </template>
+  <SuPanel as="div" outlined>
+    <template #head>
+      <SuHeading level="3">Sous-section</SuHeading>
     </template>
     <p>Contenu secondaire.</p>
-  </Panel>
-</Panel>
+  </SuPanel>
+</SuPanel>
 ```
 
 **Panneau dynamique**
 
 ```vue
-<Panel v-if="showPanel" elevated>
+<SuPanel v-if="showPanel" elevated>
   <template #head>
-    <Heading level="3">Notifications</Heading>
+    <SuHeading level="3">Notifications</SuHeading>
   </template>
   <ul>
     <li v-for="notif in notifications" :key="notif.id">
       {{ notif.message }}
     </li>
   </ul>
-</Panel>
+</SuPanel>
 ```

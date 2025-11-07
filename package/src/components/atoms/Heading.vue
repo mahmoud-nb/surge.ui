@@ -77,17 +77,7 @@ const tag = computed(() => (props.level === 'div' ? 'div' : `h${props.level}`))
     }
   }
 
-  &--primary {
-    color: var(--text-primary);
-  }
-
-  &--secondary {
-    color: var(--text-secondary);
-  }
-
-  &--tertiary {
-    color: var(--text-tertiary);
-  }
+  @include generate-text-variants();
 
   &--truncate {
     display: block;
@@ -95,21 +85,7 @@ const tag = computed(() => (props.level === 'div' ? 'div' : `h${props.level}`))
     overflow: hidden;
     text-overflow: ellipsis;
   }
-
-  // Dark mode
-  [data-theme='dark'] & {
-    &--primary {
-      color: $text-primary-dark;
-    }
-    &--secondary {
-      color: $text-secondary-dark;
-    }
-    &--tertiary {
-      color: $text-tertiary-dark;
-    }
-  }
-
-  // Levels
+  
   &--level-1 { font-size: $font-size-3xl; line-height: $line-height-relaxed; }
   &--level-2 { font-size: $font-size-2xl; line-height: $line-height-relaxed; }
   &--level-3 { font-size: $font-size-xl; line-height: $line-height-normal; }

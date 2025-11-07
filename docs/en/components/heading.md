@@ -3,8 +3,6 @@
 The `Heading` component provides a consistent and flexible way to render typographic titles across the design system.  
 It supports different heading levels (`h1`–`h6`) or custom tags, while maintaining a unified visual style.
 
----
-
 ## ✨ Features
 
 - Supports HTML heading levels: `h1` to `h6`
@@ -12,8 +10,6 @@ It supports different heading levels (`h1`–`h6`) or custom tags, while maintai
 - Automatically applies the corresponding typography style based on the level
 - Works with both light and dark themes
 - Fully compatible with RTL layouts
-
----
 
 ## 🚀 Usage
 
