@@ -62,6 +62,7 @@ const customStyles = computed(() => {
   
   if (props.backgroundColor) {
     styles.backgroundColor = props.backgroundColor
+    styles.borderColor = props.backgroundColor
     if (!props.color) {
       // Calculer une couleur de texte contrastée
       styles.color = getContrastColor(props.backgroundColor)
@@ -156,19 +157,15 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !slots.def
   &--sm {
     padding: 0.125rem 0.375rem;
     font-size: 0.75rem;
-    line-height: 1rem;
-    min-height: 1rem;
+    line-height: 0.75rem;
+    min-height: 0.75rem;
     
     .su-badge-icon {
       width: 0.75rem;
       height: 0.75rem;
     }
     
-    &.su-badge--icon-only {
-      padding: 0.125rem;
-      width: 1rem;
-      height: 1rem;
-    }
+    //&.su-badge--icon-only {}
     
     &.su-badge--dot-with-text {
       gap: 0.375rem;
@@ -187,21 +184,17 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !slots.def
   }
   
   &--md {
-    padding: 0.25rem 0.5rem;
+    padding: 0.125rem 0.5rem;
     font-size: 0.875rem;
-    line-height: 1.25rem;
-    min-height: 1.25rem;
+    line-height: 1rem;
+    min-height: 1rem;
     
     .su-badge-icon {
       width: 1rem;
       height: 1rem;
     }
     
-    &.su-badge--icon-only {
-      padding: 0.25rem;
-      width: 1.25rem;
-      height: 1.25rem;
-    }
+    //&.su-badge--icon-only {}
     
     &.su-badge--dot-with-text {
       gap: 0.5rem;
@@ -220,21 +213,17 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !slots.def
   }
   
   &--lg {
-    padding: 0.375rem 0.75rem;
+    padding: 0.25rem 0.75rem;
     font-size: 1rem;
-    line-height: 1.5rem;
-    min-height: 1.5rem;
+    line-height: 1.25rem;
+    min-height: 1.25rem;
     
     .su-badge-icon {
       width: 1.25rem;
       height: 1.25rem;
     }
     
-    &.su-badge--icon-only {
-      padding: 0.375rem;
-      width: 1.5rem;
-      height: 1.5rem;
-    }
+    //&.su-badge--icon-only {}
     
     &.su-badge--dot-with-text {
       gap: 0.625rem;

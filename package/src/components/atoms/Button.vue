@@ -124,7 +124,7 @@ const ariaAttributes = computed(() => {
     @focus="handleFocus"
     @blur="handleBlur"
   >
-    <Spinner v-if="loading" :label="'Chargement en cours...'" hide-label />
+    <Spinner v-if="loading" :label="'Chargement en cours...'" />
     
     <template v-if="!loading">
       <!-- Icône -->

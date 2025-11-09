@@ -49,6 +49,10 @@ const meta: Meta<typeof Avatar> = {
       control: 'text',
       description: 'Badge de notification'
     },
+    badgeProps: {
+      control: 'object',
+      description: 'Badge props'
+    },
     badgeColor: {
       control: 'color',
       description: 'Couleur personnalisée du badge'
@@ -178,43 +182,49 @@ export const Variants: Story = {
 }
 
 export const WithStatus: Story = {
-  render: () => ({
+  args: {
+    size: "lg"
+  },
+  render: (args) => ({
     components: { Avatar },
+    setup() {
+      return { args }
+    },
     template: `
       <div style="display: flex; gap: 2rem; align-items: center;">
         <div style="text-align: center;">
           <Avatar 
+            v-bind="args"
             name="Online"
             status="online"
             alt="Utilisateur en ligne"
-            size="lg"
           />
           <p style="margin-top: 0.5rem; font-size: 0.875rem;">Online</p>
         </div>
         <div style="text-align: center;">
           <Avatar 
+            v-bind="args"
             name="Away"
             status="away"
             alt="Utilisateur absent"
-            size="lg"
           />
           <p style="margin-top: 0.5rem; font-size: 0.875rem;">Away</p>
         </div>
         <div style="text-align: center;">
           <Avatar 
+            v-bind="args"
             name="Busy"
             status="busy"
             alt="Utilisateur occupé"
-            size="lg"
           />
           <p style="margin-top: 0.5rem; font-size: 0.875rem;">Busy</p>
         </div>
         <div style="text-align: center;">
           <Avatar 
+            v-bind="args"
             name="Offline"
             status="offline"
             alt="Utilisateur hors ligne"
-            size="lg"
           />
           <p style="margin-top: 0.5rem; font-size: 0.875rem;">Offline</p>
         </div>
@@ -242,7 +252,7 @@ export const WithBadge: Story = {
           <Avatar 
             name="Marie"
             badge="!"
-            badgeColor="#f59e0b"
+            :badgeProps="{ backgroundColor: '#f59e0b', color: '#EEEEEE'}"
             alt="Avatar avec badge d'alerte"
             size="lg"
           />

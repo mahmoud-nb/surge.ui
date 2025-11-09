@@ -190,15 +190,18 @@ export const DotVariant: Story = {
 }
 
 export const CustomColors: Story = {
-  render: () => ({
+  render: (args) => ({
     components: { Badge },
+    setup() {
+      return { args }
+    },
     template: `
       <div style="display: flex; flex-wrap: wrap; gap: 1rem; align-items: center;">
-        <Badge backgroundColor="#8b5cf6" color="white">Violet</Badge>
-        <Badge backgroundColor="#ec4899" color="white">Rose</Badge>
-        <Badge backgroundColor="#06b6d4" color="white">Cyan</Badge>
-        <Badge backgroundColor="#84cc16" color="white">Lime</Badge>
-        <Badge backgroundColor="#f97316" color="white">Orange</Badge>
+        <Badge v-bind="args" backgroundColor="#8b5cf6" color="white">Violet</Badge>
+        <Badge v-bind="args" backgroundColor="#ec4899" color="white">Rose</Badge>
+        <Badge v-bind="args" backgroundColor="#06b6d4" color="white">Cyan</Badge>
+        <Badge v-bind="args" backgroundColor="#84cc16" color="white">Lime</Badge>
+        <Badge v-bind="args" backgroundColor="#f97316" color="white">Orange</Badge>
       </div>
     `
   })
@@ -252,7 +255,7 @@ export const InContext: Story = {
       return { StarIcon, CheckIcon }
     },
     template: `
-      <div style="display: flex; flex-direction: column; gap: 2rem; max-width: 500px;">
+      <div style="display: flex; flex-direction: column; gap: 2rem; max-width: 100%; width: 500px;">
         <div>
           <h4 style="margin-bottom: 1rem;">Dans une liste</h4>
           <div style="display: flex; flex-direction: column; gap: 0.75rem;">
@@ -467,46 +470,100 @@ export const Interactive: Story = {
 }
 
 export const AllSizesAndVariants: Story = {
-  render: () => ({
+  render: (args) => ({
     components: { Badge },
+    setup() {
+      return { args, CheckIcon, XMarkIcon, ExclamationTriangleIcon, StarIcon, InformationCircleIcon }
+    },
     template: `
-      <div style="display: flex; flex-direction: column; gap: 2rem;">
+      <div style="display: flex; flex-direction: column; gap: 1.5rem;">
         <div>
-          <h4 style="margin-bottom: 1rem;">Small</h4>
+          <h4 style="margin-bottom: 0.75rem;">Small</h4>
           <div style="display: flex; gap: 0.75rem; align-items: center;">
-            <Badge variant="default" size="sm">Default</Badge>
-            <Badge variant="primary" size="sm">Primary</Badge>
-            <Badge variant="secondary" size="sm">Secondary</Badge>
-            <Badge variant="success" size="sm">Success</Badge>
-            <Badge variant="warning" size="sm">Warning</Badge>
-            <Badge variant="error" size="sm">Error</Badge>
+            <Badge v-bind="args" variant="default" size="sm">Default</Badge>
+            <Badge v-bind="args" variant="primary" size="sm">Primary</Badge>
+            <Badge v-bind="args" variant="secondary" size="sm">Secondary</Badge>
+            <Badge v-bind="args" variant="success" size="sm">Success</Badge>
+            <Badge v-bind="args" variant="warning" size="sm">Warning</Badge>
+            <Badge v-bind="args" variant="error" size="sm">Error</Badge>
+          </div>
+        </div>
+
+        <div>
+          <h4 style="margin-bottom: 0.75rem;">Small with icons</h4>
+          <div style="display: flex; gap: 0.75rem; align-items: center;">
+            <Badge v-bind="args" variant="default" size="sm" :icon="InformationCircleIcon" iconDisplay="right">Info</Badge>
+            <Badge v-bind="args" variant="primary" size="sm" :icon="StarIcon" iconDisplay="right">Premium</Badge>
+            <Badge v-bind="args" variant="success" size="sm" :icon="CheckIcon" iconDisplay="left">Validé</Badge>
+            <Badge v-bind="args" variant="warning" size="sm" :icon="ExclamationTriangleIcon" iconDisplay="left">Attention</Badge>
+            <Badge v-bind="args" variant="error" size="sm" :icon="XMarkIcon" iconDisplay="left">Erreur</Badge>
+
+            <Badge v-bind="args" variant="default" size="sm" :icon="InformationCircleIcon" iconDisplay="only">Info</Badge>
+            <Badge v-bind="args" variant="primary" size="sm" :icon="StarIcon" iconDisplay="only">Premium</Badge>
+            <Badge v-bind="args" variant="success" size="sm" :icon="CheckIcon" iconDisplay="only">Validé</Badge>
+            <Badge v-bind="args" variant="warning" size="sm" :icon="ExclamationTriangleIcon" iconDisplay="only">Attention</Badge>
+            <Badge v-bind="args" variant="error" size="sm" :icon="XMarkIcon" iconDisplay="only">Erreur</Badge>
+          </div>
+        </div>
+
+        <div>
+          <h4 style="margin-bottom: 0.75rem;">Medium</h4>
+          <div style="display: flex; gap: 0.75rem; align-items: center;">
+            <Badge v-bind="args" variant="default" size="md">Default</Badge>
+            <Badge v-bind="args" variant="primary" size="md">Primary</Badge>
+            <Badge v-bind="args" variant="secondary" size="md">Secondary</Badge>
+            <Badge v-bind="args" variant="success" size="md">Success</Badge>
+            <Badge v-bind="args" variant="warning" size="md">Warning</Badge>
+            <Badge v-bind="args" variant="error" size="md">Error</Badge>
+          </div>
+        </div>
+
+        <div>
+          <h4 style="margin-bottom: 0.75rem;">Small with icons</h4>
+          <div style="display: flex; gap: 0.75rem; align-items: center;">
+            <Badge v-bind="args" variant="default" size="md" :icon="InformationCircleIcon" iconDisplay="right">Info</Badge>
+            <Badge v-bind="args" variant="primary" size="md" :icon="StarIcon" iconDisplay="right">Premium</Badge>
+            <Badge v-bind="args" variant="success" size="md" :icon="CheckIcon" iconDisplay="left">Validé</Badge>
+            <Badge v-bind="args" variant="warning" size="md" :icon="ExclamationTriangleIcon" iconDisplay="left">Attention</Badge>
+            <Badge v-bind="args" variant="error" size="md" :icon="XMarkIcon" iconDisplay="left">Erreur</Badge>
+
+            <Badge v-bind="args" variant="default" size="md" :icon="InformationCircleIcon" iconDisplay="only">Info</Badge>
+            <Badge v-bind="args" variant="primary" size="md" :icon="StarIcon" iconDisplay="only">Premium</Badge>
+            <Badge v-bind="args" variant="success" size="md" :icon="CheckIcon" iconDisplay="only">Validé</Badge>
+            <Badge v-bind="args" variant="warning" size="md" :icon="ExclamationTriangleIcon" iconDisplay="only">Attention</Badge>
+            <Badge v-bind="args" variant="error" size="md" :icon="XMarkIcon" iconDisplay="only">Erreur</Badge>
           </div>
         </div>
         
         <div>
-          <h4 style="margin-bottom: 1rem;">Medium</h4>
+          <h4 style="margin-bottom: 0.75rem;">Large</h4>
           <div style="display: flex; gap: 0.75rem; align-items: center;">
-            <Badge variant="default" size="md">Default</Badge>
-            <Badge variant="primary" size="md">Primary</Badge>
-            <Badge variant="secondary" size="md">Secondary</Badge>
-            <Badge variant="success" size="md">Success</Badge>
-            <Badge variant="warning" size="md">Warning</Badge>
-            <Badge variant="error" size="md">Error</Badge>
-          </div>
-        </div>
-        
-        <div>
-          <h4 style="margin-bottom: 1rem;">Large</h4>
-          <div style="display: flex; gap: 0.75rem; align-items: center;">
-            <Badge variant="default" size="lg">Default</Badge>
-            <Badge variant="primary" size="lg">Primary</Badge>
-            <Badge variant="secondary" size="lg">Secondary</Badge>
-            <Badge variant="success" size="lg">Success</Badge>
-            <Badge variant="warning" size="lg">Warning</Badge>
-            <Badge variant="error" size="lg">Error</Badge>
+            <Badge v-bind="args" variant="default" size="lg">Default</Badge>
+            <Badge v-bind="args" variant="primary" size="lg">Primary</Badge>
+            <Badge v-bind="args" variant="secondary" size="lg">Secondary</Badge>
+            <Badge v-bind="args" variant="success" size="lg">Success</Badge>
+            <Badge v-bind="args" variant="warning" size="lg">Warning</Badge>
+            <Badge v-bind="args" variant="error" size="lg">Error</Badge>
           </div>
         </div>
       </div>
+
+      <div>
+          <h4 style="margin-bottom: 0.75rem;">Small with icons</h4>
+          <div style="display: flex; gap: 0.75rem; align-items: center;">
+            <Badge v-bind="args" variant="default" size="lg" :icon="InformationCircleIcon" iconDisplay="right">Info</Badge>
+            <Badge v-bind="args" variant="primary" size="lg" :icon="StarIcon" iconDisplay="right">Premium</Badge>
+            <Badge v-bind="args" variant="success" size="lg" :icon="CheckIcon" iconDisplay="left">Validé</Badge>
+            <Badge v-bind="args" variant="warning" size="lg" :icon="ExclamationTriangleIcon" iconDisplay="left">Attention</Badge>
+            <Badge v-bind="args" variant="error" size="lg" :icon="XMarkIcon" iconDisplay="left">Erreur</Badge>
+
+            <Badge v-bind="args" variant="default" size="lg" :icon="InformationCircleIcon" iconDisplay="only">Info</Badge>
+            <Badge v-bind="args" variant="primary" size="lg" :icon="StarIcon" iconDisplay="only">Premium</Badge>
+            <Badge v-bind="args" variant="success" size="lg" :icon="CheckIcon" iconDisplay="only">Validé</Badge>
+            <Badge v-bind="args" variant="warning" size="lg" :icon="ExclamationTriangleIcon" iconDisplay="only">Attention</Badge>
+            <Badge v-bind="args" variant="error" size="lg" :icon="XMarkIcon" iconDisplay="only">Erreur</Badge>
+          </div>
+        </div>
     `
   })
 }

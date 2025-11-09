@@ -5,7 +5,7 @@ export interface SpinnerProps {
   size?: number | string
   fill?: string
   label?: string
-  hideLabel?: boolean
+  showLabel?: boolean
   type?: 'classic' | 'dots' | 'pulse' | 'bars' | 'modern'
   color?: string
   thickness?: number
@@ -16,9 +16,9 @@ const props = withDefaults(defineProps<SpinnerProps>(), {
   size: 12,
   fill: 'none',
   label: 'Loading...',
-  hideLabel: true,
+  showLabel: false,
   type: 'modern',
-  color: 'currentColor',
+  color: '#333333',
   thickness: 2,
   speed: 1
 })
@@ -117,7 +117,7 @@ const spinnerStyles = computed(() => {
       ></span>
     </div>
 
-    <span class="su-spinner__label" :class="{ 'sr-only': hideLabel }">{{ label }}</span>
+    <span class="su-spinner__label" :class="{ 'sr-only': !showLabel }">{{ label }}</span>
   </span>
 </template>
 

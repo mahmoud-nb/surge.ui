@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { computed, ref, watch, onMounted, onUnmounted, nextTick, useAttrs, useId } from 'vue'
 import { trapFocus } from '../../utils/accessibility'
+import { XMarkIcon } from '@heroicons/vue/24/outline'
 import type { AccessibilityProps } from '@/types'
+import Button from '../atoms/Button.vue'
 
 export type DialogDisplay = 'center' | 'left' | 'right' | 'top' | 'bottom' | 'full'
 export interface DialogProps extends AccessibilityProps {
@@ -168,34 +170,38 @@ defineExpose({
 <template>
   <Transition name="su-dialog-transition">
     <div v-if="isOpen" :class="overlayClasses" :style="{ zIndex: zIndex }" @click="handleOverlayClick">
-      <div
+      <dialog
         ref="dialogRef"
         :id="dialogId"
         :class="dialogClasses"
-        :style="{ width: width, height: height }"
+        :open="isOpen"
+        :style="{ width: width }"
         v-bind="ariaAttributes"
         @click.stop 
       >
-        <!-- Header -->
-        <div v-if="$slots.head || title" class="su-dialog-header">
-          <slot name="head">
-            <h2 :id="titleId" class="su-dialog-title">{{ title }}</h2>
-          </slot>
-        </div>
+        <Button class="su-dialog__close" variant="ghost" size="sm" :icon="XMarkIcon" icon-display="only" @click="closeDialog" />
+        <div class="su-dialog__container" :style="{ height: height }">
+          <!-- Header -->
+          <div v-if="$slots.head || title" class="su-dialog-header">
+            <slot name="head">
+              <h2 :id="titleId" class="su-dialog-title">{{ title }}</h2>
+            </slot>
+          </div>
 
-        <!-- Description (pour l'accessibilité si pas de slot head) -->
-        <p v-if="description && !$slots.head" :id="descriptionId" class="sr-only">{{ description }}</p>
+          <!-- Description (pour l'accessibilité si pas de slot head) -->
+          <p v-if="description && !$slots.head" :id="descriptionId" class="sr-only">{{ description }}</p>
 
-        <!-- Contenu principal -->
-        <div class="su-dialog-content">
-          <slot />
-        </div>
+          <!-- Contenu principal -->
+          <div class="su-dialog-content">
+            <slot />
+          </div>
 
-        <!-- Footer -->
-        <div v-if="$slots.footer" class="su-dialog-footer">
-          <slot name="footer" />
+          <!-- Footer -->
+          <div v-if="$slots.footer" class="su-dialog-footer">
+            <slot name="footer" />
+          </div>
         </div>
-      </div>
+      </dialog>
     </div>
   </Transition>
 </template>
@@ -231,25 +237,46 @@ defineExpose({
 
 .su-dialog {
   background-color: white;
+  border: none;
   border-radius: $border-radius-lg;
   box-shadow: $shadow-lg;
-  display: flex;
-  flex-direction: column;
+  
   max-height: 90vh;
   max-width: 90vw;
   transform: scale(0.95);
   opacity: 0;
   transition: all 0.3s ease;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  position: initial;
 
   .su-dialog-overlay--open & {
     opacity: 1;
     transform: scale(1);
   }
 
+  &__close {
+    position: absolute!important;
+    top: 0.75rem;
+    right: 0.75rem;
+  }
+
+  &__container {
+    display: flex;
+    flex-direction: column;
+    max-height: 100vh
+  }
+
   // Display: center (default modal)
   &--center {
     min-width: 320px;
     width: auto;
+    margin: auto;
+
+    .su-dialog__container {
+      max-height: calc(100vh - 2rem);
+    }
   }
 
   // Display: left (drawer from left)

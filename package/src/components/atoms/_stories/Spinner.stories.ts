@@ -32,6 +32,10 @@ const meta = {
       control: { type: 'text' },
       description: 'Texte accessibilité'
     },
+    showLabel: {
+      control: { type: 'boolean' },
+      description: 'Afficher le label'
+    },
     fill: {
       control: { type: 'text' },
       description: 'Couleur de fond (pour SVG)'
@@ -325,7 +329,7 @@ export const Accessibility: Story = {
       <div style="padding: 2rem;">
         <div style="margin-bottom: 2rem;">
           <h3 style="margin-bottom: 1rem;">Avec label accessible</h3>
-          <Spinner label="Chargement des données du tableau de bord" hide-label />
+          <Spinner label="Chargement des données du tableau de bord" />
           <p style="margin-top: 1rem; font-size: 0.875rem; color: #6b7280;">
             Le label est lu par les technologies d'assistance mais masqué visuellement.
           </p>

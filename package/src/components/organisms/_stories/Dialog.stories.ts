@@ -90,7 +90,6 @@ const createDialogStory = (args: any): Story => ({
         <Dialog v-bind="args" v-model="isOpen" @open="args.onOpen" @close="args.onClose">
           <template #head v-if="args.title">
             <h2 style="margin: 0; font-size: 1.5rem; font-weight: 600;">{{ args.title }}</h2>
-            <Button variant="ghost" size="sm" @click="closeDialog">X</Button>
           </template>
           <template #default>
             <p>{{ args.description || 'Ceci est le contenu principal du Dialog.' }}</p>

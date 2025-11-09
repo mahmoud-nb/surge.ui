@@ -72,6 +72,7 @@ const app = createApp(App)
 app.use(SurgeUpDS, {
   prefix: 'My', // Les composants seront MyButton, MyInput, etc.
   
+  // ...... # D'autres options sont en cours de construction # ......
   // Configuration globale des boutons
   buttonRadius: 'lg',     // Rayon large par défaut
   buttonVariant: 'outline', // Variante outline par défaut
@@ -83,6 +84,12 @@ app.use(SurgeUpDS, {
   linkUnderline: 'never'  // Jamais souligné par défaut
 })
 ```
+
+###### options
+
+| Options     | Description          |
+|-------------|----------------------|
+| `prefix`    | Components prefix    |
 
 ## TypeScript
 

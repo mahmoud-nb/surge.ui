@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { computed, ref, useAttrs, useId } from 'vue'
 import Image from './Image.vue'
+import Spinner from './Spinner.vue'
 import { AccessibilityProps } from '@/types'
+import Badge, { BadgeProps } from './Badge.vue'
 
 export type AvatarSize = 'sm' | 'md' | 'lg' | 'xl'
 export type AvatarVariant = 'circle' | 'rounded' | 'square'
@@ -16,6 +18,7 @@ export interface AvatarProps extends AccessibilityProps {
   variant?: AvatarVariant
   status?: AvatarStatus
   badge?: string | number
+  badgeProps?: BadgeProps
   badgeColor?: string
   loading?: boolean
   clickable?: boolean
@@ -88,11 +91,7 @@ const statusClasses = computed(() => [
 ])
 
 const badgeClasses = computed(() => [
-  'su-avatar-badge',
-  `su-avatar-badge--${props.size}`,
-  {
-    'su-avatar-badge--custom-color': props.badgeColor
-  }
+  'su-avatar-badge'
 ])
 
 // Attributs ARIA
@@ -156,16 +155,7 @@ defineExpose({
     @keydown="handleKeydown"
   >
     <!-- Spinner de chargement -->
-    <div 
-      v-if="loading" 
-      class="su-avatar-loading"
-      aria-hidden="true"
-    >
-      <svg class="su-spinner" viewBox="0 0 24 24">
-        <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/>
-        <path d="M12 2a10 10 0 0 1 10 10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-      </svg>
-    </div>
+    <Spinner v-if="loading" class="su-avatar-loading" :label="'Chargement en cours...'" color="#3b82f6" size="16" />
 
     <!-- Image -->
     <Image
@@ -210,14 +200,17 @@ defineExpose({
     />
 
     <!-- Badge de notification -->
-    <div 
+    <Badge 
       v-if="badge"
-      :class="badgeClasses"
-      :style="badgeColor ? { backgroundColor: badgeColor } : undefined"
+      :class="badgeClasses" 
+      size="sm" 
+      radius="full" 
+      variant="error"
       :aria-label="`${badge} notification(s)`"
+      v-bind="badgeProps"
     >
       {{ badge }}
-    </div>
+    </Badge>
   </div>
 </template>
 
@@ -232,13 +225,16 @@ defineExpose({
   background-color: $gray-200;
   color: $text-secondary;
   font-weight: 600;
-  overflow: hidden;
   flex-shrink: 0;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   
   // Variantes de forme
   &--circle {
     border-radius: 50%;
+
+    .su-image-container {
+      border-radius: 50%;
+    }
   }
   
   &--rounded {
@@ -305,14 +301,14 @@ defineExpose({
     }
   }
   
-  &--loading {
-    background-color: $gray-100;
-  }
-  
   // Couleurs d'arrière-plan pour les initiales
   &--initials {
     background: linear-gradient(135deg, $primary-500, $primary-600);
     color: white;
+  }
+
+  &--loading {
+    background: $gray-100;
   }
 }
 
@@ -353,13 +349,6 @@ defineExpose({
   align-items: center;
   justify-content: center;
   background-color: $gray-100;
-  
-  .su-spinner {
-    width: 50%;
-    height: 50%;
-    color: $primary-600;
-    animation: spin 1s linear infinite;
-  }
 }
 
 .su-avatar-status {
@@ -430,81 +419,8 @@ defineExpose({
 
 .su-avatar-badge {
   position: absolute;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: $error-500;
-  color: white;
-  font-weight: 600;
-  border: 2px solid white;
-  border-radius: 9999px;
-  font-size: 0.75rem;
-  line-height: 1;
-  min-width: 1.25rem;
-  height: 1.25rem;
-  padding: 0 0.25rem;
-  
-  // Positions selon la taille
-  &--xs {
-    top: -0.25rem;
-    right: -0.25rem;
-    font-size: 0.625rem;
-    min-width: 1rem;
-    height: 1rem;
-  }
-  
-  &--sm {
-    top: -0.25rem;
-    right: -0.25rem;
-    font-size: 0.625rem;
-    min-width: 1rem;
-    height: 1rem;
-  }
-  
-  &--md {
-    top: -0.375rem;
-    right: -0.375rem;
-    font-size: 0.75rem;
-    min-width: 1.25rem;
-    height: 1.25rem;
-  }
-  
-  &--lg {
-    top: -0.375rem;
-    right: -0.375rem;
-    font-size: 0.75rem;
-    min-width: 1.25rem;
-    height: 1.25rem;
-  }
-  
-  &--xl {
-    top: -0.5rem;
-    right: -0.5rem;
-    font-size: 0.875rem;
-    min-width: 1.5rem;
-    height: 1.5rem;
-  }
-  
-  &--2xl {
-    top: -0.5rem;
-    right: -0.5rem;
-    font-size: 0.875rem;
-    min-width: 1.5rem;
-    height: 1.5rem;
-  }
-  
-  &--custom-color {
-    // La couleur sera appliquée via le style inline
-  }
-}
-
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  top: -0.25rem;
+  right: -0.25rem;
 }
 
 // Mode sombre
@@ -548,10 +464,6 @@ defineExpose({
     &--clickable:active {
       transform: none;
     }
-  }
-  
-  .su-spinner {
-    animation: none;
   }
 }
 </style>
