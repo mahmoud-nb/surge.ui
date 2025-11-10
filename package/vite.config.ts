@@ -21,7 +21,7 @@ export default defineConfig({
   build: {
     lib: {
       entry: resolve(__dirname, 'src/index.ts'),
-      name: 'SurgeUpDS',
+      name: 'SurgeUI',
       formats: ['es', 'umd'],
       fileName: (format) => `index.${format}.js`
     },
