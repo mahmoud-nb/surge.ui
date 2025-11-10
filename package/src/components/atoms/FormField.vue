@@ -1,15 +1,6 @@
 <script setup lang="ts">
-import { State } from '@/types'
 import { computed, useAttrs, useId } from 'vue'
-
-export interface FormFieldProps {
-  fieldId?: string
-  label?: string
-  message?: string
-  state?: State
-  required?: boolean
-  disabled?: boolean
-}
+import type { FormFieldProps } from '@/types'
 
 const props = withDefaults(defineProps<FormFieldProps>(), {
   state: 'default',

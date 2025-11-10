@@ -1,23 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import type { Component } from 'vue'
-import type { AccessibilityProps, Radius, Size } from '@/types'
+import type { BadgeProps } from '@/types'
 
-export type BadgeVariant = 'default' | 'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'dot'
-export interface BadgeProps extends AccessibilityProps {
-  variant?: BadgeVariant
-  size?: Size
-  radius?: Radius
-  icon?: Component
-  iconDisplay?: 'left' | 'right' | 'only'
-  dotText?: string
-  color?: string
-  backgroundColor?: string
-}
-
-export interface Props extends BadgeProps {}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<BadgeProps>(), {
   variant: 'default',
   size: 'md',
   radius: 'md',

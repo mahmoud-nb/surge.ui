@@ -2,34 +2,9 @@
 import { computed, useAttrs, useId } from 'vue'
 import { CheckIcon } from '@heroicons/vue/24/outline'
 import { announceToScreenReader } from '@/utils/accessibility'
-import type { Component } from 'vue'
-import type { AccessibilityProps, Size, State } from '@/types'
+import type { CheckboxGroupProps } from '@/types'
 
 defineOptions({ inheritAttrs: false })
-
-export type CheckboxDisplayType = 'default' | 'inline-card' | 'block-card'
-export interface CheckboxOption {
-  value: string | number
-  label: string
-  description?: string
-  disabled?: boolean
-  icon?: Component
-}
-
-export interface CheckboxGroupProps extends AccessibilityProps {
-  options: CheckboxOption[]
-  value?: (string | number)[]
-  size?: Size
-  state?: State
-  disabled?: boolean
-  required?: boolean
-  displayType?: CheckboxDisplayType
-  label?: string
-  message?: string
-  direction?: 'horizontal' | 'vertical'
-  maxSelections?: number
-  maxHeight?: string | null
-}
 
 const props = withDefaults(defineProps<CheckboxGroupProps>(), {
   options: () => [],

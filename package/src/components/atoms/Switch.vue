@@ -1,23 +1,9 @@
 <script setup lang="ts">
 import { computed, useAttrs, ref } from 'vue'
-import type { Component } from 'vue'
 import { CheckIcon, XMarkIcon } from '@heroicons/vue/24/outline'
-import { AccessibilityProps, Size, State } from '@/types'
+import type { SwitchProps } from '@/types'
 
 defineOptions({ inheritAttrs: false })
-
-export interface SwitchProps extends AccessibilityProps {
-  //modelValue?: boolean
-  leftLabel?: string
-  rightLabel?: string
-  leftIcon?: Component
-  rightIcon?: Component
-  size?: Size
-  state?: State
-  disabled?: boolean
-  readonly?: boolean
-  required?: boolean
-}
 
 const props = withDefaults(defineProps<SwitchProps>(), {
   modelValue: false,

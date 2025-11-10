@@ -1,16 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-
-export interface SpinnerProps {
-  size?: number | string
-  fill?: string
-  label?: string
-  showLabel?: boolean
-  type?: 'classic' | 'dots' | 'pulse' | 'bars' | 'modern'
-  color?: string
-  thickness?: number
-  speed?: number
-}
+import type { SpinnerProps } from '@/types'
 
 const props = withDefaults(defineProps<SpinnerProps>(), {
   size: 12,

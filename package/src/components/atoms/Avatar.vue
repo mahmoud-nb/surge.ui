@@ -2,31 +2,10 @@
 import { computed, ref, useAttrs, useId } from 'vue'
 import Image from './Image.vue'
 import Spinner from './Spinner.vue'
-import { AccessibilityProps } from '@/types'
-import Badge, { BadgeProps } from './Badge.vue'
+import type { AvatarProps } from '@/types'
+import Badge from './Badge.vue'
 
-export type AvatarSize = 'sm' | 'md' | 'lg' | 'xl'
-export type AvatarVariant = 'circle' | 'rounded' | 'square'
-export type AvatarStatus = 'online' | 'offline' | 'busy' | 'away' | 'none'
-
-export interface AvatarProps extends AccessibilityProps {
-  src?: string
-  alt?: string
-  fallback?: string
-  name?: string
-  size?: AvatarSize
-  variant?: AvatarVariant
-  status?: AvatarStatus
-  badge?: string | number
-  badgeProps?: BadgeProps
-  badgeColor?: string
-  loading?: boolean
-  clickable?: boolean
-}
-
-export interface Props extends AvatarProps {}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<AvatarProps>(), {
   size: 'md',
   variant: 'circle',
   loading: false,

@@ -1,32 +1,8 @@
 <script setup lang="ts">
 import { computed, ref, useAttrs } from 'vue'
-import type { Component } from 'vue'
-import type { Size, State, TextAlign, AccessibilityProps } from '@/types'
+import type { InputProps } from '@/types'
 
 defineOptions({ inheritAttrs: false })
-
-export type InputType = 'text' | 'email' | 'password' | 'number' | 'tel' | 'url' | 'search' | 'date' | 'time' | 'datetime-local' | 'month' | 'week'
-export interface InputProps extends AccessibilityProps {
-  type?: InputType
-  size?: Size
-  state?: State
-  disabled?: boolean
-  readonly?: boolean
-  required?: boolean
-  placeholder?: string
-  prefix?: string
-  suffix?: string
-  prefixIcon?: Component
-  suffixIcon?: Component
-  textAlign?: TextAlign
-  autocomplete?: string
-  min?: number | string
-  max?: number | string
-  step?: number | string
-  minLength?: number
-  maxLength?: number
-  pattern?: string
-}
 
 const props = withDefaults(defineProps<InputProps>(), {
   type: 'text',

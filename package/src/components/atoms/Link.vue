@@ -1,25 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { ArrowTopRightOnSquareIcon } from '@heroicons/vue/24/outline'
-import { AccessibilityProps, LinkTarget } from '@/types'
-
-export type LinkVariant = 'default' | 'primary' | 'secondary' | 'muted'
-export type LinkSize = 'sm' | 'md' | 'lg'
-export type LinkUnderline = 'default' | 'always' | 'hover' | 'never'
-export interface LinkProps extends AccessibilityProps {
-  href?: string
-  to?: string | object
-  target?: LinkTarget
-  rel?: string
-  variant?: LinkVariant
-  size?: LinkSize
-  block?: boolean
-  underline?: LinkUnderline
-  disabled?: boolean
-  icon?: any
-  iconDisplay?: 'left' | 'right' | 'only'
-  external?: boolean
-}
+import type { LinkProps } from '@/types'
 
 const props = withDefaults(defineProps<LinkProps>(), {
   variant: 'default',

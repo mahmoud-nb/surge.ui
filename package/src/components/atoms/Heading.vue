@@ -1,11 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-
-export interface HeadingProps {
-  level?: number | string
-  variant?: 'primary' | 'secondary' | 'tertiary'
-  truncate?: boolean
-}
+// TODO : to use > import type { HeadingProps } from '@/types'
 
 const props = defineProps({
   level: {

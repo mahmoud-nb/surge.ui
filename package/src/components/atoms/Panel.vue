@@ -1,13 +1,5 @@
 <script setup lang="ts">
-import type { Radius } from '@/types/index'
-
-export interface PanelProps {
-  tag?: 'div' | 'section' | 'article'
-  radius?: Radius
-  bordered?: boolean
-  elevated?: boolean
-  variant?: 'default' | 'subtle' | 'highlight'
-}
+import type { PanelProps } from '@/types'
 
 withDefaults(defineProps<PanelProps>(), {
   tag: 'div',

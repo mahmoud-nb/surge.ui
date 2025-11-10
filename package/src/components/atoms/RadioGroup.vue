@@ -1,34 +1,8 @@
 <script setup lang="ts">
 import { computed, useAttrs, useId } from 'vue'
-import type { Component } from 'vue'
-import { AccessibilityProps, Size, State } from '@/types'
+import type { RadioGroupProps } from '@/types'
 
 defineOptions({ inheritAttrs: false })
-
-export type RadioDisplayType = 'default' | 'inline-card' | 'block-card'
-
-export interface RadioOption {
-  value: string | number
-  label: string
-  description?: string
-  disabled?: boolean
-  icon?: Component
-}
-
-export interface RadioGroupProps extends AccessibilityProps {
-  options: RadioOption[]
-  value?: string | number
-  name?: string
-  size?: Size
-  state?: State
-  disabled?: boolean
-  required?: boolean
-  displayType?: RadioDisplayType
-  label?: string
-  message?: string
-  direction?: 'horizontal' | 'vertical'
-  maxHeight?: string | null
-}
 
 const props = withDefaults(defineProps<RadioGroupProps>(), {
   options: () => [],

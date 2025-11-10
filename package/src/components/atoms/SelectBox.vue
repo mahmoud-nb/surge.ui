@@ -2,49 +2,9 @@
 import { computed, ref, watch, nextTick, onMounted, onUnmounted, useAttrs, useId } from 'vue'
 import { ChevronDownIcon, XMarkIcon, MagnifyingGlassIcon, CheckIcon } from '@heroicons/vue/24/outline'
 import { trapFocus, announceToScreenReader } from '@/utils/accessibility'
-import type { Component } from 'vue'
-import type { AccessibilityProps, Size, State, TextAlign } from '@/types'
+import type { SelectOption, SelectBoxProps } from '@/types'
 
 defineOptions({ inheritAttrs: false })
-
-export interface SelectGroup {
-  label: string
-  options: SelectOption[]
-}
-
-export interface SelectOption {
-  value: string | number
-  label: string
-  disabled?: boolean
-  group?: string
-  icon?: Component
-  description?: string
-}
-
-export interface SelectBoxProps extends AccessibilityProps {
-  options?: SelectOption[]
-  groups?: SelectGroup[]
-  multiple?: boolean
-  searchable?: boolean
-  clearable?: boolean
-  size?: Size
-  state?: State
-  disabled?: boolean
-  readonly?: boolean
-  required?: boolean
-  placeholder?: string
-  searchPlaceholder?: string
-  noOptionsText?: string
-  noResultsText?: string
-  maxHeight?: string
-  textAlign?: TextAlign
-  dir?: 'ltr' | 'rtl' | 'auto'
-  ariaInvalid?: boolean
-  ariaRequired?: boolean
-  maxSelectedItems?: number
-  closeOnSelect?: boolean
-  loading?: boolean
-}
 
 const props = withDefaults(defineProps<SelectBoxProps>(), {
   options: () => [],

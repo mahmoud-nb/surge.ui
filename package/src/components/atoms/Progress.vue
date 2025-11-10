@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import type { ProgressProps } from '@/types'
 
 /**
  * SuProgress
@@ -10,21 +11,7 @@ import { computed } from 'vue'
  *  - formatValue: (value) => string formatter for label and aria-valuetext
  */
 
-interface Props {
-  modelValue?: number
-  min?: number
-  max?: number
-  size?: 'sm' | 'md' | 'lg'
-  color?: string
-  backgroundColor?: string
-  state?: 'default' | 'error' | 'success' | 'warning'
-  showLabel?: boolean
-  formatValue?: (value: number) => string
-  indeterminate?: boolean
-  indeterminateLabel?: string
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<ProgressProps>(), {
   modelValue: 0,
   min: 0,
   max: 100,

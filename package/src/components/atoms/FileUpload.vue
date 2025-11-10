@@ -1,47 +1,8 @@
 <script setup lang="ts">
 import { computed, ref, useAttrs } from 'vue'
 import { CloudArrowUpIcon, DocumentIcon, PhotoIcon, XMarkIcon, CheckCircleIcon, ExclamationCircleIcon } from '@heroicons/vue/24/outline'
-import type { AccessibilityProps, Size, State } from '@/types'
+import type { BaseFileUploadProps, UploadedFile } from '@/types'
 import { announceToScreenReader } from '@/utils/accessibility'
-
-export interface UploadedFile {
-  id: string
-  file: File
-  name: string
-  size: number
-  type: string
-  status: 'pending' | 'uploading' | 'success' | 'error'
-  progress?: number
-  error?: string
-  preview?: string
-}
-
-export type FileUploadVariant = 'default' | 'dashed' | 'solid' | 'minimal'
-
-export interface BaseFileUploadProps extends AccessibilityProps {
-  value?: UploadedFile[]
-  variant?: FileUploadVariant
-  multiple?: boolean
-  accept?: string
-  maxSize?: number
-  maxFiles?: number
-  size?: Size
-  state?: State
-  disabled?: boolean
-  readonly?: boolean
-  required?: boolean
-  label?: string
-  message?: string
-  placeholder?: string
-  dragText?: string
-  browseText?: string
-  allowPreview?: boolean
-  showFileList?: boolean
-  ariaInvalid?: boolean
-  ariaRequired?: boolean
-  showProgress?: boolean
-  loading?: boolean
-}
 
 const props = withDefaults(defineProps<BaseFileUploadProps>(), {
   multiple: false,

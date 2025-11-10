@@ -1,27 +1,8 @@
 <script setup lang="ts">
 import { computed, ref, watch, nextTick, useAttrs } from 'vue'
-import type { AccessibilityProps, Size, State } from '@/types'
+import type { TextareaProps } from '@/types'
 
 defineOptions({ inheritAttrs: false }) // name: 'Textarea'
-
-export interface TextareaProps extends AccessibilityProps {
-  size?: Size
-  state?: State
-  disabled?: boolean
-  readonly?: boolean
-  required?: boolean
-  placeholder?: string
-  value?: string
-  rows?: number
-  minRows?: number
-  maxRows?: number
-  maxLength?: number
-  showCounter?: boolean
-  autoResize?: boolean
-  autocomplete?: string
-  spellcheck?: boolean
-  wrap?: 'soft' | 'hard' | 'off'
-}
 
 const props = withDefaults(defineProps<TextareaProps>(), {
   size: 'md',

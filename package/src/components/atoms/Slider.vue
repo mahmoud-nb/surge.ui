@@ -1,31 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, useAttrs, useId } from 'vue'
 import { announceToScreenReader } from '@/utils/accessibility'
-import type { AccessibilityProps, Orientation, Size, State } from '@/types'
-
-export interface SliderProps extends AccessibilityProps {
-  //value?: number | [number, number]
-  min?: number
-  max?: number
-  step?: number
-  size?: Size
-  state?: State
-  disabled?: boolean
-  readonly?: boolean
-  required?: boolean
-  orientation?: Orientation
-  tooltip?: 'none' | 'top' | 'bottom'
-  marks?: number[]
-  showValue?: boolean
-  showTicks?: boolean
-  showLabels?: boolean
-  formatValue?: (value: number) => string
-  label?: string
-  message?: string
-  ariaInvalid?: boolean
-  ariaRequired?: boolean
-  ariaValueText?: string
-}
+import type { SliderProps } from '@/types'
 
 const props = withDefaults(defineProps<SliderProps>(), {
   min: 0,

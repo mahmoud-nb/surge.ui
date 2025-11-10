@@ -1,12 +1,6 @@
 <script setup lang="ts">
-import { AccessibilityProps } from '@/types'
 import { defineProps, computed } from 'vue'
-import type { Component } from 'vue'
-
-export interface IconProps extends AccessibilityProps {
-  name: Component,
-  size?: Number | String
-}
+import type { IconProps } from '@/types'
 
 const props = defineProps<IconProps>()
 
