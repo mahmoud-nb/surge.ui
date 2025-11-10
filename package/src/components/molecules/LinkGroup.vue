@@ -1,17 +1,7 @@
 <script setup lang="ts">
 import { computed, h, Fragment, Comment, Text } from 'vue'
-import Link, { LinkSize, LinkUnderline, LinkVariant } from '../atoms/Link.vue'
-import { AccessibilityProps } from '@/types'
-
-export type LinkGroupSeparator = 'none' | 'dot' | 'slash' | 'pipe' | 'arrow'
-export interface LinkGroupProps extends AccessibilityProps {
-  gap?: 'sm' | 'md' | 'lg' | 'none'
-  separator?: LinkGroupSeparator
-  size?: LinkSize
-  variant?: LinkVariant
-  underline?: LinkUnderline
-  direction?: 'horizontal' | 'vertical'
-}
+import Link from '../atoms/Link.vue'
+import type { LinkGroupProps } from '@/types'
 
 const props = withDefaults(defineProps<LinkGroupProps>(), {
   gap: 'md',

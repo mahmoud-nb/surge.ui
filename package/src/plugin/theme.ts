@@ -1,9 +1,5 @@
 import type { InjectionKey } from 'vue'
-
-import { ButtonRadius, ButtonSize, ButtonVariant } from '@/components/atoms/Button.vue'
-import { LinkSize, LinkUnderline, LinkVariant } from '@/components/atoms/Link.vue'
-import { DialogDisplay } from '@/components/organisms/Dialog.vue'
-
+import type { ButtonRadius, ButtonSize, ButtonVariant, DialogDisplay, LinkSize, LinkUnderline, LinkVariant } from '@/types'
 
 export interface SurgeuiTheme {
   // Configuration globale des boutons

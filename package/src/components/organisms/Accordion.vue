@@ -1,23 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, provide, watch, nextTick, onMounted, onUnmounted } from 'vue'
 import AccordionItem from '../molecules/AccordionItem.vue'
-import type { AccessibilityProps } from '@/types'
-
-interface AccordionItemData {
-  id?: string
-  title: string
-  content?: string
-  disabled?: boolean
-  open?: boolean
-}
-
-export interface AccordionProps extends AccessibilityProps {
-  items?: AccordionItemData[]
-  multiple?: boolean
-  gap?: 'sm' | 'md' | 'lg' | 'none'
-  modelValue?: (string | number)[]
-  level?: 1 | 2 | 3 | 4 | 5 | 6
-}
+import type { AccordionItemData, AccordionProps } from '@/types'
 
 const props = withDefaults(defineProps<AccordionProps>(), {
   multiple: false,

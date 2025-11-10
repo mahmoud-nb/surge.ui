@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { computed, useAttrs, useId } from 'vue'
-import FormField, { FormFieldProps } from '@/components/atoms/FormField.vue'
-import Switch, { SwitchProps } from '../atoms/Switch.vue'
-
-export type SwitchFieldProps = FormFieldProps & SwitchProps
+import FormField  from '@/components/atoms/FormField.vue'
+import Switch from '../atoms/Switch.vue'
+import { SwitchFieldProps } from '@/types'
 
 const props = withDefaults(defineProps<SwitchFieldProps>(), {
   size: 'md',

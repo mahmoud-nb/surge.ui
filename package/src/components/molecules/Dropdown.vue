@@ -2,41 +2,9 @@
 import { computed, ref, nextTick, onMounted, onUnmounted, useAttrs, useId } from 'vue'
 import { trapFocus, announceToScreenReader } from '@/utils/accessibility'
 import { ChevronDownIcon } from '@heroicons/vue/24/outline'
-import type { Component } from 'vue'
-import type { AccessibilityProps, LinkTarget } from '@/types'
-import { ButtonSize, ButtonVariant } from '../atoms/Button.vue'
+import type { DropdownProps } from '@/types'
 
-export interface DropdownOption {
-  value: string | number
-  label: string
-  href?: string
-  target?: LinkTarget
-  rel?: string
-  disabled?: boolean
-  icon?: Component
-  description?: string
-  separator?: boolean
-}
-export type DropdownTrigger = 'click' | 'hover'
-export type DropdownPlacement = 'bottom-start' | 'bottom-end' | 'top-start' | 'top-end' | 'left-start' | 'left-end' | 'right-start' | 'right-end'
-export interface DropdownProps extends AccessibilityProps {
-  options: DropdownOption[]
-  trigger?: DropdownTrigger
-  placement?: DropdownPlacement
-  size?: ButtonSize
-  variant?: ButtonVariant
-  disabled?: boolean
-  loading?: boolean
-  icon?: Component
-  iconDisplay?: 'left' | 'right' | 'only'
-  label?: string
-  closeOnSelect?: boolean
-  maxHeight?: string
-}
-
-export interface Props extends DropdownProps {}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<DropdownProps>(), {
   options: () => [],
   trigger: 'click',
   placement: 'bottom-start',

@@ -1,22 +1,6 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-import type { Component } from 'vue'
-
-export interface TabItem {
-  label: string
-  content?: string
-  icon?: Component | string
-  badge?: number | string
-  title?: string
-  description?: string
-  component?: Component
-}
-
-export interface TabsProps {
-  tabs?: TabItem[]
-  modelValue?: number
-  variant?: 'underline' | 'contained' | 'pills'
-}
+import type { TabsProps } from '@/types'
 
 const props = withDefaults(defineProps<TabsProps>(), {
   variant: 'underline',

@@ -1,27 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, inject, onMounted, onUnmounted } from 'vue'
 import { ChevronDownIcon } from '@heroicons/vue/24/outline'
-
-
-
-// Interface du contexte Accordion
-interface AccordionContext {
-  multiple: boolean
-  level: number
-  isItemOpen: (id: string | number) => boolean
-  toggleItem: (id: string | number, item: any) => void
-  registerItem: (id: string | number, ref: any) => void
-  unregisterItem: (id: string | number) => void
-}
-
-export interface AccordionItemProps {
-  id?: string
-  title?: string
-  content?: string
-  open?: boolean
-  disabled?: boolean
-  level?: 1 | 2 | 3 | 4 | 5 | 6
-}
+import type { AccordionContext, AccordionItemProps } from '@/types';
 
 const props = withDefaults(defineProps<AccordionItemProps>(), {
   open: false,

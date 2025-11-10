@@ -1,36 +1,8 @@
 <script setup lang="ts">
 import { computed, ref, onMounted, onUnmounted } from 'vue'
-import type { Component } from 'vue'
-import type { AccessibilityProps } from '@/types'
-import Button, { ButtonVariant } from '../atoms/Button.vue'
 import Link from '../atoms/Link.vue'
-
-export interface FloatButtonOffset {
-  x?: number
-  y?: number
-}
-
-export type FloatButtonPosition = 'left' | 'right'
-export type FloatButtonSize = 'sm' | 'md' | 'lg'
-
-export interface FloatButtonProps extends AccessibilityProps {
-  position?: FloatButtonPosition
-  offset?: FloatButtonOffset
-  size?: FloatButtonSize
-  icon?: Component
-  label?: string
-  href?: string
-  target?: '_blank' | '_self' | '_parent' | '_top'
-  rel?: string
-  badge?: string
-  variant?: ButtonVariant
-  disabled?: boolean
-  loading?: boolean
-  zIndex?: number
-  hideOnScroll?: boolean
-  showTooltip?: boolean
-  tooltipPosition?: 'top' | 'bottom' | 'left' | 'right'
-}
+import Button from '../atoms/Button.vue'
+import type { FloatButtonProps } from '@/types'
 
 export interface Props extends FloatButtonProps {}
 

@@ -1,12 +1,10 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
-import  FormField, { FormFieldProps } from '../atoms/FormField.vue';
-import { PasswordProps, PasswordValidation } from './Password.vue';
+import  FormField from '../atoms/FormField.vue'
 import { EyeIcon, EyeSlashIcon } from '@heroicons/vue/24/outline'
 import Input from '../atoms/Input.vue';
-import Progress from '../atoms/Progress.vue';
-
-export type PasswordFieldProps = FormFieldProps & PasswordProps
+import Progress from '../atoms/Progress.vue'
+import type { PasswordFieldProps, PasswordValidation } from '@/types'
 
 const props = withDefaults(defineProps<PasswordFieldProps>(), {
   size: 'md',

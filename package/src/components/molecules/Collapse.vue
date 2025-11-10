@@ -2,7 +2,7 @@
 import { ref, onMounted, nextTick } from 'vue'
 import { ChevronDownIcon } from '@heroicons/vue/24/outline'
 
-interface AccordionItem {
+export interface CollapseItem {
   id?: string
   title: string
   content: string
@@ -12,7 +12,7 @@ interface AccordionItem {
 }
 
 const props = defineProps<{
-  items?: AccordionItem[]
+  items?: CollapseItem[]
   multiple?: boolean
 }>()
 

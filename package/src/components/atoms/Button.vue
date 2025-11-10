@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, type Component } from 'vue'
+import { computed } from 'vue'
 import type { ButtonProps } from '@/types'
 import Spinner from './Spinner.vue'
 

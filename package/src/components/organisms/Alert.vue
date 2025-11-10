@@ -1,62 +1,3 @@
-<template>
-  <!-- Le template reste identique -->
-  <div
-    :class="alertClasses"
-    role="alert"
-    :aria-live="ariaLive"
-    :aria-atomic="ariaAtomic"
-    :aria-labelledby="titleId"
-    :aria-describedby="descriptionId"
-  >
-    <div class="su-alert__icon-wrapper">
-      <component
-        :is="iconComponent"
-        :class="iconClasses"
-        aria-hidden="true"
-      />
-    </div>
-    
-    <div class="su-alert__content">
-      <div
-        v-if="hasTitle"
-        :id="titleId"
-        class="su-alert__title"
-      >
-        <slot name="title">
-          {{ title }}
-        </slot>
-      </div>
-      
-      <div
-        v-if="hasDescription"
-        :id="descriptionId"
-        class="su-alert__description"
-      >
-        <slot name="description">
-          {{ description }}
-        </slot>
-      </div>
-      
-      <div
-        v-if="$slots.default"
-        class="su-alert__actions"
-      >
-        <slot />
-      </div>
-    </div>
-    
-    <button
-      v-if="dismissible"
-      type="button"
-      :class="dismissButtonClasses"
-      @click="handleDismiss"
-      :aria-label="dismissLabel"
-    >
-      <XMarkIcon class="su-alert__dismiss-icon" />
-    </button>
-  </div>
-</template>
-
 <script setup lang="ts">
 import { computed, useSlots } from 'vue'
 import {
@@ -67,18 +8,7 @@ import {
   XMarkIcon
 } from '@heroicons/vue/24/outline'
 import { useUniqueId } from '@/composables/useUniqueId'
-
-// Props
-export interface AlertProps {
-  type?: 'success' | 'warning' | 'error' | 'info' | 'neutral'
-  title?: string
-  description?: string
-  dismissible?: boolean
-  dismissLabel?: string
-  ariaLive?: 'assertive' | 'polite' | 'off'
-  ariaAtomic?: boolean
-  size?: 'sm' | 'md' | 'lg'
-}
+import type { AlertProps } from '@/types'
 
 const props = withDefaults(defineProps<AlertProps>(), {
   type: 'info',
@@ -144,6 +74,65 @@ defineExpose({
   dismiss: handleDismiss
 })
 </script>
+
+<template>
+  <!-- Le template reste identique -->
+  <div
+    :class="alertClasses"
+    role="alert"
+    :aria-live="ariaLive"
+    :aria-atomic="ariaAtomic"
+    :aria-labelledby="titleId"
+    :aria-describedby="descriptionId"
+  >
+    <div class="su-alert__icon-wrapper">
+      <component
+        :is="iconComponent"
+        :class="iconClasses"
+        aria-hidden="true"
+      />
+    </div>
+    
+    <div class="su-alert__content">
+      <div
+        v-if="hasTitle"
+        :id="titleId"
+        class="su-alert__title"
+      >
+        <slot name="title">
+          {{ title }}
+        </slot>
+      </div>
+      
+      <div
+        v-if="hasDescription"
+        :id="descriptionId"
+        class="su-alert__description"
+      >
+        <slot name="description">
+          {{ description }}
+        </slot>
+      </div>
+      
+      <div
+        v-if="$slots.default"
+        class="su-alert__actions"
+      >
+        <slot />
+      </div>
+    </div>
+    
+    <button
+      v-if="dismissible"
+      type="button"
+      :class="dismissButtonClasses"
+      @click="handleDismiss"
+      :aria-label="dismissLabel"
+    >
+      <XMarkIcon class="su-alert__dismiss-icon" />
+    </button>
+  </div>
+</template>
 
 <style lang="scss">
 @use '../../styles/main' as *;

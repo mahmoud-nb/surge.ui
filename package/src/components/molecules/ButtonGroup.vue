@@ -1,17 +1,9 @@
 <script setup lang="ts">
 import { computed, h, Fragment, Comment, Text } from 'vue'
-import type { AccessibilityProps } from '@/types'
-import Button, { ButtonSize, ButtonVariant } from '../atoms/Button.vue'
+import Button from '../atoms/Button.vue'
+import type { ButtonGroupProps } from '@/types'
 
-export interface ButtonGroupProps extends AccessibilityProps {
-  gap?: 'sm' | 'md' | 'lg' | 'none'
-  size?: ButtonSize
-  variant?: ButtonVariant
-}
-
-export interface Props extends ButtonGroupProps {}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<ButtonGroupProps>(), {
   gap: 'md'
 })
 

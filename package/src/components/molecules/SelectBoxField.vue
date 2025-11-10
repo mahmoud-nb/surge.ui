@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { computed, ref, useAttrs, useId } from 'vue'
-import FormField, { FormFieldProps } from '@/components/atoms/FormField.vue'
-import SelectBox, { SelectBoxProps } from '../atoms/SelectBox.vue'
+import FormField from '@/components/atoms/FormField.vue'
+import SelectBox from '@/components/atoms/SelectBox.vue'
+import type { SelectBoxFieldProps } from '@/types'
 
-export type SelectFieldProps = FormFieldProps & SelectBoxProps
-
-const props = withDefaults(defineProps<SelectFieldProps>(), {
+const props = withDefaults(defineProps<SelectBoxFieldProps>(), {
   options: () => [],
   groups: () => [],
   multiple: false,

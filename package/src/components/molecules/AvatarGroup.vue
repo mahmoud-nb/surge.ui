@@ -1,20 +1,9 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import type { AccessibilityProps } from '@/types'
-import Avatar, { AvatarProps, AvatarSize, AvatarVariant } from '../atoms/Avatar.vue'
+import Avatar from '../atoms/Avatar.vue'
+import type { AvatarGroupProps } from '@/types'
 
-export interface AvatarGroupProps extends AccessibilityProps {
-  avatars: AvatarProps[]
-  size?: AvatarSize
-  variant?: AvatarVariant
-  max?: number
-  spacing?: 'none' | 'sm' | 'md' | 'lg'
-  clickable?: boolean
-}
-
-export interface Props extends AvatarGroupProps {}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<AvatarGroupProps>(), {
   avatars: () => [],
   size: 'md',
   variant: 'circle',

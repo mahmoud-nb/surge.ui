@@ -1,10 +1,8 @@
 <script setup lang="ts">
 import { computed, useAttrs, useId } from 'vue'
 import FormField from '@/components/atoms/FormField.vue'
-import CheckboxGroup, { CheckboxGroupProps } from '../atoms/CheckboxGroup.vue'
-import type { FormFieldProps } from '@/components/atoms/FormField.vue'
-
-export type CheckboxGroupFieldProps = FormFieldProps & CheckboxGroupProps
+import CheckboxGroup from '../atoms/CheckboxGroup.vue'
+import type { CheckboxGroupFieldProps } from '@/types'
 
 export interface Props extends Omit<CheckboxGroupFieldProps, 'value'> {}
 

@@ -8,14 +8,7 @@ import Switch from './SwitchField.vue'
 import FileUpload from './FileUploadField.vue'
 import Textarea from './TextareaField.vue'
 import Slider from './SliderField.vue'
-import type { AccessibilityProps, Size } from '@/types'
-
-export interface FormFieldsProps extends AccessibilityProps {
-  gap?: 'sm' | 'md' | 'lg' | 'xl'
-  sectionGap?: 'sm' | 'md' | 'lg' | 'xl'
-  size?: Size
-  direction?: 'horizontal' | 'vertical'
-}
+import type { FormFieldsProps } from '@/types'
 
 export interface Props extends FormFieldsProps {}
 

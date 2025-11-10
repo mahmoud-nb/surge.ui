@@ -1,52 +1,11 @@
 <script setup lang="ts">
 import { computed, ref, useAttrs, useId } from 'vue'
 import { CloudArrowUpIcon, DocumentIcon, PhotoIcon, XMarkIcon, CheckCircleIcon, ExclamationCircleIcon } from '@heroicons/vue/24/outline'
-import type { AccessibilityProps } from '@/types'
 import { announceToScreenReader } from '@/utils/accessibility'
 import FormField from '@/components/atoms/FormField.vue'
+import type { FileUploadFieldProps, UploadedFile } from '@/types'
 
-export interface UploadedFile {
-  id: string
-  file: File
-  name: string
-  size: number
-  type: string
-  status: 'pending' | 'uploading' | 'success' | 'error'
-  progress?: number
-  error?: string
-  preview?: string
-}
-
-export type FileUploadSize = 'sm' | 'md' | 'lg'
-export type FileUploadState = 'default' | 'error' | 'success' | 'warning'
-export type FileUploadVariant = 'default' | 'dashed' | 'solid' | 'minimal'
-
-export interface FileUploadFieldProps extends AccessibilityProps {
-  value?: UploadedFile[]
-  variant?: FileUploadVariant
-  multiple?: boolean
-  accept?: string
-  maxSize?: number
-  maxFiles?: number
-  size?: FileUploadSize
-  state?: FileUploadState
-  disabled?: boolean
-  readonly?: boolean
-  required?: boolean
-  label?: string
-  message?: string
-  placeholder?: string
-  dragText?: string
-  browseText?: string
-  allowPreview?: boolean
-  showFileList?: boolean
-  ariaInvalid?: boolean
-  ariaRequired?: boolean
-  showProgress?: boolean
-  loading?: boolean
-}
-
-export interface Props extends Omit<FileUploadFieldProps, 'value'> {}
+interface Props extends Omit<FileUploadFieldProps, 'value'> {}
 
 const props = withDefaults(defineProps<Props>(), {
   multiple: false,

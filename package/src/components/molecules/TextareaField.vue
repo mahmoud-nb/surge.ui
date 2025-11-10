@@ -2,10 +2,7 @@
 import { computed, ref, useId, useAttrs } from 'vue'
 import FormField from '../atoms/FormField.vue'
 import Textarea from '../atoms/Textarea.vue';
-import type { FormFieldProps } from '../atoms/FormField.vue'
-import type { TextareaProps } from '../atoms/Textarea.vue'
-
-export type TextareaFieldProps = FormFieldProps & TextareaProps
+import type { TextareaFieldProps } from '@/types'
 
 const props = withDefaults(defineProps<TextareaFieldProps>(), {
   size: 'md',

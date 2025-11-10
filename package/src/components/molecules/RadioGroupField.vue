@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { computed, useAttrs, useId } from 'vue'
-import FormField, { FormFieldProps } from '@/components/atoms/FormField.vue'
-import RadioGroup, { RadioGroupProps } from '../atoms/RadioGroup.vue'
-
-export type RadioGroupFieldProps = FormFieldProps & RadioGroupProps
+import FormField from '@/components/atoms/FormField.vue'
+import RadioGroup from '../atoms/RadioGroup.vue'
+import type { RadioGroupFieldProps } from '@/types'
 
 export interface Props extends Omit<RadioGroupFieldProps, 'value'> {}
 

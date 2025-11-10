@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, ref, useAttrs, useId } from 'vue'
 import { announceToScreenReader } from '@/utils/accessibility'
-import FormField, { FormFieldProps } from '@/components/atoms/FormField.vue'
-import type { AccessibilityProps, Size, State, Orientation } from '@/types'
+import FormField from '@/components/atoms/FormField.vue'
+import type { AccessibilityProps, Size, State, Orientation, FormFieldProps } from '@/types'
 
 export interface BaseRangeProps extends AccessibilityProps {
   min?: number

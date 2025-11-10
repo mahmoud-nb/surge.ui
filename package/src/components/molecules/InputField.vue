@@ -2,10 +2,7 @@
 import { computed, ref, useId, useAttrs } from 'vue'
 import FormField from '../atoms/FormField.vue'
 import Input from '../atoms/Input.vue'
-import type { FormFieldProps } from '../atoms/FormField.vue'
-import type { InputProps } from '../atoms/Input.vue'
-
-export type InputFieldProps = FormFieldProps & InputProps
+import type { InputFieldProps } from '@/types'
 
 const props = withDefaults(defineProps<InputFieldProps>(), {
   type: 'text',
