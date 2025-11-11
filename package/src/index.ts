@@ -71,80 +71,31 @@ export default {
     const { prefix = 'Su', theme = {} } = options
     const mergedTheme = { ...defaultTheme, ...theme }
     const root = document.documentElement
+    const { button } = mergedTheme
 
     // injection globale
     app.provide(ThemeSymbol, mergedTheme)
     
     // Configuration globale des valeurs par défaut des boutons
     if (typeof document !== 'undefined') {
-      
-      // Configuration du radius par défaut
-      if (mergedTheme?.buttonRadius) {
-        root.style.setProperty('--su-button-default-radius', `var(--su-border-radius-${mergedTheme?.buttonRadius})`)
+
+      if (mergedTheme?.textPrimaryColor) {
+        root.style.setProperty('--su-text-primary-color', `${mergedTheme?.textPrimaryColor}`)
       }
-      
-      // Configuration de la variante par défaut
-      if (mergedTheme?.buttonVariant) {
-        const variantMap = {
-          primary: {
-            bg: 'var(--su-button-variant-primary-bg)',
-            color: 'var(--su-button-variant-primary-color)',
-            border: 'var(--su-button-variant-primary-border)',
-            hoverBg: 'var(--su-button-variant-primary-hover-bg)',
-            hoverShadow: 'var(--su-button-variant-primary-hover-shadow)'
-          },
-          secondary: {
-            bg: 'var(--su-button-variant-secondary-bg)',
-            color: 'var(--su-button-variant-secondary-color)',
-            border: 'var(--su-button-variant-secondary-border)',
-            hoverBg: 'var(--su-button-variant-secondary-hover-bg)',
-            hoverShadow: 'var(--su-button-variant-secondary-hover-shadow)'
-          },
-          outline: {
-            bg: 'var(--su-button-variant-outline-bg)',
-            color: 'var(--su-button-variant-outline-color)',
-            border: 'var(--su-button-variant-outline-border)',
-            hoverBg: 'var(--su-button-variant-outline-hover-bg)',
-            hoverShadow: 'none'
-          },
-          ghost: {
-            bg: 'var(--su-button-variant-ghost-bg)',
-            color: 'var(--su-button-variant-ghost-color)',
-            border: 'var(--su-button-variant-ghost-border)',
-            hoverBg: 'var(--su-button-variant-ghost-hover-bg)',
-            hoverShadow: 'none'
-          }
-        }
-        
-        const variant = variantMap[mergedTheme?.buttonVariant]
-        if (variant) {
-          // Mise à jour des variables CSS pour la variante par défaut
-          root.style.setProperty('--su-button-variant-primary-bg', variant.bg)
-          root.style.setProperty('--su-button-variant-primary-color', variant.color)
-          root.style.setProperty('--su-button-variant-primary-border', variant.border)
-          root.style.setProperty('--su-button-variant-primary-hover-bg', variant.hoverBg)
-          root.style.setProperty('--su-button-variant-primary-hover-shadow', variant.hoverShadow)
-        }
+      if (mergedTheme?.textPrimaryColor) {
+        root.style.setProperty('--su-text-secondary-color', `${mergedTheme?.textSecondaryColor}`)
       }
-      
-      // Configuration de la taille par défaut
-      if (mergedTheme?.buttonSize) {
-        const sizeMap = {
-          sm: 'sm',
-          md: 'md',
-          lg: 'lg'
-        }
-        
-        const size = sizeMap[mergedTheme?.buttonSize]
-        if (size) { // --su-button-default-size-padding
-          // Mise à jour des variables CSS pour la taille par défaut
-          // root.style.setProperty('--su-button-size-md-padding', `var(--su-button-size-${size}-padding)`)
-          root.style.setProperty('--su-button-size-md-font-size', `var(--su-button-size-${size}-font-size)`)
-          root.style.setProperty('--su-button-size-md-line-height', `var(--su-button-size-${size}-line-height)`)
-          root.style.setProperty('--su-button-size-md-min-height', `var(--su-button-size-${size}-min-height)`)
-          root.style.setProperty('--su-button-size-md-icon-only-padding', `var(--su-button-size-${size}-icon-only-padding)`)
-          root.style.setProperty('--su-button-size-md-icon-only-width', `var(--su-button-size-${size}-icon-only-width)`)
-        }
+      if (mergedTheme?.textPrimaryColor) {
+        root.style.setProperty('--su-text-tertiary-color', `${mergedTheme?.textTeriaryColor}`)
+      }
+
+      // button
+      if (button) {
+        root.style.setProperty('--su-custom-button-bg', button.bg)
+        root.style.setProperty('--su-custom-button-color', button.color)
+        root.style.setProperty('--su-custom-button-border', button.border)
+        root.style.setProperty('--su-custom-button-hover-bg', button.hoverBg)
+        root.style.setProperty('--su-custom-button-hover-shadow', button.hoverShadow)
       }
     }
     

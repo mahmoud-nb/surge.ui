@@ -5,7 +5,7 @@ const meta: Meta<typeof Actions> = {
   title: 'Design System/Actions',
   component: Actions,
   parameters: {
-    layout: 'centered',
+    layout: 'fullscreen',
   },
 }
 
@@ -20,10 +20,11 @@ export const Default: Story = {
   }),
 }
 
+/*
 export const WithDescription: Story = {
   render: (args) => ({
     components: { Actions },
     setup: () => ({ args }),
     template: '<Actions v-bind="args" />',
   }),
-}
+}*/

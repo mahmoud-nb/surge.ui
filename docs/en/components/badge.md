@@ -84,7 +84,7 @@ Modern and minimalist Badge component for displaying short information, statuses
       <SuBadge radius="md">Medium</SuBadge>
       <SuBadge radius="lg">Large</SuBadge>
       <SuBadge radius="xl">Extra Large</SuBadge>
-      <SuBadge radius="full">Full</SuBadge>
+      <SuBadge radius="max">Full</SuBadge>
     </div>
   </div>
 </div>
@@ -96,7 +96,7 @@ Modern and minimalist Badge component for displaying short information, statuses
   <SuBadge radius="md">Medium</SuBadge>
   <SuBadge radius="lg">Large</SuBadge>
   <SuBadge radius="xl">Extra Large</SuBadge>
-  <SuBadge radius="full">Full</SuBadge>
+  <SuBadge radius="max">Full</SuBadge>
 </template>
 ```
 
@@ -280,16 +280,16 @@ import { CheckIcon, ClockIcon, XMarkIcon, TruckIcon } from '@heroicons/vue/24/ou
 
 <template>
   <div class="order-status">
-    <SuBadge variant="success" icon="CheckIcon" iconDisplay="left" radius="full">
+    <SuBadge variant="success" icon="CheckIcon" iconDisplay="left" radius="max">
       Delivered
     </SuBadge>
-    <SuBadge variant="warning" icon="TruckIcon" iconDisplay="left" radius="full">
+    <SuBadge variant="warning" icon="TruckIcon" iconDisplay="left" radius="max">
       In transit
     </SuBadge>
-    <SuBadge variant="default" icon="ClockIcon" iconDisplay="left" radius="full">
+    <SuBadge variant="default" icon="ClockIcon" iconDisplay="left" radius="max">
       Processing
     </SuBadge>
-    <SuBadge variant="error" icon="XMarkIcon" iconDisplay="left" radius="full">
+    <SuBadge variant="error" icon="XMarkIcon" iconDisplay="left" radius="max">
       Cancelled
     </SuBadge>
   </div>
@@ -344,7 +344,7 @@ import { CheckIcon, ClockIcon, XMarkIcon, TruckIcon } from '@heroicons/vue/24/ou
 - Provide `aria-label` for badges with icon only
 - Use `dot` variant for discrete status indicators
 - Limit text to a few words maximum
-- Use `radius="full"` for notification counters
+- Use `radius="max"` for notification counters
 
 ### ❌ Don't
 - Use too many badges in the same interface

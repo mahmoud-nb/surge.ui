@@ -2,21 +2,53 @@
 @use '../colors' as *;
 @use '../tokens' as *;
 
+// Appliquer les variables au :root
 :root {
-  @include theme-vars($su-text-variants);
+  // --- 1. Variables STATIQUES (Radius, Shadow, Font) ---
+  // Celles-ci ne changent pas, nous les déclarons une seule fois.
+  @each $key, $value in $su-font-family {
+    --su-font-family-#{$key}: #{$value};
+  }
+  @each $key, $value in $su-radius {
+    --su-radius-#{$key}: #{$value};
+  }
+  @each $key, $value in $su-shadow {
+    --su-shadow-#{$key}: #{$value};
+  }
+  --su-font-size-base: 1rem;
 
-  --su-default-box-bg-color: #{$gray-50};
-  --su-default-box-border-color: #{$gray-50};
-  --su-default-box-border-radius: #{$su-default-radius};
+  // --- 2. Variables de Thème LIGHT (Par défaut) ---
+  // Nous appelons le mixin avec les maps "light"
+  @include generate-su-theme-colors(
+    $text-map: $su-text-colors-light,
+    $link-map: $su-link-colors-light,
+    $bg-map: $su-background-colors-light,
+    $border-map: $su-border-colors-light,
+    $state-map: $su-state-colors-light
+  );
 
+  // --- 3. Thème DARK (Préférence Système) ---
   @media (prefers-color-scheme: dark) {
-    @include theme-vars($su-text-variants-dark);
+    // Nous appelons le mixin avec les maps "dark"
+    @include generate-su-theme-colors(
+      $text-map: $su-text-colors-dark,
+      $link-map: $su-link-colors-dark,
+      $bg-map: $su-background-colors-dark,
+      $border-map: $su-border-colors-dark,
+      $state-map: $su-state-colors-dark
+    );
   }
 }
 
-.dark, [theme=dark] {
-  @include theme-vars($su-text-variants-dark);
-
-  --su-default-box-bg-color: #{$gray-800};
-  --su-default-box-border-color: #{$gray-600};
+// --- 4. Thème DARK (Bascule Manuelle) ---
+// Cible la classe .dark ou l'attribut [theme=dark]
+.dark, [theme=dark] * {
+  // Nous réutilisons EXACTEMENT le même mixin avec les maps "dark"
+  @include generate-su-theme-colors(
+    $text-map: $su-text-colors-dark,
+    $link-map: $su-link-colors-dark,
+    $bg-map: $su-background-colors-dark,
+    $border-map: $su-border-colors-dark,
+    $state-map: $su-state-colors-dark
+  );
 }

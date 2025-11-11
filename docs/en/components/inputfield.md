@@ -41,7 +41,7 @@ Flexible InputField component with complete HTML type support, prefixes/suffixes
   <div class="demo-section">
     <h4>Text prefixes and suffixes</h4>
     <div class="demo-inputs">
-      <SuInputField label="Price" placeholder="0.00" suffix="$" type="number" />
+      <SuInputField label="Price" placeholder="0.00" suffix="$" text-align="right" type="number" />
       <SuInputField label="Email" placeholder="name" suffix="@company.com" />
       <SuInputField label="Website" placeholder="mysite" prefix="https://" suffix=".com" />
       <SuInputField label="Phone" placeholder="123456789" prefix="+1" />
@@ -51,7 +51,7 @@ Flexible InputField component with complete HTML type support, prefixes/suffixes
 
 ```vue
 <template>
-  <SuInputField label="Price" placeholder="0.00" suffix="$" type="number" />
+  <SuInputField label="Price" placeholder="0.00" suffix="$" text-align="right" type="number" />
   <SuInputField label="Email" placeholder="name" suffix="@company.com" />
   <SuInputField label="Website" placeholder="mysite" prefix="https://" suffix=".com" />
   <SuInputField label="Phone" placeholder="123456789" prefix="+1" />

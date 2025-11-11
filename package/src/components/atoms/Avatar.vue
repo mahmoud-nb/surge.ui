@@ -183,7 +183,7 @@ defineExpose({
       v-if="badge"
       :class="badgeClasses" 
       size="sm" 
-      radius="full" 
+      radius="max" 
       variant="error"
       :aria-label="`${badge} notification(s)`"
       v-bind="badgeProps"

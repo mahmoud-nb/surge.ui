@@ -3,7 +3,7 @@ import type { Component } from "vue";
 export type Variant = 'primary' | 'secondary' | 'tertiary' | 'quaternary' | 'ghost' | 'link'
 export type Size = 'sm' | 'md' | 'lg'
 export type State = 'default' | 'error' | 'success' | 'warning'
-export type Radius = 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'
+export type Radius = 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'max'
 export type Gap = 'none' | 'sm' | 'md' | 'lg'
 export type Orientation = 'horizontal' | 'vertical'
 export type TextAlign = 'default' | 'left' | 'center' | 'right'
@@ -68,9 +68,9 @@ export interface BadgeProps extends AccessibilityProps {
 }
 
 // Button.vue
-export type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'default';
-export type ButtonSize = 'sm' | 'md' | 'lg' | 'default';
-export type ButtonRadius = 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'full' | 'default';
+export type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost';
+export type ButtonSize = 'sm' | 'md' | 'lg';
+export type ButtonRadius = 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'max';
 export interface ButtonProps extends AccessibilityProps {
   variant?: ButtonVariant;
   size?: ButtonSize;
@@ -686,4 +686,27 @@ export interface TabsProps {
   tabs?: TabItem[];
   modelValue?: number;
   variant?: 'underline' | 'contained' | 'pills';
+}
+
+// --- TEMPLATES ---
+
+interface GridBreakpoints {
+  mobile?: number
+  tablet?: number
+  miniDesktop?: number
+  desktop?: number
+}
+
+export interface GridProps {
+  columns?: GridBreakpoints
+  gap?: string | number
+  viewMode?: 'grid' | 'list'
+  responsive?: boolean
+}
+
+export interface GridCellProps {
+  bordered?: boolean
+  radius?: Radius
+  backgroundColor?: string
+  borderColor?: string
 }

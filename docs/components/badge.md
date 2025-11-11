@@ -84,7 +84,7 @@ Composant Badge moderne et minimaliste pour afficher des informations courtes, d
       <SuBadge radius="md">Medium</SuBadge>
       <SuBadge radius="lg">Large</SuBadge>
       <SuBadge radius="xl">Extra Large</SuBadge>
-      <SuBadge radius="full">Full</SuBadge>
+      <SuBadge radius="max">Full</SuBadge>
     </div>
   </div>
 </div>
@@ -96,7 +96,7 @@ Composant Badge moderne et minimaliste pour afficher des informations courtes, d
   <SuBadge radius="md">Medium</SuBadge>
   <SuBadge radius="lg">Large</SuBadge>
   <SuBadge radius="xl">Extra Large</SuBadge>
-  <SuBadge radius="full">Full</SuBadge>
+  <SuBadge radius="max">Full</SuBadge>
 </template>
 ```
 
@@ -331,16 +331,16 @@ import { CheckIcon, ClockIcon, XMarkIcon, TruckIcon } from '@heroicons/vue/24/ou
 
 <template>
   <div class="order-status">
-    <SuBadge variant="success" icon="CheckIcon" iconDisplay="left" radius="full">
+    <SuBadge variant="success" icon="CheckIcon" iconDisplay="left" radius="max">
       Livré
     </SuBadge>
-    <SuBadge variant="warning" icon="TruckIcon" iconDisplay="left" radius="full">
+    <SuBadge variant="warning" icon="TruckIcon" iconDisplay="left" radius="max">
       En transit
     </SuBadge>
-    <SuBadge variant="default" icon="ClockIcon" iconDisplay="left" radius="full">
+    <SuBadge variant="default" icon="ClockIcon" iconDisplay="left" radius="max">
       En préparation
     </SuBadge>
-    <SuBadge variant="error" icon="XMarkIcon" iconDisplay="left" radius="full">
+    <SuBadge variant="error" icon="XMarkIcon" iconDisplay="left" radius="max">
       Annulé
     </SuBadge>
   </div>
@@ -355,17 +355,17 @@ import { CheckIcon, ClockIcon, XMarkIcon, TruckIcon } from '@heroicons/vue/24/ou
     <!-- Compteurs de notifications -->
     <div class="notification-item">
       <span>Messages</span>
-      <SuBadge variant="error" radius="full" size="sm">3</SuBadge>
+      <SuBadge variant="error" radius="max" size="sm">3</SuBadge>
     </div>
     
     <div class="notification-item">
       <span>Notifications</span>
-      <SuBadge variant="warning" radius="full" size="sm">12</SuBadge>
+      <SuBadge variant="warning" radius="max" size="sm">12</SuBadge>
     </div>
     
     <div class="notification-item">
       <span>Mises à jour</span>
-      <SuBadge variant="success" radius="full" size="sm">99+</SuBadge>
+      <SuBadge variant="success" radius="max" size="sm">99+</SuBadge>
     </div>
   </div>
 </template>
@@ -457,7 +457,7 @@ import { CheckIcon, ClockIcon, XMarkIcon, TruckIcon } from '@heroicons/vue/24/ou
   <div class="product-card">
     <div class="product-header">
       <h3>MacBook Pro</h3>
-      <SuBadge variant="success" size="sm" radius="full">En stock</SuBadge>
+      <SuBadge variant="success" size="sm" radius="max">En stock</SuBadge>
     </div>
     
     <p class="product-description">
@@ -465,10 +465,10 @@ import { CheckIcon, ClockIcon, XMarkIcon, TruckIcon } from '@heroicons/vue/24/ou
     </p>
     
     <div class="product-tags">
-      <SuBadge variant="primary" size="sm" radius="full">Nouveau</SuBadge>
-      <SuBadge variant="warning" size="sm" radius="full">Promo -20%</SuBadge>
-      <SuBadge variant="default" size="sm" radius="full">13"</SuBadge>
-      <SuBadge variant="secondary" size="sm" radius="full">M3</SuBadge>
+      <SuBadge variant="primary" size="sm" radius="max">Nouveau</SuBadge>
+      <SuBadge variant="warning" size="sm" radius="max">Promo -20%</SuBadge>
+      <SuBadge variant="default" size="sm" radius="max">13"</SuBadge>
+      <SuBadge variant="secondary" size="sm" radius="max">M3</SuBadge>
     </div>
   </div>
 </template>
@@ -591,7 +591,7 @@ const handleBadgeClick = (type) => {
         @click="handleBadgeClick('premium')"
         class="badge-button"
       >
-        <SuBadge variant="primary" icon="StarIcon" iconDisplay="left" radius="full">
+        <SuBadge variant="primary" icon="StarIcon" iconDisplay="left" radius="max">
           Premium
         </SuBadge>
       </button>
@@ -600,7 +600,7 @@ const handleBadgeClick = (type) => {
         @click="handleBadgeClick('verified')"
         class="badge-button"
       >
-        <SuBadge variant="success" icon="CheckIcon" iconDisplay="left" radius="full">
+        <SuBadge variant="success" icon="CheckIcon" iconDisplay="left" radius="max">
           Vérifié
         </SuBadge>
       </button>
@@ -662,7 +662,7 @@ const handleBadgeClick = (type) => {
 - Fournir un `aria-label` pour les badges avec icône seule
 - Utiliser la variante `dot` pour les indicateurs de statut discrets
 - Limiter le texte à quelques mots maximum
-- Utiliser `radius="full"` pour les compteurs de notifications
+- Utiliser `radius="max"` pour les compteurs de notifications
 
 ### ❌ À éviter
 - Utiliser trop de badges dans une même interface

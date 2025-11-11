@@ -10,39 +10,6 @@ $text-primary-dark: #f9fafb; // Contraste 17.09:1 sur noir
 $text-secondary-dark: #e5e7eb; // Contraste 12.63:1 sur noir
 $text-tertiary-dark: #9ca3af; // Contraste 4.54:1 sur noir (minimum AA)
 
-$su-text-variants: (
-  primary: #111827,
-  secondary: #374151,
-  tertiary: #6b7280
-);
-
-$su-text-variants-dark: (
-  primary: #f9fafb,
-  secondary: #e5e7eb,
-  tertiary: #9ca3af
-);
-
-@mixin theme-vars($colors) {
-  @each $name, $value in $colors {
-    --text-#{$name}: #{$value};
-  }
-  --su-default-radius: #{$su-default-radius};
-}
-
-@mixin generate-text-variants($base: '&') {
-  @each $key, $value in $su-text-variants {
-    @if $base != '&' {
-      #{$base}--#{$key} {
-        color: var(--text-#{$key});
-      }
-    } @else {
-      &--#{$key} {
-        color: var(--text-#{$key});
-      }
-    }
-  }
-}
-
 // # Typography
 $font-size-sm: 0.875rem;
 $font-size-base: 1rem;
@@ -78,30 +45,24 @@ $border-radius-sm: 0.125rem;
 $border-radius-md: 0.375rem;
 $border-radius-lg: 0.5rem;
 $border-radius-xl: 0.75rem;
-$border-radius-full: 999rem;
+$border-radius-max: 999rem;
 
-$su-radius : (
+$su-border-radius : (
   'none': 0,
   'xs': 0.125rem,
   'sm': 0.25rem,
   'md': 0.375rem,
   'lg': 0.5rem,
   'xl': 0.75rem,
-  'full': 999rem
+  'max': 999rem
 ) !default;
 
-$su-default-radius: map.get($su-radius, 'md');
+$su-default-border-radius: map.get($su-border-radius, 'md');
 
-@mixin generate-border-radius($base: '&') {
-  @each $key, $value in $su-radius {
-    @if $base != '&' {
-      #{$base}--radius-#{$key} {
-        border-radius: $value;
-      }
-    } @else {
-      &--radius-#{$key} {
-        border-radius: $value;
-      }
+@mixin use-border-radius($base: '&') {
+  @each $key, $value in $su-border-radius {
+    #{$base}--radius-#{$key} {
+      border-radius: $value;
     }
   }
 }
@@ -126,11 +87,135 @@ $box-style : (
   default: (
     backgroundColor: $gray-50,
     borderColor: $gray-200,
-    borderRadius: $su-default-radius,
+    borderRadius: $su-default-border-radius,
   ),
   dark: (
     backgroundColor: $gray-800,
     borderColor: $gray-600,
-    borderRadius: $su-default-radius,
+    borderRadius: $su-default-border-radius,
   )
-)
+);
+
+
+
+// =================================================================
+// 1. Variables STATIQUES (Ne changent pas avec le thème)
+// =================================================================
+$su-font-family: (
+  base: "Inter",
+  mono: monospace
+);
+$su-radius: (
+  global: 0.5rem,
+  box: 0.75rem,
+  field: 0.375rem
+);
+$su-shadow: (
+  default: 0 1px 3px 0 rgba(0, 0, 0, 0.1),
+  focus: 0 0 0 3px rgba(59, 130, 246, 0.5)
+);
+
+// =================================================================
+// 2. Thème LIGHT (Valeurs par défaut)
+// =================================================================
+$su-text-colors-light: (
+  primary: #111827,
+  secondary: #374151,
+  tertiary: #6b7280
+);
+$su-link-colors-light: (
+  default: #2563eb,
+  primary: #1d4ed8,
+  secondary: #374151,
+  muted: #9ca3af
+);
+$su-background-colors-light: (
+  global: #f9fafb,
+  box: #ffffff,
+  field: #ffffff
+);
+$su-border-colors-light: (
+  default: #d1d5db,
+  focus: #3b82f6
+);
+$su-state-colors-light: (
+  success: #16a34a,
+  error: #dc2626,
+  warning: #f59e0b,
+  info: #0284c7
+);
+
+// =================================================================
+// 3. Thème DARK (Valeurs inversées)
+// =================================================================
+$su-text-colors-dark: (
+  primary: #f9fafb,
+  secondary: #e5e7eb,
+  tertiary: #9ca3af
+);
+$su-link-colors-dark: (
+  default: #60a5fa, // Bleu plus clair pour la lisibilité
+  primary: #93c5fd,
+  secondary: #e5e7eb,
+  muted: #6b7280
+);
+$su-background-colors-dark: (
+  global: #111827, // Fond sombre
+  box: #1f2937, // Boîtes légèrement plus claires
+  field: #374151 // Champs de formulaire
+);
+$su-border-colors-dark: (
+  default: #4b5563, // Bordures plus claires
+  focus: #60a5fa
+);
+$su-state-colors-dark: (
+  success: #4ade80,
+  error: #f87171,
+  warning: #facc15,
+  info: #38bdf8
+);
+
+/**
+ * Mixin pour générer les variables CSS de couleur du thème.
+ * Il ne génère pas les variables statiques (radius, shadow, etc.).
+ */
+@mixin generate-su-theme-colors(
+  $text-map: $su-text-colors-light,
+  $link-map: $su-link-colors-light,
+  $bg-map: $su-background-colors-light,
+  $border-map: $su-border-colors-light,
+  $state-map: $su-state-colors-light
+) {
+  // 1. Générer les variables de Texte
+  @each $key, $value in $text-map {
+    --su-text-#{$key}-color: #{$value};
+  }
+  
+  // 2. Générer les variables de Liens
+  @each $key, $value in $link-map {
+    --su-link-#{$key}-color: #{$value};
+  }
+
+  // 3. Générer les variables de Background
+  @each $key, $value in $bg-map {
+    --su-bg-#{$key}-color: #{$value};
+  }
+
+  // 4. Générer les variables de Bordure
+  @each $key, $value in $border-map {
+    --su-border-#{$key}-color: #{$value};
+  }
+
+  // 5. Générer les variables d'État
+  @each $key, $value in $state-map {
+    --su-state-#{$key}-color: #{$value};
+  }
+}
+// ------------------------------------------------------------------
+@mixin use-text-variants($base: '&') {
+  @each $key, $value in $su-text-colors-light {
+    #{$base}--#{$key} {
+      color: var(--su-text-#{$key}-color);
+    }
+  }
+}

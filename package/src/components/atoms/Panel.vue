@@ -41,9 +41,9 @@ withDefaults(defineProps<PanelProps>(), {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  color: var(--text-primary);
-  background-color: var(--su-default-box-bg-color);
-  border-radius: $border-radius-md;
+  color: var(--su-text-primary-color);
+  background-color: var(--su-bg-global-color);
+  border-radius: $su-default-border-radius;
   padding: $spacing-4;
   transition: background-color 0.2s ease, box-shadow 0.2s ease;
 
@@ -63,10 +63,7 @@ withDefaults(defineProps<PanelProps>(), {
     background-color: $primary-50;
   }
 
-  [data-theme='dark'] &, .dark & {
-    color: $text-primary-dark;
-    background-color: $gray-800;
-    
+  [data-theme='dark'] &, .dark & {    
     &--subtle {
       background-color: $gray-700;
     }

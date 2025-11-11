@@ -131,12 +131,12 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !slots.def
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 0.25rem;
   font-family: inherit;
   font-weight: 500;
   white-space: nowrap;
   user-select: none;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  gap: 0.25rem;
   
   // Tailles
   &--sm {
@@ -149,8 +149,6 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !slots.def
       width: 0.75rem;
       height: 0.75rem;
     }
-    
-    //&.su-badge--icon-only {}
     
     &.su-badge--dot-with-text {
       gap: 0.375rem;
@@ -179,8 +177,6 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !slots.def
       height: 1rem;
     }
     
-    //&.su-badge--icon-only {}
-    
     &.su-badge--dot-with-text {
       gap: 0.5rem;
       padding: 0.25rem 0.75rem;
@@ -208,8 +204,6 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !slots.def
       height: 1.25rem;
     }
     
-    //&.su-badge--icon-only {}
-    
     &.su-badge--dot-with-text {
       gap: 0.625rem;
       padding: 0.375rem 1rem;
@@ -227,29 +221,7 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !slots.def
   }
   
   // Radius
-  &--radius-none {
-    border-radius: 0;
-  }
-  
-  &--radius-sm {
-    border-radius: $border-radius-sm;
-  }
-  
-  &--radius-md {
-    border-radius: $border-radius-md;
-  }
-  
-  &--radius-lg {
-    border-radius: $border-radius-lg;
-  }
-  
-  &--radius-xl {
-    border-radius: $border-radius-xl;
-  }
-  
-  &--radius-full {
-    border-radius: 9999px;
-  }
+  @include use-border-radius();
   
   // Variantes
   &--default {

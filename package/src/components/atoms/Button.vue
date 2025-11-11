@@ -169,8 +169,8 @@ const ariaAttributes = computed(() => {
     }
   }
 
-  // Raius
-  @include generate-border-radius();
+  // Radius
+  @include use-border-radius();
 
   &--default-radius {
     border-radius: var(--su-default-radius);

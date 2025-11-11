@@ -27,7 +27,7 @@ const meta: Meta<typeof Badge> = {
     },
     radius: {
       control: { type: 'select' },
-      options: ['none', 'sm', 'md', 'lg', 'xl', 'full'],
+      options: ['none', 'sm', 'md', 'lg', 'xl', 'max'],
       description: 'Rayon de bordure du badge'
     },
     icon: {
@@ -110,7 +110,7 @@ export const Radius: Story = {
         <Badge radius="md">Medium</Badge>
         <Badge radius="lg">Large</Badge>
         <Badge radius="xl">Extra Large</Badge>
-        <Badge radius="full">Full</Badge>
+        <Badge radius="max">max</Badge>
       </div>
     `
   })
@@ -228,19 +228,19 @@ export const StatusBadges: Story = {
         <div>
           <h4 style="margin-bottom: 1rem;">Niveaux d'utilisateur</h4>
           <div style="display: flex; gap: 1rem; align-items: center;">
-            <Badge variant="default" radius="full">Débutant</Badge>
-            <Badge variant="primary" radius="full">Intermédiaire</Badge>
-            <Badge variant="warning" radius="full">Avancé</Badge>
-            <Badge variant="error" radius="full">Expert</Badge>
+            <Badge variant="default" radius="max">Débutant</Badge>
+            <Badge variant="primary" radius="max">Intermédiaire</Badge>
+            <Badge variant="warning" radius="max">Avancé</Badge>
+            <Badge variant="error" radius="max">Expert</Badge>
           </div>
         </div>
         
         <div>
           <h4 style="margin-bottom: 1rem;">Notifications</h4>
           <div style="display: flex; gap: 1rem; align-items: center;">
-            <Badge variant="error" radius="full" size="sm">3</Badge>
-            <Badge variant="warning" radius="full" size="sm">12</Badge>
-            <Badge variant="success" radius="full" size="sm">99+</Badge>
+            <Badge variant="error" radius="max" size="sm">3</Badge>
+            <Badge variant="warning" radius="max" size="sm">12</Badge>
+            <Badge variant="success" radius="max" size="sm">99+</Badge>
           </div>
         </div>
       </div>
@@ -317,29 +317,29 @@ export const ProductLabels: Story = {
         <div style="padding: 1.5rem; background-color: white; border-radius: 0.75rem; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
           <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
             <h3 style="margin: 0; font-size: 1.125rem; font-weight: 600;">MacBook Pro</h3>
-            <Badge variant="success" size="sm" radius="full">En stock</Badge>
+            <Badge variant="success" size="sm" radius="max">En stock</Badge>
           </div>
           <p style="margin: 0 0 1rem 0; color: #6b7280; font-size: 0.875rem;">
             Ordinateur portable haute performance
           </p>
           <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-            <Badge variant="primary" size="sm" radius="full">Nouveau</Badge>
-            <Badge variant="warning" size="sm" radius="full">Promo</Badge>
-            <Badge variant="default" size="sm" radius="full">13"</Badge>
+            <Badge variant="primary" size="sm" radius="max">Nouveau</Badge>
+            <Badge variant="warning" size="sm" radius="max">Promo</Badge>
+            <Badge variant="default" size="sm" radius="max">13"</Badge>
           </div>
         </div>
         
         <div style="padding: 1.5rem; background-color: white; border-radius: 0.75rem; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
           <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
             <h3 style="margin: 0; font-size: 1.125rem; font-weight: 600;">iPhone 15</h3>
-            <Badge variant="error" size="sm" radius="full">Rupture</Badge>
+            <Badge variant="error" size="sm" radius="max">Rupture</Badge>
           </div>
           <p style="margin: 0 0 1rem 0; color: #6b7280; font-size: 0.875rem;">
             Smartphone dernière génération
           </p>
           <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-            <Badge variant="secondary" size="sm" radius="full">128GB</Badge>
-            <Badge variant="default" size="sm" radius="full">Bleu</Badge>
+            <Badge variant="secondary" size="sm" radius="max">128GB</Badge>
+            <Badge variant="default" size="sm" radius="max">Bleu</Badge>
           </div>
         </div>
       </div>
@@ -355,10 +355,10 @@ export const NotificationBadges: Story = {
         <div>
           <h4 style="margin-bottom: 1rem;">Compteurs de notifications</h4>
           <div style="display: flex; gap: 1rem; align-items: center;">
-            <Badge variant="error" radius="full" size="sm">3</Badge>
-            <Badge variant="error" radius="full" size="sm">12</Badge>
-            <Badge variant="error" radius="full" size="sm">99+</Badge>
-            <Badge variant="error" radius="full" size="sm">999+</Badge>
+            <Badge variant="error" radius="max" size="sm">3</Badge>
+            <Badge variant="error" radius="max" size="sm">12</Badge>
+            <Badge variant="error" radius="max" size="sm">99+</Badge>
+            <Badge variant="error" radius="max" size="sm">999+</Badge>
           </div>
         </div>
         
@@ -371,7 +371,7 @@ export const NotificationBadges: Story = {
               </button>
               <Badge 
                 variant="error" 
-                radius="full" 
+                radius="max" 
                 size="sm" 
                 style="position: absolute; top: -0.375rem; right: -0.375rem;"
               >
@@ -385,7 +385,7 @@ export const NotificationBadges: Story = {
               </button>
               <Badge 
                 variant="warning" 
-                radius="full" 
+                radius="max" 
                 size="sm" 
                 style="position: absolute; top: -0.375rem; right: -0.375rem;"
               >
@@ -447,7 +447,7 @@ export const Interactive: Story = {
               @click="handleBadgeClick('premium')"
               style="background: none; border: none; padding: 0; cursor: pointer;"
             >
-              <Badge variant="primary" :icon="StarIcon" iconDisplay="left" radius="full">
+              <Badge variant="primary" :icon="StarIcon" iconDisplay="left" radius="max">
                 Premium
               </Badge>
             </button>
@@ -456,7 +456,7 @@ export const Interactive: Story = {
               @click="handleBadgeClick('verified')"
               style="background: none; border: none; padding: 0; cursor: pointer;"
             >
-              <Badge variant="success" :icon="CheckIcon" iconDisplay="left" radius="full">
+              <Badge variant="success" :icon="CheckIcon" iconDisplay="left" radius="max">
                 Vérifié
               </Badge>
             </button>

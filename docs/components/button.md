@@ -116,7 +116,7 @@ import { PlusIcon, ArrowRightIcon, HeartIcon, TrashIcon } from '@heroicons/vue/2
       <SuButton radius="md">Medium</SuButton>
       <SuButton radius="lg">Large</SuButton>
       <SuButton radius="xl">Extra Large</SuButton>
-      <SuButton radius="default">Default</SuButton>
+      <SuButton radius="max">Max</SuButton>
     </div>
   </div>
 </div>
@@ -128,7 +128,7 @@ import { PlusIcon, ArrowRightIcon, HeartIcon, TrashIcon } from '@heroicons/vue/2
   <SuButton radius="md">Medium</SuButton>
   <SuButton radius="lg">Large</SuButton>
   <SuButton radius="xl">Extra Large</SuButton>
-  <SuButton radius="default">Default</SuButton>
+  <SuButton radius="max">Max</SuButton>
 </template>
 ```
 

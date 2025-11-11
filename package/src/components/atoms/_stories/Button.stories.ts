@@ -148,7 +148,7 @@ export const RadiusVariations: Story = {
           <Button radius="md">Medium</Button>
           <Button radius="lg">Large</Button>
           <Button radius="xl">Extra Large</Button>
-          <Button radius="full">Full...</Button>
+          <Button radius="max">Full...</Button>
         </div>
       </div>
     `

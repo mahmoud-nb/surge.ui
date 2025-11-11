@@ -57,6 +57,82 @@ $error-700: #b91c1c;
 $error-800: #991b1b;
 $error-900: #7f1d1d;
 
+// =================================================================
+// 1. Thème LIGHT (Valeurs par défaut)
+// =================================================================
+$su-text-colors-light: (
+  primary: #111827,
+  secondary: #374151,
+  tertiary: #6b7280
+);
+$su-link-colors-light: (
+  default: #2563eb,
+  primary: #1d4ed8,
+  secondary: #374151,
+  muted: #9ca3af
+);
+$su-background-colors-light: (
+  global: #f9fafb,
+  box: #ffffff,
+  field: #ffffff
+);
+$su-border-colors-light: (
+  default: #d1d5db,
+  focus: #3b82f6
+);
+$su-state-colors-light: (
+  success: #16a34a,
+  error: #dc2626,
+  warning: #f59e0b,
+  info: #0284c7
+);
+
+// =================================================================
+// 2. Thème DARK (Valeurs inversées)
+// =================================================================
+$su-text-colors-dark: (
+  primary: #f9fafb,
+  secondary: #e5e7eb,
+  tertiary: #9ca3af
+);
+$su-link-colors-dark: (
+  default: #60a5fa, // Bleu plus clair pour la lisibilité
+  primary: #93c5fd,
+  secondary: #e5e7eb,
+  muted: #6b7280
+);
+$su-background-colors-dark: (
+  global: #111827, // Fond sombre
+  box: #1f2937, // Boîtes légèrement plus claires
+  field: #374151 // Champs de formulaire
+);
+$su-border-colors-dark: (
+  default: #4b5563, // Bordures plus claires
+  focus: #60a5fa
+);
+$su-state-colors-dark: (
+  success: #4ade80,
+  error: #f87171,
+  warning: #facc15,
+  info: #38bdf8
+);
+
+// =================================================================
+// 3. Variables STATIQUES (Ne changent pas avec le thème)
+// =================================================================
+$su-radius: (
+  global: 0.5rem,
+  box: 0.75rem,
+  field: 0.375rem
+);
+$su-shadow: (
+  default: 0 1px 3px 0 rgba(0, 0, 0, 0.1),
+  focus: 0 0 0 3px rgba(59, 130, 246, 0.5)
+);
+$su-font-family: (
+  base: Arial,
+  mono: monospace
+);
 
 // Export CSS custom properties
 :export {

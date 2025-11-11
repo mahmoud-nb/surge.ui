@@ -52,8 +52,10 @@ const tag = computed(() => (props.level === 'div' ? 'div' : `h${props.level}`))
 
 .su-heading {
   $self: &;
-  color: var(--text-primary);
+  @include reset-style();
+  font-family: var(--su-font-family-base);
   font-weight: 600;
+  color: var(--su-text-primary-color);
   margin: 0;
 
   &__slot {
@@ -72,7 +74,7 @@ const tag = computed(() => (props.level === 'div' ? 'div' : `h${props.level}`))
     }
   }
 
-  @include generate-text-variants();
+  @include use-text-variants();
 
   &--truncate {
     display: block;
