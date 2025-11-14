@@ -227,8 +227,8 @@ onUnmounted(() => {
     <!-- Rendu via prop items -->
     <AccordionItem
       v-for="item in itemsWithIds"
-      :key="item.id"
       :id="item.id"
+      :key="item.id"
       :title="item.title"
       :content="item.content"
       :disabled="item.disabled"

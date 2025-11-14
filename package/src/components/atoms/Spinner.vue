@@ -81,9 +81,9 @@ const spinnerStyles = computed(() => {
       class="su-spinner__dots"
       :style="spinnerStyles"
     >
-      <span class="su-spinner__dot"></span>
-      <span class="su-spinner__dot"></span>
-      <span class="su-spinner__dot"></span>
+      <span class="su-spinner__dot" />
+      <span class="su-spinner__dot" />
+      <span class="su-spinner__dot" />
     </div>
 
     <!-- Spinner pulse -->
@@ -91,7 +91,7 @@ const spinnerStyles = computed(() => {
       v-if="type === 'pulse'"
       class="su-spinner__pulse"
       :style="{...spinnerStyles, backgroundColor: color}"
-    ></div>
+    />
 
     <!-- Spinner bars -->
     <div 
@@ -104,10 +104,13 @@ const spinnerStyles = computed(() => {
         :key="n"
         class="su-spinner__bar"
         :style="{ backgroundColor: color }"
-      ></span>
+      />
     </div>
 
-    <span class="su-spinner__label" :class="{ 'sr-only': !showLabel }">{{ label }}</span>
+    <span
+      class="su-spinner__label"
+      :class="{ 'sr-only': !showLabel }"
+    >{{ label }}</span>
   </span>
 </template>
 

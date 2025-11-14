@@ -56,7 +56,7 @@ const handleBlur = (event: FocusEvent) => {
 
 <template>
   <FormField
-    :fieldId="groupId"
+    :field-id="groupId"
     :label="label"
     :message="message"
     :state="state"

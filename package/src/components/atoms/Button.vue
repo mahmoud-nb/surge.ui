@@ -106,19 +106,25 @@ const ariaAttributes = computed(() => {
     @focus="handleFocus"
     @blur="handleBlur"
   >
-    <Spinner v-if="loading" :label="'Chargement en cours...'" />
+    <Spinner
+      v-if="loading"
+      :label="'Chargement en cours...'"
+    />
     
     <template v-if="!loading">
       <!-- Icône -->
       <component 
-        v-if="icon" 
         :is="icon" 
+        v-if="icon" 
         class="su-button__icon"
         aria-hidden="true"
       />
       
       <!-- Contenu textuel -->
-      <span v-if="hasText && $slots.default" class="su-button__content">
+      <span
+        v-if="hasText && $slots.default"
+        class="su-button__content"
+      >
         <slot />
       </span>
     </template>

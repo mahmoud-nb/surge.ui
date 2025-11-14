@@ -48,7 +48,11 @@ watch(
 
 <template>
   <div class="accordion-item">
-    <Heading :id="headingId" :tag="'h3'" class="accordion-header">
+    <Heading
+      :id="headingId"
+      :tag="'h3'"
+      class="accordion-header"
+    >
       <button
         class="accordion-trigger"
         type="button"
@@ -56,7 +60,9 @@ watch(
         :aria-controls="panelId"
         @click="toggle"
       >
-        <slot name="title">{{ title }}</slot>
+        <slot name="title">
+          {{ title }}
+        </slot>
       </button>
     </Heading>
 

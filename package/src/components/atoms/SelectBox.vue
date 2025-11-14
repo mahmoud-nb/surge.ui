@@ -416,211 +416,260 @@ watch(modelValue, () => {
 </script>
 
 <template>
-  <div class="su-select-wrapper" :dir="dir">
+  <div
+    class="su-select-wrapper"
+    :dir="dir"
+  >
     <!-- Container principal -->
     <div 
       ref="selectRef"
       :class="containerClasses"
     >
-  <!-- Trigger -->
-  <div
-    ref="inputRef"
-    :id="selectId"
-    :class="triggerClasses"
-    :tabindex="disabled ? -1 : 0"
-    v-bind="ariaAttributes"
-    @click="toggleDropdown"
-    @keydown="handleKeydown"
-    @focus="handleFocus"
-    @blur="handleBlur"
-  >
-    <!-- Contenu du trigger -->
-    <div class="su-select-content">
-      <!-- Sélection multiple - tags -->
-      <div v-if="multiple && selectedOptions.length > 0" class="su-select-tags">
-        <span
-          v-for="option in selectedOptions.slice(0, 3)"
-          :key="option.value"
-          class="su-select-tag"
-        >
-          <component 
-            v-if="option.icon" 
-            :is="option.icon" 
-            class="su-select-tag-icon"
-            aria-hidden="true"
-          />
-          <span class="su-select-tag-label">{{ option.label }}</span>
-          <button
-            type="button"
-            class="su-select-tag-remove"
-            :aria-label="`Retirer ${option.label}`"
-            @click="removeSelectedOption(option, $event)"
-          >
-            <XMarkIcon class="su-select-tag-remove-icon" />
-          </button>
-        </span>
-        <span 
-          v-if="selectedOptions.length > 3" 
-          class="su-select-tag su-select-tag--more"
-        >
-          +{{ selectedOptions.length - 3 }}
-        </span>
-      </div>
-      
-      <!-- Sélection simple ou placeholder -->
-      <div v-else class="su-select-display">
-        <component 
-          v-if="selectedOptions[0]?.icon" 
-          :is="selectedOptions[0].icon" 
-          class="su-select-display-icon"
-          aria-hidden="true"
-        />
-        <span class="su-select-display-text">{{ displayText }}</span>
-      </div>
-    </div>
-
-    <!-- Actions -->
-    <div class="su-select-actions">
-      <!-- Loading -->
-      <div v-if="loading" class="su-select-spinner">
-        <svg class="su-spinner" viewBox="0 0 24 24" aria-hidden="true">
-          <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/>
-          <path d="M12 2a10 10 0 0 1 10 10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-        </svg>
-      </div>
-      
-      <!-- Clear button -->
-      <button
-        v-else-if="clearable && selectedOptions.length > 0 && !disabled && !readonly"
-        type="button"
-        class="su-select-clear"
-        aria-label="Effacer la sélection"
-        @click="clearSelection"
+      <!-- Trigger -->
+      <div
+        :id="selectId"
+        ref="inputRef"
+        :class="triggerClasses"
+        :tabindex="disabled ? -1 : 0"
+        v-bind="ariaAttributes"
+        @click="toggleDropdown"
+        @keydown="handleKeydown"
+        @focus="handleFocus"
+        @blur="handleBlur"
       >
-        <XMarkIcon class="su-select-clear-icon" />
-      </button>
+        <!-- Contenu du trigger -->
+        <div class="su-select-content">
+          <!-- Sélection multiple - tags -->
+          <div
+            v-if="multiple && selectedOptions.length > 0"
+            class="su-select-tags"
+          >
+            <span
+              v-for="option in selectedOptions.slice(0, 3)"
+              :key="option.value"
+              class="su-select-tag"
+            >
+              <component 
+                :is="option.icon" 
+                v-if="option.icon" 
+                class="su-select-tag-icon"
+                aria-hidden="true"
+              />
+              <span class="su-select-tag-label">{{ option.label }}</span>
+              <button
+                type="button"
+                class="su-select-tag-remove"
+                :aria-label="`Retirer ${option.label}`"
+                @click="removeSelectedOption(option, $event)"
+              >
+                <XMarkIcon class="su-select-tag-remove-icon" />
+              </button>
+            </span>
+            <span 
+              v-if="selectedOptions.length > 3" 
+              class="su-select-tag su-select-tag--more"
+            >
+              +{{ selectedOptions.length - 3 }}
+            </span>
+          </div>
       
-      <!-- Chevron -->
-      <ChevronDownIcon 
-        class="su-select-chevron"
-        :class="{ 'su-select-chevron--open': isOpen }"
-        aria-hidden="true"
-      />
-    </div>
-  </div>
+          <!-- Sélection simple ou placeholder -->
+          <div
+            v-else
+            class="su-select-display"
+          >
+            <component 
+              :is="selectedOptions[0].icon" 
+              v-if="selectedOptions[0]?.icon" 
+              class="su-select-display-icon"
+              aria-hidden="true"
+            />
+            <span class="su-select-display-text">{{ displayText }}</span>
+          </div>
+        </div>
 
-  <!-- Dropdown -->
-  <Transition name="su-select-dropdown">
-    <div
-      v-if="isOpen"
-      ref="dropdownRef"
-      :id="listboxId"
-      class="su-select-dropdown"
-      role="listbox"
-      :aria-multiselectable="multiple"
-    >
-      <!-- Recherche -->
-      <div v-if="searchable" class="su-select-search">
-        <div class="su-select-search-container">
-          <MagnifyingGlassIcon class="su-select-search-icon" aria-hidden="true" />
-          <input
-            ref="searchInputRef"
-            type="text"
-            class="su-select-search-input"
-            :placeholder="searchPlaceholder"
-            :value="searchQuery"
-            @input="handleSearch"
-            @keydown="handleKeydown"
+        <!-- Actions -->
+        <div class="su-select-actions">
+          <!-- Loading -->
+          <div
+            v-if="loading"
+            class="su-select-spinner"
+          >
+            <svg
+              class="su-spinner"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <circle
+                cx="12"
+                cy="12"
+                r="10"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              />
+              <path
+                d="M12 2a10 10 0 0 1 10 10"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
+            </svg>
+          </div>
+      
+          <!-- Clear button -->
+          <button
+            v-else-if="clearable && selectedOptions.length > 0 && !disabled && !readonly"
+            type="button"
+            class="su-select-clear"
+            aria-label="Effacer la sélection"
+            @click="clearSelection"
+          >
+            <XMarkIcon class="su-select-clear-icon" />
+          </button>
+      
+          <!-- Chevron -->
+          <ChevronDownIcon 
+            class="su-select-chevron"
+            :class="{ 'su-select-chevron--open': isOpen }"
+            aria-hidden="true"
           />
         </div>
       </div>
 
-      <!-- Options -->
-      <div class="su-select-options" :style="{ maxHeight: maxHeight }" >
-        <template v-if="filteredOptions.length > 0">
-          <template v-for="(groupOptions, groupName) in groupedOptions" :key="groupName">
-            <!-- Groupe header -->
-            <div 
-              v-if="groupName && props.groups && props.groups.length > 0" 
-              class="su-select-group-header"
-              role="group"
-              :aria-label="groupName"
-            >
-              {{ groupName }}
+      <!-- Dropdown -->
+      <Transition name="su-select-dropdown">
+        <div
+          v-if="isOpen"
+          :id="listboxId"
+          ref="dropdownRef"
+          class="su-select-dropdown"
+          role="listbox"
+          :aria-multiselectable="multiple"
+        >
+          <!-- Recherche -->
+          <div
+            v-if="searchable"
+            class="su-select-search"
+          >
+            <div class="su-select-search-container">
+              <MagnifyingGlassIcon
+                class="su-select-search-icon"
+                aria-hidden="true"
+              />
+              <input
+                ref="searchInputRef"
+                type="text"
+                class="su-select-search-input"
+                :placeholder="searchPlaceholder"
+                :value="searchQuery"
+                @input="handleSearch"
+                @keydown="handleKeydown"
+              >
             </div>
-            
-            <!-- Options du groupe -->
-            <div
-              v-for="option in groupOptions"
-              :key="option.value"
-              class="su-select-option"
-              :class="{
-                'su-select-option--selected': multiple ? 
-                  (selectedValue as (string | number)[]).includes(option.value) : 
-                  selectedValue === option.value,
-                'su-select-option--disabled': option.disabled,
-                'su-select-option--focused': filteredOptions.indexOf(option) === focusedIndex
-              }"
-              role="option"
-              :aria-selected="multiple ? 
-                (selectedValue as (string | number)[]).includes(option.value) : 
-                selectedValue === option.value"
-              :aria-disabled="option.disabled"
-              @click="selectOption(option)"
-              @mouseenter="focusedIndex = filteredOptions.indexOf(option)"
-            >
-              <!-- Checkbox pour multiselect -->
-              <div v-if="multiple" class="su-select-option-checkbox">
+          </div>
+
+          <!-- Options -->
+          <div
+            class="su-select-options"
+            :style="{ maxHeight: maxHeight }"
+          >
+            <template v-if="filteredOptions.length > 0">
+              <template
+                v-for="(groupOptions, groupName) in groupedOptions"
+                :key="groupName"
+              >
+                <!-- Groupe header -->
                 <div 
-                  class="su-select-checkbox"
-                  :class="{
-                    'su-select-checkbox--checked': (selectedValue as (string | number)[]).includes(option.value)
-                  }"
+                  v-if="groupName && props.groups && props.groups.length > 0" 
+                  class="su-select-group-header"
+                  role="group"
+                  :aria-label="groupName"
                 >
+                  {{ groupName }}
+                </div>
+            
+                <!-- Options du groupe -->
+                <div
+                  v-for="option in groupOptions"
+                  :key="option.value"
+                  class="su-select-option"
+                  :class="{
+                    'su-select-option--selected': multiple ? 
+                      (selectedValue as (string | number)[]).includes(option.value) : 
+                      selectedValue === option.value,
+                    'su-select-option--disabled': option.disabled,
+                    'su-select-option--focused': filteredOptions.indexOf(option) === focusedIndex
+                  }"
+                  role="option"
+                  :aria-selected="multiple ? 
+                    (selectedValue as (string | number)[]).includes(option.value) : 
+                    selectedValue === option.value"
+                  :aria-disabled="option.disabled"
+                  @click="selectOption(option)"
+                  @mouseenter="focusedIndex = filteredOptions.indexOf(option)"
+                >
+                  <!-- Checkbox pour multiselect -->
+                  <div
+                    v-if="multiple"
+                    class="su-select-option-checkbox"
+                  >
+                    <div 
+                      class="su-select-checkbox"
+                      :class="{
+                        'su-select-checkbox--checked': (selectedValue as (string | number)[]).includes(option.value)
+                      }"
+                    >
+                      <CheckIcon 
+                        v-if="(selectedValue as (string | number)[]).includes(option.value)"
+                        class="su-select-checkbox-icon" 
+                        aria-hidden="true"
+                      />
+                    </div>
+                  </div>
+              
+                  <!-- Icône de l'option -->
+                  <component 
+                    :is="option.icon" 
+                    v-if="option.icon" 
+                    class="su-select-option-icon"
+                    aria-hidden="true"
+                  />
+              
+                  <!-- Contenu de l'option -->
+                  <div class="su-select-option-content">
+                    <div class="su-select-option-label">
+                      {{ option.label }}
+                    </div>
+                    <div 
+                      v-if="option.description" 
+                      class="su-select-option-description"
+                    >
+                      {{ option.description }}
+                    </div>
+                  </div>
+              
+                  <!-- Indicateur de sélection pour single select -->
                   <CheckIcon 
-                    v-if="(selectedValue as (string | number)[]).includes(option.value)"
-                    class="su-select-checkbox-icon" 
+                    v-if="!multiple && selectedValue === option.value"
+                    class="su-select-option-check" 
                     aria-hidden="true"
                   />
                 </div>
-              </div>
-              
-              <!-- Icône de l'option -->
-              <component 
-                v-if="option.icon" 
-                :is="option.icon" 
-                class="su-select-option-icon"
-                aria-hidden="true"
-              />
-              
-              <!-- Contenu de l'option -->
-              <div class="su-select-option-content">
-                <div class="su-select-option-label">{{ option.label }}</div>
-                <div 
-                  v-if="option.description" 
-                  class="su-select-option-description"
-                >
-                  {{ option.description }}
-                </div>
-              </div>
-              
-              <!-- Indicateur de sélection pour single select -->
-              <CheckIcon 
-                v-if="!multiple && selectedValue === option.value"
-                class="su-select-option-check" 
-                aria-hidden="true"
-              />
-            </div>
-          </template>
-        </template>
+              </template>
+            </template>
         
-        <!-- Aucun résultat -->
-        <div v-else class="su-select-no-options">
-          {{ searchQuery ? noResultsText : noOptionsText }}
+            <!-- Aucun résultat -->
+            <div
+              v-else
+              class="su-select-no-options"
+            >
+              {{ searchQuery ? noResultsText : noOptionsText }}
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-  </Transition>
+      </Transition>
     </div>
   </div>
 </template>

@@ -34,7 +34,7 @@ const switchProps = computed(() => {
 
 <template>
   <FormField
-    :fieldId="switchId"
+    :field-id="switchId"
     :label="label"
     :message="message"
     :state="state"

@@ -9,12 +9,15 @@
   @each $key, $value in $su-font-family {
     --su-font-family-#{$key}: #{$value};
   }
+
   @each $key, $value in $su-radius {
     --su-radius-#{$key}: #{$value};
   }
+
   @each $key, $value in $su-shadow {
     --su-shadow-#{$key}: #{$value};
   }
+
   --su-font-size-base: 1rem;
 
   // --- 2. Variables de Thème LIGHT (Par défaut) ---
@@ -42,7 +45,7 @@
 
 // --- 4. Thème DARK (Bascule Manuelle) ---
 // Cible la classe .dark ou l'attribut [theme=dark]
-.dark, [theme=dark] * {
+.dark, [theme="dark"] * {
   // Nous réutilisons EXACTEMENT le même mixin avec les maps "dark"
   @include generate-su-theme-colors(
     $text-map: $su-text-colors-dark,

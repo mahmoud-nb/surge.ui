@@ -20,7 +20,10 @@ withDefaults(defineProps<PanelProps>(), {
     ]"
     role="region"
   >
-    <header v-if="$slots.head" class="su-panel__head">
+    <header
+      v-if="$slots.head"
+      class="su-panel__head"
+    >
       <slot name="head" />
     </header>
 
@@ -28,7 +31,10 @@ withDefaults(defineProps<PanelProps>(), {
       <slot />
     </div>
 
-    <footer v-if="$slots.footer" class="su-panel__footer">
+    <footer
+      v-if="$slots.footer"
+      class="su-panel__footer"
+    >
       <slot name="footer" />
     </footer>
   </component>

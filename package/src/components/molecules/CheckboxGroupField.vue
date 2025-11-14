@@ -39,7 +39,7 @@ const checkboxGroupProps = computed(() => {
 
 <template>
   <FormField
-    :fieldId="checkboxGroupId"
+    :field-id="checkboxGroupId"
     :label="label"
     :message="message"
     :state="state"

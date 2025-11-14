@@ -82,9 +82,9 @@ const ariaAttributes = computed(() => {
     v-bind="ariaAttributes"
   >
     <component 
-      v-for="(button, index) in processedButtons" 
+      :is="button" 
+      v-for="(button, index) in processedButtons"
       :key="index"
-      :is="button"
     />
   </div>
 </template>

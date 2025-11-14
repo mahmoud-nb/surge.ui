@@ -85,23 +85,35 @@ const trackStyle = computed(() => ({
     :aria-busy="indeterminate ? 'true' : undefined"
     tabindex="0"
   >
-    <div class="su-progress__track" :style="trackStyle">
+    <div
+      class="su-progress__track"
+      :style="trackStyle"
+    >
       <div
         class="su-progress__bar"
         :style="barStyle"
         :class="{ 'su-progress__bar--indeterminate': indeterminate }"
-      ></div>
+      />
       <!-- Optional slot to overlay custom content -->
-      <div class="su-progress__overlay" v-if="$slots.default">
+      <div
+        v-if="$slots.default"
+        class="su-progress__overlay"
+      >
         <slot />
       </div>
     </div>
 
-    <span class="su-progress__label" v-if="showLabel && !indeterminate">
+    <span
+      v-if="showLabel && !indeterminate"
+      class="su-progress__label"
+    >
       {{ formattedValue }}
     </span>
 
-    <span class="su-progress__label" v-else-if="showLabel && indeterminate">
+    <span
+      v-else-if="showLabel && indeterminate"
+      class="su-progress__label"
+    >
       {{ indeterminateLabel }}
     </span>
   </div>

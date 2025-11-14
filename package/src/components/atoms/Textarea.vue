@@ -193,8 +193,8 @@ watch(() => props.autoResize, (newValue) => {
   <div>
     <div :class="containerClasses">
       <textarea
-        ref="textareaRef"
         :id="textareaId"
+        ref="textareaRef"
         :class="textareaClasses"
         :value="modelValue"
         :placeholder="placeholder"
@@ -217,7 +217,7 @@ watch(() => props.autoResize, (newValue) => {
       v-if="showCounter && maxLength" 
       class="su-textarea-footer"
     >
-      <div class="su-textarea-footer-spacer"></div>
+      <div class="su-textarea-footer-spacer" />
       <div 
         :id="`${textareaId}-counter`"
         :class="counterClasses"

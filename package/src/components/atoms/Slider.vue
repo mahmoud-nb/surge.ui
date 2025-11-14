@@ -366,12 +366,18 @@ defineExpose({
 <template>
   <div :class="containerClasses">
     <!-- Slot before -->
-    <div v-if="$slots.before" class="su-slider-before">
+    <div
+      v-if="$slots.before"
+      class="su-slider-before"
+    >
       <slot name="before" />
     </div>
 
     <!-- Labels min/max (si activés) -->
-    <div v-if="showLabels" class="su-slider-labels">
+    <div
+      v-if="showLabels"
+      class="su-slider-labels"
+    >
       <span class="su-slider-label su-slider-label--min">{{ formatValue(min) }}</span>
       <span class="su-slider-label su-slider-label--max">{{ formatValue(max) }}</span>
     </div>
@@ -379,11 +385,20 @@ defineExpose({
     <!-- Container du slider -->
     <div class="su-slider-wrapper">
       <!-- Valeur affichée (si activée et pas de tooltip) -->
-      <div v-if="showValue && tooltip === 'none'" class="su-slider-value">
-        <span v-if="!isDualRange" class="su-slider-value-display">
+      <div
+        v-if="showValue && tooltip === 'none'"
+        class="su-slider-value"
+      >
+        <span
+          v-if="!isDualRange"
+          class="su-slider-value-display"
+        >
           {{ formatValue(minValue) }}
         </span>
-        <div v-else class="su-slider-value-dual">
+        <div
+          v-else
+          class="su-slider-value-dual"
+        >
           <span class="su-slider-value-min">{{ formatValue(minValue) }}</span>
           <span class="su-slider-value-separator">-</span>
           <span class="su-slider-value-max">{{ formatValue(maxValue) }}</span>
@@ -398,7 +413,10 @@ defineExpose({
         @click="handleTrackClick"
       >
         <!-- Track de fond -->
-        <div ref="trackRef" :class="trackClasses">
+        <div
+          ref="trackRef"
+          :class="trackClasses"
+        >
           <!-- Track actif -->
           <div 
             class="su-slider-track-active"
@@ -409,7 +427,10 @@ defineExpose({
           />
 
           <!-- Ticks (si activés) -->
-          <div v-if="showTicks" class="su-slider-ticks">
+          <div
+            v-if="showTicks"
+            class="su-slider-ticks"
+          >
             <div
               v-for="tick in ticks"
               :key="tick.value"
@@ -421,7 +442,10 @@ defineExpose({
           </div>
 
           <!-- Marques personnalisées -->
-          <div v-if="processedMarks.length > 0" class="su-slider-marks">
+          <div
+            v-if="processedMarks.length > 0"
+            class="su-slider-marks"
+          >
             <div
               v-for="mark in processedMarks"
               :key="mark.value"
@@ -431,14 +455,16 @@ defineExpose({
               }"
             >
               <div class="su-slider-mark-dot" />
-              <div class="su-slider-mark-label">{{ formatValue(mark.value) }}</div>
+              <div class="su-slider-mark-label">
+                {{ formatValue(mark.value) }}
+              </div>
             </div>
           </div>
 
           <!-- Thumb principal (ou minimum pour dual) -->
           <div
-            ref="thumb1Ref"
             :id="isDualRange ? `${sliderId}-min` : sliderId"
+            ref="thumb1Ref"
             :class="getThumbClasses('min')"
             :style="{
               [orientation === 'horizontal' ? 'left' : 'bottom']: `${minPercent}%`
@@ -467,8 +493,8 @@ defineExpose({
           <!-- Thumb maximum (dual seulement) -->
           <div
             v-if="isDualRange"
-            ref="thumb2Ref"
             :id="`${sliderId}-max`"
+            ref="thumb2Ref"
             :class="getThumbClasses('max')"
             :style="{
               [orientation === 'horizontal' ? 'left' : 'bottom']: `${maxPercent}%`
@@ -498,7 +524,10 @@ defineExpose({
     </div>
 
     <!-- Slot after -->
-    <div v-if="$slots.after" class="su-slider-after">
+    <div
+      v-if="$slots.after"
+      class="su-slider-after"
+    >
       <slot name="after" />
     </div>
   </div>

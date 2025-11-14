@@ -335,8 +335,8 @@ defineExpose({
   <div :class="containerClasses">
     <!-- Input file caché -->
     <input
-      ref="fileInputRef"
       :id="uploadId"
+      ref="fileInputRef"
       type="file"
       :accept="accept"
       :multiple="multiple"
@@ -347,7 +347,7 @@ defineExpose({
       @change="handleFileSelect"
       @focus="handleFocus"
       @blur="handleBlur"
-    />
+    >
 
     <!-- Zone de drop -->
     <div
@@ -377,9 +377,25 @@ defineExpose({
         class="su-file-upload-loading"
         aria-hidden="true"
       >
-        <svg class="su-spinner" viewBox="0 0 24 24">
-          <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/>
-          <path d="M12 2a10 10 0 0 1 10 10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <svg
+          class="su-spinner"
+          viewBox="0 0 24 24"
+        >
+          <circle
+            cx="12"
+            cy="12"
+            r="10"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          />
+          <path
+            d="M12 2a10 10 0 0 1 10 10"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+          />
         </svg>
       </div>
 
@@ -419,10 +435,10 @@ defineExpose({
             :src="file.preview"
             :alt="`Aperçu de ${file.name}`"
             class="su-file-upload-preview-image"
-          />
+          >
           <component
-            v-else
             :is="getFileIcon(file.file)"
+            v-else
             class="su-file-upload-item-icon"
             aria-hidden="true"
           />
@@ -430,13 +446,21 @@ defineExpose({
 
         <!-- Informations du fichier -->
         <div class="su-file-upload-item-info">
-          <div class="su-file-upload-item-name">{{ file.name }}</div>
+          <div class="su-file-upload-item-name">
+            {{ file.name }}
+          </div>
           <div class="su-file-upload-item-details">
             <span class="su-file-upload-item-size">{{ formatFileSize(file.size) }}</span>
-            <span v-if="file.status === 'uploading' && file.progress !== undefined" class="su-file-upload-item-progress">
+            <span
+              v-if="file.status === 'uploading' && file.progress !== undefined"
+              class="su-file-upload-item-progress"
+            >
               {{ file.progress }}%
             </span>
-            <span v-if="file.error" class="su-file-upload-item-error">{{ file.error }}</span>
+            <span
+              v-if="file.error"
+              class="su-file-upload-item-error"
+            >{{ file.error }}</span>
           </div>
         </div>
 
@@ -457,9 +481,25 @@ defineExpose({
             class="su-file-upload-spinner"
             aria-hidden="true"
           >
-            <svg class="su-spinner" viewBox="0 0 24 24">
-              <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/>
-              <path d="M12 2a10 10 0 0 1 10 10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <svg
+              class="su-spinner"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                cx="12"
+                cy="12"
+                r="10"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              />
+              <path
+                d="M12 2a10 10 0 0 1 10 10"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
             </svg>
           </div>
         </div>
@@ -472,7 +512,10 @@ defineExpose({
           :aria-label="`Supprimer ${file.name}`"
           @click="removeFile(file)"
         >
-          <XMarkIcon class="su-file-upload-remove-icon" aria-hidden="true" />
+          <XMarkIcon
+            class="su-file-upload-remove-icon"
+            aria-hidden="true"
+          />
         </button>
         
         <!-- Barre de progression -->

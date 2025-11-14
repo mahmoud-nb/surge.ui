@@ -23,7 +23,8 @@ const customStyles = computed(() => {
 </script>
 
 <template>
-  <div :class="[
+  <div
+    :class="[
       'su-grid-cell', 
       bordered && 'su-grid-cell--bordered',
       radius && `su-grid-cell--radius-${radius}`

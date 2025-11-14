@@ -10,16 +10,28 @@
 <template>
   <div class="su-actions">
     <Grid>
-      <GridCell radius="md" background-color="#F9F9F9">
+      <GridCell
+        radius="md"
+        background-color="#F9F9F9"
+      >
         <Preview>
-          <Button variant="primary" :icon="PlusIcon" iconDisplay="left">
+          <Button
+            variant="primary"
+            :icon="PlusIcon"
+            icon-display="left"
+          >
             Ajouter
           </Button>
         </Preview>
       </GridCell>
-      <GridCell radius="md" background-color="#F9F9F9">
+      <GridCell
+        radius="md"
+        background-color="#F9F9F9"
+      >
         <Preview>
-          <Link href="/home">Lien interne</Link>
+          <Link href="/home">
+            Lien interne
+          </Link>
         </Preview>
       </GridCell>
     </Grid>

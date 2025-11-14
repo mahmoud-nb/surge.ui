@@ -63,7 +63,11 @@ onMounted(() => nextTick(() => (headers.value = Array.from(document.querySelecto
 </script>
 
 <template>
-  <div class="su-accordion" role="region" aria-label="Accordion">
+  <div
+    class="su-accordion"
+    role="region"
+    aria-label="Accordion"
+  >
     <template v-if="items?.length">
       <div
         v-for="(item, index) in items"
@@ -72,17 +76,21 @@ onMounted(() => nextTick(() => (headers.value = Array.from(document.querySelecto
       >
         <h3 class="su-accordion__heading">
           <button
+            :id="`accordion-header-${index}`"
             ref="headers"
             class="su-accordion__header"
             type="button"
             :aria-expanded="isOpen(item.id || index.toString())"
             :aria-controls="`panel-${index}`"
-            :id="`accordion-header-${index}`"
             :disabled="item.disabled"
             @click="toggleItem(item.id || index.toString())"
             @keydown="handleKeydown($event, index)"
           >
-            <slot name="header" :item="item" :index="index">
+            <slot
+              name="header"
+              :item="item"
+              :index="index"
+            >
               <span class="su-accordion__label">{{ item.title }}</span>
             </slot>
             <ChevronDownIcon 
@@ -95,19 +103,23 @@ onMounted(() => nextTick(() => (headers.value = Array.from(document.querySelecto
 
         <div
           v-show="isOpen(item.id || index.toString())"
+          :id="`panel-${index}`"
           class="su-accordion__panel"
           role="region"
-          :id="`panel-${index}`"
           :aria-labelledby="`accordion-header-${index}`"
         >
-          <slot name="panel" :item="item" :index="index">
+          <slot
+            name="panel"
+            :item="item"
+            :index="index"
+          >
             <p>{{ item.content }}</p>
           </slot>
         </div>
       </div>
     </template>
 
-    <slot v-else></slot>
+    <slot v-else />
   </div>
 </template>
 

@@ -208,8 +208,8 @@ watch(validation, (newValidation) => {
     <template #default="{ fieldId, messageId }">
       <div class="su-password-wrapper">
         <Input
-          v-model="modelValue"
           :id="fieldId"
+          v-model="modelValue"
           :type="inputType"
           :size="size"
           :state="computedState"
@@ -218,16 +218,16 @@ watch(validation, (newValidation) => {
           :required="required"
           :placeholder="placeholder"
           :prefix="prefix"
-          :prefixIcon="prefixIcon"
-          :suffixIcon="showToggle ? suffixIcon : undefined"
-          :textAlign="textAlign"
+          :prefix-icon="prefixIcon"
+          :suffix-icon="showToggle ? suffixIcon : undefined"
+          :text-align="textAlign"
           :aria-label="ariaLabel"
           :aria-describedBy="messageId"
           :aria-invalid="ariaInvalid"
           :aria-required="ariaRequired"
           :autocomplete="autocomplete"
-          :minLength="minLength"
-          :maxLength="maxLength"
+          :min-length="minLength"
+          :max-length="maxLength"
           :pattern="pattern"
           @input="handleInput"
           @change="handleChange"
@@ -240,15 +240,15 @@ watch(validation, (newValidation) => {
 
         <Progress 
           v-if="showProgress && modelValue" 
+          v-model="validation.score" 
           size="sm" 
           :color="progressColor" 
-          v-model="validation.score" 
           :aria-label="`Force du mot de passe : ${validation.score}%`"
         />
 
         <slot 
           :validation="validation"
-          :isValid="validation.isValid"
+          :is-valid="validation.isValid"
           :score="validation.score"
           :satisfied="validation.satisfied"
           :unsatisfied="validation.unsatisfied"

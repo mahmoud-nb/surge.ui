@@ -48,9 +48,9 @@ const tabClasses = (index: number) => [
     >
       <button
         v-for="(tab, index) in tabs"
+        :id="`tab-${index}`"
         :key="index"
         role="tab"
-        :id="`tab-${index}`"
         :aria-controls="`panel-${index}`"
         :aria-selected="index === activeIndex"
         :tabindex="index === activeIndex ? 0 : -1"
@@ -71,10 +71,10 @@ const tabClasses = (index: number) => [
     <!-- Contenu -->
     <div
       v-for="(tab, index) in tabs"
-      :key="index"
       v-show="index === activeIndex"
-      role="tabpanel"
       :id="`panel-${index}`"
+      :key="index"
+      role="tabpanel"
       :aria-labelledby="`tab-${index}`"
       class="su-tab-panel"
     >

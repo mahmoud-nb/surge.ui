@@ -35,13 +35,19 @@ const tag = computed(() => (props.level === 'div' ? 'div' : `h${props.level}`))
       { 'su-heading--with-slots': $slots.before || $slots.after, 'su-heading--truncate': truncate }
     ]"
   >
-    <div v-if="$slots.before" class="su-heading__slot">
+    <div
+      v-if="$slots.before"
+      class="su-heading__slot"
+    >
       <slot name="before" />
     </div>
 
     <slot />
     
-    <div v-if="$slots.after" class="su-heading__slot">
+    <div
+      v-if="$slots.after"
+      class="su-heading__slot"
+    >
       <slot name="after" />
     </div>
   </component>

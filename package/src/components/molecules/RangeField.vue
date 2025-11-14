@@ -341,7 +341,7 @@ defineExpose({
 
 <template>
   <FormField
-    :fieldId="rangeId"
+    :field-id="rangeId"
     :label="label"
     :message="message"
     :state="state"
@@ -351,7 +351,10 @@ defineExpose({
     <template #default="{ fieldId: id, messageId }">
       <div :class="containerClasses">
         <!-- Labels min/max (si activés) -->
-        <div v-if="showLabels" class="su-range-labels">
+        <div
+          v-if="showLabels"
+          class="su-range-labels"
+        >
           <span class="su-range-label su-range-label--min">{{ formatValue(min) }}</span>
           <span class="su-range-label su-range-label--max">{{ formatValue(max) }}</span>
         </div>
@@ -359,11 +362,20 @@ defineExpose({
         <!-- Container du slider -->
         <div class="su-range-wrapper">
           <!-- Valeur affichée (si activée) -->
-          <div v-if="showValue" class="su-range-value">
-            <span v-if="!dual" class="su-range-value-display">
+          <div
+            v-if="showValue"
+            class="su-range-value"
+          >
+            <span
+              v-if="!dual"
+              class="su-range-value-display"
+            >
               {{ formatValue(minValue) }}
             </span>
-            <div v-else class="su-range-value-dual">
+            <div
+              v-else
+              class="su-range-value-dual"
+            >
               <span class="su-range-value-min">{{ formatValue(minValue) }}</span>
               <span class="su-range-value-separator">-</span>
               <span class="su-range-value-max">{{ formatValue(maxValue) }}</span>
@@ -378,7 +390,10 @@ defineExpose({
             @click="handleTrackClick"
           >
             <!-- Track de fond -->
-            <div ref="trackRef" :class="trackClasses">
+            <div
+              ref="trackRef"
+              :class="trackClasses"
+            >
               <!-- Track actif -->
               <div 
                 class="su-range-track-active"
@@ -389,7 +404,10 @@ defineExpose({
               />
 
               <!-- Ticks (si activés) -->
-              <div v-if="showTicks" class="su-range-ticks">
+              <div
+                v-if="showTicks"
+                class="su-range-ticks"
+              >
                 <div
                   v-for="tick in ticks"
                   :key="tick.value"
@@ -402,8 +420,8 @@ defineExpose({
 
               <!-- Thumb principal (ou minimum pour dual) -->
               <div
-                ref="thumb1Ref"
                 :id="dual ? `${id}-min` : id"
+                ref="thumb1Ref"
                 :class="getThumbClasses('min')"
                 :style="{
                   [orientation === 'horizontal' ? 'left' : 'bottom']: `${minPercent}%`
@@ -421,8 +439,8 @@ defineExpose({
               <!-- Thumb maximum (dual seulement) -->
               <div
                 v-if="dual"
-                ref="thumb2Ref"
                 :id="`${id}-max`"
+                ref="thumb2Ref"
                 :class="getThumbClasses('max')"
                 :style="{
                   [orientation === 'horizontal' ? 'left' : 'bottom']: `${maxPercent}%`

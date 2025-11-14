@@ -123,9 +123,9 @@ const ariaAttributes = computed(() => {
     v-bind="ariaAttributes"
   >
     <component 
-      v-for="(element, index) in elementsWithSeparators" 
+      :is="element" 
+      v-for="(element, index) in elementsWithSeparators"
       :key="index"
-      :is="element"
     />
   </div>
 </template>

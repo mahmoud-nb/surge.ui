@@ -28,7 +28,11 @@ const ariaAttributes = computed(() => {
 </script>
 
 <template>
-  <component :is="name" class="su-icon" v-bind="{ ...IconAttributes, ...ariaAttributes }" />
+  <component
+    :is="name"
+    class="su-icon"
+    v-bind="{ ...IconAttributes, ...ariaAttributes }"
+  />
 </template>
 
 <style lang="scss" scoped>

@@ -63,7 +63,7 @@ defineExpose({
 
 <template>
   <FormField
-    :fieldId="textareaId"
+    :field-id="textareaId"
     :label="label"
     :message="message"
     :state="state"
@@ -72,8 +72,8 @@ defineExpose({
   >
     <template #default="{ messageId }">
       <Textarea
-        ref="textareaRef"
         :id="textareaId"
+        ref="textareaRef"
         :value="modelValue"
         :aria-describedby="messageId"
         v-bind="{ ...textareaProps }"

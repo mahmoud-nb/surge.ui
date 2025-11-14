@@ -123,14 +123,17 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel) {
   >
     <!-- Icône -->
     <component 
-      v-if="icon" 
       :is="icon" 
+      v-if="icon" 
       class="su-link__icon"
       aria-hidden="true"
     />
     
     <!-- Contenu textuel -->
-    <span v-if="hasText" class="su-link__content">
+    <span
+      v-if="hasText"
+      class="su-link__content"
+    >
       <slot />
     </span>
     

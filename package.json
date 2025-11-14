@@ -15,17 +15,29 @@
     "dev:lib": "npm run dev -w package",
     "dev:docs": "npm run dev -w docs",
     "storybook": "npm run storybook -w package",
-    "build-storybook": "npm run build-storybook -w package"
+    "build-storybook": "npm run build-storybook -w package",
+    "lint": "npm run lint:js && npm run lint:style",
+    "lint:fix": "npm run lint:js:fix && npm run lint:style:fix",
+    "lint:js": "eslint . --ext .js,.ts,.vue",
+    "lint:js:fix": "eslint . --ext .js,.ts,.vue --fix",
+    "lint:style": "stylelint '**/*.{css,scss,vue}'",
+    "lint:style:fix": "stylelint '**/*.{css,scss,vue}' --fix"
   },
   "dependencies": {
     "@vitejs/plugin-vue": "^5.0.0",
-    "vue": "^3.4.38",
+    "typescript": "^5.5.3",
     "vite": "^5.4.2",
-    "typescript": "^5.5.3"
+    "vue": "^3.4.38"
   },
   "devDependencies": {
-    "vite-plugin-dts": "^4.0.3",
+    "@typescript-eslint/eslint-plugin": "^8.46.4",
+    "@typescript-eslint/parser": "^8.46.4",
+    "eslint": "^9.39.1",
+    "eslint-plugin-vue": "^10.5.1",
+    "sass": "^1.77.8",
+    "stylelint": "^16.25.0",
+    "stylelint-config-standard-scss": "^16.0.0",
     "unplugin-vue-components": "^0.27.4",
-    "sass": "^1.77.8"
+    "vite-plugin-dts": "^4.0.3"
   }
 }

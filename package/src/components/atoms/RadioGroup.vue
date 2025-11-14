@@ -100,7 +100,10 @@ const handleBlur = (event: FocusEvent) => {
       :style="{ maxHeight: maxHeight || undefined, overflowY: maxHeight ? 'auto' : undefined }"
     >
       <!-- Slot before: contenu entre le label et les options -->
-      <div v-if="$slots.before" class="su-radio-group-before">
+      <div
+        v-if="$slots.before"
+        class="su-radio-group-before"
+      >
         <slot name="before" />
       </div>
 
@@ -123,19 +126,19 @@ const handleBlur = (event: FocusEvent) => {
           @change="handleChange(option.value)"
           @focus="handleFocus"
           @blur="handleBlur"
-        />
+        >
 
         <!-- Indicateur radio personnalisé -->
         <div class="su-radio-indicator">
-          <div class="su-radio-dot"></div>
+          <div class="su-radio-dot" />
         </div>
 
         <!-- Contenu de l'option -->
         <div class="su-radio-content">
           <!-- Icône -->
           <component 
-            v-if="option.icon" 
             :is="option.icon" 
+            v-if="option.icon" 
             class="su-radio-icon"
             aria-hidden="true"
           />
@@ -155,7 +158,10 @@ const handleBlur = (event: FocusEvent) => {
     </div>
 
     <!-- Slot after: contenu entre les options et le message -->
-    <div v-if="$slots.after" class="su-radio-group-after">
+    <div
+      v-if="$slots.after"
+      class="su-radio-group-after"
+    >
       <slot name="after" />
     </div>
   </fieldset>

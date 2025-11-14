@@ -110,21 +110,27 @@ const ariaAttributes = computed(() => {
     v-bind="ariaAttributes"
   >
     <!-- Slot head -->
-    <div v-if="$slots.head" class="su-form-fields-head">
+    <div
+      v-if="$slots.head"
+      class="su-form-fields-head"
+    >
       <slot name="head" />
     </div>
 
     <!-- Champs de formulaire -->
     <div class="su-form-fields-content">
       <component 
-        v-for="(field, index) in processedFields" 
+        :is="field" 
+        v-for="(field, index) in processedFields"
         :key="index"
-        :is="field"
       />
     </div>
 
     <!-- Slot footer -->
-    <div v-if="$slots.footer" class="su-form-fields-footer">
+    <div
+      v-if="$slots.footer"
+      class="su-form-fields-footer"
+    >
       <slot name="footer" />
     </div>
   </div>

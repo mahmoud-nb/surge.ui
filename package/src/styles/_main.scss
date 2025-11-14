@@ -3,7 +3,7 @@
 @forward './mixins';
 @use './themes/default' as *;
 
-$breakpoints : (
+$breakpoints: (
   xs: 375px,    // Mobile (Base)  | 0 ~ 375
   s:  768px,    // Petits Écrans  | 375 ~ 1024
   m:  1024px,   // Tablettes      | 1024 ~ 1280
@@ -12,6 +12,7 @@ $breakpoints : (
 );
 
 // Styles globaux pour l'accessibilité
+
 /* Styles pour les annonces des lecteurs d'écran */
 .sr-only {
   position: absolute;

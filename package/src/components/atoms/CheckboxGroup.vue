@@ -136,7 +136,10 @@ const isDisabled = (option: any) => {
       :style="{ maxHeight: maxHeight || undefined, overflowY: maxHeight ? 'auto' : undefined }"
     >
       <!-- Slot before: contenu entre le label et les options -->
-      <div v-if="$slots.before" class="su-checkbox-group-before">
+      <div
+        v-if="$slots.before"
+        class="su-checkbox-group-before"
+      >
         <slot name="before" />
       </div>
 
@@ -158,7 +161,7 @@ const isDisabled = (option: any) => {
           @change="handleChange(option.value, ($event.target as HTMLInputElement).checked)"
           @focus="handleFocus"
           @blur="handleBlur"
-        />
+        >
 
         <!-- Indicateur checkbox personnalisé -->
         <div 
@@ -179,8 +182,8 @@ const isDisabled = (option: any) => {
         <div class="su-checkbox-content">
           <!-- Icône -->
           <component 
-            v-if="option.icon" 
             :is="option.icon" 
+            v-if="option.icon" 
             class="su-checkbox-icon"
             aria-hidden="true"
           />
@@ -194,7 +197,10 @@ const isDisabled = (option: any) => {
     </div>
 
     <!-- Slot after: contenu entre les options et le message -->
-    <div v-if="$slots.after" class="su-checkbox-group-after">
+    <div
+      v-if="$slots.after"
+      class="su-checkbox-group-after"
+    >
       <slot name="after" />
     </div>
   </fieldset>

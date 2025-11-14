@@ -145,9 +145,20 @@ onMounted(() => {
         stroke="currentColor"
         aria-hidden="true"
       >
-        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-        <circle cx="9" cy="9" r="2"/>
-        <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/>
+        <rect
+          x="3"
+          y="3"
+          width="18"
+          height="18"
+          rx="2"
+          ry="2"
+        />
+        <circle
+          cx="9"
+          cy="9"
+          r="2"
+        />
+        <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
       </svg>
     </div>
 
@@ -159,10 +170,10 @@ onMounted(() => {
         :srcset="source.srcset"
         :type="source.type"
         :media="source.media"
-      />
+      >
       <img
-        ref="imageRef"
         :id="imageId"
+        ref="imageRef"
         :class="imageClasses"
         :src="src"
         :alt="alt"
@@ -172,14 +183,14 @@ onMounted(() => {
         v-bind="ariaAttributes"
         @load="handleLoad"
         @error="handleError"
-      />
+      >
     </picture>
 
     <!-- Image simple -->
     <img
       v-else
-      ref="imageRef"
       :id="imageId"
+      ref="imageRef"
       :class="imageClasses"
       :src="src"
       :alt="alt"
@@ -189,7 +200,7 @@ onMounted(() => {
       v-bind="ariaAttributes"
       @load="handleLoad"
       @error="handleError"
-    />
+    >
 
     <!-- Overlay d'erreur -->
     <div 
@@ -204,7 +215,7 @@ onMounted(() => {
         stroke="currentColor"
         aria-hidden="true"
       >
-        <path d="m21 21-6-6m0 0L9 9m6 6 6 6M9 9l-6-6m6 6V3m0 6H3"/>
+        <path d="m21 21-6-6m0 0L9 9m6 6 6 6M9 9l-6-6m6 6V3m0 6H3" />
       </svg>
       <span class="su-image-error-text">Erreur de chargement</span>
     </div>

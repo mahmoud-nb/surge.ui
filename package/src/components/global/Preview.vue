@@ -10,7 +10,10 @@ defineProps<PreviewProps>()
 
 <template>
   <div class="su-preview">
-    <header v-if="$slots.header || title" class="su-preview__header">
+    <header
+      v-if="$slots.header || title"
+      class="su-preview__header"
+    >
       <slot name="header" />
       {{ title }}
     </header>
@@ -19,7 +22,10 @@ defineProps<PreviewProps>()
       <slot />
     </div>
 
-    <footer v-if="$slots.footer || message" class="su-preview__footer">
+    <footer
+      v-if="$slots.footer || message"
+      class="su-preview__footer"
+    >
       {{ message }}
     </footer>
   </div>

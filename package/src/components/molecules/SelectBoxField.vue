@@ -66,7 +66,7 @@ defineExpose({
 
 <template>
   <FormField
-    :fieldId="selectId"
+    :field-id="selectId"
     :label="label"
     :message="message"
     :state="state"
@@ -75,8 +75,8 @@ defineExpose({
   >
     <template #default="{ fieldId: id, messageId }">
       <SelectBox
-        ref="selectBoxRef"
         :id="id"
+        ref="selectBoxRef"
         v-model="modelValue"
         :aria-describedby="messageId"
         v-bind="{ ...selectBoxProps }"

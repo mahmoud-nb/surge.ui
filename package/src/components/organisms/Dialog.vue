@@ -153,27 +153,56 @@ defineExpose({
 
 <template>
   <Transition name="su-dialog-transition">
-    <div v-if="isOpen" :class="overlayClasses" :style="{ zIndex: zIndex }" @click="handleOverlayClick">
+    <div
+      v-if="isOpen"
+      :class="overlayClasses"
+      :style="{ zIndex: zIndex }"
+      @click="handleOverlayClick"
+    >
       <dialog
-        ref="dialogRef"
         :id="dialogId"
+        ref="dialogRef"
         :class="dialogClasses"
         :open="isOpen"
         :style="{ width: width }"
         v-bind="ariaAttributes"
         @click.stop 
       >
-        <Button class="su-dialog__close" variant="ghost" size="sm" :icon="XMarkIcon" icon-display="only" @click="closeDialog" />
-        <div class="su-dialog__container" :style="{ height: height }">
+        <Button
+          class="su-dialog__close"
+          variant="ghost"
+          size="sm"
+          :icon="XMarkIcon"
+          icon-display="only"
+          @click="closeDialog"
+        />
+        <div
+          class="su-dialog__container"
+          :style="{ height: height }"
+        >
           <!-- Header -->
-          <div v-if="$slots.head || title" class="su-dialog-header">
+          <div
+            v-if="$slots.head || title"
+            class="su-dialog-header"
+          >
             <slot name="head">
-              <h2 :id="titleId" class="su-dialog-title">{{ title }}</h2>
+              <h2
+                :id="titleId"
+                class="su-dialog-title"
+              >
+                {{ title }}
+              </h2>
             </slot>
           </div>
 
           <!-- Description (pour l'accessibilité si pas de slot head) -->
-          <p v-if="description && !$slots.head" :id="descriptionId" class="sr-only">{{ description }}</p>
+          <p
+            v-if="description && !$slots.head"
+            :id="descriptionId"
+            class="sr-only"
+          >
+            {{ description }}
+          </p>
 
           <!-- Contenu principal -->
           <div class="su-dialog-content">
@@ -181,7 +210,10 @@ defineExpose({
           </div>
 
           <!-- Footer -->
-          <div v-if="$slots.footer" class="su-dialog-footer">
+          <div
+            v-if="$slots.footer"
+            class="su-dialog-footer"
+          >
             <slot name="footer" />
           </div>
         </div>

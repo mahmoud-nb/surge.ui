@@ -83,7 +83,10 @@ const handleMoreClick = (event: MouseEvent) => {
     v-bind="ariaAttributes"
   >
     <!-- Slot before -->
-    <div v-if="$slots.before" class="su-avatars-group-before">
+    <div
+      v-if="$slots.before"
+      class="su-avatars-group-before"
+    >
       <slot name="before" />
     </div>
 
@@ -101,10 +104,10 @@ const handleMoreClick = (event: MouseEvent) => {
         :variant="variant"
         :status="avatar.status"
         :badge="avatar.badge"
-        :badgeColor="avatar.badgeColor"
+        :badge-color="avatar.badgeColor"
         :loading="avatar.loading"
         :clickable="clickable"
-        :ariaLabel="avatar.ariaLabel"
+        :aria-label="avatar.ariaLabel"
         class="su-avatars-group-avatar"
         @click="handleAvatarClick(avatar, index, $event)"
       />
@@ -123,7 +126,10 @@ const handleMoreClick = (event: MouseEvent) => {
     </div>
 
     <!-- Slot after -->
-    <div v-if="$slots.after" class="su-avatars-group-after">
+    <div
+      v-if="$slots.after"
+      class="su-avatars-group-after"
+    >
       <slot name="after" />
     </div>
   </div>

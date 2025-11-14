@@ -110,14 +110,17 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !slots.def
     <template v-else>
       <!-- Icône -->
       <component 
-        v-if="icon" 
         :is="icon" 
+        v-if="icon" 
         class="su-badge-icon"
         aria-hidden="true"
       />
       
       <!-- Contenu textuel -->
-      <span v-if="hasText" class="su-badge-content">
+      <span
+        v-if="hasText"
+        class="su-badge-content"
+      >
         <slot />
       </span>
     </template>

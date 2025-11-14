@@ -24,7 +24,7 @@ export interface SurgeuiTheme {
   // buttonVariant?: Exclude<ButtonVariant, 'primary'>
   // buttonSize?: Exclude<ButtonSize, 'md'>
   // Configuration globale des liens
-  linkVariant?: Exclude<LinkVariant, 'default'>
+  linkVariant?: Exclude<LinkVariant, 'custom'>
   linkSize?: Exclude<LinkSize, 'default'>
   linkUnderline?: Exclude<LinkUnderline, 'default'>
   dialogDisplay?: Exclude<DialogDisplay, 'center'>

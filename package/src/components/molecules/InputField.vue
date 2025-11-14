@@ -70,8 +70,8 @@ defineExpose({
   >
     <template #default="{ messageId }">
       <Input 
-        ref="inputRef"
         :id="inputId"
+        ref="inputRef"
         :value="modelValue"
         :aria-describedby="messageId"
         v-bind="{ ...inputProps }"

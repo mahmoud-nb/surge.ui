@@ -126,8 +126,8 @@ defineExpose({
       v-if="dismissible"
       type="button"
       :class="dismissButtonClasses"
-      @click="handleDismiss"
       :aria-label="dismissLabel"
+      @click="handleDismiss"
     >
       <XMarkIcon class="su-alert__dismiss-icon" />
     </button>

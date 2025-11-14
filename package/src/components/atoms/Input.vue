@@ -140,11 +140,17 @@ defineExpose({ focus, select, inputRef })
 
 <template>
   <div :class="containerClasses">
-
     <!-- Préfixe -->
-    <div v-if="prefix || prefixIcon || $slots.prefix" class="su-input-prefix">
+    <div
+      v-if="prefix || prefixIcon || $slots.prefix"
+      class="su-input-prefix"
+    >
       <!-- Préfixe slot -->
-      <slot v-if="$slots.prefix" name="prefix" class="su-input-prefix__slot" />
+      <slot
+        v-if="$slots.prefix"
+        name="prefix"
+        class="su-input-prefix__slot"
+      />
     
       <!-- Préfixe icône -->
       <div 
@@ -156,7 +162,11 @@ defineExpose({ focus, select, inputRef })
         @keydown.enter.prevent="handlePrefixIconClick"
         @keydown.space.prevent="handlePrefixIconClick"
       >
-        <component :is="prefixIcon" class="su-input-icon" aria-hidden="true" />
+        <component
+          :is="prefixIcon"
+          class="su-input-icon"
+          aria-hidden="true"
+        />
       </div>
       
       <!-- Préfixe texte -->
@@ -174,8 +184,8 @@ defineExpose({ focus, select, inputRef })
     </div>
 
     <input
-      ref="inputRef"
       :id="inputId"
+      ref="inputRef"
       :class="inputClasses"
       :type="type"
       :value="modelValue"
@@ -189,10 +199,13 @@ defineExpose({ focus, select, inputRef })
       @blur="handleBlur"
       @keydown="handleKeydown"
       @keyup="handleKeyup"
-    />
+    >
 
     <!-- Suffixe -->
-    <div v-if="suffix || suffixIcon || $slots.suffix" class="su-input-suffix">
+    <div
+      v-if="suffix || suffixIcon || $slots.suffix"
+      class="su-input-suffix"
+    >
       <!-- Suffixe texte -->
       <div 
         v-if="suffix" 
@@ -216,11 +229,19 @@ defineExpose({ focus, select, inputRef })
         @keydown.enter.prevent="handleSuffixIconClick"
         @keydown.space.prevent="handleSuffixIconClick"
       >
-        <component :is="suffixIcon" class="su-input-icon" aria-hidden="true" />
+        <component
+          :is="suffixIcon"
+          class="su-input-icon"
+          aria-hidden="true"
+        />
       </div>
 
       <!-- Suffixe slot -->
-      <slot v-if="$slots.suffix" name="suffix" class="su-input-suffix__slot" />
+      <slot
+        v-if="$slots.suffix"
+        name="suffix"
+        class="su-input-suffix__slot"
+      />
     </div>
   </div>
 </template>

@@ -196,12 +196,12 @@ defineExpose({
       <!-- Tooltip -->
       <div 
         v-if="true || showTooltip && label && showTooltip"
+        :id="`${$attrs.id || 'float-button'}-tooltip`"
         :class="tooltipClasses"
         role="tooltip"
-        :id="`${$attrs.id || 'float-button'}-tooltip`"
       >
         {{ label }}
-        <div class="su-float-button-tooltip-arrow"></div>
+        <div class="su-float-button-tooltip-arrow" />
       </div>
 
       <!-- Lien ou Bouton -->
@@ -212,7 +212,7 @@ defineExpose({
         :variant="variant"
         :size="size"
         :icon="icon"
-        iconDisplay="only"
+        icon-display="only"
         :disabled="disabled"
         :loading="loading"
         :aria-label="label || ariaLabel"

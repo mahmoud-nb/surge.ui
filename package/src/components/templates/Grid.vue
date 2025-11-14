@@ -32,8 +32,15 @@ const gridStyle = computed(() => {
 </script>
 
 <template>
-  <div class="su-grid-wrapper" :data-view="currentView" :style="gridStyle">
-    <header class="su-grid-header" aria-label="Affichage">
+  <div
+    class="su-grid-wrapper"
+    :data-view="currentView"
+    :style="gridStyle"
+  >
+    <header
+      class="su-grid-header"
+      aria-label="Affichage"
+    >
       <button
         class="su-grid-toggle"
         :aria-pressed="currentView === 'grid'"

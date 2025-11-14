@@ -118,6 +118,7 @@ onUnmounted(() => {
       class="su-accordion-item__heading"
     >
       <button
+        :id="headerId"
         ref="headerRef"
         class="su-accordion-item__header"
         type="button"
@@ -125,12 +126,14 @@ onUnmounted(() => {
         :aria-expanded="isOpen"
         :aria-controls="panelId"
         :aria-disabled="disabled"
-        :id="headerId"
         :disabled="disabled"
         @click="toggleItem"
         @keydown="handleKeydown"
       >
-        <slot name="header" :item="{ id: uniqueId, title, content, open: isOpen, disabled }">
+        <slot
+          name="header"
+          :item="{ id: uniqueId, title, content, open: isOpen, disabled }"
+        >
           <span class="su-accordion-item__label">{{ title }}</span>
         </slot>
         <ChevronDownIcon 
@@ -143,10 +146,10 @@ onUnmounted(() => {
 
     <div
       v-show="isOpen"
+      :id="panelId"
       class="su-accordion-item__panel"
       role="region"
       :aria-labelledby="headerId"
-      :id="panelId"
       :hidden="!isOpen"
     >
       <div class="su-accordion-item__panel-content">
