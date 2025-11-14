@@ -4,6 +4,7 @@
   --su-radius-global: 0.5rem;
   --su-radius-box: 0.75rem;
   --su-radius-field: 0.375rem;
+  --su-radius-button: 0.375rem;
   --su-shadow-default: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
   --su-shadow-focus: 0 0 0 3px rgba(59, 130, 246, 0.5);
   --su-font-family-base: "Inter", sans-serif;

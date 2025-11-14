@@ -295,6 +295,21 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel) {
     }
   }
 
+  &--custom {
+    color: var('--su-custom-link-color', $primary-600);
+    font-weight: 600;
+    
+    &:hover:not(&--disabled) {
+      color: var('--su-custom-link-hover-color', $primary-700);
+      background-color: $primary-50;
+    }
+
+    &:active:not(&--disabled) {
+      color: var('--su-custom-link-active-color', $primary-600);
+      background-color: $primary-100;
+    }
+  }
+
   // Soulignement
   &--default-underline {
     text-decoration: none;

@@ -1,5 +1,5 @@
 import type { InjectionKey } from 'vue'
-import type { ButtonRadius, ButtonSize, ButtonVariant, DialogDisplay, LinkSize, LinkUnderline, LinkVariant } from '@/types'
+import type { DialogDisplay, LinkSize, LinkUnderline, LinkVariant } from '@/types'
 
 export interface SurgeuiTheme {
   textPrimaryColor?: string
@@ -10,12 +10,19 @@ export interface SurgeuiTheme {
     bg: string
     color: string
     border: string
-    hoverBg: string
+    hoverBackground: string
     hoverShadow: string
-  }
-  buttonRadius?: Exclude<ButtonRadius, 'md'>
-  buttonVariant?: Exclude<ButtonVariant, 'primary'>
-  buttonSize?: Exclude<ButtonSize, 'md'>
+  },
+  link?: {
+    color: string
+    //underline: 'none' | 'underline'
+    hoverColor: string
+    hoverBackground: string
+    activeColor: string
+  },
+  // buttonRadius?: Exclude<ButtonRadius, 'md'>
+  // buttonVariant?: Exclude<ButtonVariant, 'primary'>
+  // buttonSize?: Exclude<ButtonSize, 'md'>
   // Configuration globale des liens
   linkVariant?: Exclude<LinkVariant, 'default'>
   linkSize?: Exclude<LinkSize, 'default'>

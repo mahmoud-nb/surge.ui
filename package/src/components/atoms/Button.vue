@@ -24,8 +24,8 @@ const emit = defineEmits<{
 const classes = computed(() => {
   return [
     'su-button',
-    props.variant !== 'default' ? `su-button--${props.variant}` : 'su-button--default-variant',
-    props.size !== 'default' ? `su-button--${props.size}` : 'su-button--default-size',
+    props.size && `su-button--${props.size}`,
+    props.variant && `su-button--${props.variant}`,
     props.radius && `su-button--radius-${props.radius}`,
     {
       'su-button--disabled': props.disabled,
@@ -136,13 +136,21 @@ const ariaAttributes = computed(() => {
   font-family: inherit;
   font-weight: 500;
   border: 1px solid transparent;
-  border-radius: var(--su-default-radius);
+  border-radius: var(--su-radius-button);
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   text-decoration: none;
   white-space: nowrap;
   user-select: none;
   position: relative;
+
+  &:hover:not(&--disabled):not(&--loading) {
+    transform: translateY(-1px);
+  }
+
+  &:active:not(&--disabled):not(&--loading) {
+    transform: translateY(0);
+  }
   
   // Focus visible amélioré pour l'accessibilité
   &:focus-visible {
@@ -171,10 +179,6 @@ const ariaAttributes = computed(() => {
 
   // Radius
   @include use-border-radius();
-
-  &--default-radius {
-    border-radius: var(--su-default-radius);
-  }
 
   // Sizes
   &--sm {
@@ -262,6 +266,23 @@ const ariaAttributes = computed(() => {
     &:hover:not(&--disabled):not(&--loading) {
       background-color: $primary-50;
       transform: translateY(-1px);
+    }
+  }
+  
+  &--custom {
+    background-color: var('--su-custom-button-bg', $primary-600);
+    color: var('--su-custom-button-color', white);
+    border: var(--su-custom-button-border, 'none');
+    
+    &:hover:not(&--disabled):not(&--loading) {
+      background-color: var('--su-custom-button-hover-bg', $primary-700);
+      transform: translateY(-1px);
+      box-shadow: var(--su-custom-button-hover-shadow, 0 4px 12px rgba($primary-600, 0.4));
+    }
+
+    &:active:not(&--disabled):not(&--loading) {
+      transform: translateY(0);
+      box-shadow: 0 2px 4px rgba($primary-600, 0.4);
     }
   }
 

@@ -10,13 +10,13 @@ A modern Vue.js 3 component library with Composition API, designed to create bea
 ## ✨ Features
 
 - 🎨 **Modern Design** - Polished and professional components
-- 🔧 **TypeScript** - Full TypeScript support for better developer experience
 - 🎯 **Composition API** - Built with Vue 3 Composition API
-- 📱 **Responsive** - Components adapted to all screen sizes
-- 🌙 **Dark Mode** - Native dark mode support
-- ♿ **Accessible** - WCAG 2.1 AA compliant with complete accessibility support
-- ⚡ **Performance** - Optimized for best performance
+- 🔧 **TypeScript** - Full TypeScript support for better developer experience
 - 🎨 **Customizable** - Global configuration and theming support
+- 📱 **Responsive** - Components adapted to all screen sizes
+- ♿ **Accessible** - WCAG 2.1 AA compliant with complete accessibility support
+- 🌙 **Dark Mode** - Native dark mode support
+- ⚡ **Performance** - Optimized for best performance
 
 ## 🚀 Quick Start
 
@@ -30,8 +30,9 @@ npm install @surgeui/ds-vue
 
 ```vue
 <script setup>
-import { SuButton } from '@surgeui/ds-vue'
 import '@surgeui/ds-vue/style.css'
+import { SuButton } from '@surgeui/ds-vue'
+import type { ButtonProps } from '@surgeui/ds-vue/types'
 </script>
 
 <template>
@@ -55,128 +56,6 @@ app.use(SurgeUpDS)
 app.mount('#app')
 ```
 
-## 📚 Available Components
-
-### Form Components
-- **Input** - Flexible input with prefixes, suffixes, and validation states
-- **Textarea** - Auto-resizing textarea with character counter
-- **SelectBox** - Custom select with search, multiple selection, and groups
-- **RadioGroup** - Radio button groups with card and default styles
-- **CheckboxGroup** - Checkbox groups with multiple selection support
-- **Switch** - Toggle switches with intelligent label positioning
-- **Slider** - Range sliders with dual-range, tooltips, and custom marks
-- **FileUpload** - File upload with drag & drop and validation
-
-### Action Components
-- **Button** - Flexible buttons with variants, sizes, and loading states
-- **Link** - Smart links with Vue Router support and external link detection
-
-### Layout Components
-- **ButtonGroup** - Organize buttons with controlled spacing
-- **LinkGroup** - Organize links with controlled spacing
-- **FormFields** - Organize form fields with sections and responsive layout
-- **FloatButton** - Floating action button with slots and positioning
-
-### Display Components
-- **Dialog** - Versatile modal and drawer component
-
-## 🎯 Component Examples
-
-### Button with Icon
-
-```vue
-<script setup>
-import { PlusIcon } from '@heroicons/vue/24/outline'
-</script>
-
-<template>
-  <SuButton variant="primary" :icon="PlusIcon" iconDisplay="left">
-    Add Item
-  </SuButton>
-</template>
-```
-
-### Form with Validation
-
-```vue
-<script setup>
-import { ref } from 'vue'
-
-const form = ref({
-  email: '',
-  password: '',
-  country: '',
-  notifications: false
-})
-
-const countries = [
-  { value: 'us', label: 'United States' },
-  { value: 'fr', label: 'France' },
-  { value: 'de', label: 'Germany' }
-]
-</script>
-
-<template>
-  <SuFormFields role="form" aria-label="Registration form">
-    <template #head>
-      <h2>Create Account</h2>
-    </template>
-
-    <SuInput 
-      type="email"
-      label="Email"
-      placeholder="name@example.com"
-      v-model="form.email"
-      required
-    />
-    
-    <SuInput 
-      type="password"
-      label="Password"
-      placeholder="••••••••"
-      v-model="form.password"
-      required
-    />
-    
-    <SuSelectBox 
-      :options="countries"
-      label="Country"
-      placeholder="Select your country"
-      v-model="form.country"
-      searchable
-    />
-    
-    <SuSwitch 
-      label="Email notifications"
-      rightLabel="Enabled"
-      v-model="form.notifications"
-    />
-
-    <template #footer>
-      <SuButton variant="primary" block>
-        Create Account
-      </SuButton>
-    </template>
-  </SuFormFields>
-</template>
-```
-
-### Connected Button Group
-
-```vue
-<script setup>
-import { PlusIcon, CogIcon, TrashIcon } from '@heroicons/vue/24/outline'
-</script>
-
-<template>
-  <SuButtonGroup gap="none" variant="outline" size="sm">
-    <SuButton :icon="PlusIcon" iconDisplay="only" aria-label="Add" />
-    <SuButton :icon="CogIcon" iconDisplay="only" aria-label="Settings" />
-    <SuButton :icon="TrashIcon" iconDisplay="only" aria-label="Delete" />
-  </SuButtonGroup>
-</template>
-```
-
 ## 🎨 Global Configuration
 
 Customize default component behavior when installing:
@@ -185,26 +64,40 @@ Customize default component behavior when installing:
 app.use(SurgeUpDS, {
   // Component prefix (default: 'Su')
   prefix: 'My', // Components become MyButton, MyInput, etc.
-  
-  // Button defaults
-  buttonRadius: 'lg',
-  buttonVariant: 'outline',
-  buttonSize: 'lg',
-  
-  // Link defaults
-  linkVariant: 'primary',
-  linkSize: 'lg',
-  linkUnderline: 'never'
+
+  // Text color
+  textPrimaryColor: '#213222',
+  textSecondaryColor: '#454344'
+  textTeriaryColor: '#676965'
 })
+```
+
+### With Icons
+
+SurgeUI use **Heroicons** for add and display icons
+
+```vue
+<script setup>
+import { informationCircleIcon, HeartIcon } from '@heroicons/vue/24/outline'
+</script>
+
+<template>
+  <SuHeading>
+    <informationCircleIcon /> User informations
+  </SuHeading>
+  <SuButton variant="primary" :icon="HeartIcon" iconDisplay="left">
+    I like it
+  </SuButton>
+</template>
 ```
 
 ## ♿ Accessibility
 
 All components follow WCAG 2.1 AA standards:
 
+- **Focus Management** - Clear focus indicators and logical tab order
 - **Keyboard Navigation** - Full keyboard support
 - **Screen Readers** - Proper ARIA attributes and announcements
-- **Focus Management** - Clear focus indicators and logical tab order
 - **Color Contrast** - WCAG AA compliant contrast ratios (4.5:1 minimum)
 - **Touch Targets** - Minimum 44px touch targets
 - **Reduced Motion** - Respects `prefers-reduced-motion`
@@ -265,7 +158,7 @@ npm run storybook
 
 ## 📖 Documentation
 
-Visit our [complete documentation](https://surgeup-ds.netlify.app) for:
+Visit our [complete documentation](https://mahmoud-nb.github.io/surge.ui/) for:
 
 - **Component API** - Detailed props, events, and slots
 - **Usage examples** - Real-world implementation examples
@@ -282,36 +175,10 @@ MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 🔗 Links
 
-- [Documentation](https://surgeup-ds.netlify.app)
-- [Storybook](https://surgeup-ds-storybook.netlify.app)
+- [Documentation](https://mahmoud-nb.github.io/surge.ui/)
+- [Storybook](https://mahmoud-nb.github.io/surge.ui/storybook/)
 - [GitHub Repository](https://github.com/mahmoud-nb/surge.ui)
 - [npm Package](https://www.npmjs.com/package/@surgeui/ds-vue)
-
-## 🏷️ Component List
-
-### Form Components
-- `SuInput` - Text inputs with prefixes, suffixes, and validation
-- `SuPassword` - Password inputs with strength validation and visibility toggle
-- `SuTextarea` - Auto-resizing textarea with character counter
-- `SuSelectBox` - Custom select with search and multiple selection
-- `SuRadioGroup` - Radio button groups with card styles
-- `SuCheckboxGroup` - Checkbox groups with selection limits
-- `SuSwitch` - Toggle switches with side labels
-- `SuSlider` - Range sliders with dual-range and tooltips
-- `SuFileUpload` - File upload with drag & drop
-
-### Action Components
-- `SuButton` - Buttons with variants, sizes, and loading states
-- `SuLink` - Smart links with Vue Router and external link support
-
-### Layout Components
-- `SuButtonGroup` - Organize buttons with spacing control
-- `SuLinkGroup` - Organize links with spacing control
-- `SuFormFields` - Organize form fields with sections
-- `SuFloatButton` - Floating action button with positioning and slots
-
-### Utility Components
-- `SuFormField` - Base form field wrapper with label and message
 
 ---
 

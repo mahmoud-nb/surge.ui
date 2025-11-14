@@ -68,7 +68,7 @@ export interface BadgeProps extends AccessibilityProps {
 }
 
 // Button.vue
-export type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost';
+export type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'custom';
 export type ButtonSize = 'sm' | 'md' | 'lg';
 export type ButtonRadius = 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'max';
 export interface ButtonProps extends AccessibilityProps {
@@ -221,7 +221,7 @@ export interface InputProps extends AccessibilityProps {
 }
 
 // Link.vue
-export type LinkVariant = 'default' | 'primary' | 'secondary' | 'muted';
+export type LinkVariant = 'default' | 'primary' | 'secondary' | 'muted' | 'custom';
 export type LinkSize = 'sm' | 'md' | 'lg';
 export type LinkUnderline = 'default' | 'always' | 'hover' | 'never';
 export interface LinkProps extends AccessibilityProps {

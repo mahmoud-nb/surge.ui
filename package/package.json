@@ -9,6 +9,9 @@
       "import": "./dist/index.es.js",
       "require": "./dist/index.umd.js"
     },
+    "./types": {
+      "types": "./dist/types/index.d.ts"
+    },
     "./style.css": "./dist/style.css"
   },
   "types": "./dist/index.d.ts",
@@ -27,8 +30,10 @@
   "keywords": [
     "Vue",
     "Typescript",
-    "Design System"
+    "Design System",
+    "Accessibility"
   ],
+  "license": "MIT",
   "scripts": {
     "dev": "vite build --watch",
     "build": "vite build",

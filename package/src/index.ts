@@ -71,7 +71,7 @@ export default {
     const { prefix = 'Su', theme = {} } = options
     const mergedTheme = { ...defaultTheme, ...theme }
     const root = document.documentElement
-    const { button } = mergedTheme
+    const { button, link } = mergedTheme
 
     // injection globale
     app.provide(ThemeSymbol, mergedTheme)
@@ -82,10 +82,10 @@ export default {
       if (mergedTheme?.textPrimaryColor) {
         root.style.setProperty('--su-text-primary-color', `${mergedTheme?.textPrimaryColor}`)
       }
-      if (mergedTheme?.textPrimaryColor) {
+      if (mergedTheme?.textSecondaryColor) {
         root.style.setProperty('--su-text-secondary-color', `${mergedTheme?.textSecondaryColor}`)
       }
-      if (mergedTheme?.textPrimaryColor) {
+      if (mergedTheme?.textTeriaryColor) {
         root.style.setProperty('--su-text-tertiary-color', `${mergedTheme?.textTeriaryColor}`)
       }
 
@@ -94,8 +94,16 @@ export default {
         root.style.setProperty('--su-custom-button-bg', button.bg)
         root.style.setProperty('--su-custom-button-color', button.color)
         root.style.setProperty('--su-custom-button-border', button.border)
-        root.style.setProperty('--su-custom-button-hover-bg', button.hoverBg)
+        root.style.setProperty('--su-custom-button-hover-bg', button.hoverBackground)
         root.style.setProperty('--su-custom-button-hover-shadow', button.hoverShadow)
+      }
+
+      if (link) {
+        root.style.setProperty('--su-custom-link-color', link.color)
+        //root.style.setProperty('--su-custom-link-underline', link.underline)
+        root.style.setProperty('--su-custom-link-hover-color', link.hoverColor)
+        root.style.setProperty('--su-custom-link-hover-bg-color', link.hoverBackground)
+        root.style.setProperty('--su-custom-link-active-color', link.activeColor)
       }
     }
     
