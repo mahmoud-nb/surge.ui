@@ -195,7 +195,7 @@ export const Clickable: Story = {
   render: () => ({
     components: { AvatarGroup },
     setup() {
-      const handleAvatarClick = (avatar, index, event) => {
+      const handleAvatarClick = (avatar) => {
         if (avatar.type === 'more') {
           alert(`${avatar.count} autres utilisateurs`)
         } else {
@@ -326,7 +326,7 @@ export const ProjectTeam: Story = {
         }
       ]
       
-      const handleAvatarClick = (avatar, index) => {
+      const handleAvatarClick = (avatar) => {
         console.log('Avatar cliqué:', avatar.name)
       }
       
@@ -468,7 +468,7 @@ export const Interactive: Story = {
   render: () => ({
     components: { AvatarGroup },
     setup() {
-      const handleAvatarClick = (avatar, index, event) => {
+      const handleAvatarClick = (avatar) => {
         if (avatar.type === 'more') {
           alert(`Voir ${avatar.count} autres utilisateurs`)
         } else {

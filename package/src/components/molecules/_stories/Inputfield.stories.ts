@@ -1,6 +1,5 @@
-import { ref } from 'vue'
 import type { Meta, StoryObj } from '@storybook/vue3'
-import { MagnifyingGlassIcon, AtSymbolIcon, LockClosedIcon, UserIcon } from '@heroicons/vue/24/outline'
+import { MagnifyingGlassIcon, AtSymbolIcon, LockClosedIcon } from '@heroicons/vue/24/outline'
 import InputField from '../InputField.vue'
 
 const meta: Meta<typeof InputField> = {

@@ -29,9 +29,16 @@
   },
   "keywords": [
     "Vue",
+    "Vue3",
     "Typescript",
+    "scss",
+    "vite",
     "Design System",
-    "Accessibility"
+    "ui-library",
+    "component-library",
+    "vue-components",
+    "Accessibility",
+    "design-system"
   ],
   "license": "MIT",
   "scripts": {
@@ -40,9 +47,6 @@
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build --output-dir storybook-static"
-  },
-  "peerDependencies": {
-    "vue": "^3.3.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.0.0",
@@ -62,5 +66,8 @@
   },
   "dependencies": {
     "@heroicons/vue": "^2.2.0"
+  },
+  "peerDependencies": {
+    "vue": "^3.3.0"
   }
 }

@@ -9,6 +9,7 @@
   "ignoreFiles": [
     "**/node_modules/**",
     "**/dist/**",
-    "**/.vitepress/**"
+    "**/.vitepress/**",
+    "**/storybook-static/**"
   ]
 }

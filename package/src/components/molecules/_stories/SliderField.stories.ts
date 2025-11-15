@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from '@storybook/vue3'
 import SliderField from '../SliderField.vue'
+import type { Meta, StoryObj } from '@storybook/vue3'
 
 const meta: Meta<typeof SliderField> = {
   title: 'Molecules/SliderField',
@@ -91,21 +91,6 @@ const meta: Meta<typeof SliderField> = {
 
 export default meta
 type Story = StoryObj<typeof meta>
-
-const Template: Story = {
-  render: (args) => ({
-    components: { Switch },
-    setup() {
-      const value = ref(args.modelValue)
-      return { args, value }
-    },
-    template: `
-      <div style="width: 400px;">
-        <Switch v-model="value" v-bind="args" />
-      </div>
-    `
-  })
-}
 
 export const Default: Story = {
   args: {

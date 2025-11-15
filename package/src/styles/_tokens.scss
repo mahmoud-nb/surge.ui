@@ -139,16 +139,7 @@ $su-state-colors-light: (
   warning: #f59e0b,
   info: #0284c7
 );
- //map.get($su-state-colors-light, 'md');
 
-@mixin use-state-color($base: '&', $theme: 'light') {
-  $base-map: if($theme == 'dark', $su-state-colors-dark, $su-state-colors-light);
-  @each $key, $value in $base-map {
-    #{$base}--#{$key} {
-      color: $value; // var(--su-state-success-color, $value)
-    }
-  }
-}
 // =================================================================
 // 3. Thème DARK (Valeurs inversées)
 // =================================================================
@@ -221,6 +212,15 @@ $su-state-colors-dark: (
   @each $key, $value in $su-text-colors-light {
     #{$base}--#{$key} {
       color: var(--su-text-#{$key}-color);
+    }
+  }
+}
+
+@mixin use-state-color($base: '&', $theme: 'light') {
+  $base-map: if($theme == 'dark', $su-state-colors-dark, $su-state-colors-light);
+  @each $key, $value in $base-map {
+    #{$base}--#{$key} {
+      color: var(--su-state-success-color, $value);
     }
   }
 }
