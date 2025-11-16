@@ -42,26 +42,26 @@ import '@surgeui/ds-vue/style.css'
 <div class="component-grid">
   <div class="component-card">
     <h3>Button</h3>
-    <p>Composant bouton avec plusieurs variantes et tailles</p>
+    <p>Composant **Bouton** avec plusieurs variantes et tailles</p>
     <a href="/components/button">Voir la documentation →</a>
   </div>
   
   <div class="component-card">
-    <h3>Input</h3>
-    <p>Composant input avec préfixes, suffixes et validation</p>
-    <a href="/components/input">Voir la documentation →</a>
+    <h3>Inputfield</h3>
+    <p>Composant **Inputfield** avec préfixes, suffixes et validation</p>
+    <a href="/components/inputfield">Voir la documentation →</a>
   </div>
   
   <div class="component-card">
     <h3>SelectBox</h3>
-    <p>Composant select avec recherche et sélection multiple</p>
-    <a href="/components/selectbox">Voir la documentation →</a>
+    <p>Composant **SelectField** avec recherche et sélection multiple</p>
+    <a href="/components/selectboxfield">Voir la documentation →</a>
   </div>
   
   <div class="component-card">
-    <h3>Dialog</h3>
-    <p>Composant modal et tiroir polyvalent</p>
-    <a href="/components/dialog">Voir la documentation →</a>
+    <h3>Accordion</h3>
+    <p>Composant **Accordion** pour plusieurs sections de contenu repliables</p>
+    <a href="/components/accordion">Voir la documentation →</a>
   </div>
 </div>
 

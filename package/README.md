@@ -1,11 +1,12 @@
-# SurgeUp Design System
+# SurgeUI Vue Design System
 
-A modern Vue.js 3 component library with Composition API, designed to create beautiful and consistent user interfaces.
+A modern **Vue.js 3** component library with Composition API, designed to create beautiful and consistent user interfaces.
 
-[![npm version](https://badge.fury.io/js/%40surgeup%2Fds-vue.svg)](https://badge.fury.io/js/%40surgeup%2Fds-vue)
+[![npm version](https://badge.fury.io/js/%40surgeup%2Fds-vue.svg)](https://www.npmjs.com/package/@surgeui/ds-vue)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Vue 3](https://img.shields.io/badge/Vue-3.x-4FC08D.svg)](https://vuejs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-Ready-3178C6.svg)](https://www.typescriptlang.org/)
+
 
 ## ✨ Features
 
@@ -18,7 +19,8 @@ A modern Vue.js 3 component library with Composition API, designed to create bea
 - 🌙 **Dark Mode** - Native dark mode support
 - ⚡ **Performance** - Optimized for best performance
 
-## 🚀 Quick Start
+
+## Quick Start
 
 ### Installation
 
@@ -29,7 +31,7 @@ npm install @surgeui/ds-vue
 ### Basic Usage
 
 ```vue
-<script setup>
+<script setup lang="ts" >
 import '@surgeui/ds-vue/style.css'
 import { SuButton } from '@surgeui/ds-vue'
 import type { ButtonProps } from '@surgeui/ds-vue/types'
@@ -44,7 +46,7 @@ import type { ButtonProps } from '@surgeui/ds-vue/types'
 
 ### Global Installation
 
-```js
+```ts
 // main.js
 import { createApp } from 'vue'
 import SurgeUpDS from '@surgeui/ds-vue'
@@ -56,20 +58,43 @@ app.use(SurgeUpDS)
 app.mount('#app')
 ```
 
-## 🎨 Global Configuration
+### Global Configuration
 
 Customize default component behavior when installing:
 
-```js
-app.use(SurgeUpDS, {
+```ts
+import type { SurgeuiTheme } from '@surgeui/ds-vue'
+
+const options: SurgeuiTheme = {
   // Component prefix (default: 'Su')
   prefix: 'My', // Components become MyButton, MyInput, etc.
 
-  // Text color
+  // custom text color
   textPrimaryColor: '#213222',
-  textSecondaryColor: '#454344'
-  textTeriaryColor: '#676965'
-})
+  textSecondaryColor: '#454344',
+  textTeriaryColor: '#676965',
+
+  // Custom Button style
+  button: {
+    bg: '#101010'
+    color: '#FFFFFF'
+    border: 'none'
+    hoverBackground: '#383838'
+    hoverShadow: '0 0'
+  }
+
+  // custom link style
+  link?: {
+    color: '#2563eb';
+    hoverColor: '#1e40af'
+    hoverBackground: 'none'
+    activeColor: '#1e3a8a'
+  }
+
+  // Other options are currently under development.
+}
+
+app.use(SurgeUpDS, options)
 ```
 
 ### With Icons
@@ -110,6 +135,10 @@ Dark mode is automatically supported through CSS media queries:
 
 ```css
 @media (prefers-color-scheme: dark) {
+  /* Dark mode styles are automatically applied */
+}
+
+.dark, [theme="dark"] * {
   /* Dark mode styles are automatically applied */
 }
 ```
@@ -167,11 +196,11 @@ Visit our [complete documentation](https://mahmoud-nb.github.io/surge.ui/) for:
 
 ## 🤝 Contributing
 
-We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
+We welcome contributions! Please see our [Contributing Guide](https://github.com/mahmoud-nb/surge.ui/blob/main/package/CONTRIBUTING.md) for details.
 
 ## 📄 License
 
-MIT License - see the [LICENSE](LICENSE) file for details.
+MIT License - see the [LICENSE](https://github.com/mahmoud-nb/surge.ui/blob/main/package/LICENSE.md) file for details.
 
 ## 🔗 Links
 
