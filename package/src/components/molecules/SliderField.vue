@@ -701,6 +701,7 @@ defineExpose({
     &.su-slider-track--horizontal {
       height: 0.25rem;
     }
+
     &.su-slider-track--vertical {
       width: 0.25rem;
     }
@@ -710,6 +711,7 @@ defineExpose({
     &.su-slider-track--horizontal {
       height: 0.375rem;
     }
+
     &.su-slider-track--vertical {
       width: 0.375rem;
     }
@@ -719,6 +721,7 @@ defineExpose({
     &.su-slider-track--horizontal {
       height: 0.5rem;
     }
+
     &.su-slider-track--vertical {
       width: 0.5rem;
     }
@@ -967,12 +970,12 @@ defineExpose({
   background-color: white;
   border: 2px solid $primary-500;
   border-radius: 50%;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgb(0 0 0 / 10%);
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   
   &:hover {
     transform: scale(1.05);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 8px rgb(0 0 0 / 15%);
   }
 }
 

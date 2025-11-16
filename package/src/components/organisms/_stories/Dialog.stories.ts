@@ -10,7 +10,7 @@ const meta: Meta<typeof Dialog> = {
     layout: 'fullscreen', // Utiliser fullscreen pour mieux visualiser les modales/tiroirs
     docs: {
       description: {
-        component: 'Composant Dialog flexible qui peut servir de modale ou de tiroir (drawer) selon la prop \`display`. Il supporte des slots pour l\'en-tête, le contenu et le pied de page, et gère l\'accessibilité (focus trap, ARIA).'
+        component: 'Composant Dialog flexible qui peut servir de modale ou de tiroir (drawer) selon la prop `display`. Il supporte des slots pour l\'en-tête, le contenu et le pied de page, et gère l\'accessibilité (focus trap, ARIA).'
       }
     }
   },
@@ -67,7 +67,7 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 const createDialogStory = (args: any): Story => ({
-  render: (renderArgs) => ({
+  render: () => ({
     components: { Dialog, Button },
     setup() {
       const isOpen = ref(args.modelValue)

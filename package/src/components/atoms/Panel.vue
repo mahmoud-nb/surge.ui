@@ -73,6 +73,7 @@ withDefaults(defineProps<PanelProps>(), {
     &--subtle {
       background-color: $gray-700;
     }
+
     &--highlight {
       background-color: rgba($primary-600, 0.15);
     }

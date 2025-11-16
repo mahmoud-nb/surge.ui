@@ -235,6 +235,31 @@ watch(() => props.autoResize, (newValue) => {
 <style lang="scss">
 @use '../../styles/main' as *;
 
+.su-textarea {
+  display: block;
+  resize: vertical;
+  width: 100%;
+
+  @include su-form-field-element;
+  
+  &--disabled {
+    resize: none;
+  }
+  
+  &--readonly {
+    resize: none;
+  }
+  
+  &--auto-resize {
+    resize: none;
+    overflow-y: hidden;
+  }
+  
+  &--over-limit {
+    color: $error-600;
+  }
+}
+
 .su-textarea-container {
   @include su-form-field-container;
   
@@ -270,30 +295,6 @@ watch(() => props.autoResize, (newValue) => {
       border-color: $error-500;
       box-shadow: 0 0 0 3px rgba($error-500, 0.1);
     }
-  }
-}
-
-.su-textarea {
-  display: block;
-  resize: vertical;
-  width: 100%;
-  @include su-form-field-element;
-  
-  &--disabled {
-    resize: none;
-  }
-  
-  &--readonly {
-    resize: none;
-  }
-  
-  &--auto-resize {
-    resize: none;
-    overflow-y: hidden;
-  }
-  
-  &--over-limit {
-    color: $error-600;
   }
 }
 

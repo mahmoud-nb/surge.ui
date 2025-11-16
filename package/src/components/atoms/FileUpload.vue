@@ -572,7 +572,7 @@ defineExpose({
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   
-  &:hover:not(&--disabled):not(&--readonly) {
+  &:hover:not(&--disabled, &--readonly) {
     border-color: $primary-400;
     background-color: $primary-50;
   }
@@ -628,7 +628,7 @@ defineExpose({
     border-color: $error-300;
     background-color: $error-50;
     
-    &:hover:not(&--disabled):not(&--readonly) {
+    &:hover:not(&--disabled, &--readonly) {
       border-color: $error-400;
     }
     
@@ -642,7 +642,7 @@ defineExpose({
     border-color: $success-300;
     background-color: $success-50;
     
-    &:hover:not(&--disabled):not(&--readonly) {
+    &:hover:not(&--disabled, &--readonly) {
       border-color: $success-400;
     }
     
@@ -656,7 +656,7 @@ defineExpose({
     border-color: $warning-300;
     background-color: $warning-50;
     
-    &:hover:not(&--disabled):not(&--readonly) {
+    &:hover:not(&--disabled, &--readonly) {
       border-color: $warning-400;
     }
     
@@ -736,7 +736,7 @@ defineExpose({
   font-size: $font-size-base;
   font-weight: 500;
   color: $text-primary;
-  margin: 0 0 0.5rem 0;
+  margin: 0 0 0.5rem;
 }
 
 .su-file-upload-secondary-text {
@@ -762,7 +762,7 @@ defineExpose({
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   
   &:hover {
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 2px 4px rgb(0 0 0 / 5%);
   }
   
   &--error {
@@ -929,6 +929,7 @@ defineExpose({
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -940,7 +941,7 @@ defineExpose({
     background-color: $gray-800;
     border-color: $gray-600;
     
-    &:hover:not(&--disabled):not(&--readonly) {
+    &:hover:not(&--disabled, &--readonly) {
       background-color: $gray-700;
       border-color: $primary-400;
     }

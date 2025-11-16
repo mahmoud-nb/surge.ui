@@ -258,12 +258,15 @@ onUnmounted(() => {
   &--gap-sm {
     gap: $spacing-1;
   }
+
   &--gap-md {
     gap: $spacing-2;
   }
+
   &--gap-lg {
     gap: $spacing-3;
   }
+
   &--gap-none {
     gap: 0;
   }

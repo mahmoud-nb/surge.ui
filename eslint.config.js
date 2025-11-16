@@ -5,13 +5,82 @@ import vuePlugin from 'eslint-plugin-vue';
 import vueParser from 'vue-eslint-parser';
 import globals from 'globals';
 
+// Définition des globals navigateur (réutilisable)
+const browserGlobals = {
+  window: 'readonly',
+  document: 'readonly',
+  navigator: 'readonly',
+  console: 'readonly',
+  setTimeout: 'readonly',
+  setInterval: 'readonly',
+  clearTimeout: 'readonly',
+  clearInterval: 'readonly',
+  requestAnimationFrame: 'readonly',
+  cancelAnimationFrame: 'readonly',
+  // Types DOM
+  HTMLElement: 'readonly',
+  HTMLDivElement: 'readonly',
+  HTMLSpanElement: 'readonly',
+  HTMLInputElement: 'readonly',
+  HTMLButtonElement: 'readonly',
+  HTMLFormElement: 'readonly',
+  HTMLAnchorElement: 'readonly',
+  HTMLImageElement: 'readonly',
+  HTMLSelectElement: 'readonly',
+  HTMLTextAreaElement: 'readonly',
+  Element: 'readonly',
+  Node: 'readonly',
+  NodeList: 'readonly',
+  NodeListOf: 'readonly',
+  // Événements
+  Event: 'readonly',
+  MouseEvent: 'readonly',
+  KeyboardEvent: 'readonly',
+  FocusEvent: 'readonly',
+  InputEvent: 'readonly',
+  PointerEvent: 'readonly',
+  TouchEvent: 'readonly',
+  WheelEvent: 'readonly',
+  CustomEvent: 'readonly',
+  EventTarget: 'readonly',
+  // Autres APIs
+  MutationObserver: 'readonly',
+  IntersectionObserver: 'readonly',
+  ResizeObserver: 'readonly',
+  FormData: 'readonly',
+  URLSearchParams: 'readonly',
+};
+
+const nodeGlobals = {
+  process: 'readonly',
+  __dirname: 'readonly',
+  __filename: 'readonly',
+  module: 'readonly',
+  require: 'readonly',
+  exports: 'writable',
+  global: 'readonly',
+  Buffer: 'readonly',
+  console: 'readonly',
+  setTimeout: 'readonly',
+  setInterval: 'readonly',
+  clearTimeout: 'readonly',
+  clearInterval: 'readonly',
+}
+
 export default [
   // Règles recommandées JavaScript
   js.configs.recommended,
   
   // Configuration pour les fichiers JavaScript/TypeScript
   {
-    files: ['**/*.{js,mjs,cjs,ts,mts,cts}'],
+    files: [
+      '**/*.{js,mjs,cjs,ts,mts,cts}',
+      '**/*.config.{js,ts,mjs,mts}',  // Tous les fichiers *.config.js/ts
+      '**/vite.config.{js,ts}',       // Configuration Vite
+      '**/.storybook/**/*.{js,ts}',   // Tous les fichiers Storybook
+      '**/vitest.config.{js,ts}',     // Configuration Vitest
+      '**/eslint.config.{js,mjs}',    // Configuration ESLint
+    ],
     languageOptions: {
       parser: tsParser,
       parserOptions: {
@@ -21,29 +90,7 @@ export default [
       globals: {
         ...globals.browser,  // ✅ Tous les globals du navigateur
         // Environnement navigateur
-        window: 'readonly',
-        document: 'readonly',
-        navigator: 'readonly',
-        console: 'readonly',
-        setTimeout: 'readonly',
-        setInterval: 'readonly',
-        clearTimeout: 'readonly',
-        clearInterval: 'readonly',
-        // Types DOM
-        HTMLElement: 'readonly',
-        Element: 'readonly',
-        Node: 'readonly',
-        NodeList: 'readonly',
-        NodeListOf: 'readonly',
-        HTMLInputElement: 'readonly',
-        HTMLButtonElement: 'readonly',
-        HTMLDivElement: 'readonly',
-        // Événements
-        Event: 'readonly',
-        MouseEvent: 'readonly',
-        KeyboardEvent: 'readonly',
-        FocusEvent: 'readonly',
-        CustomEvent: 'readonly',
+        ...browserGlobals
       },
     },
     plugins: {
@@ -73,13 +120,19 @@ export default [
         ecmaVersion: 'latest',
         sourceType: 'module',
       },
+      globals: {
+        ...globals.browser,  // ✅ Tous les globals du navigateur
+        // Environnement navigateur
+        ...browserGlobals,
+        ...nodeGlobals
+      },
     },
     plugins: {
       '@typescript-eslint': tsPlugin,
     },
     rules: {
       // Règles Vue personnalisées
-      'vue/multi-word-component-names': 'warn',
+      'vue/multi-word-component-names': 'off', // 'warn'
       'vue/no-unused-vars': 'warn',
       'vue/require-default-prop': 'off',
       // Règles TypeScript pour les fichiers Vue

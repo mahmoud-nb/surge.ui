@@ -309,7 +309,7 @@ defineExpose({
 .su-switch-thumb {
   background-color: white;
   border-radius: 9999px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 4px rgb(0 0 0 / 20%);
   transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   align-items: center;
@@ -337,7 +337,7 @@ defineExpose({
   }
   
   &--custom {
-    color: currentColor;
+    color: currentcolor;
   }
 }
 </style>

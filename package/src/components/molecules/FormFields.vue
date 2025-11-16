@@ -175,12 +175,6 @@ const ariaAttributes = computed(() => {
     flex-direction: column;
   }
   
-  .su-form-fields--horizontal & {
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: flex-start;
-  }
-  
   // Gaps pour les champs (dans le content)
   .su-form-fields--gap-sm & {
     gap: 0.75rem;
@@ -200,6 +194,9 @@ const ariaAttributes = computed(() => {
   
   // Ajustements pour la direction horizontale
   .su-form-fields--horizontal & {
+    flex-flow: row wrap;
+    align-items: flex-start;
+
     > * {
       flex: 1;
       min-width: 0;
@@ -208,7 +205,7 @@ const ariaAttributes = computed(() => {
 }
 
 // Responsive : passer en vertical sur mobile
-@media (max-width: 768px) {
+@media (width <= 768px) {
   .su-form-fields--horizontal {
     .su-form-fields-content {
       flex-direction: column;

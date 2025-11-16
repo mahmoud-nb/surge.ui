@@ -231,7 +231,7 @@ defineExpose({
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgb(0 0 0 / 50%);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -256,7 +256,6 @@ defineExpose({
   border: none;
   border-radius: $border-radius-lg;
   box-shadow: $shadow-lg;
-  
   max-height: 90vh;
   max-width: 90vw;
   transform: scale(0.95);
@@ -409,18 +408,23 @@ defineExpose({
   .su-dialog--center & {
     transform: scale(0.95);
   }
+
   .su-dialog--left & {
     transform: translateX(-100%);
   }
+
   .su-dialog--right & {
     transform: translateX(100%);
   }
+
   .su-dialog--top & {
     transform: translateY(-100%);
   }
+
   .su-dialog--bottom & {
     transform: translateY(100%);
   }
+
   .su-dialog--full & {
     transform: scale(1.05);
   }
@@ -449,7 +453,7 @@ defineExpose({
 // Mode de contraste élevé
 @media (prefers-contrast: high) {
   .su-dialog-overlay {
-    background-color: rgba(0, 0, 0, 0.8); // Contraste plus élevé pour l'overlay
+    background-color: rgb(0 0 0 / 80%); // Contraste plus élevé pour l'overlay
   }
 
   .su-dialog {

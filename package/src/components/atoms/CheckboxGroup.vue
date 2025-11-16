@@ -255,8 +255,7 @@ const isDisabled = (option: any) => {
   
   &--horizontal {
     .su-checkbox-group-options {
-      flex-direction: row;
-      flex-wrap: wrap;
+      flex-flow: row wrap;
     }
   }
   
@@ -331,7 +330,7 @@ const isDisabled = (option: any) => {
     
     &:hover:not(&--disabled) {
       border-color: $primary-300;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 2px 4px rgb(0 0 0 / 5%);
     }
     
     &--selected {

@@ -225,40 +225,6 @@ onMounted(() => {
 <style lang="scss">
 @use '../../styles/main' as *;
 
-.su-image-container {
-  position: relative;
-  display: inline-block;
-  overflow: hidden;
-  background-color: $gray-100;
-  
-  &--has-ratio {
-    width: 100%;
-  }
-  
-  &--loading {
-    .su-image {
-      opacity: 0;
-    }
-  }
-  
-  &--loaded {
-    .su-image {
-      opacity: 1;
-    }
-    
-    .su-image-placeholder {
-      opacity: 0;
-      pointer-events: none;
-    }
-  }
-  
-  &--error {
-    .su-image {
-      opacity: 0;
-    }
-  }
-}
-
 .su-image {
   width: 100%;
   height: 100%;
@@ -338,6 +304,40 @@ onMounted(() => {
     width: 3rem;
     height: 3rem;
     color: $text-tertiary;
+  }
+}
+
+.su-image-container {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  background-color: $gray-100;
+  
+  &--has-ratio {
+    width: 100%;
+  }
+  
+  &--loading {
+    .su-image {
+      opacity: 0;
+    }
+  }
+  
+  &--loaded {
+    .su-image {
+      opacity: 1;
+    }
+    
+    .su-image-placeholder {
+      opacity: 0;
+      pointer-events: none;
+    }
+  }
+  
+  &--error {
+    .su-image {
+      opacity: 0;
+    }
   }
 }
 

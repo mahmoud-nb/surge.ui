@@ -103,7 +103,7 @@ const ariaAttributes = computed(() => {
   // Style connecté pour gap='none'
   &--connected {
     .su-buttons-group__button {
-      @include connected-elements();
+      @include connected-elements;
     }
   }
 }

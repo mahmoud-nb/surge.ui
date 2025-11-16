@@ -432,10 +432,10 @@ $alert-dismiss-icon-size: 16px;
   }
   
   &:hover {
-    background-color: rgba(0, 0, 0, 0.05);
+    background-color: rgb(0 0 0 / 5%);
     
     @media (prefers-color-scheme: dark) {
-      background-color: rgba(255, 255, 255, 0.1);
+      background-color: rgb(255 255 255 / 10%);
     }
   }
   
@@ -455,7 +455,7 @@ $alert-dismiss-icon-size: 16px;
   
   // High contrast
   @media (prefers-contrast: high) {
-    border: 1px solid currentColor;
+    border: 1px solid currentcolor;
   }
 }
 

@@ -158,7 +158,7 @@ const spinnerStyles = computed(() => {
     width: 0.33em;
     height: 0.33em;
     border-radius: 50%;
-    background-color: currentColor;
+    background-color: currentcolor;
     animation: dots-bounce 1.4s ease-in-out infinite both;
 
     &:nth-child(1) { animation-delay: -0.32s; }
@@ -198,9 +198,11 @@ const spinnerStyles = computed(() => {
       transform: rotate(0deg);
       stroke-dashoffset: 150;
     }
+
     50% {
       stroke-dashoffset: 50;
     }
+
     100% {
       transform: rotate(360deg);
       stroke-dashoffset: 150;
@@ -212,9 +214,11 @@ const spinnerStyles = computed(() => {
       transform: rotate(0deg);
       stroke-dasharray: 10 150;
     }
+
     50% {
       stroke-dasharray: 80 150;
     }
+
     100% {
       transform: rotate(360deg);
       stroke-dasharray: 10 150;
@@ -226,6 +230,7 @@ const spinnerStyles = computed(() => {
       transform: scale(0.8);
       opacity: 0.5;
     }
+
     40% {
       transform: scale(1);
       opacity: 1;
@@ -237,6 +242,7 @@ const spinnerStyles = computed(() => {
       transform: scale(0.8);
       opacity: 0.5;
     }
+
     50% {
       transform: scale(1);
       opacity: 1;
@@ -247,6 +253,7 @@ const spinnerStyles = computed(() => {
     0%, 40%, 100% {
       transform: scaleY(0.4);
     }
+
     20% {
       transform: scaleY(1);
     }

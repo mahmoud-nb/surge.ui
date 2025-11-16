@@ -1,9 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import Slider from '../Slider.vue'
 
-
-
-
 const meta: Meta<typeof Slider> = {
   title: 'Atoms/Slider',
   component: Slider,
@@ -90,21 +87,6 @@ const meta: Meta<typeof Slider> = {
 
 export default meta
 type Story = StoryObj<typeof meta>
-
-const Template: Story = {
-  render: (args) => ({
-    components: { Switch },
-    setup() {
-      const value = ref(args.modelValue)
-      return { args, value }
-    },
-    template: `
-      <div style="width: 400px;">
-        <Switch v-model="value" v-bind="args" />
-      </div>
-    `
-  })
-}
 
 export const Default: Story = {
   args: {

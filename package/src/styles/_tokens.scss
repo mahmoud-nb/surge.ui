@@ -218,6 +218,7 @@ $su-state-colors-dark: (
 
 @mixin use-state-color($base: '&', $theme: 'light') {
   $base-map: if($theme == 'dark', $su-state-colors-dark, $su-state-colors-light);
+
   @each $key, $value in $base-map {
     #{$base}--#{$key} {
       color: var(--su-state-success-color, $value);

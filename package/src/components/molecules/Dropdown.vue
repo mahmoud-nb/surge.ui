@@ -457,6 +457,7 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !props.lab
 
 .su-dropdown-trigger {
   $self: &;
+
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -525,12 +526,12 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !props.lab
     &:hover:not(#{$self}--disabled):not(#{$self}--loading) {
       background-color: $primary-700;
       transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+      box-shadow: 0 4px 12px rgb(59 130 246 / 40%);
     }
 
     &:active:not(#{$self}--disabled):not(#{$self}--loading) {
       transform: translateY(0);
-      box-shadow: 0 2px 4px rgba(59, 130, 246, 0.4);
+      box-shadow: 0 2px 4px rgb(59 130 246 / 40%);
     }
   }
 
@@ -543,7 +544,7 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !props.lab
       background-color: $gray-200;
       border-color: $gray-300;
       transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(107, 114, 128, 0.15);
+      box-shadow: 0 4px 12px rgb(107 114 128 / 15%);
     }
   }
 
@@ -630,7 +631,7 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !props.lab
 .su-dropdown-chevron {
   width: 1em;
   height: 1em;
-  color: currentColor;
+  color: currentcolor;
   transition: transform 0.2s;
   flex-shrink: 0;
 }
@@ -654,7 +655,7 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !props.lab
   background-color: white;
   border: 1px solid $gray-200;
   border-radius: $border-radius-md;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 10%), 0 4px 6px -2px rgb(0 0 0 / 5%);
   overflow: hidden;
   min-width: 12rem;
   
@@ -720,6 +721,7 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !props.lab
 
 .su-dropdown-option {
   $self: &;
+
   display: flex;
   align-items: center;
   gap: 0.75rem;
@@ -809,6 +811,7 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !props.lab
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -822,7 +825,7 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !props.lab
       color: $gray-100;
       border-color: $gray-700;
 
-      &:hover:not(&--disabled):not(&--loading) {
+      &:hover:not(&--disabled, &--loading) {
         background-color: $gray-700;
         border-color: $gray-600;
       }
@@ -832,7 +835,7 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !props.lab
       color: $primary-400;
       border-color: $primary-400;
 
-      &:hover:not(&--disabled):not(&--loading) {
+      &:hover:not(&--disabled, &--loading) {
         background-color: rgba($primary-400, 0.1);
         border-color: $primary-300;
       }
@@ -841,7 +844,7 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !props.lab
     &--ghost {
       color: $primary-400;
 
-      &:hover:not(&--disabled):not(&--loading) {
+      &:hover:not(&--disabled, &--loading) {
         background-color: rgba($primary-400, 0.1);
       }
     }
@@ -907,7 +910,7 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !props.lab
     transition: none;
   }
   
-  .su-dropdown-trigger:hover:not(.su-dropdown-trigger--disabled):not(.su-dropdown-trigger--loading) {
+  .su-dropdown-trigger:hover:not(.su-dropdown-trigger--disabled, .su-dropdown-trigger--loading) {
     transform: none;
   }
   

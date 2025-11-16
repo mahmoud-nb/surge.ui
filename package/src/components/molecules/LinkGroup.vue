@@ -165,7 +165,8 @@ const ariaAttributes = computed(() => {
   // Style connecté pour gap='none'
   &--connected {
     .su-links-group__link {
-      @include connected-elements();
+      @include connected-elements;
+
       border: 1px solid transparent;
       
       // Bordures pour l'effet connecté
@@ -197,17 +198,11 @@ const ariaAttributes = computed(() => {
         
         &:first-child {
           margin-top: 0;
-          border-top-left-radius: $border-radius-sm;
-          border-top-right-radius: $border-radius-sm;
-          border-bottom-left-radius: 0;
-          border-bottom-right-radius: 0;
+          border-radius: $border-radius-sm $border-radius-sm 0 0;
         }
         
         &:last-child {
-          border-top-left-radius: 0;
-          border-top-right-radius: 0;
-          border-bottom-left-radius: $border-radius-sm;
-          border-bottom-right-radius: $border-radius-sm;
+          border-radius: 0 0 $border-radius-sm $border-radius-sm;
         }
         
         &:only-child {

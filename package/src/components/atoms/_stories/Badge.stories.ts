@@ -17,7 +17,7 @@ const meta: Meta<typeof Badge> = {
   argTypes: {
     variant: {
       control: { type: 'select' },
-      options: ['default', 'primary', 'secondary', 'success', 'warning', 'error', 'dot'],
+      options: ['default', 'primary', 'secondary', 'success', 'warning', 'error'],
       description: 'Variante visuelle du badge'
     },
     size: {
@@ -38,10 +38,6 @@ const meta: Meta<typeof Badge> = {
       control: { type: 'select' },
       options: ['left', 'right', 'only'],
       description: 'Position de l\'icône'
-    },
-    dotText: {
-      control: 'text',
-      description: 'Texte affiché à côté du dot (variante dot uniquement)'
     },
     color: {
       control: 'color',
@@ -151,44 +147,6 @@ export const IconOnly: Story = {
   })
 }
 
-export const DotVariant: Story = {
-  render: () => ({
-    components: { Badge },
-    template: `
-      <div style="display: flex; flex-direction: column; gap: 2rem; align-items: flex-start;">
-        <div>
-          <h4 style="margin-bottom: 1rem;">Dots simples</h4>
-          <div style="display: flex; gap: 1rem; align-items: center;">
-            <Badge variant="dot" />
-            <Badge variant="dot" size="sm" />
-            <Badge variant="dot" size="lg" />
-          </div>
-        </div>
-        
-        <div>
-          <h4 style="margin-bottom: 1rem;">Dots avec couleurs</h4>
-          <div style="display: flex; gap: 1rem; align-items: center;">
-            <Badge variant="dot" backgroundColor="#10b981" />
-            <Badge variant="dot" backgroundColor="#f59e0b" />
-            <Badge variant="dot" backgroundColor="#ef4444" />
-            <Badge variant="dot" backgroundColor="#3b82f6" />
-          </div>
-        </div>
-        
-        <div>
-          <h4 style="margin-bottom: 1rem;">Dots avec texte</h4>
-          <div style="display: flex; flex-direction: column; gap: 0.75rem; align-items: flex-start;">
-            <Badge variant="dot" dotText="En ligne" backgroundColor="#10b981" />
-            <Badge variant="dot" dotText="Absent" backgroundColor="#f59e0b" />
-            <Badge variant="dot" dotText="Occupé" backgroundColor="#ef4444" />
-            <Badge variant="dot" dotText="Hors ligne" backgroundColor="#6b7280" />
-          </div>
-        </div>
-      </div>
-    `
-  })
-}
-
 export const CustomColors: Story = {
   render: (args) => ({
     components: { Badge },
@@ -285,7 +243,7 @@ export const InContext: Story = {
                 <span>John Doe</span>
               </div>
               <div style="display: flex; gap: 0.5rem;">
-                <Badge variant="dot" dotText="En ligne" backgroundColor="#10b981" />
+                <Badge backgroundColor="#10b981" color="#FFFFFF" >En ligne</Badge>
                 <Badge variant="primary" size="sm" :icon="StarIcon" iconDisplay="only" aria-label="Utilisateur premium" />
               </div>
             </div>
@@ -298,7 +256,7 @@ export const InContext: Story = {
                 <span>Marie Dupont</span>
               </div>
               <div style="display: flex; gap: 0.5rem;">
-                <Badge variant="dot" dotText="Absent" backgroundColor="#f59e0b" />
+                <Badge backgroundColor="#f59e0b">Absent</Badge>
                 <Badge variant="secondary" size="sm">Admin</Badge>
               </div>
             </div>
@@ -407,20 +365,20 @@ export const StatusIndicators: Story = {
         <div>
           <h4 style="margin-bottom: 1rem;">États de connexion</h4>
           <div style="display: flex; flex-direction: column; gap: 0.75rem; align-items: flex-start;">
-            <Badge variant="dot" dotText="En ligne" backgroundColor="#10b981" />
-            <Badge variant="dot" dotText="Absent" backgroundColor="#f59e0b" />
-            <Badge variant="dot" dotText="Occupé" backgroundColor="#ef4444" />
-            <Badge variant="dot" dotText="Hors ligne" backgroundColor="#6b7280" />
+            <Badge backgroundColor="#10b981">En ligne</Badge>
+            <Badge backgroundColor="#f59e0b">Absent</Badge>
+            <Badge backgroundColor="#ef4444">Occupé</Badge>
+            <Badge backgroundColor="#6b7280">Hors ligne</Badge>
           </div>
         </div>
         
         <div>
           <h4 style="margin-bottom: 1rem;">États de service</h4>
           <div style="display: flex; flex-direction: column; gap: 0.75rem; align-items: flex-start;">
-            <Badge variant="dot" dotText="Opérationnel" backgroundColor="#10b981" />
-            <Badge variant="dot" dotText="Dégradé" backgroundColor="#f59e0b" />
-            <Badge variant="dot" dotText="Panne" backgroundColor="#ef4444" />
-            <Badge variant="dot" dotText="Maintenance" backgroundColor="#3b82f6" />
+            <Badge backgroundColor="#10b981">Opérationnel</Badge>
+            <Badge backgroundColor="#f59e0b">Dégradé</Badge>
+            <Badge backgroundColor="#ef4444">Panne</Badge>
+            <Badge backgroundColor="#3b82f6">Maintenance</Badge>
           </div>
         </div>
       </div>

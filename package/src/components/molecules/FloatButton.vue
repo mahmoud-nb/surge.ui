@@ -274,11 +274,11 @@ defineExpose({
   background-color: white;
   border: 1px solid $gray-200;
   border-radius: $border-radius-lg;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 10px 25px rgb(0 0 0 / 15%);
   padding: 0.5rem;
   
   // Animation d'apparition
-  animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: slide-up 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   
   &--left {
     align-items: flex-start;
@@ -294,13 +294,13 @@ defineExpose({
 
 .su-float-button {
   border-radius: 50% !important;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 8px 25px rgb(0 0 0 / 15%);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   
   &:hover:not(:disabled) {
     transform: translateY(-2px);
-    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 12px 35px rgb(0 0 0 / 20%);
   }
   
   &:active:not(:disabled) {
@@ -362,6 +362,13 @@ defineExpose({
   
   // Animation de pulsation pour attirer l'attention
   // animation: pulse 2s infinite;
+}
+
+.su-float-button-tooltip-arrow {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border: 6px solid transparent;
 }
 
 .su-float-button-tooltip {
@@ -443,19 +450,13 @@ defineExpose({
   }
 }
 
-.su-float-button-tooltip-arrow {
-  position: absolute;
-  width: 0;
-  height: 0;
-  border: 6px solid transparent;
-}
-
 // Animations
-@keyframes slideUp {
+@keyframes slide-up {
   from {
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -466,6 +467,7 @@ defineExpose({
   0%, 100% {
     transform: scale(1);
   }
+
   50% {
     transform: scale(1.1);
   }
@@ -507,7 +509,7 @@ defineExpose({
 // Mode de contraste élevé
 @media (prefers-contrast: high) {
   .su-float-button {
-    border: 3px solid currentColor;
+    border: 3px solid currentcolor;
   }
   
   .su-float-button-badge {
@@ -542,7 +544,7 @@ defineExpose({
 }
 
 // Responsive
-@media (max-width: 768px) {
+@media (width <= 768px) {
   .su-float-button-container {
     bottom: 16px !important;
   

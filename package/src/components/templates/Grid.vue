@@ -84,6 +84,7 @@ const gridStyle = computed(() => {
   @media (prefers-reduced-motion: reduce) {
     transition: none;
   }
+
   &:hover {
     background-color: var(--su-hover-bg, #f5f5f5);
   }
@@ -95,13 +96,16 @@ const gridStyle = computed(() => {
 
   &--grid {
     grid-template-columns: repeat(var(--su-grid-cols-mobile), 1fr);
-    @media (min-width: 600px) {
+
+    @media (width >= 600px) {
       grid-template-columns: repeat(var(--su-grid-cols-tablet), 1fr);
     }
-    @media (min-width: 900px) {
+
+    @media (width >= 900px) {
       grid-template-columns: repeat(var(--su-grid-cols-mini-desktop), 1fr);
     }
-    @media (min-width: 1200px) {
+
+    @media (width >= 1200px) {
       grid-template-columns: repeat(var(--su-grid-cols-desktop), 1fr);
     }
   }

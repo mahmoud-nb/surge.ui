@@ -150,19 +150,19 @@ const ariaAttributes = computed(() => {
   user-select: none;
   position: relative;
 
-  &:hover:not(&--disabled):not(&--loading) {
-    transform: translateY(-1px);
-  }
-
-  &:active:not(&--disabled):not(&--loading) {
-    transform: translateY(0);
-  }
-  
   // Focus visible amélioré pour l'accessibilité
   &:focus-visible {
     outline: 2px solid $primary-600;
     outline-offset: 2px;
     box-shadow: 0 0 0 4px rgba($primary-600, 0.2);
+  }
+
+  &:hover:not(&--disabled, &--loading) {
+    transform: translateY(-1px);
+  }
+
+  &:active:not(&--disabled, &--loading) {
+    transform: translateY(0);
   }
 
   // Support du mode de contraste élevé
@@ -178,13 +178,13 @@ const ariaAttributes = computed(() => {
   @media (prefers-reduced-motion: reduce) {
     transition: none;
     
-    &:hover:not(&--disabled):not(&--loading) {
+    &:hover:not(&--disabled, &--loading) {
       transform: none;
     }
   }
 
   // Radius
-  @include use-border-radius();
+  @include use-border-radius;
 
   // Sizes
   &--sm {
@@ -228,13 +228,13 @@ const ariaAttributes = computed(() => {
     background-color: $primary-600;
     color: white;
     
-    &:hover:not(&--disabled):not(&--loading) {
+    &:hover:not(&--disabled, &--loading) {
       background-color: $primary-700;
       transform: translateY(-1px);
       box-shadow: 0 4px 12px rgba($primary-600, 0.4);
     }
 
-    &:active:not(&--disabled):not(&--loading) {
+    &:active:not(&--disabled, &--loading) {
       transform: translateY(0);
       box-shadow: 0 2px 4px rgba($primary-600, 0.4);
     }
@@ -245,7 +245,7 @@ const ariaAttributes = computed(() => {
     color: $gray-900;
     border-color: $gray-200;
 
-    &:hover:not(&--disabled):not(&--loading) {
+    &:hover:not(&--disabled, &--loading) {
       background-color: $gray-200;
       border-color: $gray-300;
       transform: translateY(-1px);
@@ -258,7 +258,7 @@ const ariaAttributes = computed(() => {
     color: $primary-600;
     border-color: $primary-200;
 
-    &:hover:not(&--disabled):not(&--loading) {
+    &:hover:not(&--disabled, &--loading) {
       background-color: $primary-50;
       border-color: $primary-300;
       transform: translateY(-1px);
@@ -269,7 +269,7 @@ const ariaAttributes = computed(() => {
     background-color: transparent;
     color: $primary-600;
 
-    &:hover:not(&--disabled):not(&--loading) {
+    &:hover:not(&--disabled, &--loading) {
       background-color: $primary-50;
       transform: translateY(-1px);
     }
@@ -280,13 +280,13 @@ const ariaAttributes = computed(() => {
     color: var('--su-custom-button-color', white);
     border: var(--su-custom-button-border, 'none');
     
-    &:hover:not(&--disabled):not(&--loading) {
+    &:hover:not(&--disabled, &--loading) {
       background-color: var('--su-custom-button-hover-bg', $primary-700);
       transform: translateY(-1px);
       box-shadow: var(--su-custom-button-hover-shadow, 0 4px 12px rgba($primary-600, 0.4));
     }
 
-    &:active:not(&--disabled):not(&--loading) {
+    &:active:not(&--disabled, &--loading) {
       transform: translateY(0);
       box-shadow: 0 2px 4px rgba($primary-600, 0.4);
     }
@@ -336,25 +336,13 @@ const ariaAttributes = computed(() => {
       height: 1.25em;
     }
   }
-
-  // Classe pour le texte accessible aux lecteurs d'écran uniquement
-  .sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
-  }
 }
 
 @keyframes spin {
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -368,7 +356,7 @@ const ariaAttributes = computed(() => {
       color: $gray-100;
       border-color: $gray-700;
 
-      &:hover:not(&--disabled):not(&--loading) {
+      &:hover:not(&--disabled, &--loading) {
         background-color: $gray-700;
         border-color: $gray-600;
       }
@@ -378,7 +366,7 @@ const ariaAttributes = computed(() => {
       color: $primary-400; // Meilleur contraste en mode sombre
       border-color: $primary-400;
 
-      &:hover:not(&--disabled):not(&--loading) {
+      &:hover:not(&--disabled, &--loading) {
         background-color: rgba($primary-400, 0.1);
         border-color: $primary-300;
       }
@@ -387,7 +375,7 @@ const ariaAttributes = computed(() => {
     &--ghost {
       color: $primary-400;
 
-      &:hover:not(&--disabled):not(&--loading) {
+      &:hover:not(&--disabled, &--loading) {
         background-color: rgba($primary-400, 0.1);
       }
     }

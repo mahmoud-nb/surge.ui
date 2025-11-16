@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 interface PreviewProps {
-  title?: string,
+  title?: string
   message?: string
 }
 

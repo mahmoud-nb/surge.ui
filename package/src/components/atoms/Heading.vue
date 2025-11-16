@@ -58,7 +58,9 @@ const tag = computed(() => (props.level === 'div' ? 'div' : `h${props.level}`))
 
 .su-heading {
   $self: &;
-  @include reset-style();
+
+  @include reset-style;
+
   font-family: var(--su-font-family-base);
   font-weight: 600;
   color: var(--su-text-primary-color);
@@ -80,7 +82,7 @@ const tag = computed(() => (props.level === 'div' ? 'div' : `h${props.level}`))
     }
   }
 
-  @include use-text-variants();
+  @include use-text-variants;
 
   &--truncate {
     display: block;

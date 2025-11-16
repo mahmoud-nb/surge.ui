@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
-import { ArrowTopRightOnSquareIcon, HomeIcon, UserIcon, CogIcon } from '@heroicons/vue/24/outline'
+import { HomeIcon, UserIcon, CogIcon } from '@heroicons/vue/24/outline'
 import Link from '../Link.vue'
 
 const meta: Meta<typeof Link> = {

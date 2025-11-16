@@ -147,7 +147,7 @@ const groupedOptions = [
   }
 ]
 
-const createInteractiveStory = (args: any): Story => ({
+const createInteractiveStory = (args): Story => ({
   render: (args) => ({
     components: { SelectBox },
     setup() {
@@ -156,7 +156,7 @@ const createInteractiveStory = (args: any): Story => ({
     },
     // On utilise v-model pour lier la ref locale au composant
     template: `<div style="width: 300px; min-height: 250px;">
-      <SelectBox v-bind="args" v-model="modelValue" @change="args[\'onUpdate:modelValue\']" />
+      <SelectBox v-bind="args" v-model="modelValue" @change="args['onUpdate:modelValue']" />
     </div>`,
   }),
   args,

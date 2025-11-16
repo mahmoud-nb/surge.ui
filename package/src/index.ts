@@ -42,7 +42,6 @@ import RadioGroupField from './components/molecules/RadioGroupField.vue'
 import CheckboxGroupField from './components/molecules/CheckboxGroupField.vue'
 import SwitchField from './components/molecules/SwitchField.vue'
 import SliderField from './components/molecules/SliderField.vue'
-import RangeField from './components/molecules/RangeField.vue'
 import FileUploadField from './components/molecules/FileUploadField.vue'
 
 import FormFields from './components/molecules/FormFields.vue'
@@ -55,7 +54,7 @@ export { Heading, Panel, Image, Avatar, AvatarGroup, Badge, Dialog, Progress, Sp
 export { Tabs, Accordion, AccordionItem, Alert }
 export { Link, LinkGroup, Button, ButtonGroup, FloatButton, Dropdown }
 export { Input, Textarea, SelectBox, RadioGroup, CheckboxGroup, FileUpload, Switch, Slider, Password }
-export { InputField, SelectBoxField, RadioGroupField, CheckboxGroupField, RangeField, SwitchField, FileUploadField, TextareaField, SliderField }
+export { InputField, SelectBoxField, RadioGroupField, CheckboxGroupField, SwitchField, FileUploadField, TextareaField, SliderField }
 export { FormField, FormFields }
 export { accessibility }
 
@@ -215,7 +214,6 @@ export default {
     app.component(`${prefix}SwitchField`, SwitchField)
     app.component(`${prefix}SliderField`, SliderField)
     app.component(`${prefix}FileUploadField`, FileUploadField)
-    app.component(`${prefix}RangeField`, RangeField)
     
     // ...... FormFields container
     app.component(`${prefix}FormFields`, FormFields)

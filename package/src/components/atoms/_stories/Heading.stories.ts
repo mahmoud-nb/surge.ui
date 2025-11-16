@@ -1,4 +1,4 @@
-import type { Meta, StoryFn } from '@storybook/vue3'
+import type { Meta, StoryObj } from '@storybook/vue3'
 import Heading from '@/components/atoms/Heading.vue'
 import { AtSymbolIcon, UserIcon } from '@heroicons/vue/24/outline'
 
@@ -59,7 +59,7 @@ export const WithSlots: Story = {
     truncate: false
   },
   render: (args) => ({
-    components: { Heading, Icon, UserIcon, AtSymbolIcon },
+    components: { Heading, UserIcon, AtSymbolIcon },
     setup() {
       return { args, UserIcon, AtSymbolIcon }
     },

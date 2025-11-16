@@ -256,6 +256,7 @@ defineExpose({ focus, select, inputRef })
       padding: $padding;
       font-size: $fontSize;
     }
+
     .su-input-prefix,
     .su-input-suffix {
       padding: $padding;
@@ -267,6 +268,7 @@ defineExpose({ focus, select, inputRef })
 .su-input-container {
   display: flex;
   align-items: center;
+
   @include su-form-field-container;
   
   // Tailles
@@ -278,6 +280,7 @@ defineExpose({ focus, select, inputRef })
 .su-input {
   width: 100%;
   line-height: $line-height-normal;
+
   @include su-form-field-element;
 
   &--sm {
@@ -308,18 +311,18 @@ defineExpose({ focus, select, inputRef })
   }
 
   &[type='number'] {
-    -moz-appearance: textfield;
+    appearance: textfield;
 
     &::-webkit-outer-spin-button,
     &::-webkit-inner-spin-button {
-      -webkit-appearance: none;
+      appearance: none;
       margin: 0;
     }
   }
 
   &[type='search'] {
     &::-webkit-search-cancel-button {
-      -webkit-appearance: none;
+      appearance: none;
     }
   }
 
@@ -361,12 +364,12 @@ defineExpose({ focus, select, inputRef })
     cursor: pointer;
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     
-    &:hover:not(.su-input-container--disabled):not(.su-input-container--readonly) {
+    &:hover:not(.su-input-container--disabled, .su-input-container--readonly) {
       background-color: $gray-100;
       color: $text-primary;
     }
     
-    &:active:not(.su-input-container--disabled):not(.su-input-container--readonly) {
+    &:active:not(.su-input-container--disabled, .su-input-container--readonly) {
       background-color: $gray-200;
     }
   }
@@ -388,12 +391,12 @@ defineExpose({ focus, select, inputRef })
   .su-input-suffix {
     color: $text-secondary-dark;
     
-    &--clickable:hover:not(.su-input-container--disabled):not(.su-input-container--readonly) {
+    &--clickable:hover:not(.su-input-container--disabled, .su-input-container--readonly) {
       background-color: $gray-700;
       color: $text-primary-dark;
     }
     
-    &--clickable:active:not(.su-input-container--disabled):not(.su-input-container--readonly) {
+    &--clickable:active:not(.su-input-container--disabled, .su-input-container--readonly) {
       background-color: $gray-600;
     }
   }

@@ -55,14 +55,13 @@ export interface AvatarProps extends AccessibilityProps {
 }
 
 // Badge.vue
-export type BadgeVariant = 'default' | 'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'dot';
+export type BadgeVariant = 'default' | 'primary' | 'secondary' | 'success' | 'warning' | 'error';
 export interface BadgeProps extends AccessibilityProps {
   variant?: BadgeVariant;
   size?: Size;
   radius?: Radius;
   icon?: Component;
   iconDisplay?: 'left' | 'right' | 'only';
-  dotText?: string;
   color?: string;
   backgroundColor?: string;
 }
@@ -234,7 +233,7 @@ export interface LinkProps extends AccessibilityProps {
   block?: boolean;
   underline?: LinkUnderline;
   disabled?: boolean;
-  icon?: any;
+  icon?: Component;
   iconDisplay?: 'left' | 'right' | 'only';
   external?: boolean;
 }

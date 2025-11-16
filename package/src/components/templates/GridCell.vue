@@ -2,8 +2,6 @@
 import { computed } from 'vue'
 import { GridCellProps } from '@/types'
 
-
-
 const props = withDefaults(defineProps<GridCellProps>(), {
   bordered: false,
   radius: 'none'
@@ -45,7 +43,8 @@ const customStyles = computed(() => {
   }
 
   // Radius
-  @include use-border-radius();
+  @include use-border-radius;
+
   padding: 1rem;
   background: var(--su-bg-surface, #fff);
   color: var(--su-text-primary, #111);

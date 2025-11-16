@@ -156,7 +156,7 @@ const createInteractiveStory = (args: any): Story => ({
     },
     // On utilise v-model pour lier la ref locale au composant
     template: `<div style="width: 300px; min-height: 250px;">
-      <SelectBoxField v-bind="args" v-model="modelValue" @change="args[\'onUpdate:modelValue\']" />
+      <SelectBoxField v-bind="args" v-model="modelValue" @change="args['onUpdate:modelValue']" />
     </div>`,
   }),
   args,

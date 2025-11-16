@@ -222,6 +222,7 @@ $su-progress-size-lg: 1rem;
   0% {
     transform: translateX(0);
   }
+
   100% {
     transform: translateX(300%);
   }
