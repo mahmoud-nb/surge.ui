@@ -33,6 +33,7 @@ const fieldId = 'radio-group-' + useId()
 const groupId = computed(() => attrs.id as string || fieldId)
 
 const radioGroupProps = computed(() => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { label, message, ...rest } = props
   return rest
 })

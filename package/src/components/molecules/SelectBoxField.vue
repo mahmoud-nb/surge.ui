@@ -44,6 +44,7 @@ const fieldId = 'selectbox-' + useId()
 const selectId = computed(() => attrs.id as string || fieldId)
 
 const selectBoxProps = computed(() => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { label, message, ...rest } = props
   return rest
 })

@@ -36,6 +36,7 @@ const fieldId = 'textarea-' + useId()
 const textareaId = computed(() => attrs.id as string || fieldId)
 
 const textareaProps = computed(() => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { label, message, value, ...rest } = props
   return rest
 })

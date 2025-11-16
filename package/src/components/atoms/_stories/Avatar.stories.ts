@@ -276,7 +276,7 @@ export const Clickable: Story = {
   render: () => ({
     components: { Avatar },
     setup() {
-      const handleClick = (event) => {
+      const handleClick = () => {
         alert('Avatar cliqué!')
       }
       

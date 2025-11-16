@@ -2,10 +2,17 @@
 
 A modern **Vue.js 3** component library with Composition API, designed to create beautiful and consistent user interfaces.
 
-[![npm version](https://badge.fury.io/js/%40surgeup%2Fds-vue.svg)](https://www.npmjs.com/package/@surgeui/ds-vue)
+[![npm](https://img.shields.io/npm/v/@surgeui/ds-vue)](https://www.npmjs.com/package/@surgeui/ds-vue)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Vue 3](https://img.shields.io/badge/Vue-3.x-4FC08D.svg)](https://vuejs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-Ready-3178C6.svg)](https://www.typescriptlang.org/)
+
+
+> This release is intended entirely for testing and solution optimization.
+> The goal is to explore different technical approaches in order to identify the best way to build and structure the design system.
+> 
+> Therefore, this is not a stable release.
+> The first officially stable version will be 2.0.
 
 
 ## ✨ Features

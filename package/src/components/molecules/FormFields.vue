@@ -80,6 +80,7 @@ const processedFields = computed(() => {
   return processedChildren
 })
 
+/*
 // Traitement du slot head
 const processedHead = computed(() => {
   if (!slots?.head) return []
@@ -91,6 +92,7 @@ const processedFooter = computed(() => {
   if (!slots?.footer) return []
   return slots.footer()
 })
+*/
 
 // Attributs ARIA pour l'accessibilité
 const ariaAttributes = computed(() => {

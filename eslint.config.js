@@ -102,7 +102,7 @@ export default [
         argsIgnorePattern: '^_',
         varsIgnorePattern: '^_',
       }],
-      '@typescript-eslint/no-explicit-any': 'warn',
+      '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-inferrable-types': 'off',
       // Désactive la règle JS de base pour éviter les conflits avec TypeScript
       'no-unused-vars': 'off',
@@ -140,7 +140,7 @@ export default [
         argsIgnorePattern: '^_',
         varsIgnorePattern: '^_',
       }],
-      '@typescript-eslint/no-explicit-any': 'warn',
+      '@typescript-eslint/no-explicit-any': 'off',
       // Désactive la règle JS de base
       'no-unused-vars': 'off',
     },

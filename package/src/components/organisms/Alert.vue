@@ -153,27 +153,37 @@ $alert-dismiss-icon-size: 16px;
   background-color: $gray-50;
   color: $gray-900;
   position: relative;
-  
-  // High contrast support
-  @media (prefers-contrast: high) {
-    border-width: 2px;
-  }
-  
-  // Reduced motion support
-  @media (prefers-reduced-motion: reduce) {
-    transition: none;
-    
-    * {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
-    }
+
+  &__icon-wrapper {
+    display: flex;
+    align-items: flex-start;
+    flex-shrink: 0;
+    margin-top: 2px; // Alignement visuel avec le texte
   }
 
-  // RTL support
-  [dir="rtl"] & {
-    gap: $spacing-3;
-    text-align: right;
+  &__icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  &__content {
+    flex: 1;
+    min-width: 0; // Prevent overflow
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-2;
+  }
+
+  &__title {
+    font-size: $font-size-base;
+    font-weight: 600;
+    line-height: $line-height-tight;
+  }
+
+  &__description {
+    font-size: $font-size-base;
+    line-height: $line-height-normal;
+    color: $text-secondary;
   }
 
   // Types
@@ -276,6 +286,120 @@ $alert-dismiss-icon-size: 16px;
     }
   }
 
+  &__actions {
+    margin-top: $spacing-3;
+    display: flex;
+    gap: $spacing-2;
+    flex-wrap: wrap;
+    
+    [dir="rtl"] & {
+      gap: $spacing-2;
+    }
+  }
+
+  .su-alert--dismissible {
+    padding-right: calc(#{$spacing-8} + #{$spacing-2});
+    
+    [dir="rtl"] & {
+      padding-right: $spacing-4;
+      padding-left: calc(#{$spacing-8} + #{$spacing-2});
+    }
+  }
+
+  &__dismiss-button {
+    position: absolute;
+    top: $spacing-3;
+    right: $spacing-3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: $min-touch-target-sm;
+    height: $min-touch-target-sm;
+    border: none;
+    border-radius: $border-radius-md;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    
+    [dir="rtl"] & {
+      right: auto;
+      left: $spacing-3;
+    }
+    
+    &:hover {
+      background-color: rgb(0 0 0 / 5%);
+      
+      @media (prefers-color-scheme: dark) {
+        background-color: rgb(255 255 255 / 10%);
+      }
+    }
+    
+    &:focus {
+      outline: $focus-ring-width solid $focus-ring-color;
+      outline-offset: $focus-ring-offset;
+      
+      // High contrast
+      @media (prefers-contrast: high) {
+        outline-width: 3px;
+      }
+    }
+    
+    &:active {
+      transform: scale(0.95);
+    }
+    
+    // High contrast
+    @media (prefers-contrast: high) {
+      border: 1px solid currentcolor;
+    }
+
+      &--success {
+      color: $success-500;
+      
+      @media (prefers-color-scheme: dark) {
+        color: $success-400;
+      }
+    }
+    
+    &--warning {
+      color: $warning-500;
+      
+      @media (prefers-color-scheme: dark) {
+        color: $warning-400;
+      }
+    }
+    
+    &--error {
+      color: $error-500;
+      
+      @media (prefers-color-scheme: dark) {
+        color: $error-400;
+      }
+    }
+    
+    &--info {
+      color: $primary-500;
+      
+      @media (prefers-color-scheme: dark) {
+        color: $primary-400;
+      }
+    }
+    
+    &--neutral {
+      color: $gray-500;
+      
+      @media (prefers-color-scheme: dark) {
+        color: $gray-400;
+      }
+    }
+  }
+
+  &__dismiss-icon {
+    width: 16px;
+    height: 16px;
+  }
+
   // Dark mode
   @media (prefers-color-scheme: dark) {
     border-color: $gray-700;
@@ -356,153 +480,20 @@ $alert-dismiss-icon-size: 16px;
       }
     }
   }
-}
 
-.su-alert__icon-wrapper {
-  display: flex;
-  align-items: flex-start;
-  flex-shrink: 0;
-  margin-top: 2px; // Alignement visuel avec le texte
-}
-
-.su-alert__icon {
-  width: 20px;
-  height: 20px;
-}
-
-.su-alert__content {
-  flex: 1;
-  min-width: 0; // Prevent overflow
-  display: flex;
-  flex-direction: column;
-  gap: $spacing-2;
-}
-
-.su-alert__title {
-  font-size: $font-size-base;
-  font-weight: 600;
-  line-height: $line-height-tight;
-}
-
-.su-alert__description {
-  font-size: $font-size-base;
-  line-height: $line-height-normal;
-  color: $text-secondary;
-}
-
-.su-alert__actions {
-  margin-top: $spacing-3;
-  display: flex;
-  gap: $spacing-2;
-  flex-wrap: wrap;
-  
-  [dir="rtl"] & {
-    gap: $spacing-2;
-  }
-}
-
-.su-alert--dismissible {
-  padding-right: calc(#{$spacing-8} + #{$spacing-2});
-  
-  [dir="rtl"] & {
-    padding-right: $spacing-4;
-    padding-left: calc(#{$spacing-8} + #{$spacing-2});
-  }
-}
-
-.su-alert__dismiss-button {
-  position: absolute;
-  top: $spacing-3;
-  right: $spacing-3;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: $min-touch-target-sm;
-  height: $min-touch-target-sm;
-  border: none;
-  border-radius: $border-radius-md;
-  background: transparent;
-  color: inherit;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  
-  [dir="rtl"] & {
-    right: auto;
-    left: $spacing-3;
-  }
-  
-  &:hover {
-    background-color: rgb(0 0 0 / 5%);
-    
-    @media (prefers-color-scheme: dark) {
-      background-color: rgb(255 255 255 / 10%);
-    }
-  }
-  
-  &:focus {
-    outline: $focus-ring-width solid $focus-ring-color;
-    outline-offset: $focus-ring-offset;
-    
-    // High contrast
-    @media (prefers-contrast: high) {
-      outline-width: 3px;
-    }
-  }
-  
-  &:active {
-    transform: scale(0.95);
-  }
-  
-  // High contrast
+    // High contrast support
   @media (prefers-contrast: high) {
-    border: 1px solid currentcolor;
-  }
-}
-
-.su-alert__dismiss-icon {
-  width: 16px;
-  height: 16px;
-}
-
-// Styles spécifiques pour chaque type de bouton de fermeture
-.su-alert__dismiss-button {
-  &--success {
-    color: $success-500;
-    
-    @media (prefers-color-scheme: dark) {
-      color: $success-400;
-    }
+    border-width: 2px;
   }
   
-  &--warning {
-    color: $warning-500;
+  // Reduced motion support
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
     
-    @media (prefers-color-scheme: dark) {
-      color: $warning-400;
-    }
-  }
-  
-  &--error {
-    color: $error-500;
-    
-    @media (prefers-color-scheme: dark) {
-      color: $error-400;
-    }
-  }
-  
-  &--info {
-    color: $primary-500;
-    
-    @media (prefers-color-scheme: dark) {
-      color: $primary-400;
-    }
-  }
-  
-  &--neutral {
-    color: $gray-500;
-    
-    @media (prefers-color-scheme: dark) {
-      color: $gray-400;
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
     }
   }
 }

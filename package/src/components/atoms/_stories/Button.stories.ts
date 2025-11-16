@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
-import { PlusIcon, ArrowRightIcon, HeartIcon, TrashIcon } from '@heroicons/vue/24/outline'
+import { PlusIcon, ArrowRightIcon, HeartIcon } from '@heroicons/vue/24/outline'
 import Button from '../Button.vue'
 
 const meta: Meta<typeof Button> = {

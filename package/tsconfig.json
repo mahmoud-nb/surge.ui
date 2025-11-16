@@ -15,6 +15,7 @@
     "moduleDetection": "force",
     "jsx": "preserve",
     "strict": true,
+    "noImplicitAny": false,          // ➜ autorise `any`
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,

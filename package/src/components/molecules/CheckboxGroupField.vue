@@ -32,6 +32,7 @@ const fieldId = 'checkbox-group-' + useId()
 const checkboxGroupId = computed(() => attrs.id as string || fieldId)
 
 const checkboxGroupProps = computed(() => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { label, message, ...rest } = props
   return rest
 })

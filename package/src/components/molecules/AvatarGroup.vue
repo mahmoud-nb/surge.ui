@@ -16,7 +16,7 @@ const emit = defineEmits<{
   'avatar-click': [avatar: any, index: number, event: MouseEvent]
 }>()
 
-const slots = defineSlots<{
+defineSlots<{
   before?(): any
   after?(): any
 }>()

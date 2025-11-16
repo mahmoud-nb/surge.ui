@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
-import { ref } from 'vue'
 import { CheckIcon, XMarkIcon, SunIcon, MoonIcon } from '@heroicons/vue/24/outline'
 import Switch from '../Switch.vue'
 
@@ -56,19 +55,6 @@ const meta: Meta<typeof Switch> = {
 
 export default meta
 type Story = StoryObj<typeof meta>
-
-const Template: Story = {
-  render: (args) => ({
-    components: { Switch },
-    setup() {
-      const value = ref(args.modelValue)
-      return { args, value }
-    },
-    template: `
-      <Switch v-model="value" v-bind="args" />
-    `
-  })
-}
 
 export const Default: Story = {
   args: {

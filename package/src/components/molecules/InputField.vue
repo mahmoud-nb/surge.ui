@@ -35,6 +35,7 @@ const fieldId = 'input-' + useId()
 const inputId = computed(() => attrs.id as string || fieldId)
 
 const inputProps = computed(() => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { label, message, ...rest } = props
   return rest
 })

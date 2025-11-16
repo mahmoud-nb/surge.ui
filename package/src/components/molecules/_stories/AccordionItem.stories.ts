@@ -62,7 +62,7 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 // Template pour tester la navigation clavier avec plusieurs accordéons
-const MultipleAccordionsTemplate = (args: any) => ({
+const MultipleAccordionsTemplate = () => ({
   components: { AccordionItem },
   setup() {
     const items = ref([

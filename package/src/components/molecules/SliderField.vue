@@ -97,15 +97,15 @@ const maxPercent = computed(() => {
 
 // Classes CSS
 const containerClasses = computed(() => [
-  'su-slider-container',
-  `su-slider-container--${props.size}`,
-  `su-slider-container--${props.state}`,
-  `su-slider-container--${props.orientation}`,
+  'su-slider__container',
+  `su-slider__container--${props.size}`,
+  `su-slider__container--${props.state}`,
+  `su-slider__container--${props.orientation}`,
   {
-    'su-slider-container--disabled': props.disabled,
-    'su-slider-container--readonly': props.readonly,
-    'su-slider-container--dual': isDualRange.value,
-    'su-slider-container--dragging': isDragging.value
+    'su-slider__container--disabled': props.disabled,
+    'su-slider__container--readonly': props.readonly,
+    'su-slider__container--dual': isDualRange.value,
+    'su-slider__container--dragging': isDragging.value
   }
 ])
 
@@ -377,11 +377,14 @@ defineExpose({
     :disabled="disabled"
   >
     <template #default="{ fieldId: id, messageId }">
-      <div :class="containerClasses">
+      <div 
+        class="su-slider" 
+        :class="containerClasses"
+      >
         <!-- Slot before -->
         <div
           v-if="$slots.before"
-          class="su-slider-before"
+          class="su-slider__before"
         >
           <slot name="before" />
         </div>
@@ -389,14 +392,14 @@ defineExpose({
         <!-- Labels min/max (si activés) -->
         <div
           v-if="showLabels"
-          class="su-slider-labels"
+          class="su-slider__labels"
         >
           <span class="su-slider-label su-slider-label--min">{{ formatValue(min) }}</span>
           <span class="su-slider-label su-slider-label--max">{{ formatValue(max) }}</span>
         </div>
 
         <!-- Container du slider -->
-        <div class="su-slider-wrapper">
+        <div class="su-slider__wrapper">
           <!-- Valeur affichée (si activée et pas de tooltip) -->
           <div
             v-if="showValue && tooltip === 'none'"
@@ -539,7 +542,7 @@ defineExpose({
         <!-- Slot after -->
         <div
           v-if="$slots.after"
-          class="su-slider-after"
+          class="su-slider__after"
         >
           <slot name="after" />
         </div>
@@ -551,73 +554,78 @@ defineExpose({
 <style lang="scss">
 @use '../../styles/main' as *;
 
-.su-slider-container {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  
-  &--horizontal {
-    .su-slider-wrapper {
-      flex-direction: column;
-    }
-  }
-  
-  &--vertical {
-    .su-slider-wrapper {
-      flex-direction: row;
-      align-items: center;
-      gap: 1rem;
+.su-slider {
+  $self: &;
+
+  &__container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    
+    &--horizontal {
+      #{$self}__wrapper {
+        flex-direction: column;
+      }
     }
     
-    .su-slider-slider {
-      height: 200px;
-      width: auto;
+    &--vertical {
+      #{$self}__wrapper {
+        flex-direction: row;
+        align-items: center;
+        gap: 1rem;
+      }
+      
+      #{$self}-slider {
+        height: 200px;
+        width: auto;
+      }
+      
+      #{$self}__labels {
+        flex-direction: column-reverse;
+        height: 200px;
+        justify-content: space-between;
+      }
     }
     
-    .su-slider-labels {
-      flex-direction: column-reverse;
-      height: 200px;
-      justify-content: space-between;
+    &--disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
     }
   }
-  
-  &--disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
+
+  &__wrapper {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+  }
+
+  &__labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: $font-size-sm;
+    color: $text-secondary;
+    
+    #{$self}-label {
+      font-weight: 500;
+      
+      &--min {
+        color: $text-secondary;
+      }
+      
+      &--max {
+        color: $text-secondary;
+      }
+    }
+  }
+
+  &__before,
+  &__after {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
   }
 }
 
-.su-slider-wrapper {
-  display: flex;
-  gap: 0.75rem;
-  align-items: center;
-}
-
-.su-slider-before,
-.su-slider-after {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.su-slider-labels {
-  display: flex;
-  justify-content: space-between;
-  font-size: $font-size-sm;
-  color: $text-secondary;
-  
-  .su-slider-label {
-    font-weight: 500;
-    
-    &--min {
-      color: $text-secondary;
-    }
-    
-    &--max {
-      color: $text-secondary;
-    }
-  }
-}
 
 .su-slider-value {
   display: flex;
@@ -1063,7 +1071,7 @@ defineExpose({
     color: $text-primary-dark;
   }
   
-  .su-slider-labels {
+  .su-slider__labels {
     color: $text-secondary-dark;
   }
   
