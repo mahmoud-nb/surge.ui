@@ -240,7 +240,7 @@ export interface LinkProps extends AccessibilityProps {
 
 // Panel.vue
 export interface PanelProps {
-  tag?: 'div' | 'section' | 'article';
+  tag?: 'div' | 'section' | 'article' | 'aside' | 'header' | 'footer';
   radius?: Radius;
   bordered?: boolean;
   elevated?: boolean;
