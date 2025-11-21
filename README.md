@@ -2,6 +2,11 @@
 
 Modern Vue.js 3 component library with Composition API, designed to create modern and consistent interfaces.
 
+[![npm](https://img.shields.io/npm/v/@surgeui/ds-vue)](https://www.npmjs.com/package/@surgeui/ds-vue)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Vue 3](https://img.shields.io/badge/Vue-3.x-4FC08D.svg)](https://vuejs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-Ready-3178C6.svg)](https://www.typescriptlang.org/)
+
 ## 📖 Documentation and examples
 
 - **[Complete Documentation](/)** - Usage guide and component API

@@ -83,19 +83,19 @@ const options: SurgeuiTheme = {
 
   // Custom Button style
   button: {
-    bg: '#101010'
-    color: '#FFFFFF'
-    border: 'none'
-    hoverBackground: '#383838'
+    bg: '#101010',
+    color: '#FFFFFF',
+    border: 'none',
+    hoverBackground: '#383838',
     hoverShadow: '0 0'
   }
 
   // custom link style
   link?: {
-    color: '#2563eb';
-    hoverColor: '#1e40af'
-    hoverBackground: 'none'
-    activeColor: '#1e3a8a'
+    color: '#2563eb',
+    hoverColor: '#1e40af',
+    hoverBackground: 'none',
+    activeColor: '#1e3a8a',
   }
 
   // Other options are currently under development.
