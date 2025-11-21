@@ -21,7 +21,14 @@
     "lint:js": "eslint . --ext .js,.ts,.vue",
     "lint:js:fix": "eslint . --ext .js,.ts,.vue --fix",
     "lint:style": "stylelint '**/*.{css,scss,vue}'",
-    "lint:style:fix": "stylelint '**/*.{css,scss,vue}' --fix"
+    "lint:style:fix": "stylelint '**/*.{css,scss,vue}' --fix",
+    "release": "standard-version",
+    "release:minor": "standard-version --release-as minor",
+    "release:major": "standard-version --release-as major",
+    "release:patch": "standard-version --release-as patch",
+    "release:first": "standard-version --first-release",
+    "release:dry": "standard-version --dry-run",
+    "commit": "cz"
   },
   "dependencies": {
     "@vitejs/plugin-vue": "^5.0.0",
@@ -33,14 +40,22 @@
     "@changesets/cli": "^2.29.7",
     "@typescript-eslint/eslint-plugin": "^8.46.4",
     "@typescript-eslint/parser": "^8.46.4",
+    "commitizen": "^4.3.1",
+    "cz-conventional-changelog": "^3.3.0",
     "eslint": "^9.39.1",
     "eslint-plugin-vue": "^10.5.1",
     "globals": "^16.5.0",
     "postcss-html": "^1.8.0",
     "sass": "^1.77.8",
+    "standard-version": "^9.5.0",
     "stylelint": "^16.25.0",
     "stylelint-config-standard-scss": "^16.0.0",
     "unplugin-vue-components": "^0.27.4",
     "vite-plugin-dts": "^4.0.3"
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
   }
 }
