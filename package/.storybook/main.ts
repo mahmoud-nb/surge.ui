@@ -1,11 +1,5 @@
 import type { StorybookConfig } from '@storybook/vue3-vite'
 
-const base = {
-  head: '<base href="/surge.ui/storybook/">'
-}
-
-// ${process.env.NODE_ENV === 'production' ? '<base href="/surge.ui/storybook/">' : ''}
-
 const config: StorybookConfig = {
   stories: [
     '../src/components/**/_stories/*.stories.@(js|jsx|mjs|ts|tsx)'
@@ -21,10 +15,6 @@ const config: StorybookConfig = {
     name: '@storybook/vue3-vite',
     options: {}
   },
-  managerHead: (head) => `
-    ${head}
-    ${base.head}
-  `,
   typescript: {
     check: false,
     reactDocgen: false
@@ -40,6 +30,16 @@ const config: StorybookConfig = {
     config.base = configType === 'PRODUCTION' ? '/surge.ui/storybook/' : '/'
 
     return config
+  },
+  // ✅ Ajouter la balise <base> uniquement en production
+  managerHead: (head, { configType }) => {
+    if (configType === 'PRODUCTION') {
+      return `
+        ${head}
+        <base href="/surge.ui/storybook/">
+      `
+    }
+    return head
   }
 }
 
