@@ -1,0 +1,42 @@
+{
+  "header": "# Changelog\n\nAll notable changes to this project will be documented in this file.\n",
+  "types": [
+    { "type": "feat", "section": "✨ Features" },
+    { "type": "fix", "section": "🐛 Bug Fixes" },
+    { "type": "perf", "section": "⚡ Performance Improvements" },
+    { "type": "refactor", "section": "♻️ Code Refactoring" },
+    { "type": "docs", "section": "📚 Documentation", "hidden": false },
+    { "type": "style", "section": "💄 Styles", "hidden": true },
+    { "type": "chore", "section": "🔧 Chores", "hidden": true },
+    { "type": "test", "section": "✅ Tests", "hidden": true },
+    { "type": "build", "section": "🏗️ Build System", "hidden": true },
+    { "type": "ci", "section": "👷 CI/CD", "hidden": true }
+  ],
+  "preMajor": false,
+  "commitUrlFormat": "https://mahmoud-nb.github.io/surge.ui/commit/{{hash}}",
+  "compareUrlFormat": "https://mahmoud-nb.github.io/surge.ui/compare/{{previousTag}}...{{currentTag}}",
+  "issueUrlFormat": "https://mahmoud-nb.github.io/surge.ui/issues/{{id}}",
+  "bumpFiles": [
+    {
+      "filename": "package.json",
+      "type": "json"
+    },
+    {
+      "filename": "package/package.json",
+      "type": "json"
+    }
+  ],
+  "packageFiles": [
+    {
+      "filename": "package.json",
+      "type": "json"
+    },
+    {
+      "filename": "package/package.json",
+      "type": "json"
+    }
+  ],
+  "skip": {
+    "changelog": false
+  }
+}

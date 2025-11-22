@@ -59,12 +59,11 @@ const tag = computed(() => (props.level === 'div' ? 'div' : `h${props.level}`))
 .su-heading {
   $self: &;
 
-  @include reset-style;
+  @include su-reset-style;
 
   font-family: var(--su-font-family-base);
   font-weight: 600;
   color: var(--su-text-primary-color);
-  margin: 0;
 
   &__slot {
     display: inline-flex;
@@ -91,11 +90,34 @@ const tag = computed(() => (props.level === 'div' ? 'div' : `h${props.level}`))
     text-overflow: ellipsis;
   }
   
-  &--level-1 { font-size: $font-size-3xl; line-height: $line-height-relaxed; }
-  &--level-2 { font-size: $font-size-2xl; line-height: $line-height-relaxed; }
-  &--level-3 { font-size: $font-size-xl; line-height: $line-height-normal; }
-  &--level-4 { font-size: $font-size-lg; line-height: $line-height-normal; }
-  &--level-5 { font-size: $font-size-base; line-height: $line-height-tight; }
-  &--level-6 { font-size: $font-size-sm; line-height: $line-height-tight; }
+  &--level-1 { 
+    font-size: $font-size-3xl; 
+    line-height: $line-height-relaxed; 
+  }
+
+  &--level-2 { 
+    font-size: $font-size-2xl; 
+    line-height: $line-height-relaxed; 
+  }
+
+  &--level-3 { 
+    font-size: $font-size-xl; 
+    line-height: $line-height-normal; 
+  }
+  
+  &--level-4 { 
+    font-size: $font-size-lg; 
+    line-height: $line-height-normal; 
+  }
+  
+  &--level-5 { 
+    font-size: $font-size-md; 
+    line-height: $line-height-tight; 
+  }
+  
+  &--level-6 { 
+    font-size: $font-size-sm; 
+    line-height: $line-height-tight; 
+  }
 }
 </style>

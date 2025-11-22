@@ -111,6 +111,22 @@ git checkout -b fix/issue-description
 
 3. Commit and create a Pull Request
 
+**SurgeUI** uses conventional commit messages: 
+
+```bash
+# type : feat | fix | style | docs | chore | test | refactor
+# scope : (optional) component or composable name
+# description : clear description of the issue
+# example : fix(Button): correct disabled state styling
+
+<type>(<scope>): <description>
+
+[optional body]
+
+[optional footer]
+
+```
+
 - Run the linter before committing :
 ```bash
 npm run lint:fix
