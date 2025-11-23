@@ -3,6 +3,7 @@ import Actions from '../Actions.vue'
 
 const meta: Meta<typeof Actions> = {
   title: 'Design System/Actions',
+  tags: ['autodocs'],
   component: Actions,
   parameters: {
     layout: 'fullscreen',

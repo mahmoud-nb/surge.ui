@@ -5,7 +5,7 @@ Modern Vue.js 3 component library with Composition API, designed to create moder
 ## 📖 Documentation and examples
 
 - **[Complete Documentation](/)** - Usage guide and component API
-- **[Storybook](https://mahmoud-nb.github.io/surge.ui/storybook/)** - Interactive examples and component testing
+- **[Storybook](/storybook/)** - Interactive examples and component testing
 
 ## ✨ Features
 

@@ -194,7 +194,7 @@ npm run storybook
 
 ## 📖 Documentation
 
-Visit our [complete documentation](https://mahmoud-nb.github.io/surge.ui/) for:
+Visit our [complete documentation](https://surgeui.com/) for:
 
 - **Component API** - Detailed props, events, and slots
 - **Usage examples** - Real-world implementation examples
@@ -211,8 +211,8 @@ MIT License - see the [LICENSE](https://github.com/mahmoud-nb/surge.ui/blob/main
 
 ## 🔗 Links
 
-- [Documentation](https://mahmoud-nb.github.io/surge.ui/)
-- [Storybook](https://mahmoud-nb.github.io/surge.ui/storybook/)
+- [Documentation](https://surgeui.com/)
+- [Storybook](https://surgeui.com/storybook/)
 - [GitHub Repository](https://github.com/mahmoud-nb/surge.ui)
 - [npm Package](https://www.npmjs.com/package/@surgeui/ds-vue)
 

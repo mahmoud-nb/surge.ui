@@ -5,7 +5,7 @@ Bibliothèque de composants Vue.js 3 avec Composition API, conçue pour créer d
 ## 📖 Documentation et exemples
 
 - **[Documentation complète](/)** - Guide d'utilisation et API des composants
-- **[Storybook](https://mahmoud-nb.github.io/surge.ui/storybook/)** - Exemples interactifs et tests des composants
+- **[Storybook](/storybook/)** - Exemples interactifs et tests des composants
 
 ## ✨ Fonctionnalités
 

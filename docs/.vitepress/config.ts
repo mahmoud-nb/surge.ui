@@ -1,7 +1,17 @@
-import { defineConfig } from 'vitepress'
+import { defineConfig, loadEnv } from 'vitepress'
+import pkg from '../../package.json'
+
+// Charger les variables d'environnement
+// Mode sera 'development' ou 'production'
+const mode = typeof process !== 'undefined' && process.env?.NODE_ENV || 'development'
+const env = loadEnv(mode, process.cwd(), 'VITE_')
+
+// Utiliser les variables d'environnement avec fallback
+const ROOT_URL = env.VITE_APP_ROOT_URL || pkg.config.rootUrl
+const BASE_URL = env.VITE_APP_BASE_URL || pkg.config.baseUrl
 
 export default defineConfig({
-  base: '/surge.ui/',
+  base: BASE_URL,
   
   title: '⚡SurgeUI Design System',
   description: 'Bibliothèque de composants Vue.js 3 moderne',
@@ -16,8 +26,7 @@ export default defineConfig({
         nav: [
           { text: 'Accueil', link: '/' },
           { text: 'Composants', link: '/components/' },
-          // Le lien Storybook doit aussi être corrigé une fois déployé
-          { text: 'Storybook', link: 'https://mahmoud-nb.github.io/surge.ui/storybook/', target: '_blank' }
+          { text: 'Storybook', link: `${ROOT_URL}storybook/`, target: '_blank' }
         ],
         sidebar: [
           {
@@ -87,7 +96,7 @@ export default defineConfig({
         nav: [
           { text: 'Home', link: '/en/' },
           { text: 'Components', link: '/en/components/' },
-          { text: 'Storybook', link: 'https://mahmoud-nb.github.io/surge.ui/storybook/', target: '_blank' }
+          { text: 'Storybook', link: `${ROOT_URL}storybook/`, target: '_blank' }
         ],
         sidebar: [
           {
@@ -211,7 +220,7 @@ export default defineConfig({
 
     footer: {
       message: 'Publié sous licence MIT.',
-      copyright: 'Copyright © 2024 SurgeUp'
+      copyright: 'Copyright © 2025 SurgeUI'
     }
   },
 
@@ -220,6 +229,11 @@ export default defineConfig({
   vite: {
     optimizeDeps: {
       include: ['@heroicons/vue/24/outline', '@surgeui/ds-vue']
+    },
+    define: {
+      // Exposer les variables aux composants Vue côté client
+      __ROOT_URL__: JSON.stringify(ROOT_URL),
+      __BASE_URL__: JSON.stringify(BASE_URL)
     }
   },
 

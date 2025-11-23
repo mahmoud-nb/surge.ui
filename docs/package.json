@@ -13,6 +13,7 @@
     "@surgeui/ds-vue": "file:../package"
   },
   "devDependencies": {
+    "@types/node": "^24.10.1",
     "vitepress": "^1.3.4",
     "vue": "^3.4.38"
   }

@@ -6,11 +6,12 @@ Modern Vue.js 3 component library with Composition API, designed to create moder
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Vue 3](https://img.shields.io/badge/Vue-3.x-4FC08D.svg)](https://vuejs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-Ready-3178C6.svg)](https://www.typescriptlang.org/)
+![SurgeIU](https://img.shields.io/badge/status-beta-yellow)
 
 ## 📖 Documentation and examples
 
 - **[Complete Documentation](/)** - Usage guide and component API
-- **[Storybook](https://mahmoud-nb.github.io/surge.ui/storybook/)** - Interactive examples and component testing
+- **[Storybook](https://surgeui.com/storybook/)** - Interactive examples and component testing
 
 ## ✨ Features
 
@@ -28,8 +29,9 @@ Modern Vue.js 3 component library with Composition API, designed to create moder
 
 ## 📚 Resources
 
-- **[Documentation](https://mahmoud-nb.github.io/surge.ui/)**: Complete guide with examples
-- **[Storybook](https://mahmoud-nb.github.io/surge.ui/storybook/)**: Interactive examples and component playground
+- **[Documentation](https://surgeui.com/)**: Complete guide with examples
+- **[Storybook](https://surgeui.com/storybook/)**: Interactive examples and component playground
+- **[npm Package](https://www.npmjs.com/package/@surgeui/ds-vue)**
 
 ## Prerequisites
 

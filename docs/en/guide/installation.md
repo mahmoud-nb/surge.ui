@@ -3,7 +3,7 @@
 ## 📚 Resources
 
 - **Documentation**: Complete guide with examples
-- **[Storybook](/surge.ui/storybook/)**: Interactive examples and component playground
+- **[Storybook](/storybook/)**: Interactive examples and component playground
 
 ## Prerequisites
 
