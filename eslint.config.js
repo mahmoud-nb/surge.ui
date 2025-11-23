@@ -88,7 +88,7 @@ export default [
         sourceType: 'module',
       },
       globals: {
-        ...globals.browser,  // ✅ Tous les globals du navigateur
+        ...globals.browser,
         // Environnement navigateur
         ...browserGlobals
       },
@@ -121,7 +121,7 @@ export default [
         sourceType: 'module',
       },
       globals: {
-        ...globals.browser,  // ✅ Tous les globals du navigateur
+        ...globals.browser,
         // Environnement navigateur
         ...browserGlobals,
         ...nodeGlobals

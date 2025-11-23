@@ -4,8 +4,9 @@ Bibliothèque de composants Vue.js 3 avec Composition API, conçue pour créer d
 
 ## 📖 Documentation et exemples
 
-- **[Documentation complète](/)** - Guide d'utilisation et API des composants
-- **[Storybook](/storybook/)** - Exemples interactifs et tests des composants
+- **Documentation complète** - Guide d'utilisation et API des composants
+- **[Storybook](https://surgeui.com/storybook)** - Exemples interactifs et tests des composants 
+- **[npm Package](https://www.npmjs.com/package/@surgeui/ds-vue)**
 
 ## ✨ Fonctionnalités
 
@@ -17,6 +18,19 @@ Bibliothèque de composants Vue.js 3 avec Composition API, conçue pour créer d
 - 🔄 **RTL & LTR** – Support natif des directions de texte droite-gauche et gauche-droite 
 - ♿ **Accessibilité** – Conçu pour être accessible à tous, conforme aux bonnes pratiques
 - ⚡ **Performance** - Optimisé pour les meilleures performances
+
+## ♿ Accessibilité
+
+Tous les composants sont conformes aux normes WCAG 2.1 AA:
+
+- **Gestion du focus** - Indicateurs de focus clairs et ordre de tabulation logique
+- **Navigation au clavier** - Prise en charge complète du clavier
+- **Lecteurs d’écran** - Attributs ARIA et annonces appropriés
+- **Contraste des couleurs** - Rapports de contraste conformes aux normes WCAG AA (4,5:1 minimum)
+- **Zones tactiles** - Zones tactiles de 44 px minimum
+- **Mouvements réduits** - Respect de `prefers-reduced-motion`
+- **Contraste élevé** - Prise en charge de `prefers-contrast: high`
+- **Prise en charge RTL** - Prise en charge des langues s’écrivant de droite à gauche
 
 ## 🚀 Installation rapide
 

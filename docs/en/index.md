@@ -4,8 +4,9 @@ Modern Vue.js 3 component library with Composition API, designed to create moder
 
 ## 📖 Documentation and examples
 
-- **[Complete Documentation](/)** - Usage guide and component API
-- **[Storybook](/storybook/)** - Interactive examples and component testing
+- **Complete Documentation** - Usage guide and component API
+- **[Storybook](https://surgeui.com/storybook)** - Interactive examples and component testing
+- **[npm Package](https://www.npmjs.com/package/@surgeui/ds-vue)**
 
 ## ✨ Features
 
@@ -19,6 +20,19 @@ Modern Vue.js 3 component library with Composition API, designed to create moder
 - ⚡ **Performance** - Optimized for best performance
 - ♿ **Accessible** - WCAG 2.1 AA compliant with complete accessibility support
 - 🎨 **Customizable** - Global configuration and theming support
+
+## ♿ Accessibility
+
+All components follow WCAG 2.1 AA standards:
+
+- **Focus Management** - Clear focus indicators and logical tab order
+- **Keyboard Navigation** - Full keyboard support
+- **Screen Readers** - Proper ARIA attributes and announcements
+- **Color Contrast** - WCAG AA compliant contrast ratios (4.5:1 minimum)
+- **Touch Targets** - Minimum 44px touch targets
+- **Reduced Motion** - Respects `prefers-reduced-motion`
+- **High Contrast** - Supports `prefers-contrast: high`
+- **RTL Support** - Right-to-left language support
 
 ## 🚀 Quick Installation
 

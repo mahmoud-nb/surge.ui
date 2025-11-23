@@ -4,6 +4,7 @@
 
 - **Documentation** : Guide complet avec exemples
 - **[Storybook](/storybook/)** : Exemples interactifs et playground des composants
+- **[npm Package](https://www.npmjs.com/package/@surgeui/ds-vue)**
 
 ## Prérequis
 
@@ -32,8 +33,8 @@ pnpm add @surgeui/ds-vue
 
 ### Import global
 
-```js
-// main.js
+```ts
+// main.ts
 import { createApp } from 'vue'
 import SurgeUpDS from '@surgeui/ds-vue'
 import '@surgeui/ds-vue/style.css'
@@ -48,8 +49,9 @@ app.mount('#app')
 
 ```vue
 <script setup>
-import { SuButton } from '@surgeui/ds-vue'
 import '@surgeui/ds-vue/style.css'
+import { SuButton } from '@surgeui/ds-vue'
+import type { ButtonProps } from '@surgeui/ds-vue/types'
 </script>
 
 <template>
@@ -61,8 +63,8 @@ import '@surgeui/ds-vue/style.css'
 
 ### Configuration avec options
 
-```js
-// main.js
+```ts
+// main.ts
 import { createApp } from 'vue'
 import SurgeUpDS from '@surgeui/ds-vue'
 
@@ -72,16 +74,29 @@ const app = createApp(App)
 app.use(SurgeUpDS, {
   prefix: 'My', // Les composants seront MyButton, MyInput, etc.
   
-  // ...... # D'autres options sont en cours de construction # ......
-  // Configuration globale des boutons
-  buttonRadius: 'lg',     // Rayon large par défaut
-  buttonVariant: 'outline', // Variante outline par défaut
-  buttonSize: 'lg',       // Taille large par défaut
-  
-  // Configuration globale des liens
-  linkVariant: 'primary', // Variante primary par défaut
-  linkSize: 'lg',         // Taille large par défaut
-  linkUnderline: 'never'  // Jamais souligné par défaut
+  // custom text color
+  textPrimaryColor: '#213222',
+  textSecondaryColor: '#454344',
+  textTeriaryColor: '#676965',
+
+  // Custom Button style
+  button: {
+    bg: '#101010',
+    color: '#FFFFFF',
+    border: 'none',
+    hoverBackground: '#383838',
+    hoverShadow: '0 0'
+  }
+
+  // custom link style
+  link?: {
+    color: '#2563eb',
+    hoverColor: '#1e40af',
+    hoverBackground: 'none',
+    activeColor: '#1e3a8a',
+  }
+
+  // Other options are currently under development.
 })
 ```
 

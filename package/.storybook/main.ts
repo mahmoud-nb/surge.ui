@@ -2,11 +2,9 @@ import type { StorybookConfig } from '@storybook/vue3-vite'
 import { loadEnv } from 'vite'
 import pkg from '../../package.json'
 
-// Charger les variables d'environnement
 const mode = process.env.NODE_ENV || 'development'
 const env = loadEnv(mode, process.cwd(), 'VITE_')
 
-// Variable d'environnement avec fallback
 const BASE_URL = env.VITE_APP_BASE_URL || pkg.config.baseUrl
 const config: StorybookConfig = {
   stories: [
@@ -33,8 +31,7 @@ const config: StorybookConfig = {
       ...config.resolve.alias,
       '@': new URL('../src', import.meta.url).pathname
     }
-
-    // Définir le bon "base" selon le mode (local ou build)
+    
     config.base = configType === 'PRODUCTION' ? `${BASE_URL}storybook/` : '/'
 
     // Exposer les variables aux stories
@@ -45,7 +42,6 @@ const config: StorybookConfig = {
 
     return config
   },
-  // Ajouter la balise <base> uniquement en production
   managerHead: (head, { configType }) => {
     if (configType === 'PRODUCTION') {
       return `
