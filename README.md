@@ -12,6 +12,7 @@ Modern Vue.js 3 component library with Composition API, designed to create moder
 
 - **[Complete Documentation](/)** - Usage guide and component API
 - **[Storybook](https://surgeui.com/storybook/)** - Interactive examples and component testing
+- **[npm Package](https://www.npmjs.com/package/@surgeui/ds-vue)**
 
 ## ✨ Features
 
@@ -26,12 +27,6 @@ Modern Vue.js 3 component library with Composition API, designed to create moder
 
 
 # Installation
-
-## 📚 Resources
-
-- **[Documentation](https://surgeui.com/)**: Complete guide with examples
-- **[Storybook](https://surgeui.com/storybook/)**: Interactive examples and component playground
-- **[npm Package](https://www.npmjs.com/package/@surgeui/ds-vue)**
 
 ## Prerequisites
 

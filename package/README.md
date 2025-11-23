@@ -214,7 +214,6 @@ MIT License - see the [LICENSE](https://github.com/mahmoud-nb/surge.ui/blob/main
 - [Documentation](https://surgeui.com/)
 - [Storybook](https://surgeui.com/storybook/)
 - [GitHub Repository](https://github.com/mahmoud-nb/surge.ui)
-- [npm Package](https://www.npmjs.com/package/@surgeui/ds-vue)
 
 ---
 
