@@ -165,9 +165,14 @@ export interface HeadingProps {
 }
 
 // Icon.vue
-export interface IconProps extends AccessibilityProps {
-  name: Component;
-  size?: Number | String;
+export interface IconProps {
+  name: string
+  variant?: 'solid' | 'outline'
+  size?: number | string
+  color?: string
+  ariaLabel?: string
+  decorative?: boolean
+  class?: string
 }
 
 // Image.vue

@@ -1,5 +1,6 @@
 import type { App } from 'vue'
 // ## Display Components ................................................
+import Icon from './components/atoms/Icon.vue'
 import Heading from './components/atoms/Heading.vue'
 import Panel from './components/atoms/Panel.vue'
 import Image from './components/atoms/Image.vue'
@@ -50,7 +51,7 @@ import * as accessibility from './utils/accessibility'
 import { SurgeuiTheme, ThemeSymbol } from './plugin/theme'
 
 // Export des composants et de la fonction d'installation
-export { Heading, Panel, Image, Avatar, AvatarGroup, Badge, Dialog, Progress, Spinner }
+export { Icon, Heading, Panel, Image, Avatar, AvatarGroup, Badge, Dialog, Progress, Spinner }
 export { Tabs, Accordion, AccordionItem, Alert }
 export { Link, LinkGroup, Button, ButtonGroup, FloatButton, Dropdown }
 export { Input, Textarea, SelectBox, RadioGroup, CheckboxGroup, FileUpload, Switch, Slider, Password }
@@ -169,6 +170,7 @@ export default {
     }
 
     // ## Display Components
+    app.component(`${prefix}Icon`, Icon)
     app.component(`${prefix}Heading`, Heading)
     app.component(`${prefix}Panel`, Panel)
     app.component(`${prefix}Badge`, Badge)

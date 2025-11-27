@@ -1,44 +1,94 @@
 <script setup lang="ts">
-import { defineProps, computed } from 'vue'
-import type { IconProps } from '@/types'
+import { computed, defineAsyncComponent } from 'vue'
+import type { IconProps } from '@/types/index'
 
-const props = defineProps<IconProps>()
+const props = withDefaults(defineProps<IconProps>(), {
+  variant: 'outline',
+  size: 24,
+  decorative: false,
+})
 
-const IconAttributes = computed(() => {
-  const attrs: Record<string, string | number> = {}
-  if (props.size) {
-    attrs['width'] = `${String(props.size)}px`
-    attrs['height'] = `${String(props.size)}px`
+const iconComponent = computed(() => {
+  const iconName = props.name.endsWith('Icon') ? props.name : `${props.name}Icon`
+  
+  return defineAsyncComponent({
+    loader: async () => {
+      try {
+        let module
+        
+        if (props.variant === 'solid') {
+          module = await import('@heroicons/vue/24/solid')
+        } else {
+          module = await import('@heroicons/vue/24/outline')
+        }
+        
+        const IconComponent = module[iconName]
+        
+        if (!IconComponent) {
+          console.error(`Icône non trouvée: ${iconName} (variant: ${props.variant})`)
+          return null
+        }
+        
+        return IconComponent
+      } catch (err) {
+        console.error(`Erreur de chargement de l'icône: ${iconName}`, err)
+        return null
+      }
+    },
+    delay: 0,
+    timeout: 3000,
+  })
+})
+
+const iconSize = computed(() => {
+  if (typeof props.size === 'number') {
+    return `${props.size}px`
+  }
+  return props.size
+})
+
+const iconClasses = computed(() => {
+  const classes = [props.class]
+  if (props.color) {
+    classes.push(props.color)
+  }
+  return classes.filter(Boolean).join(' ')
+})
+
+const accessibilityProps = computed(() => {
+  if (props.decorative) {
+    return {
+      'aria-hidden': 'true',
+      role: 'presentation',
+    }
   }
   
-  return attrs
+  return {
+    'aria-label': props.ariaLabel,
+    role: props.ariaLabel ? 'img' : undefined,
+  }
 })
 
-const ariaAttributes = computed(() => {
-  const attrs: Record<string, string | boolean> = {}
-  if (props.ariaLabel) {
-    attrs['aria-label'] = props.ariaLabel
+const iconStyle = computed(() => {
+  const style: Record<string, string> = {
+    width: iconSize.value,
+    height: iconSize.value,
   }
-  if (props.ariaHidden !== undefined) {
-    attrs['aria-hidden'] = props.ariaHidden
+  
+  if (props.color && !props.color.includes('text-')) {
+    style.color = props.color
   }
-  return attrs
+  
+  return style
 })
-
 </script>
 
 <template>
   <component
-    :is="name"
-    class="su-icon"
-    v-bind="{ ...IconAttributes, ...ariaAttributes }"
+    :is="iconComponent"
+    v-if="iconComponent"
+    :class="iconClasses"
+    :style="iconStyle"
+    v-bind="accessibilityProps"
   />
 </template>
-
-<style lang="scss" scoped>
-@use '../../styles/main' as *;
-
-.su-icon {
-  display: inline-block;
-}
-</style>
