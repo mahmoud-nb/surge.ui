@@ -239,7 +239,7 @@ export interface LinkProps extends AccessibilityProps {
   underline?: LinkUnderline;
   disabled?: boolean;
   icon?: Component;
-  iconDisplay?: 'left' | 'right' | 'only';
+  iconDisplay?: 'top' | 'left' | 'right' | 'only';
   external?: boolean;
 }
 

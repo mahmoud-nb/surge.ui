@@ -170,7 +170,7 @@ import { HomeIcon, ArrowRightIcon, UserIcon, ArrowTopRightOnSquareIcon } from '@
 | `disabled` | `boolean` | `false` | Désactive le lien |
 | `external` | `boolean` | `false` | Marque le lien comme externe |
 | `icon` | `Component` | `undefined` | Icône à afficher |
-| `iconDisplay` | `'left' \| 'right' \| 'only'` | `'left'` | Position de l'icône |
+| `iconDisplay` | `'top' \| 'left' \| 'right' \| 'only'` | `'left'` | Position de l'icône |
 
 ### Attributs d'accessibilité
 

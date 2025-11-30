@@ -56,7 +56,7 @@ const meta: Meta<typeof Link> = {
     },
     iconDisplay: {
       control: { type: 'select' },
-      options: ['left', 'right', 'only'],
+      options: ['top', 'left', 'right', 'only'],
       description: 'Position de l\'icône'
     }
   }
@@ -100,7 +100,16 @@ export const WithIcon: Story = {
     setup() {
       return { args, HomeIcon }
     },
-    template: '<Link v-bind="args" :icon="HomeIcon">Accueil</Link>'
+    template: `<div style="display: flex; flex-direction: column; gap: 1rem; align-items: center;">
+      <h4>Liens avec icônes</h4>
+      <Link v-bind="args" :icon="HomeIcon">Accueil</Link>
+
+      <h4>Icône en haut</h4>
+      <Link v-bind="args" :icon="HomeIcon" iconDisplay="top">Accueil</Link>
+
+      <h4>Icône à droite</h4>
+      <Link v-bind="args" :icon="HomeIcon" iconDisplay="right">Accueil</Link>
+    </div>`
   })
 }
 
@@ -201,11 +210,19 @@ export const Navigation: Story = {
       return { HomeIcon, UserIcon, CogIcon }
     },
     template: `
+    <div style="display: flex; flex-direction: column; gap: 4rem; align-items: center;">
       <nav style="display: flex; gap: 2rem;">
         <Link href="/" :icon="HomeIcon" iconDisplay="left">Accueil</Link>
         <Link href="/profile" :icon="UserIcon" iconDisplay="left">Profil</Link>
         <Link href="/settings" :icon="CogIcon" iconDisplay="left">Paramètres</Link>
       </nav>
+
+      <nav style="display: flex; gap: 2rem;">
+        <Link href="/" :icon="HomeIcon" iconDisplay="top">Accueil</Link>
+        <Link href="/profile" :icon="UserIcon" iconDisplay="top">Profil</Link>
+        <Link href="/settings" :icon="CogIcon" iconDisplay="top">Paramètres</Link>
+      </nav>
+    </div>
     `
   })
 }

@@ -29,7 +29,6 @@ const isExternalLink = computed(() => {
   return props.external || (props.href && (props.href.startsWith('http') || props.href.startsWith('//') || props.target === '_blank'))
 })
 
-// Attributs calculés
 const linkAttributes = computed(() => {
   const attrs: Record<string, any> = {}
   
@@ -69,6 +68,7 @@ const linkClasses = computed(() => [
     'su-link--external': isExternalLink.value,
     'su-link--block': props.block,
     'su-link--icon-only': props.icon && props.iconDisplay === 'only',
+    'su-link--icon-top': props.icon && props.iconDisplay === 'top',
     'su-link--icon-right': props.icon && props.iconDisplay === 'right'
   }
 ])
@@ -128,7 +128,6 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel) {
       class="su-link__icon"
       aria-hidden="true"
     />
-    
     <!-- Contenu textuel -->
     <span
       v-if="hasText"
@@ -136,11 +135,10 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel) {
     >
       <slot />
     </span>
-    
-    <!-- Icône externe automatique -->
+    <!-- Icône externe -->
     <ArrowTopRightOnSquareIcon 
       v-if="isExternalLink && !icon && hasText"
-      class="su-link__external-icon"
+      class="su-link__icon"
       aria-hidden="true"
     />
   </component>
@@ -156,11 +154,11 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel) {
   font-family: inherit;
   text-decoration: none;
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-sizing: border-box;
   border-radius: $border-radius-sm;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
-  
-  // Focus visible pour l'accessibilité
+
   &:focus-visible {
     outline: 2px solid $primary-600;
     outline-offset: 2px;
@@ -188,14 +186,29 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel) {
     width: 100%;
   }
 
+  &--icon-left {
+    flex-direction: row;
+  }
+  
+  &--icon-right {
+    flex-direction: row-reverse;
+  }
+
+  &--icon-top {
+    flex-direction: column;
+  }
+
+  &__icon {
+    flex-shrink: 0;
+  }
+
   // Tailles
   &--sm {
     font-size: $font-size-sm;
     line-height: $line-height-tight;
     padding: 0.125rem 0.25rem;
     
-    .su-link__icon,
-    .su-link__external-icon {
+    .su-link__icon {
       width: 1rem;
       height: 1rem;
     }
@@ -213,8 +226,7 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel) {
     line-height: $line-height-normal;
     padding: 0.25rem 0.375rem;
     
-    .su-link__icon,
-    .su-link__external-icon {
+    .su-link__icon {
       width: 1.125rem;
       height: 1.125rem;
     }
@@ -232,8 +244,7 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel) {
     line-height: $line-height-normal;
     padding: 0.375rem 0.5rem;
     
-    .su-link__icon,
-    .su-link__external-icon {
+    .su-link__icon {
       width: 1.25rem;
       height: 1.25rem;
     }
@@ -355,25 +366,11 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel) {
   }
 
   &--external {
-    .su-link__external-icon {
+    .su-link__icon {
       opacity: 0.7;
+      flex-shrink: 0;
+      transition: opacity 0.2s;
     }
-  }
-  
-  // Direction de l'icône
-  &--icon-right {
-    flex-direction: row-reverse;
-  }
-
-  // Styles des icônes
-  &__icon {
-    flex-shrink: 0;
-  }
-  
-  &__external-icon {
-    flex-shrink: 0;
-    opacity: 0.6;
-    transition: opacity 0.2s;
   }
   
   // Ajustements pour les liens avec icônes seules
