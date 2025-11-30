@@ -383,7 +383,7 @@ export const InButton: Story = {
         transition: 'opacity 0.2s',
       }
       
-      return { buttonStyle, iconButtonStyle }
+      return { args, buttonStyle, iconButtonStyle }
     },
     template: `
       <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
@@ -392,7 +392,7 @@ export const InButton: Story = {
           @mouseenter="e => e.currentTarget.style.opacity = '0.9'"
           @mouseleave="e => e.currentTarget.style.opacity = '1'"
         >
-          <Icon name="Plus" decorative :size="20" color="white" />
+          <Icon v-bind="args" name="Plus" decorative :size="20" color="white" />
           <span>Ajouter</span>
         </button>
         
@@ -401,7 +401,7 @@ export const InButton: Story = {
           @mouseenter="e => e.currentTarget.style.opacity = '0.9'"
           @mouseleave="e => e.currentTarget.style.opacity = '1'"
         >
-          <Icon name="CheckCircle" decorative :size="20" color="white" />
+          <Icon v-bind="args" name="CheckCircle" decorative :size="20" color="white" />
           <span>Valider</span>
         </button>
         
@@ -410,7 +410,7 @@ export const InButton: Story = {
           @mouseenter="e => e.currentTarget.style.opacity = '0.9'"
           @mouseleave="e => e.currentTarget.style.opacity = '1'"
         >
-          <Icon name="Trash" decorative :size="20" color="white" />
+          <Icon v-bind="args" name="Trash" decorative :size="20" color="white" />
           <span>Supprimer</span>
         </button>
         
@@ -420,7 +420,7 @@ export const InButton: Story = {
           @mouseenter="e => e.currentTarget.style.opacity = '0.9'"
           @mouseleave="e => e.currentTarget.style.opacity = '1'"
         >
-          <Icon name="Cog" :size="20" decorative color="#374151" />
+          <Icon v-bind="args" name="Cog" :size="20" decorative color="#374151" />
         </button>
       </div>
     `,
