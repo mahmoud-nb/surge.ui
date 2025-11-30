@@ -10,6 +10,50 @@ const env = loadEnv(mode, process.cwd(), 'VITE_')
 const ROOT_URL = env.VITE_APP_ROOT_URL || pkg.config.rootUrl
 const BASE_URL = env.VITE_APP_BASE_URL || pkg.config.baseUrl
 
+const getNavItems = (section: string = 'display', lang: string = 'fr') => {
+
+  const langPrefix = lang === 'fr' ? '' : '/en'
+
+  const componentsItems = {
+    display:[
+      { text: 'Heading', link: `${langPrefix}/components/heading` },
+      { text: 'Panel', link: `${langPrefix}/components/panel` },
+      { text: 'Image', link: `${langPrefix}/components/image` },
+      { text: 'Avatar', link: `${langPrefix}/components/avatar` },
+      { text: 'AvatarGroup', link: `${langPrefix}/components/avatargroup` },
+      { text: 'Badge', link: `${langPrefix}/components/badge` },
+      { text: 'Dialog', link: `${langPrefix}/components/dialog` },
+      { text: 'Alert', link: `${langPrefix}/components/alert`},
+      { text: 'Tabs', link: `${langPrefix}/components/tabs` },
+      { text: 'Accordion', link: `${langPrefix}/components/accordion` },
+      { text: 'Progress', link: `${langPrefix}/components/progress` },
+      { text: 'Spinner', link: `${langPrefix}/components/spinner`}
+    ],
+    actions:[
+      { text: 'Button', link: `${langPrefix}/components/button` },
+      { text: 'ButtonGroup', link: `${langPrefix}/components/buttongroup` },
+      { text: 'Link', link: `${langPrefix}/components/link` },
+      { text: 'LinkGroup', link: `${langPrefix}/components/linkgroup` },           
+      { text: 'FloatButton', link: `${langPrefix}/components/floatbutton` },
+      { text: 'Dropdown', link: `${langPrefix}/components/dropdown` }
+    ],
+    forms:[
+      { text: 'InputField', link: `${langPrefix}/components/inputfield` },
+      { text: 'SelectBoxField', link: `${langPrefix}/components/selectboxfield` },
+      { text: 'RadioGroupField', link: `${langPrefix}/components/radiogroupfield` },
+      { text: 'CheckboxGroupField', link: `${langPrefix}/components/checkboxgroupfield` },
+      { text: 'TextareaField', link: `${langPrefix}/components/textareafield` },
+      { text: 'FileUploadField', link: `${langPrefix}/components/fileuploadfield` },
+      { text: 'SliderField', link: `${langPrefix}/components/sliderfield` },
+      { text: 'SwitchField', link: `${langPrefix}/components/switchfield` },
+      { text: 'Password', link: `${langPrefix}/components/password` },
+      { text: 'FormFields', link: `${langPrefix}/components/formfields` },
+    ]
+  }
+
+  return section ? (componentsItems?.[section as keyof typeof componentsItems] || []) : []
+}
+
 export default defineConfig({
   base: BASE_URL,
   
@@ -41,46 +85,15 @@ export default defineConfig({
             items: [
               { 
                 text: '# Affichage', 
-                items: [
-                  { text: 'Heading', link: '/components/heading' },
-                  { text: 'Panel', link: '/components/panel' },
-                  { text: 'Image', link: '/components/image' },
-                  { text: 'Avatar', link: '/components/avatar' },
-                  { text: 'AvatarGroup', link: '/components/avatargroup' },
-                  { text: 'Badge', link: '/components/badge' },
-                  { text: 'Dialog', link: '/components/dialog' },
-                  { text: 'Alert', link: '/components/alert'},
-                  { text: 'Tabs', link: '/components/tabs' },
-                  { text: 'Accordion', link: '/components/accordion' },
-                  { text: 'Progress', link: '/components/progress' },
-                  { text: 'Spinner', link: '/components/spinner'}
-                ]
-              },
-              {
-                text: '# Formulaires', 
-                items: [
-                  { text: 'InputField', link: '/components/inputfield' },
-                  { text: 'SelectBoxField', link: '/components/selectboxfield' },
-                  { text: 'RadioGroupField', link: '/components/radiogroupfield' },
-                  { text: 'CheckboxGroupField', link: '/components/checkboxgroupfield' },
-                  { text: 'TextareaField', link: '/components/textareafield' },
-                  { text: 'FileUploadField', link: '/components/fileuploadfield' },
-                  { text: 'SliderField', link: '/components/sliderfield' },
-                  { text: 'SwitchField', link: '/components/switchfield' },
-                  { text: 'Password', link: '/components/password' },
-                  { text: 'FormFields', link: '/components/formfields' },
-                ]
+                items: getNavItems('display', 'fr')
               },
               {
                 text: '# Actions',
-                items: [
-                  { text: 'Button', link: '/components/button' },
-                  { text: 'ButtonGroup', link: '/components/buttongroup' },
-                  { text: 'Link', link: '/components/link' },
-                  { text: 'LinkGroup', link: '/components/linkgroup' },           
-                  { text: 'FloatButton', link: '/components/floatbutton' },
-                  { text: 'Dropdown', link: '/components/dropdown' }
-                ]
+                items: getNavItems('actions', 'fr')
+              },
+              {
+                text: '# Formulaires', 
+                items: getNavItems('forms', 'fr')
               }
             ]
           }
@@ -111,46 +124,15 @@ export default defineConfig({
             items: [
               { 
                 text: '# Display', 
-                items: [
-                  { text: 'Heading', link: '/en/components/heading' },
-                  { text: 'Panel', link: '/en/components/panel' },
-                  { text: 'Image', link: '/en/components/image' },
-                  { text: 'Avatar', link: '/en/components/avatar' },
-                  { text: 'AvatarGroup', link: '/en/components/avatargroup' },
-                  { text: 'Badge', link: '/en/components/badge' },
-                  { text: 'Dialog', link: '/en/components/dialog' },
-                  { text: 'Alert', link: '/en/components/alert'},
-                  { text: 'Tabs', link: '/en/components/tabs' },
-                  { text: 'Accordion', link: '/en/components/accordion' },
-                  { text: 'Progress', link: '/en/components/progress' },
-                  { text: 'Spinner', link: '/en/components/spinner'}
-                ]
+                items:getNavItems('display', 'en')
+              },
+                            {
+                text: '# Actions',
+                items: getNavItems('actions', 'en')
               },
               {
                 text: '# Forms', 
-                items: [
-                  { text: 'InputField', link: '/en/components/inputfield' },
-                  { text: 'SelectBoxField', link: '/en/components/selectboxfield' },
-                  { text: 'RadioGroupField', link: '/en/components/radiogroupfield' },
-                  { text: 'CheckboxGroupField', link: '/en/components/checkboxgroupfield' },
-                  { text: 'TextareaField', link: '/en/components/textareafield' },
-                  { text: 'FileUploadField', link: '/en/components/fileuploadfield' },
-                  { text: 'SliderField', link: '/en/components/sliderfield' },
-                  { text: 'SwitchField', link: '/en/components/switchfield' },
-                  { text: 'Password', link: '/en/components/password' },
-                  { text: 'FormFields', link: '/en/components/formfields' },
-                ]
-              },
-              {
-                text: '# Actions',
-                items: [
-                  { text: 'Button', link: '/en/components/button' },
-                  { text: 'ButtonGroup', link: '/en/components/buttongroup' },
-                  { text: 'Link', link: '/en/components/link' },
-                  { text: 'LinkGroup', link: '/en/components/linkgroup' },           
-                  { text: 'FloatButton', link: '/en/components/floatbutton' },
-                  { text: 'Dropdown', link: '/en/components/dropdown' }
-                ]
+                items: getNavItems('forms', 'en')
               }
             ]
           }

@@ -1,6 +1,7 @@
 import type { Preview } from '@storybook/vue3'
 import '../src/styles/storybook.scss'
 import SurgeUpDS from '../src/index'
+import { computed } from 'vue'
 
 // Import de la police Nunito Sans depuis Google Fonts
 const link = document.createElement('link')
@@ -81,16 +82,16 @@ const preview: Preview = {
   },
   decorators: [
     (story, context) => {
-      const theme = context.globals.theme
-      const dir = context.globals.direction
       return {
         components: { story },
         template: `
-          <div :class="theme" :dir="dir">
+          <div class="su-preview-wrapper" :data-theme="theme" :dir="dir">
             <story />
           </div>
         `,
         setup() {
+          const theme = computed(() => context.globals.theme)
+          const dir = computed(() => context.globals.direction)
           return { theme, dir }
         },
       }

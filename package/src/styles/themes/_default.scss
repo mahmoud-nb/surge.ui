@@ -45,7 +45,7 @@
 
 // --- 4. Thème DARK (Bascule Manuelle) ---
 // Cible la classe .dark ou l'attribut [theme=dark]
-.dark, [theme="dark"] * {
+.dark, [data-theme="dark"] * {
   // Nous réutilisons EXACTEMENT le même mixin avec les maps "dark"
   @include generate-su-theme-colors(
     $text-map: $su-text-colors-dark,
