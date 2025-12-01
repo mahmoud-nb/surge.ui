@@ -134,17 +134,18 @@ export const linkBlock: Story = {
     href: '#',
     variant: 'primary',
     icon: HomeIcon,
-    external: true,
+    external: false,
     block: true
   },
   render: (args) => ({
     components: { Link
      },
     setup() {
-      return { args, HomeIcon }
+      return { args, HomeIcon, UserIcon }
     },
-    template: `<div style="width: 300px; border: 1px dotted #DEDEDE; padding: 0.5rem;">
+    template: `<div class="sb-flex-cols" style="width: 300px;">
       <Link v-bind="args" :icon="HomeIcon">Lien en bloc</Link>
+      <Link v-bind="args" :icon="UserIcon" external>Lien externe en bloc</Link>
     </div>`
   })
 }

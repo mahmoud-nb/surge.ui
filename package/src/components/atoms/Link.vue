@@ -26,6 +26,7 @@ const isRouterLink = computed(() => {
 })
 
 const isExternalLink = computed(() => {
+  console.log('isExternalLink:', props.external, props.href, props.target)
   return props.external || (props.href && (props.href.startsWith('http') || props.href.startsWith('//') || props.target === '_blank'))
 })
 
@@ -135,9 +136,10 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel) {
     >
       <slot />
     </span>
+
     <!-- Icône externe -->
     <ArrowTopRightOnSquareIcon 
-      v-if="isExternalLink && !icon && hasText"
+      v-if="isExternalLink && hasText"
       class="su-link__icon"
       aria-hidden="true"
     />
@@ -148,6 +150,8 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel) {
 @use '../../styles/main' as *;
 
 .su-link {
+  $self: &;
+
   display: inline-flex;
   align-items: center;
   gap: 0.375rem;
@@ -184,6 +188,10 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel) {
   &--block {
     display: flex;
     width: 100%;
+
+    #{$self}__content {
+      flex: 1;
+    }
   }
 
   &--icon-left {

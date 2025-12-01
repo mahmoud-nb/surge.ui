@@ -12,4 +12,14 @@
     color: $text-primary-dark;
     background-color: $gray-900;
   }
+
+
+
+  .sb-flex-row {
+    display: flex; flex-direction: row; gap: 1rem; align-items: center;
+  }
+
+  .sb-flex-cols {
+    display: flex; flex-direction: column; gap: 1rem; align-items: flex-start;
+  }
 }

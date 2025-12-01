@@ -188,7 +188,7 @@ export default {
     // ## Action Components
     app.component(`${prefix}Button`, Button)
     app.component(`${prefix}ButtonGroup`, ButtonGroup)
-    app.component(`${prefix}Link`, Link)
+    //app.component(`${prefix}Link`, Link)
     app.component(`${prefix}LinkGroup`, LinkGroup)
     app.component(`${prefix}FloatButton`, FloatButton)
     app.component(`${prefix}Dropdown`, Dropdown)
