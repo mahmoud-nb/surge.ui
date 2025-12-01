@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.0](https://mahmoud-nb.github.io/surge.ui/compare/v1.0.5...v1.1.0) (2025-12-01)
+
+
+### 🐛 Bug Fixes
+
+* **docs:** Update docs ([6d6fd00](https://mahmoud-nb.github.io/surge.ui/commit/6d6fd007afb224f9e8c5fa0188b8da2282067435))
+* **docs:** Update docs ([6147408](https://mahmoud-nb.github.io/surge.ui/commit/614740863bec1cf2de9ce625da9c0e17a762eeba))
+
+
+### ✨ Features
+
+* add and configure environment variables ([044df7d](https://mahmoud-nb.github.io/surge.ui/commit/044df7dbbd42a25ab4d0820dc03ab9a6b0061f16))
+* enhance Icon component with dynamic loading and accessibility improvements ([40275be](https://mahmoud-nb.github.io/surge.ui/commit/40275bec7e0a6d41e5b4e297014cd2715e2123ca))
+* **Icons:** bind args to Icon component in InButton story for improved flexibility ([bbace28](https://mahmoud-nb.github.io/surge.ui/commit/bbace2844229b0c173578a339744c6afbd8d1034))
+* implement global theme management with dynamic preview and theme selector components ([87f96c8](https://mahmoud-nb.github.io/surge.ui/commit/87f96c80dce9d27685d94d71a9ff125815ab8119))
+* **Link:** add external link handling and improve story examples ([8556fbb](https://mahmoud-nb.github.io/surge.ui/commit/8556fbb9d353ca7c56535926b6eb2428170b9f06))
+* **link:** update Link component to support 'top' icon display option and enhance documentation examples ([e5df58e](https://mahmoud-nb.github.io/surge.ui/commit/e5df58e67d443e80d185a675d66fbe568a91d975))
+
 ### [1.0.5](https://mahmoud-nb.github.io/surge.ui/compare/v0.0.1-beta.0...v1.0.5) (2025-11-22)
 
 
