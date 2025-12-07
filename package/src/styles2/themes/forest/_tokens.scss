@@ -1,0 +1,89 @@
+@use '../../foundations/colors' as *;
+
+// ============================================================
+// THÈME FOREST - Ambiance naturelle et apaisante
+// Palette: Verts forêt, brun terre, orange automne
+// ============================================================
+
+// Couleurs spécifiques Forest
+$forest-50: #f0fdf4;
+$forest-100: #dcfce7;
+$forest-200: #bbf7d0;
+$forest-300: #86efac;
+$forest-400: #4ade80;
+$forest-500: #22c55e;
+$forest-600: #16a34a;
+$forest-700: #15803d;
+$forest-800: #166534;
+$forest-900: #14532d;
+
+$earth-50: #fef3c7;
+$earth-100: #fde68a;
+$earth-500: #f59e0b;
+$earth-600: #d97706;
+$earth-700: #b45309;
+
+$autumn-400: #fb923c;
+$autumn-500: #f97316;
+$autumn-600: #ea580c;
+
+$theme-forest: (
+  // Texte
+  'text-primary': #14532d,
+  'text-secondary': #166534,
+  'text-tertiary': #16a34a,
+  'text-disabled': #bbf7d0,
+  'text-inverse': #f0fdf4,
+  
+  // Liens
+  'link-default': $forest-700,
+  'link-hover': $forest-800,
+  'link-visited': $forest-900,
+  'link-muted': $forest-400,
+  
+  // Backgrounds
+  'bg-canvas': #f7fee7,        // Vert très pâle
+  'bg-surface': $pure-white,
+  'bg-surface-elevated': $forest-50,
+  'bg-overlay': rgba($forest-900, 0.6),
+  'bg-disabled': #ecfccb,
+  
+  // Backgrounds interactifs
+  'bg-hover': $forest-50,
+  'bg-active': $forest-100,
+  'bg-selected': $forest-100,
+  
+  // Borders
+  'border-default': $forest-200,
+  'border-subtle': $forest-100,
+  'border-strong': $forest-300,
+  'border-focus': $forest-600,
+  'border-disabled': $forest-100,
+  
+  // États
+  'state-success': $forest-600,
+  'state-success-bg': $forest-50,
+  'state-warning': $earth-600,
+  'state-warning-bg': $earth-50,
+  'state-error': #dc2626,
+  'state-error-bg': #fef2f2,
+  'state-info': #0284c7,
+  'state-info-bg': #e0f2fe,
+  
+  // Primary action (Orange automne pour contraste)
+  'primary-default': $autumn-500,
+  'primary-hover': $autumn-600,
+  'primary-active': #c2410c,
+  'primary-disabled': $autumn-400,
+  'primary-text': $pure-white,
+  
+  // Secondary action
+  'secondary-default': $forest-100,
+  'secondary-hover': $forest-200,
+  'secondary-active': $forest-300,
+  'secondary-disabled': $forest-50,
+  'secondary-text': $forest-900,
+  
+  // Shadows (avec teinte terre)
+  'shadow-color': rgba($forest-900, 0.12)
+);

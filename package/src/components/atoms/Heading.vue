@@ -54,16 +54,57 @@ const tag = computed(() => (props.level === 'div' ? 'div' : `h${props.level}`))
 </template>
 
 <style lang="scss" scoped>
-@use '../../styles/main' as *;
+@use '../../styles2/main' as *;
+@use '../../styles2/core/variables' as *;
+@use 'sass:map';
+
+$heading-level: (
+  1: (
+    font-size: var(--su-font-size-3xl),
+    line-height: var(--su-line-height-relaxed)
+  ),
+  2: (
+    font-size: var(--su-font-size-2xl),
+    line-height: var(--su-line-height-relaxed)
+  ),
+  3: (
+    font-size: var(--su-font-size-xl),
+    line-height: var(--su-line-height-normal)
+  ),
+  4: (
+    font-size: var(--su-font-size-lg),
+    line-height: var(--su-line-height-normal)
+  ),
+  5: (
+    font-size: var(--su-font-size-md),
+    line-height: var(--su-line-height-tight)
+  ),
+  6: (
+    font-size: var(--su-font-size-sm),
+    line-height: var(--su-line-height-tight)
+  )
+);
 
 .su-heading {
   $self: &;
 
-  @include su-reset-style;
+  //@include su-reset-styles;
 
   font-family: var(--su-font-family-base);
   font-weight: 600;
-  color: var(--su-text-primary-color);
+  color: var(--su-text-primary);
+
+  &--primary {
+    color: var(--su-text-primary)
+  }
+
+  &--secondary {
+    color: var(--su-text-secondary);
+  }
+
+  &--tertiary {
+    color: var(--su-text-tertiary);
+  }
 
   &__slot {
     display: inline-flex;
@@ -72,7 +113,7 @@ const tag = computed(() => (props.level === 'div' ? 'div' : `h${props.level}`))
   &--with-slots {
     display: flex;
     align-items: center;
-    gap: $spacing-2;
+    gap: var(--su-spacing-2);
 
     svg {
       display: inline-block;
@@ -81,43 +122,18 @@ const tag = computed(() => (props.level === 'div' ? 'div' : `h${props.level}`))
     }
   }
 
-  @include use-text-variants;
-
   &--truncate {
     display: block;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
-  
-  &--level-1 { 
-    font-size: $font-size-3xl; 
-    line-height: $line-height-relaxed; 
-  }
 
-  &--level-2 { 
-    font-size: $font-size-2xl; 
-    line-height: $line-height-relaxed; 
-  }
-
-  &--level-3 { 
-    font-size: $font-size-xl; 
-    line-height: $line-height-normal; 
-  }
-  
-  &--level-4 { 
-    font-size: $font-size-lg; 
-    line-height: $line-height-normal; 
-  }
-  
-  &--level-5 { 
-    font-size: $font-size-md; 
-    line-height: $line-height-tight; 
-  }
-  
-  &--level-6 { 
-    font-size: $font-size-sm; 
-    line-height: $line-height-tight; 
+  @each $level, $styles in $heading-level {
+    &--level-#{$level} {
+      font-size: map.get($styles, font-size);
+      line-height: map.get($styles, line-height);
+    }
   }
 }
 </style>

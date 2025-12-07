@@ -1,0 +1,31 @@
+@use '../foundations/spacing' as *;
+@use '../foundations/animations' as *;
+
+// ============================================================
+// TOKENS STATIQUES (Invariants selon le thème)
+// ============================================================
+
+// Shadows
+$shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+$shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+$shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+$shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+$shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+$shadow-none: none;
+
+// Focus ring
+$focus-ring-width: 2px;
+$focus-ring-offset: 2px;
+
+// Touch targets (WCAG)
+$touch-target-min: 44px;
+$touch-target-comfortable: 48px;
+
+// Z-index scale
+$z-dropdown: 1000;
+$z-sticky: 1020;
+$z-fixed: 1030;
+$z-modal-backdrop: 1040;
+$z-modal: 1050;
+$z-popover: 1060;
+$z-tooltip: 1070;

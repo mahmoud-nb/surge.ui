@@ -1,0 +1,51 @@
+@use 'sass:map';
+@use 'sass:list';
+
+// ============================================================
+// REGISTRE DES THÈMES
+// Permet l'inclusion sélective des thèmes
+// ============================================================
+
+// Map globale stockant tous les thèmes enregistrés
+$_registered-themes: () !default;
+
+/**
+ * Enregistre un thème dans le registre
+ * Utilisé par chaque fichier index.scss de thème
+ */
+@mixin register-theme($name, $tokens) {
+  $_registered-themes: map.merge($_registered-themes, ($name: $tokens)) !global;
+}
+
+/**
+ * Vérifie si un thème est enregistré
+ */
+@function is-theme-registered($name) {
+  @return map.has-key($_registered-themes, $name);
+}
+
+/**
+ * Récupère les tokens d'un thème
+ */
+@function get-theme-tokens($name) {
+  @if not is-theme-registered($name) {
+    @error "Theme '#{$name}' is not registered. Make sure to import it.";
+  }
+  @return map.get($_registered-themes, $name);
+}
+
+/**
+ * Liste tous les thèmes enregistrés
+ */
+@function get-registered-themes() {
+  @return map.keys($_registered-themes);
+}
+
+/**
+ * Génère les CSS variables pour un thème
+ */
+@mixin generate-theme-vars($theme-map, $prefix: 'su') {
+  @each $key, $value in $theme-map {
+    --#{$prefix}-#{$key}: #{$value};
+  }
+}

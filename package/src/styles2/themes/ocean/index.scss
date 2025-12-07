@@ -1,0 +1,9 @@
+// index.scss
+@use '../_registry' as registry;
+@use './_tokens' as *;
+
+@include registry.register-theme('ocean', $theme-ocean);
+
+[data-theme='ocean'] {
+  @include registry.generate-theme-vars($theme-ocean);
+}

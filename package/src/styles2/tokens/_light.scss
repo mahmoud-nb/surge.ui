@@ -1,0 +1,66 @@
+@use '../foundations/colors' as *;
+
+// ============================================================
+// TOKENS SÉMANTIQUES - THÈME CLAIR
+// ============================================================
+
+$theme-light: (
+  // Texte
+  'text-primary': $gray-900,
+  'text-secondary': $gray-700,
+  'text-tertiary': $gray-500,
+  'text-disabled': $gray-400,
+  'text-inverse': $gray-50,
+  
+  // Liens
+  'link-default': $primary-600,
+  'link-hover': $primary-700,
+  'link-visited': $primary-800,
+  'link-muted': $gray-500,
+  
+  // Backgrounds
+  'bg-canvas': $gray-50,        // Fond global
+  'bg-surface': $pure-white,    // Cartes, modales
+  'bg-surface-elevated': $pure-white, // Surface surélevée
+  'bg-overlay': rgba($gray-900, 0.5),
+  'bg-disabled': $gray-100,
+  
+  // Backgrounds interactifs
+  'bg-hover': $gray-100,
+  'bg-active': $gray-200,
+  'bg-selected': $primary-50,
+  
+  // Borders
+  'border-default': $gray-300,
+  'border-subtle': $gray-200,
+  'border-strong': $gray-400,
+  'border-focus': $primary-600,
+  'border-disabled': $gray-200,
+  
+  // États
+  'state-success': $success-600,
+  'state-success-bg': $success-50,
+  'state-warning': $warning-600,
+  'state-warning-bg': $warning-50,
+  'state-error': $error-600,
+  'state-error-bg': $error-50,
+  'state-info': $info-600,
+  'state-info-bg': $info-50,
+  
+  // Primary action
+  'primary-default': $primary-600,
+  'primary-hover': $primary-700,
+  'primary-active': $primary-800,
+  'primary-disabled': $primary-300,
+  'primary-text': $pure-white,
+  
+  // Secondary action
+  'secondary-default': $gray-100,
+  'secondary-hover': $gray-200,
+  'secondary-active': $gray-300,
+  'secondary-disabled': $gray-50,
+  'secondary-text': $gray-900,
+  
+  // Shadows
+  'shadow-color': rgba($gray-900, 0.1)
+);

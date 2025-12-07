@@ -1,0 +1,88 @@
+@use '../foundations/colors' as *;
+
+// ============================================================
+// THÈME OCEAN - Ambiance maritime professionnelle
+// Palette: Bleu océan, turquoise, corail
+// ============================================================
+
+// Couleurs spécifiques Ocean
+$ocean-50: #ecfeff;
+$ocean-100: #cffafe;
+$ocean-200: #a5f3fc;
+$ocean-300: #67e8f9;
+$ocean-400: #22d3ee;
+$ocean-500: #06b6d4;
+$ocean-600: #0891b2;
+$ocean-700: #0e7490;
+$ocean-800: #155e75;
+$ocean-900: #164e63;
+
+$coral-400: #fb923c;
+$coral-500: #f97316;
+$coral-600: #ea580c;
+
+$teal-50: #f0fdfa;
+$teal-100: #ccfbf1;
+$teal-500: #14b8a6;
+$teal-600: #0d9488;
+
+$theme-ocean: (
+  // Texte
+  'text-primary': #0c4a6e,
+  'text-secondary': #075985,
+  'text-tertiary': #0891b2,
+  'text-disabled': #a5f3fc,
+  'text-inverse': #ecfeff,
+  
+  // Liens
+  'link-default': $ocean-700,
+  'link-hover': $ocean-800,
+  'link-visited': $ocean-900,
+  'link-muted': $ocean-400,
+  
+  // Backgrounds
+  'bg-canvas': #e0f2fe,        // Bleu très clair
+  'bg-surface': $pure-white,
+  'bg-surface-elevated': #f0f9ff,
+  'bg-overlay': rgba($ocean-900, 0.6),
+  'bg-disabled': #dbeafe,
+  
+  // Backgrounds interactifs
+  'bg-hover': #f0f9ff,
+  'bg-active': #e0f2fe,
+  'bg-selected': $ocean-50,
+  
+  // Borders
+  'border-default': $ocean-200,
+  'border-subtle': $ocean-100,
+  'border-strong': $ocean-300,
+  'border-focus': $ocean-600,
+  'border-disabled': $ocean-100,
+  
+  // États
+  'state-success': $teal-600,
+  'state-success-bg': $teal-50,
+  'state-warning': $coral-500,
+  'state-warning-bg': #fff7ed,
+  'state-error': #dc2626,
+  'state-error-bg': #fef2f2,
+  'state-info': $ocean-600,
+  'state-info-bg': $ocean-50,
+  
+  // Primary action (Corail pour le contraste)
+  'primary-default': $coral-500,
+  'primary-hover': $coral-600,
+  'primary-active': #c2410c,
+  'primary-disabled': $coral-400,
+  'primary-text': $pure-white,
+  
+  // Secondary action
+  'secondary-default': $ocean-100,
+  'secondary-hover': $ocean-200,
+  'secondary-active': $ocean-300,
+  'secondary-disabled': $ocean-50,
+  'secondary-text': $ocean-900,
+  
+  // Shadows (avec teinte océan)
+  'shadow-color': rgba($ocean-900, 0.15)
+);

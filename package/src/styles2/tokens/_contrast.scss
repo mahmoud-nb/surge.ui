@@ -1,0 +1,52 @@
+@use '../foundations/colors' as *;
+
+// ============================================================
+// AJUSTEMENTS CONTRASTE ÉLEVÉ
+// Surcouche appliquée sur light ou dark
+// ============================================================
+
+$contrast-overrides: (
+  // Forcer les couleurs pures
+  'text-primary': $pure-black,
+  'text-secondary': $pure-black,
+  'bg-canvas': $pure-white,
+  'bg-surface': $pure-white,
+  
+  // Bordures visibles partout
+  'border-default': $pure-black,
+  'border-subtle': $pure-black,
+  'border-strong': $pure-black,
+  'border-focus': #0000ff, // Bleu pur
+  
+  // États avec couleurs saturées
+  'state-success': #008000,  // Vert pur
+  'state-error': #ff0000,    // Rouge pur
+  'state-warning': #ff8c00,  // Orange foncé
+  'state-info': #0000cd,     // Bleu moyen
+  
+  // Actions avec contraste maximal
+  'primary-default': #0000ff,
+  'primary-hover': #0000cd,
+  'primary-text': $pure-white
+);
+
+$contrast-dark-overrides: (
+  'text-primary': $pure-white,
+  'text-secondary': $pure-white,
+  'bg-canvas': $pure-black,
+  'bg-surface': $pure-black,
+  
+  'border-default': $pure-white,
+  'border-subtle': $pure-white,
+  'border-strong': $pure-white,
+  'border-focus': #00ffff, // Cyan pur
+  
+  'state-success': #00ff00,
+  'state-error': #ff4444,
+  'state-warning': #ffaa00,
+  'state-info': #00ffff,
+  
+  'primary-default': #00ffff,
+  'primary-hover': #00cccc,
+  'primary-text': $pure-black
+);

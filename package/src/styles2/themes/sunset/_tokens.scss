@@ -1,0 +1,78 @@
+@use '../../foundations/colors' as *;
+
+// ============================================================
+// THÈME SUNSET - Ambiance chaleureuse coucher de soleil
+// Palette: Orange, rose, violet
+// ============================================================
+
+$sunset-purple-500: #a855f7;
+$sunset-purple-600: #9333ea;
+$sunset-purple-700: #7e22ce;
+
+$sunset-pink-500: #ec4899;
+$sunset-pink-600: #db2777;
+
+$sunset-orange-400: #fb923c;
+$sunset-orange-500: #f97316;
+$sunset-orange-600: #ea580c;
+
+$theme-sunset: (
+  // Texte
+  'text-primary': #7c2d12,
+  'text-secondary': #9a3412,
+  'text-tertiary': #c2410c,
+  'text-disabled': #fed7aa,
+  'text-inverse': #fff7ed,
+  
+  // Liens
+  'link-default': $sunset-purple-600,
+  'link-hover': $sunset-purple-700,
+  'link-visited': #6b21a8,
+  'link-muted': $sunset-orange-400,
+  
+  // Backgrounds
+  'bg-canvas': #fff7ed,
+  'bg-surface': $pure-white,
+  'bg-surface-elevated': #ffedd5,
+  'bg-overlay': rgba(#7c2d12, 0.6),
+  'bg-disabled': #fed7aa,
+  
+  // Backgrounds interactifs
+  'bg-hover': #ffedd5,
+  'bg-active': #fed7aa,
+  'bg-selected': #fef3c7,
+  
+  // Borders
+  'border-default': #fdba74,
+  'border-subtle': #fed7aa,
+  'border-strong': #fb923c,
+  'border-focus': $sunset-purple-600,
+  'border-disabled': #fed7aa,
+  
+  // États
+  'state-success': #16a34a,
+  'state-success-bg': #f0fdf4,
+  'state-warning': #d97706,
+  'state-warning-bg': #fef3c7,
+  'state-error': #dc2626,
+  'state-error-bg': #fef2f2,
+  'state-info': #0284c7,
+  'state-info-bg': #e0f2fe,
+  
+  // Primary action
+  'primary-default': $sunset-pink-600,
+  'primary-hover': #be185d,
+  'primary-active': #9f1239,
+  'primary-disabled': $sunset-pink-500,
+  'primary-text': $pure-white,
+  
+  // Secondary action
+  'secondary-default': #fed7aa,
+  'secondary-hover': #fdba74,
+  'secondary-active': #fb923c,
+  'secondary-disabled': #ffedd5,
+  'secondary-text': #7c2d12,
+  
+  // Shadows
+  'shadow-color': rgba(#ea580c, 0.2)
+);

@@ -2,6 +2,7 @@
   import Heading from '../atoms/Heading.vue'
   import Panel from '../atoms/Panel.vue'
   import ThemeSelector from './ThemeSelector.vue'
+  import ThemeSelector2 from './ThemeSelector2.vue'
   import { useTheme } from '@/composables/useTheme'
 
   const { themeMode, textDirection, contrastMode, motionMode } = useTheme()
@@ -12,6 +13,8 @@
     class="su-global-preview"
     :data-theme="themeMode"
   >
+    <ThemeSelector2 />  
+  
     <ThemeSelector />
     <Panel
       bordered

@@ -42,7 +42,7 @@ type Story = StoryObj<typeof meta>
 export const Default: Story = {
   args: {
     level: 2,
-    color: 'primary',
+    variant: 'primary',
     truncate: false
   },
   render: (args) => ({

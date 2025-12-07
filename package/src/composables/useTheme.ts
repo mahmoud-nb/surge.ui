@@ -1,169 +1,320 @@
-import { ref, computed, inject, watch, onMounted } from 'vue'
-import { ThemeSymbol } from '@/plugin/theme'
-import type { SurgeuiTheme } from '@/plugin/theme'
-import type { ThemeMode, ContrastMode, MotionMode, ThemeConfig, TextDirection } from '@/types/theme'
+import { ref, computed, watch, onMounted } from 'vue';
+import type { 
+  ThemeName, 
+  ContrastMode, 
+  MotionMode, 
+  UserThemeConfig, 
+  ThemeMetadata,
+  UseThemeOptions 
+} from '@/types/theme';
+import themeConfig from '@/theme.config';
 
-const STORAGE_KEY = 'app-su-theme-config'
+// ============================================================
+// MÉTADONNÉES DES THÈMES
+// ============================================================
 
-const themeMode = ref<ThemeMode>('auto')
-const contrastMode = ref<ContrastMode>('normal')
-const motionMode = ref<MotionMode>('normal')
-const textDirection = ref<TextDirection>('ltr')
+const ALL_THEMES: ThemeMetadata[] = [
+  {
+    id: 'light',
+    name: 'Clair',
+    description: 'Thème clair classique',
+    category: 'system',
+    preview: { primary: '#2563eb', background: '#f9fafb', surface: '#ffffff' },
+    available: true // Toujours disponible
+  },
+  {
+    id: 'dark',
+    name: 'Sombre',
+    description: 'Thème sombre pour faible luminosité',
+    category: 'system',
+    preview: { primary: '#3b82f6', background: '#030712', surface: '#111827' },
+    available: true // Toujours disponible
+  },
+  {
+    id: 'ocean',
+    name: 'Océan',
+    description: 'Ambiance maritime apaisante',
+    category: 'color',
+    preview: { primary: '#f97316', background: '#e0f2fe', surface: '#ffffff' },
+    available: themeConfig.themes.includes('ocean')
+  },
+  {
+    id: 'forest',
+    name: 'Forêt',
+    description: 'Inspiration naturelle et fraîche',
+    category: 'color',
+    preview: { primary: '#f97316', background: '#f7fee7', surface: '#ffffff' },
+    available: themeConfig.themes.includes('forest')
+  },
+  {
+    id: 'sunset',
+    name: 'Coucher de soleil',
+    description: 'Chaleur et couleurs vibrantes',
+    category: 'color',
+    preview: { primary: '#db2777', background: '#fff7ed', surface: '#ffffff' },
+    available: themeConfig.themes.includes('sunset')
+  }
+];
 
-export function useTheme() {
+// ============================================================
+// STATE
+// ============================================================
+let isInitialized = false;
+const themeMode = ref<ThemeName>(themeConfig.defaultTheme);
+const contrastMode = ref<ContrastMode>('auto');
+const motionMode = ref<MotionMode>('auto');
 
-  const theme = inject(ThemeSymbol, {} as SurgeuiTheme)
+// ============================================================
+// COMPOSABLE
+// ============================================================
 
-  // Détection du thème système
-  const systemTheme = computed(() => {
+export function useTheme(options: UseThemeOptions = {}) {
+  const opts = {
+    availableThemes: options.availableThemes || themeConfig.themes,
+    defaultTheme: options.defaultTheme || themeConfig.defaultTheme,
+    storageKey: options.storageKey || themeConfig.storageKey || 'app-theme-config',
+    persist: options.persist !== false
+  };
+  
+  // ========================================
+  // Détection système
+  // ========================================
+  
+  const systemTheme = computed<'light' | 'dark'>(() => {
     if (typeof window === 'undefined') return 'light';
     return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-  })
-
-  // Thème effectif (résout 'auto')
-  const effectiveTheme = computed(() => {
-    return themeMode.value === 'auto' ? systemTheme.value : themeMode.value;
-  })
-
-  // Détection du contraste système
-  const systemContrast = computed(() => {
+  });
+  
+  const systemContrast = computed<'normal' | 'high'>(() => {
     if (typeof window === 'undefined') return 'normal';
     return window.matchMedia('(prefers-contrast: more)').matches ? 'high' : 'normal';
-  })
-
-  // Détection de la préférence d'animation système
-  const systemMotion = computed(() => {
+  });
+  
+  const systemMotion = computed<'normal' | 'reduce'>(() => {
     if (typeof window === 'undefined') return 'normal';
     return window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'reduce' : 'normal';
-  })
-
-  // Application du thème au DOM
-  const applyTheme = () => {
-    const root = document.documentElement
-    
-    // Thème
-    root.setAttribute('data-theme', effectiveTheme.value)
-    
-    // Contraste
-    const contrast = contrastMode.value === 'normal' ? systemContrast.value : contrastMode.value
-    if (contrast === 'normal' || contrast === 'high') root.setAttribute('data-contrast', contrast)
-    
-    // Animations
-    const motion = motionMode.value === 'normal' ? systemMotion.value : motionMode.value
-    if (motion === 'normal' || motion === 'reduce') root.setAttribute('data-motion', motion)
-
-    // Direction du texte
-    if (textDirection.value === 'rtl' || textDirection.value === 'ltr') root.setAttribute('dir', textDirection.value)
-  }
-
-  // Sauvegarde dans localStorage
-  const saveConfig = () => {
-    const config: ThemeConfig = {
-      theme: themeMode.value,
-      contrast: contrastMode.value,
-      motion: motionMode.value,
-      direction: textDirection.value
+  });
+  
+  // ========================================
+  // Thèmes disponibles
+  // ========================================
+  
+  const availableThemes = computed(() => 
+    ALL_THEMES.filter(t => t.available)
+  );
+  
+  const systemThemes = computed(() => 
+    availableThemes.value.filter(t => t.category === 'system')
+  );
+  
+  const colorThemes = computed(() => 
+    availableThemes.value.filter(t => t.category === 'color')
+  );
+  
+  // ========================================
+  // Résolution
+  // ========================================
+  
+  const effectiveTheme = computed<Exclude<ThemeName, 'auto'>>(() => {
+    if (themeMode.value === 'auto') {
+      return systemTheme.value;
     }
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(config))
-  }
-
-  // Chargement depuis localStorage
-  const loadConfig = () => {
+    
+    // Vérifier si le thème est disponible
+    const isAvailable = availableThemes.value.some(t => t.id === themeMode.value);
+    if (!isAvailable) {
+      console.warn(`Theme '${themeMode.value}' is not available. Falling back to system theme.`);
+      return systemTheme.value;
+    }
+    
+    return themeMode.value;
+  });
+  
+  const effectiveContrast = computed<'normal' | 'high'>(() => {
+    return contrastMode.value === 'auto' ? systemContrast.value : contrastMode.value;
+  });
+  
+  const effectiveMotion = computed<'normal' | 'reduce'>(() => {
+    return motionMode.value === 'auto' ? systemMotion.value : motionMode.value;
+  });
+  
+  const currentThemeMetadata = computed(() => {
+    return availableThemes.value.find(t => t.id === effectiveTheme.value) || availableThemes.value[0];
+  });
+  
+  const isDarkMode = computed(() => effectiveTheme.value === 'dark');
+  
+  // ========================================
+  // Application au DOM
+  // ========================================
+  
+  const applyTheme = () => {
+    if (typeof document === 'undefined') return;
+    
+    const root = document.documentElement;
+    root.setAttribute('data-theme', effectiveTheme.value);
+    root.setAttribute('data-contrast', effectiveContrast.value);
+    root.setAttribute('data-motion', effectiveMotion.value);
+    root.classList.toggle('theme-dark', isDarkMode.value);
+  };
+  
+  // ========================================
+  // Persistance
+  // ========================================
+  
+  const saveConfig = () => {
+    if (!opts.persist || typeof localStorage === 'undefined') return;
+    
     try {
-      const stored = localStorage.getItem(STORAGE_KEY)
+      const config: UserThemeConfig = {
+        theme: themeMode.value,
+        contrast: contrastMode.value,
+        motion: motionMode.value,
+      };
+      localStorage.setItem(opts.storageKey, JSON.stringify(config));
+    } catch (error) {
+      console.error('Erreur sauvegarde thème:', error);
+    }
+  };
+  
+  const loadConfig = () => {
+    if (!opts.persist || typeof localStorage === 'undefined') return;
+    
+    try {
+      const stored = localStorage.getItem(opts.storageKey);
       if (stored) {
-        const config: ThemeConfig = JSON.parse(stored)
-        themeMode.value = config.theme
-        contrastMode.value = config.contrast
-        motionMode.value = config.motion
-        textDirection.value = config.direction
+        const config: UserThemeConfig = JSON.parse(stored);
+        
+        // Valider que le thème est disponible
+        if (config.theme === 'auto' || 
+            config.theme === 'light' || 
+            config.theme === 'dark' ||
+            availableThemes.value.some(t => t.id === config.theme)) {
+          themeMode.value = config.theme;
+        }
+        
+        if (config.contrast) contrastMode.value = config.contrast;
+        if (config.motion) motionMode.value = config.motion;
       }
     } catch (error) {
-      console.error('Erreur lors du chargement de la configuration du thème:', error);
+      console.error('Erreur chargement thème:', error);
     }
-  }
-
-  // Setters
-  const setTheme = (mode: ThemeMode) => {
-    themeMode.value = mode
-    saveConfig()
-  }
-
-  const setContrast = (mode: ContrastMode) => {
-    contrastMode.value = mode
-    saveConfig()
-  }
-
-  const setMotion = (mode: MotionMode) => {
-    motionMode.value = mode
-    saveConfig()
-  }
-
-  const setDirection = (direction: TextDirection) => {
-    textDirection.value = direction
-    saveConfig()
-  }
-
-  const toggleTheme = () => {
-    const current = effectiveTheme.value;
-    setTheme(current === 'light' ? 'dark' : 'light')
-  }
-
-  const reset = () => {
-    themeMode.value = 'auto'
-    contrastMode.value = 'normal'
-    motionMode.value = 'normal'
-    textDirection.value = 'ltr'
-    saveConfig()
-  }
-
-  // Watchers
-  watch([effectiveTheme, contrastMode, motionMode, systemContrast, systemMotion, textDirection], applyTheme);
-
-  // Écoute des changements système
-  onMounted(() => {
-    loadConfig()
-    applyTheme()
-
-    // Media queries listeners
-    const darkModeQuery = window.matchMedia('(prefers-color-scheme: dark)')
-    const contrastQuery = window.matchMedia('(prefers-contrast: more)')
-    const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
-    const directionQuery = window.matchMedia('(direction: rtl)')
-
-    darkModeQuery.addEventListener('change', applyTheme)
-    contrastQuery.addEventListener('change', applyTheme)
-    motionQuery.addEventListener('change', applyTheme)
-    directionQuery.addEventListener('change', applyTheme)
-    return () => {
-      darkModeQuery.removeEventListener('change', applyTheme)
-      contrastQuery.removeEventListener('change', applyTheme)
-      motionQuery.removeEventListener('change', applyTheme)
-      directionQuery.removeEventListener('change', applyTheme)
-    }
-  })
-
-  return {
-    theme,
-
-    // État
-    themeMode,
-    contrastMode,
-    motionMode,
-    textDirection,
-
-    // Computed
-    systemTheme,
-    effectiveTheme,
-    systemContrast,
-    systemMotion,
+  };
+  
+  const clearConfig = () => {
+    if (!opts.persist || typeof localStorage === 'undefined') return;
     
-    // Actions
-    setTheme,
-    setContrast,
-    setMotion,
-    setDirection,
-    toggleTheme,
-    reset
+    try {
+      localStorage.removeItem(opts.storageKey);
+      themeMode.value = opts.defaultTheme;
+      contrastMode.value = 'auto';
+      motionMode.value = 'auto';
+    } catch (error) {
+      console.error('Erreur suppression config thème:', error);
+    }
+  };
+  
+  // ========================================
+  // Actions
+  // ========================================
+  
+  const setTheme = (theme: ThemeName) => {
+    // Vérifier la disponibilité
+    if (theme !== 'auto' && theme !== 'light' && theme !== 'dark') {
+      const isAvailable = availableThemes.value.some(t => t.id === theme);
+      if (!isAvailable) {
+        console.warn(`Theme '${theme}' is not available in current build.`);
+        return;
+      }
+    }
+    
+    themeMode.value = theme;
+    saveConfig();
+  };
+  
+  const setContrast = (contrast: ContrastMode) => {
+    contrastMode.value = contrast;
+    saveConfig();
+  };
+
+  const setMotion = (motion: MotionMode) => {
+    motionMode.value = motion;
+    saveConfig();
+  };
+  const toggleTheme = () => {
+  if (themeMode.value === 'auto') {
+  setTheme(systemTheme.value === 'light' ? 'dark' : 'light');
+  } else if (themeMode.value === 'light' || themeMode.value === 'dark') {
+  setTheme(themeMode.value === 'light' ? 'dark' : 'light');
+  } else {
+  setTheme('auto');
   }
+  };
+  const cycleTheme = () => {
+  const current = availableThemes.value.findIndex(t => t.id === themeMode.value);
+  const next = (current + 1) % availableThemes.value.length;
+  setTheme(availableThemes.value[next].id);
+  };
+  // ========================================
+  // Initialisation
+  // ========================================
+  onMounted(() => {
+  if (isInitialized) return;
+  isInitialized = true;
+
+  loadConfig();
+  applyTheme();
+
+  watch([effectiveTheme, effectiveContrast, effectiveMotion], applyTheme, { immediate: false });
+
+  if (typeof window !== 'undefined') {
+    const darkQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const contrastQuery = window.matchMedia('(prefers-contrast: more)');
+    const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    
+    const handler = () => applyTheme();
+    
+    darkQuery.addEventListener('change', handler);
+    contrastQuery.addEventListener('change', handler);
+    motionQuery.addEventListener('change', handler);
+    
+    return () => {
+      darkQuery.removeEventListener('change', handler);
+      contrastQuery.removeEventListener('change', handler);
+      motionQuery.removeEventListener('change', handler);
+    };
+  }
+
+  });
+  // ========================================
+  // API
+  // ========================================
+  return {
+  // État
+  themeMode,
+  contrastMode,
+  motionMode,
+  // Computed
+  effectiveTheme,
+  effectiveContrast,
+  effectiveMotion,
+  systemTheme,
+  systemContrast,
+  systemMotion,
+  currentThemeMetadata,
+  isDarkMode,
+
+  // Données
+  availableThemes,
+  systemThemes,
+  colorThemes,
+
+  // Actions
+  setTheme,
+  setContrast,
+  setMotion,
+  toggleTheme,
+  cycleTheme,
+  clearConfig,
+  };
 }

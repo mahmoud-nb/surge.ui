@@ -1,0 +1,14 @@
+@use '../_registry' as registry;
+@use './_tokens' as *;
+
+// ============================================================
+// THÈME LIGHT
+// ============================================================
+
+// Enregistrer le thème pour permettre l'inclusion sélective
+@include registry.register-theme('light', $theme-light);
+
+// Générer les CSS variables pour ce thème
+[data-theme='light'] {
+  @include registry.generate-theme-vars($theme-light);
+}

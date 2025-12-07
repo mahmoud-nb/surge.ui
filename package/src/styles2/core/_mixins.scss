@@ -1,0 +1,82 @@
+// ============================================================
+// MIXINS UTILITAIRES
+// ============================================================
+
+/**
+ * Mixin pour appliquer des transitions avec support reduced-motion
+ */
+@mixin transition($properties...) {
+  transition-property: #{$properties};
+  transition-duration: var(--su-duration-normal);
+  transition-timing-function: var(--su-ease-in-out);
+}
+
+/**
+ * Mixin pour le focus ring accessible
+ */
+@mixin focus-ring($color: var(--su-border-focus)) {
+  outline: var(--su-focus-ring-width) solid $color;
+  outline-offset: var(--su-focus-ring-offset);
+}
+
+/**
+ * Mixin pour les états interactifs
+ */
+@mixin interactive-states {
+  @include transition(background-color, border-color, color, transform);
+  
+  &:hover:not(:disabled) {
+    background-color: var(--su-bg-hover);
+  }
+  
+  &:active:not(:disabled) {
+    background-color: var(--su-bg-active);
+    transform: scale(calc(1 - 0.02 * var(--su-animation-scale)));
+  }
+  
+  &:focus-visible {
+    @include focus-ring;
+  }
+  
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+/**
+ * Mixin pour un conteneur de surface
+ */
+@mixin surface($elevated: false) {
+  background-color: if($elevated, var(--su-bg-surface-elevated), var(--su-bg-surface));
+  border: 1px solid var(--su-border-default);
+  border-radius: var(--su-radius-lg);
+  
+  @if $elevated {
+    box-shadow: var(--su-shadow-md);
+  }
+}
+
+/**
+ * Mixin pour les textes tronqués
+ */
+@mixin truncate($lines: 1) {
+  @if $lines == 1 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  } @else {
+    display: -webkit-box;
+    -webkit-line-clamp: $lines;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+/**
+ * Mixin pour respecter les touch targets WCAG
+ */
+@mixin touch-target($size: 44px) {
+  min-height: $size;
+  min-width: $size;
+}

@@ -1,0 +1,68 @@
+@use 'sass:list';
+@use 'sass:meta';
+@use '../tokens/contrast' as contrast;
+@use '../themes/_registry' as registry;
+
+$available-themes: ('light', 'dark', 'ocean', 'forest', 'sunset') !default;
+
+@mixin load-themes($theme-names...) {
+  @each $theme in $theme-names {
+    // Vérifier que le thème existe dans la liste des thèmes disponibles
+    @if list.index($available-themes, $theme) {
+      $path: '../themes/' + $theme;
+      @include meta.load-css($path);
+    } @else {
+      @error "Theme '#{$theme}' is not available. Available themes: #{$available-themes}";
+    }
+  }
+}
+
+/**
+ * Charge tous les thèmes disponibles
+ * Utilise la liste $available-themes
+ * @example
+ *   @include load-all-themes();
+ */
+@mixin load-all-themes() {
+  @each $theme in $available-themes {
+    $path: '../themes/' + $theme;
+    @include meta.load-css($path);
+  }
+}
+
+/**
+ * Charge uniquement les thèmes système (light et dark)
+ * @example
+ *   @include load-system-themes();
+ */
+@mixin load-system-themes() {
+  @include meta.load-css('../themes/light');
+  @include meta.load-css('../themes/dark');
+}
+
+/**
+ * Charge le contraste élevé si activé
+ */
+@mixin load-contrast($enabled: true) {
+  @if $enabled {
+    // Détection automatique de la préférence système
+    @media (prefers-contrast: more) {
+      :root:not([data-contrast]) {
+        @include registry.generate-theme-vars(contrast.$contrast-overrides);
+      }
+      
+      :root:not([data-contrast])[data-theme='dark'] {
+        @include registry.generate-theme-vars(contrast.$contrast-dark-overrides);
+      }
+    }
+    
+    // Activation manuelle du contraste élevé
+    [data-contrast='high'] {
+      @include registry.generate-theme-vars(contrast.$contrast-overrides);
+      
+      &[data-theme='dark'] {
+        @include registry.generate-theme-vars(contrast.$contrast-dark-overrides);
+      }
+    }
+  }
+}

@@ -1,0 +1,91 @@
+@use '../foundations/typography' as typo;
+@use '../foundations/spacing' as space;
+@use '../foundations/animations' as anim;
+@use '../tokens/static' as static;
+
+// ============================================================
+// VARIABLES STATIQUES UNIQUEMENT
+// Les thèmes sont chargés séparément via theme-loader
+// ============================================================
+
+$statics : (
+  // Typographie
+  'font-family-base': typo.$font-family-base,
+  'font-family-mono': typo.$font-family-mono,
+  
+  'font-size-xs': typo.$font-size-xs,
+  'font-size-sm': typo.$font-size-sm,
+  'font-size-base': typo.$font-size-base,
+  'font-size-lg': typo.$font-size-lg,
+  'font-size-xl': typo.$font-size-xl,
+  'font-size-2xl': typo.$font-size-2xl,
+  'font-size-3xl': typo.$font-size-3xl,
+  
+  'line-height-tight': typo.$line-height-tight,
+  'line-height-normal': typo.$line-height-normal,
+  'line-height-relaxed': typo.$line-height-relaxed,
+  
+  // Espacement
+  'spacing-1': space.$spacing-1,
+  'spacing-2': space.$spacing-2,
+  'spacing-3': space.$spacing-3,
+  'spacing-4': space.$spacing-4,
+  'spacing-6': space.$spacing-6,
+  'spacing-8': space.$spacing-8,
+  'spacing-12': space.$spacing-12,
+  
+  // Radius
+  'radius-sm': space.$radius-sm,
+  'radius-md': space.$radius-md,
+  'radius-lg': space.$radius-lg,
+  'radius-xl': space.$radius-xl,
+  'radius-full': space.$radius-full,
+  
+  // Shadows
+  'shadow-xs': static.$shadow-xs,
+  'shadow-sm': static.$shadow-sm,
+  'shadow-md': static.$shadow-md,
+  'shadow-lg': static.$shadow-lg,
+  
+  // Focus
+  'focus-ring-width': static.$focus-ring-width,
+  'focus-ring-offset': static.$focus-ring-offset,
+  
+  // Animations
+  'duration-fast': anim.$duration-fast,
+  'duration-normal': anim.$duration-normal,
+  'duration-slow': anim.$duration-slow,
+  'ease-in-out': anim.$ease-in-out,
+  'animation-scale': 1
+) !default;
+
+:root {
+  @each $key, $value in $statics {
+    --su-#{$key}: #{$value};
+  }
+}
+
+// ============================================================
+// REDUCED MOTION
+// ============================================================
+$reduced-motion: (
+  'duration-fast': 0ms,
+  'duration-normal': 0ms,
+  'duration-slow': 0ms,
+  'animation-scale': 0
+) !default;
+
+
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion]) {
+    @each $key, $value in $reduced-motion {
+      --su-#{$key}: #{$value};
+    }
+  }
+}
+
+[data-motion='reduce'] {
+  @each $key, $value in $reduced-motion {
+    --su-#{$key}: #{$value};
+  }
+}
