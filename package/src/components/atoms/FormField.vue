@@ -47,34 +47,51 @@ const labelClasses = computed(() => [
 <template>
   <div class="su-form-field-wrapper">
     <!-- Label -->
-    <label 
-      v-if="label" 
-      :for="formFieldId" 
-      :class="labelClasses"
+    <slot 
+      name="label"
+      :label="label"
+      :field-id="formFieldId"
+      :required="required"
+      :disabled="disabled"
     >
-      {{ label }}
-      <span
-        v-if="required"
-        class="su-indicator-required"
-        aria-label="requis"
-      >*</span>
-    </label>
+      <label 
+        v-if="label" 
+        :for="formFieldId" 
+        :class="labelClasses"
+      >
+        {{ label }}
+        <span
+          v-if="required"
+          class="su-indicator-required"
+          aria-label="requis"
+        >*</span>
+      </label>
+    </slot>
 
     <!-- Slot pour l'élément de formulaire -->
     <slot 
       :field-id="formFieldId"
       :message-id="messageId"
+      :state="state"
+      :disabled="disabled"
     />
 
     <!-- Message d'aide/erreur/succès -->
-    <div
-      v-if="message"
-      :id="messageId"
-      :class="messageClasses"
-      v-bind="messageAriaAttributes"
+    <slot 
+      name="message"
+      :message="message"
+      :message-id="messageId"
+      :state="state"
     >
-      {{ message }}
-    </div>
+      <div
+        v-if="message"
+        :id="messageId"
+        :class="messageClasses"
+        v-bind="messageAriaAttributes"
+      >
+        {{ message }}
+      </div>
+    </slot>
   </div>
 </template>
 

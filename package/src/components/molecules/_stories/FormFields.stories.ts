@@ -77,13 +77,13 @@ const accountTypes = [
 ]
 
 export const Default: Story = {
-  render: () => ({
+  render: (args) => ({
     components: { FormFields, InputField, SelectBoxField, SwitchField },
     setup() {
-      return { basicOptions, AtSymbolIcon, LockClosedIcon }
+      return { args, basicOptions, AtSymbolIcon, LockClosedIcon }
     },
     template: `
-      <FormFields style="width: 400px;">
+      <FormFields v-bind="args" style="width: 400px;">
         <InputField 
           label="Nom complet"
           placeholder="Entrez votre nom"
