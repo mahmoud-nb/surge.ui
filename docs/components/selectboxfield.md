@@ -485,7 +485,6 @@ const plans = [
 | `noResultsText` | `string` | `'Aucun résultat trouvé'` | Texte sans résultats |
 | `maxHeight` | `string` | `'200px'` | Hauteur max du dropdown |
 | `textAlign` | `'left' \| 'center' \| 'right'` | `'left'` | Alignement du texte |
-| `dir` | `'ltr' \| 'rtl' \| 'auto'` | `'auto'` | Direction du texte |
 | `loading` | `boolean` | `false` | État de chargement |
 | `closeOnSelect` | `boolean` | `true` | Fermer après sélection |
 | `maxSelectedItems` | `number` | `undefined` | Limite de sélection multiple |

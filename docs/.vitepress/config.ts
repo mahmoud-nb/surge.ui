@@ -38,6 +38,7 @@ const getNavItems = (section: string = 'display', lang: string = 'fr') => {
       { text: 'Dropdown', link: `${langPrefix}/components/dropdown` }
     ],
     forms:[
+      { text: 'Input', link: `${langPrefix}/components/input` },
       { text: 'InputField', link: `${langPrefix}/components/inputfield` },
       { text: 'SelectBoxField', link: `${langPrefix}/components/selectboxfield` },
       { text: 'RadioGroupField', link: `${langPrefix}/components/radiogroupfield` },
@@ -47,6 +48,7 @@ const getNavItems = (section: string = 'display', lang: string = 'fr') => {
       { text: 'SliderField', link: `${langPrefix}/components/sliderfield` },
       { text: 'SwitchField', link: `${langPrefix}/components/switchfield` },
       { text: 'Password', link: `${langPrefix}/components/password` },
+      { text: 'FormField', link: `${langPrefix}/components/formfield` },
       { text: 'FormFields', link: `${langPrefix}/components/formfields` },
     ]
   }

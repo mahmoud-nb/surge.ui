@@ -14,6 +14,8 @@ const props = withDefaults(defineProps<InputProps>(), {
   textAlign: 'default'
 })
 
+console.log('props', props);
+
 const emit = defineEmits<{
   input: [event: Event]
   change: [event: Event]

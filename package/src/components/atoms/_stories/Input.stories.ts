@@ -1,6 +1,8 @@
+import { ref } from 'vue'
 import type { Meta, StoryObj } from '@storybook/vue3'
 import { MagnifyingGlassIcon, AtSymbolIcon, LockClosedIcon } from '@heroicons/vue/24/outline'
 import Input from '../Input.vue'
+import FormField from '../FormField.vue'
 
 const meta: Meta<typeof Input> = {
   title: 'Atoms/Input',
@@ -60,8 +62,22 @@ const meta: Meta<typeof Input> = {
     },
     textAlign: {
       control: { type: 'select' },
-      options: ['left', 'center', 'right'],
+      options: ['default', 'left', 'center', 'right'],
       description: 'Alignement du texte'
+    },
+    dir: {
+      control: { type: 'select' },
+      options: ['ltr', 'rtl', 'auto'],
+      description: 'Direction du texte'
+    },
+    // FormField related props
+    label: {
+      control: 'text',
+      description: 'Label de l\'input'
+    },
+    message: {
+      control: 'text',
+      description: 'Message additionnel'
     }
   }
 }
@@ -69,72 +85,98 @@ const meta: Meta<typeof Input> = {
 export default meta
 type Story = StoryObj<typeof meta>
 
-export const Default: Story = {
-  args: {
-    placeholder: 'Entrez du texte...'
-  }
-}
+const createInteractiveStory = (args: any): Story => ({
+  render: (renderArgs) => ({
+    components: { Input, FormField },
+    setup() {
+      const { formFieldArgs = {}, modelValue = null, ...restArgs } = renderArgs;
+      const value = ref(modelValue);
+      return { args: restArgs, formFieldArgs, value };
+    },
+    template: `<FormField v-bind="formFieldArgs">
+        <Input v-bind="args" v-model="value" />
+      </FormField>`,
+  }),
+  args,
+});
 
-export const WithValue: Story = {
-  args: {
-    modelValue: 'Valeur pré-remplie',
-    placeholder: 'Entrez du texte...'
+export const Default: Story = createInteractiveStory({
+  placeholder: 'Entrez du texte...',
+  formFieldArgs: {
+    label: 'Label par défaut'
   }
-}
+})
 
-export const Email: Story = {
-  args: {
-    type: 'email',
-    placeholder: 'nom@exemple.com',
-    prefixIcon: AtSymbolIcon
+export const WithValue: Story = createInteractiveStory({
+  modelValue: 'Valeur pré-remplie',
+  placeholder: 'Entrez du texte...',
+  formFieldArgs: {
+    label: 'Avec valeur',
   }
-}
+})
 
-export const Password: Story = {
-  args: {
-    type: 'password',
-    placeholder: '••••••••',
-    prefixIcon: LockClosedIcon
+export const Email: Story = createInteractiveStory({
+  type: 'email',
+  placeholder: 'nom@exemple.com',
+  prefixIcon: AtSymbolIcon,
+  formFieldArgs: {
+    label: 'Email'
   }
-}
+})
 
-export const Search: Story = {
-  args: {
-    placeholder: 'Rechercher...',
-    prefixIcon: MagnifyingGlassIcon
+export const Password: Story = createInteractiveStory({
+  type: 'password',
+  placeholder: '••••••••',
+  prefixIcon: LockClosedIcon,
+  formFieldArgs: {
+    label: 'Mot de passe' 
   }
-}
+})
 
-export const WithPrefix: Story = {
-  args: {
-    placeholder: '0.00',
-    suffix: '€',
-    type: 'number'
+export const Search: Story = createInteractiveStory({
+  type: 'search',
+  placeholder: 'Rechercher...',
+  prefixIcon: MagnifyingGlassIcon,
+  formFieldArgs: {
+    label: 'Recherche'
   }
-}
+})
 
-export const WithSuffix: Story = {
-  args: {
-    placeholder: 'monsite',
-    prefix: 'https://',
-    suffix: '.com'
+export const WithPrefix: Story = createInteractiveStory({
+  placeholder: '0.00',
+  suffix: '€',
+  type: 'number',
+  formFieldArgs: {
+     label: 'Prix'
   }
-}
+})
+
+export const WithSuffix: Story = createInteractiveStory({
+  placeholder: 'monsite',
+  prefix: 'https://',
+  suffix: '.com',
+  formFieldArgs: {
+    label: 'Site web'
+  }
+})
 
 export const ClickablePrefix: Story = {
   args: {
+    label: 'Recherche avec action',
     placeholder: 'Rechercher...',
     prefixIcon: MagnifyingGlassIcon
   },
   render: (args) => ({
-    components: { Input },
+    components: { Input, FormField },
     setup() {
       const handlePrefixIconClick = () => {
         alert('Icône de recherche cliquée!')
       }
       return { args, MagnifyingGlassIcon, handlePrefixIconClick }
     },
-    template: '<Input v-bind="args" :prefixIcon="MagnifyingGlassIcon" @prefix-icon-click="handlePrefixIconClick" />'
+    template: `<FormField>
+      <Input v-bind="args" :prefixIcon="MagnifyingGlassIcon" @prefix-icon-click="handlePrefixIconClick" />
+    </FormField>`
   })
 }
 
@@ -145,25 +187,35 @@ export const ClickableSuffix: Story = {
     suffix: '€'
   },
   render: (args) => ({
-    components: { Input },
+    components: { Input, FormField },
     setup() {
       const handleSuffixClick = () => {
         alert('Suffixe € cliqué!')
       }
       return { args, handleSuffixClick }
     },
-    template: '<Input v-bind="args" @suffix-click="handleSuffixClick" />'
+    template: `<FormField>
+      <Input v-bind="args" :prefixIcon="MagnifyingGlassIcon" @suffix-click="handleSuffixClick" />
+    </FormField>`
   })
 }
 export const States: Story = {
   render: () => ({
-    components: { Input },
+    components: { Input, FormField },
     template: `
       <div style="display: flex; flex-direction: column; gap: 1rem; width: 300px;">
-        <Input placeholder="État par défaut" />
-        <Input state="error" placeholder="État d'erreur" />
-        <Input state="success" placeholder="État de succès" />
-        <Input state="warning" placeholder="État d'avertissement" />
+        <FormField label="État par défaut">
+          <Input placeholder="Entrez du texte" />
+        </FormField>
+        <FormField label="État d'erreur" message="Ce champ contient une erreur" state="error">
+          <Input state="error" placeholder="Entrez du texte" />
+        </FormField>
+        <FormField label="État de succès" message="Valeur valide !" state="success">
+          <Input state="success" placeholder="Entrez du texte" />
+        </FormField>
+        <FormField label="État d'avertissement" message="Attention à cette valeur" state="warning">
+          <Input placeholder="Entrez du texte" v-slot={ state } />
+        </FormField>
       </div>
     `
   })
@@ -171,12 +223,17 @@ export const States: Story = {
 
 export const Sizes: Story = {
   render: () => ({
-    components: { Input },
+    components: { Input, FormField },
     template: `
       <div style="display: flex; flex-direction: column; gap: 1rem; width: 300px;">
-        <Input size="sm" placeholder="Petit input" />
-        <Input size="md" placeholder="Input moyen" />
-        <Input size="lg" placeholder="Grand input" />
+        <FormField label="Small">
+          <Input size="sm" placeholder="Petit input" />
+        </FormField>
+        <FormField label="Medium">
+          <Input size="md" placeholder="Input moyen" />
+        </FormField>
+        <FormField label="Large">
+          <Input size="lg" placeholder="Grand input" />
       </div>
     `
   })
@@ -184,29 +241,72 @@ export const Sizes: Story = {
 
 export const TextAlignment: Story = {
   render: () => ({
-    components: { Input },
+    components: { Input, FormField },
     template: `
       <div style="display: flex; flex-direction: column; gap: 1rem; width: 300px;">
-        <Input placeholder="Alignement à gauche" textAlign="left" value="Aligné à gauche" />
-        <Input placeholder="Alignement centré" textAlign="center" value="Centré" />
-        <Input placeholder="Alignement à droite" textAlign="right" value="Aligné à droite" />
+        <FormField label="Alignement à gauche" >
+          <InputtextAlign="left" value="Aligné à gauche" />
+        </FormField>
+        <FormField label="Alignement centré">
+          <Input textAlign="center" value="Centré" />
+        </FormField>
+        <FormField label="Alignement à droite"> 
+          <Input textAlign="right" value="Aligné à droite" />
+        </FormField>
       </div>
     `
   })
 }
 
-export const Disabled: Story = {
-  args: {
-    label: 'Input désactivé',
-    disabled: true,
-    modelValue: 'Valeur désactivée'
-  }
+export const SupportRTL: Story = {
+  render: () => ({
+    components: { Input, FormField },
+    template: `
+      <div dir="rtl" style="display: flex; flex-direction: column; gap: 1rem; width: 300px;">
+        <FormField label="Texte arabe (RTL)">
+          <Input 
+            placeholder="أدخل النص هنا"
+            value="النص العربي"
+          />
+        </FormField>
+        <FormField label="Texte hébreu (RTL)">
+          <Input 
+            placeholder="הכנס טקסט כאן"
+            value="טקסט עברי"
+          />
+        </FormField>
+        <FormField label="Prix (RTL avec suffixe)">
+          <Input 
+            placeholder="0.00"
+            suffix="$"
+            type="number"
+          />
+        </FormField>
+      </div>
+    `
+  })
 }
 
-export const Readonly: Story = {
-  args: {
-    label: 'Input en lecture seule',
-    readonly: true,
-    modelValue: 'Valeur en lecture seule'
+export const Disabled: Story = createInteractiveStory({
+  disabled: true,
+  modelValue: 'Valeur désactivée',
+  formFieldArgs: {
+    label: 'Input désactivé'
   }
-}
+})
+
+export const Readonly: Story = createInteractiveStory({
+  readonly: true,
+  modelValue: 'Valeur en lecture seule',
+  formFieldArgs: {
+    label: 'Input en lecture seule'
+  }
+})
+
+export const Required: Story = createInteractiveStory({
+  required: true,
+  modelValue: 'Ce champ est obligatoire',
+  formFieldArgs: {
+    label: 'Champ requis'
+  }
+})  
