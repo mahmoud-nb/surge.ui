@@ -23,7 +23,6 @@ const props = withDefaults(defineProps<SelectBoxProps>(), {
   noResultsText: 'Aucun résultat trouvé',
   maxHeight: '200px',
   textAlign: 'left',
-  dir: 'auto',
   loading: false,
   closeOnSelect: true,
   maxSelectedItems: undefined
@@ -143,29 +142,28 @@ const displayText = computed(() => {
 
 // Classes CSS
 const containerClasses = computed(() => [
-  'su-select-container',
-  `su-select-container--${props.size}`,
-  `su-select-container--${props.state}`,
+  'su-select__container',
+  `su-select__container--${props.size}`,
+  `su-select__container--${props.state}`,
   {
-    'su-select-container--disabled': props.disabled,
-    'su-select-container--readonly': props.readonly,
-    'su-select-container--open': isOpen.value,
-    'su-select-container--multiple': props.multiple,
-    'su-select-container--rtl': props.dir === 'rtl'
+    'su-select__container--disabled': props.disabled,
+    'su-select__container--readonly': props.readonly,
+    'su-select__container--open': isOpen.value,
+    'su-select__container--multiple': props.multiple
   }
 ])
 
 const triggerClasses = computed(() => [
-  'su-select-trigger',
-  `su-select-trigger--${props.size}`,
-  `su-select-trigger--${props.state}`,
-  `su-select-trigger--align-${props.textAlign}`,
+  'su-select__trigger',
+  `su-select__trigger--${props.size}`,
+  `su-select__trigger--${props.state}`,
+  `su-select__trigger--align-${props.textAlign}`,
   {
-    'su-select-trigger--disabled': props.disabled,
-    'su-select-trigger--readonly': props.readonly,
-    'su-select-trigger--open': isOpen.value,
-    'su-select-trigger--has-value': selectedOptions.value.length > 0,
-    'su-select-trigger--placeholder': selectedOptions.value.length === 0
+    'su-select__trigger--disabled': props.disabled,
+    'su-select__trigger--readonly': props.readonly,
+    'su-select__trigger--open': isOpen.value,
+    'su-select__trigger--has-value': selectedOptions.value.length > 0,
+    'su-select__trigger--placeholder': selectedOptions.value.length === 0
   }
 ])
 
@@ -416,10 +414,7 @@ watch(modelValue, () => {
 </script>
 
 <template>
-  <div
-    class="su-select-wrapper"
-    :dir="dir"
-  >
+  <div class="su-select">
     <!-- Container principal -->
     <div 
       ref="selectRef"
@@ -677,124 +672,122 @@ watch(modelValue, () => {
 <style lang="scss">
 @use '../../styles/main' as *;
 
-.su-select-container {
-  position: relative;
-  
-  // Tailles
-  &--sm {
-    .su-select-trigger {
-      min-height: 2rem;
-      padding: 0.375rem 0.75rem;
-      font-size: $font-size-sm;
-    }
-  }
-  
-  &--md {
-    .su-select-trigger {
-      min-height: 2.5rem;
-      padding: 0.5rem 0.75rem;
-      font-size: $font-size-base;
-    }
-  }
-  
-  &--lg {
-    .su-select-trigger {
-      min-height: 3rem;
-      padding: 0.75rem 1rem;
-      font-size: $font-size-lg;
-    }
-  }
-  
-  // RTL Support
-  &--rtl {
-    direction: rtl;
-  }
-}
+.su-select {
+  $self: &;
 
-.su-select-trigger {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
-  width: 100%;
-  background-color: white;
-  border: 1px solid $gray-300;
-  border-radius: $border-radius-md;
-  cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  box-sizing: border-box;
-  
-  &:focus {
-    outline: none;
-    border-color: $primary-500;
-    box-shadow: 0 0 0 3px rgba($primary-500, 0.1);
-  }
-  
-  // États
-  &--error {
-    border-color: $error-500;
+  &__trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    width: 100%;
+    background-color: white;
+    border: 1px solid $gray-300;
+    border-radius: $border-radius-md;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    box-sizing: border-box;
     
     &:focus {
+      outline: none;
+      border-color: $primary-500;
+      box-shadow: 0 0 0 3px rgba($primary-500, 0.1);
+    }
+    
+    // États
+    &--error {
       border-color: $error-500;
-      box-shadow: 0 0 0 3px rgba($error-500, 0.1);
+      
+      &:focus {
+        border-color: $error-500;
+        box-shadow: 0 0 0 3px rgba($error-500, 0.1);
+      }
     }
-  }
-  
-  &--success {
-    border-color: $success-500;
     
-    &:focus {
+    &--success {
       border-color: $success-500;
-      box-shadow: 0 0 0 3px rgba($success-500, 0.1);
+      
+      &:focus {
+        border-color: $success-500;
+        box-shadow: 0 0 0 3px rgba($success-500, 0.1);
+      }
     }
-  }
-  
-  &--warning {
-    border-color: $warning-500;
     
-    &:focus {
+    &--warning {
       border-color: $warning-500;
-      box-shadow: 0 0 0 3px rgba($warning-500, 0.1);
+      
+      &:focus {
+        border-color: $warning-500;
+        box-shadow: 0 0 0 3px rgba($warning-500, 0.1);
+      }
     }
-  }
-  
-  &--disabled {
-    background-color: $gray-50;
-    border-color: $gray-200;
-    cursor: not-allowed;
     
-    &:focus {
+    &--disabled {
+      background-color: $gray-50;
       border-color: $gray-200;
-      box-shadow: none;
+      cursor: not-allowed;
+      
+      &:focus {
+        border-color: $gray-200;
+        box-shadow: none;
+      }
+    }
+    
+    &--readonly {
+      background-color: $gray-50;
+      cursor: default;
+    }
+    
+    &--open {
+      border-color: $primary-500;
+      box-shadow: 0 0 0 3px rgba($primary-500, 0.1);
+    }
+    
+    // Alignement
+    &--align-center {
+      .su-select-display-text {
+        text-align: center;
+      }
+    }
+    
+    &--align-right {
+      .su-select-display-text {
+        text-align: right;
+      }
+    }
+    
+    &--placeholder {
+      .su-select-display-text {
+        color: $text-tertiary;
+      }
     }
   }
-  
-  &--readonly {
-    background-color: $gray-50;
-    cursor: default;
-  }
-  
-  &--open {
-    border-color: $primary-500;
-    box-shadow: 0 0 0 3px rgba($primary-500, 0.1);
-  }
-  
-  // Alignement
-  &--align-center {
-    .su-select-display-text {
-      text-align: center;
+
+  &__container {
+    position: relative;
+    
+    &--sm {
+      #{$self}__trigger {
+        min-height: 2rem;
+        padding: 0.375rem 0.75rem;
+        font-size: $font-size-sm;
+      }
     }
-  }
-  
-  &--align-right {
-    .su-select-display-text {
-      text-align: right;
+    
+    &--md {
+      #{$self}__trigger {
+        min-height: 2.5rem;
+        padding: 0.5rem 0.75rem;
+        font-size: $font-size-base;
+      }
     }
-  }
-  
-  &--placeholder {
-    .su-select-display-text {
-      color: $text-tertiary;
+    
+    &--lg {
+      #{$self}__trigger {
+        min-height: 3rem;
+        padding: 0.75rem 1rem;
+        font-size: $font-size-lg;
+      }
     }
   }
 }
@@ -802,6 +795,12 @@ watch(modelValue, () => {
 .su-select-content {
   flex: 1;
   min-width: 0;
+}
+
+.su-select-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
 }
 
 .su-select-display {
@@ -881,12 +880,6 @@ watch(modelValue, () => {
       height: 0.875em;
     }
   }
-}
-
-.su-select-actions {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
 }
 
 .su-select-spinner {
@@ -1150,7 +1143,7 @@ watch(modelValue, () => {
     }
   }
   
-  .su-select-trigger {
+  .su-select__trigger {
     background-color: $gray-800;
     border-color: $gray-600;
     
@@ -1217,7 +1210,7 @@ watch(modelValue, () => {
 
 // Mode de contraste élevé
 @media (prefers-contrast: high) {
-  .su-select-trigger {
+  .su-select__trigger {
     border-width: 2px;
     
     &:focus {
@@ -1232,7 +1225,7 @@ watch(modelValue, () => {
 
 // Support de la réduction des animations
 @media (prefers-reduced-motion: reduce) {
-  .su-select-trigger,
+  .su-select__trigger,
   .su-select-chevron,
   .su-select-option,
   .su-select-dropdown-enter-active,

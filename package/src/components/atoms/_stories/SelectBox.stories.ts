@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import { StarIcon, BuildingOfficeIcon, GlobeAltIcon } from '@heroicons/vue/24/outline'
 import SelectBox from '../SelectBox.vue'
+import FormField from '../FormField.vue'
 import { ref } from 'vue'
 
 const meta: Meta<typeof SelectBox> = {
@@ -323,13 +324,49 @@ export const MaxSelectedItems: Story = createInteractiveStory({
   message: 'Maximum 3 sélections autorisées'
 })
 
-export const RTL: Story = createInteractiveStory({
-  options: [
-    { value: 'ar', label: 'العربية' },
-    { value: 'he', label: 'עברית' },
-    { value: 'fa', label: 'فارسی' }
-  ],
-  dir: 'rtl',
-  label: 'اللغة (RTL)',
-  placeholder: 'اختر لغة...'
-})
+export const RTL: Story = {
+  render: (args) => ({
+    components: { SelectBox },
+    setup() {
+      const modelValue = ref(args.modelValue)
+      const options = [
+        { value: 'ar', label: 'العربية' },
+        { value: 'he', label: 'עברית' },
+        { value: 'fa', label: 'فارسی' }
+      ]
+      return { modelValue, options }
+    },
+    template: `
+      <div style="width: 300px;" dir="rtl">
+        <SelectBox 
+          label="Langue (RTL)"
+          placeholder="اختر لغة..."
+          :options="options" 
+          v-model="modelValue"
+        />
+      </div>
+    `
+  })
+}
+
+export const withFormField: Story = {
+  render: () => ({
+    components: { SelectBox, FormField },
+    setup() {
+      const modelValue = ref(null)
+      const options = basicOptions
+      return { modelValue, options }
+    },
+    template: `
+      <div style="width: 300px;">
+        <FormField label="Sélection dans un formulaire" required>
+          <SelectBox 
+            placeholder="Sélectionnez une option..."
+            :options="options" 
+            v-model="modelValue"
+          />
+        </FormField>
+      </div>
+    `
+  })
+}  

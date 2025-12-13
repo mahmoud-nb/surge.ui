@@ -309,7 +309,6 @@ export interface SelectBoxProps extends AccessibilityProps {
   noResultsText?: string;
   maxHeight?: string;
   textAlign?: TextAlign;
-  dir?: 'ltr' | 'rtl' | 'auto';
   ariaInvalid?: boolean;
   ariaRequired?: boolean;
   maxSelectedItems?: number;
