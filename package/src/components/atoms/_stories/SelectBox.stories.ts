@@ -1,8 +1,8 @@
+import { ref } from 'vue'
 import type { Meta, StoryObj } from '@storybook/vue3'
 import { StarIcon, BuildingOfficeIcon, GlobeAltIcon } from '@heroicons/vue/24/outline'
 import SelectBox from '../SelectBox.vue'
 import FormField from '../FormField.vue'
-import { ref } from 'vue'
 
 const meta: Meta<typeof SelectBox> = {
   title: 'Atoms/SelectBox',
@@ -67,6 +67,7 @@ const meta: Meta<typeof SelectBox> = {
       control: 'text',
       description: 'Texte de placeholder'
     },
+    // FormField related props
     label: {
       control: 'text',
       description: 'Label du SelectBox'
@@ -81,6 +82,27 @@ const meta: Meta<typeof SelectBox> = {
 
 export default meta
 type Story = StoryObj<typeof meta>
+
+const createInteractiveStory = (args: any): Story => ({
+  render: (renderArgs) => ({
+    components: { SelectBox, FormField },
+    setup() {
+      const { label = '', message = null, modelValue = null, ...restArgs } = renderArgs;
+      const formFieldArgs = { label, message }
+      const value = ref(modelValue);
+      return { args: restArgs, formFieldArgs, value };
+    },
+    // On utilise v-model pour lier la ref locale au composant : v-model="value" | v-model="value" @change="args['onUpdate:value']"
+    template: `<div style="width: 300px; min-height: 250px;">
+      <FormField v-bind="formFieldArgs">
+        <template #default="slotProps">
+          <SelectBox v-bind="{ ...args, ...slotProps }" v-model="value" />
+        </template>
+      </FormField>
+    </div>`,
+  }),
+  args,
+})
 
 const basicOptions = [
   { value: 'option1', label: 'Option 1' },
@@ -148,21 +170,6 @@ const groupedOptions = [
   }
 ]
 
-const createInteractiveStory = (args): Story => ({
-  render: (args) => ({
-    components: { SelectBox },
-    setup() {
-      const modelValue = ref(args.modelValue);
-      return { args, modelValue };
-    },
-    // On utilise v-model pour lier la ref locale au composant
-    template: `<div style="width: 300px; min-height: 250px;">
-      <SelectBox v-bind="args" v-model="modelValue" @change="args['onUpdate:modelValue']" />
-    </div>`,
-  }),
-  args,
-});
-
 export const Default = createInteractiveStory({
   options: basicOptions,
   label: 'Sélection simple',
@@ -211,35 +218,53 @@ export const Grouped: Story = createInteractiveStory({
 
 export const States: Story = {
   render: (args) => ({
-    components: { SelectBox },
+    components: { SelectBox, FormField },
     setup() {
       const value = ref(args.value)
       return { basicOptions, value }
     },
     template: `
       <div style="display: flex; flex-direction: column; gap: 2rem; width: 300px;">
-        <SelectBox 
-          :options="basicOptions"
+        <FormField
           label="État par défaut"
-          placeholder="Sélectionnez une option"
           message="Texte d'aide pour guider l'utilisateur"
-          v-model:value="value"
-        />
-        <SelectBox 
-          :options="basicOptions"
-          state="error"
+        >
+          <template #default="slotProps">
+            <SelectBox 
+              :options="basicOptions"
+              placeholder="Sélectionnez une option"
+              v-model:value="value"
+              v-bind="slotProps"
+            />
+          </template>
+        </FormField>
+        <FormField
           label="État d'erreur"
-          placeholder="Sélectionnez une option"
           message="Cette sélection contient une erreur"
-        />
-        <SelectBox 
-          :options="basicOptions"
-          state="success"
+          state="error"
+        >
+          <template #default="slotProps">
+            <SelectBox 
+              :options="basicOptions"
+              placeholder="Sélectionnez une option"
+              v-bind="slotProps"
+            />
+          </template>
+        </FormField>
+        <FormField
           label="État de succès"
-          placeholder="Sélectionnez une option"
           message="Sélection valide !"
-          value="option1"
-        />
+          state="success"
+        >
+          <template #default="slotProps">
+            <SelectBox 
+              :options="basicOptions"
+              placeholder="Sélectionnez une option"
+              value="option1"
+              v-bind="slotProps"
+            />
+          </template>
+        </FormField>
       </div>
     `
   })
@@ -247,50 +272,50 @@ export const States: Story = {
 
 export const Sizes: Story = {
   render: () => ({
-    components: { SelectBox },
+    components: { SelectBox, FormField },
     setup() {
       return { basicOptions }
     },
     template: `
       <div style="display: flex; flex-direction: column; gap: 2rem; width: 300px;">
-        <SelectBox size="sm" :options="basicOptions" label="Small" placeholder="Petit SelectBox" />
-        <SelectBox size="md" :options="basicOptions" label="Medium" placeholder="SelectBox moyen" />
-        <SelectBox size="lg" :options="basicOptions" label="Large" placeholder="Grand SelectBox" />
+        <FormField label="Small">  
+          <SelectBox size="sm" :options="basicOptions" placeholder="Petit SelectBox" />
+        </FormField>
+        <FormField label="Medium">
+          <SelectBox size="md" :options="basicOptions" placeholder="SelectBox moyen" />
+        </FormField>
+        <FormField label="Large">
+          <SelectBox size="lg" :options="basicOptions" placeholder="Grand SelectBox" />
+        </FormField>
       </div>
     `
   })
 }
 
-export const Loading: Story = {
-  args: {
-    options: [],
-    loading: true,
-    label: 'Chargement des données',
-    placeholder: 'Chargement...'
-  }
-}
+export const Loading: Story = createInteractiveStory({
+  options: [],
+  loading: true,
+  label: 'Chargement des données',
+  placeholder: 'Chargement...'
+})
 
-export const Disabled: Story = {
-  args: {
-    options: basicOptions,
-    disabled: true,
-    label: 'SelectBox désactivé',
-    modelValue: 'option1'
-  }
-}
+export const Disabled: Story = createInteractiveStory({
+  options: basicOptions,
+  disabled: true,
+  label: 'SelectBox désactivé',
+  modelValue: 'option1'
+})
 
-export const Readonly: Story = {
-  args: {
-    options: basicOptions,
-    readonly: true,
-    label: 'SelectBox en lecture seule',
-    modelValue: 'option2'
-  }
-}
+export const Readonly: Story = createInteractiveStory({
+  options: basicOptions,
+  readonly: true,
+  label: 'SelectBox en lecture seule',
+  modelValue: 'option2'
+})
 
 export const Required: Story = {
   render: (args) => ({
-    components: { SelectBox },
+    components: { SelectBox, FormField },
     setup() {
       const modelValue = ref(args.modelValue)
       const options = [
@@ -301,15 +326,17 @@ export const Required: Story = {
     },
     template: `
       <div style="width: 300px;">
-        <SelectBox 
-          label="Champ requis"
-          required
-          placeholder="Sélection obligatoire" 
-          :options="options" 
-          :state="modelValue ? 'default' : 'error'" 
-          :message="modelValue ? 'Sélection valide !' : 'Ce champ est requis'"
-          v-model="modelValue"
-        />
+        <FormField label="Champ requis" :state="modelValue ? 'default' : 'error'" required>
+          <template #default="slotProps">
+            <SelectBox 
+              placeholder="Sélection obligatoire" 
+              :options="options" 
+              :message="modelValue ? 'Sélection valide !' : 'Ce champ est requis'"
+              v-model="modelValue"
+              v-bind="slotProps"
+            />
+          </template>
+        </FormField>
       </div>
     `
   })

@@ -72,6 +72,7 @@ Le slot par défaut expose automatiquement les props suivantes pour faciliter l'
       <!-- fieldId : ID unique du champ (ex: "field-123") -->
       <!-- messageId : ID du message d'aide (ex: "message-123") -->
       <!-- state : État actuel ('default' | 'error' | 'success' | 'warning') -->
+      <!-- size : Taille actuelle ('sm' | 'md' | 'lg') -->
       <!-- disabled : Booléen indiquant si le champ est désactivé -->
       
       <YourComponent 
@@ -433,6 +434,7 @@ Le slot par défaut reçoit automatiquement les props suivantes :
 | `fieldId` | `string` | ID unique généré pour le champ |
 | `messageId` | `string` | ID unique généré pour le message |
 | `state` | `'default' \| 'error' \| 'success' \| 'warning'` | État actuel du champ |
+| `size` | `'sm' \| 'md' \| 'lg'` | Taille du champ |
 | `disabled` | `boolean` | Indique si le champ est désactivé |
 
 ```vue
@@ -452,6 +454,7 @@ Permet de personnaliser complètement le rendu du label.
 | `label` | `string` | Texte du label |
 | `required` | `boolean` | Indique si le champ est requis |
 | `fieldId` | `string` | ID du champ associé (même valeur que `fieldId`) |
+| `size` | `'sm' \| 'md' \| 'lg'` | Taille du champ |
 
 ```vue
 <SuFormField label="Mon label" :required="true">
@@ -471,6 +474,7 @@ Permet de personnaliser complètement le rendu du message.
 |------|------|-------------|
 | `message` | `string` | Texte du message |
 | `state` | `'default' \| 'error' \| 'success' \| 'warning'` | État actuel du champ |
+| `size` | `'sm' \| 'md' \| 'lg'` | Taille du champ |
 | `messageId` | `string` | ID du message (pour aria-describedby) |
 
 ```vue
