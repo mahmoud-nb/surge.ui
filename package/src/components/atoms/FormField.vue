@@ -4,6 +4,7 @@ import type { FormFieldProps } from '@/types'
 
 const props = withDefaults(defineProps<FormFieldProps>(), {
   state: 'default',
+  size: 'md',
   required: false,
   disabled: false,
   message: ''
@@ -31,26 +32,28 @@ const messageAriaAttributes = computed(() => {
 
 // Classes CSS
 const messageClasses = computed(() => [
-  'su-form-field-message',
-  `su-form-field-message--${props.state}`
+  'su-form-field__message',
+  `su-form-field__message--${props.state}`
 ])
 
 const labelClasses = computed(() => [
-  'su-form-field-label',
+  'su-form-field__label',
   {
-    'su-form-field-label--required': props.required,
-    'su-form-field-label--disabled': props.disabled
+    'su-form-field__label--required': props.required,
+    'su-form-field__label--disabled': props.disabled
   }
 ])
 </script>
 
 <template>
-  <div class="su-form-field-wrapper">
+  <div :class="['su-form-field', `su-form-field--${props.size}`]">
     <!-- Label -->
     <slot 
       name="label"
       :label="label"
       :field-id="formFieldId"
+      :state="state"
+      :size="size"
       :required="required"
       :disabled="disabled"
     >
@@ -73,6 +76,8 @@ const labelClasses = computed(() => [
       :field-id="formFieldId"
       :message-id="messageId"
       :state="state"
+      :size="size"
+      :required="required"
       :disabled="disabled"
     />
 
@@ -82,6 +87,7 @@ const labelClasses = computed(() => [
       :message="message"
       :message-id="messageId"
       :state="state"
+      :size="size"
     >
       <div
         v-if="message"
@@ -98,50 +104,79 @@ const labelClasses = computed(() => [
 <style lang="scss">
 @use '../../styles/main' as *;
 
-.su-form-field-wrapper {
+.su-form-field {
+  $self: &;
+
   display: flex;
   flex-direction: column;
   gap: 0.375rem;
-}
 
-.su-form-field-label {
-  display: block;
-  font-size: $font-size-sm;
-  font-weight: 500;
-  color: $text-primary;
-  line-height: $line-height-tight;
-  
-  &--required {
-    .su-indicator-required {
-      color: $error-500;
-      margin-left: 0.125rem;
+  &__label {
+    display: block;
+    font-size: $font-size-sm;
+    font-weight: 500;
+    color: $text-primary;
+    line-height: $line-height-tight;
+    
+    &--required {
+      .su-indicator-required {
+        color: $error-500;
+        margin-left: 0.125rem;
+      }
+    }
+    
+    &--disabled {
+      color: $text-tertiary;
+      cursor: not-allowed;
     }
   }
-  
-  &--disabled {
-    color: $text-tertiary;
-    cursor: not-allowed;
-  }
-}
 
-.su-form-field-message {
-  font-size: $font-size-sm;
-  line-height: $line-height-tight;
-  
-  &--default {
-    color: $text-secondary;
+  &__message {
+    font-size: $font-size-sm;
+    line-height: $line-height-tight;
+    
+    &--default {
+      color: $text-secondary;
+    }
+    
+    &--error {
+      color: $error-600;
+    }
+    
+    &--success {
+      color: $success-600;
+    }
+    
+    &--warning {
+      color: $warning-600;
+    }
   }
-  
-  &--error {
-    color: $error-600;
+
+  &--sm {
+    #{$self}__label {
+      font-size: $font-size-sm;
+    }
+    #{$self}__message {
+      font-size: $font-size-sm;
+    } 
   }
-  
-  &--success {
-    color: $success-600;
+
+  &--md {
+    #{$self}__label {
+      font-size: $font-size-base;
+    }
+    #{$self}__message {
+      font-size: $font-size-base;
+    } 
   }
-  
-  &--warning {
-    color: $warning-600;
+
+  &--lg {
+    #{$self}__label {
+      font-size: $font-size-lg;
+    }
+    #{$self}__message {
+      font-size: $font-size-lg;
+    } 
   }
 }
 
@@ -156,7 +191,7 @@ const labelClasses = computed(() => [
 }
 
 @media (prefers-color-scheme: dark) {
-  .su-form-field-label {
+  .su-form-field__label {
     color: $text-primary-dark;
     
     &--disabled {
@@ -190,7 +225,7 @@ const labelClasses = computed(() => [
     }
   }
   
-  .su-form-field-message {
+  .su-form-field__message {
     &--default {
       color: $text-secondary-dark;
     }

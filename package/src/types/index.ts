@@ -152,6 +152,7 @@ export interface FormFieldProps {
   fieldId?: string;
   label?: string;
   message?: string;
+  size?: Size;
   state?: State;
   required?: boolean;
   disabled?: boolean;
