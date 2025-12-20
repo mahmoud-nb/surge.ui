@@ -2,6 +2,35 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.0](https://mahmoud-nb.github.io/surge.ui/compare/v1.0.5...v1.2.0) (2025-12-20)
+
+
+### 🐛 Bug Fixes
+
+* **docs:** Update docs ([6d6fd00](https://mahmoud-nb.github.io/surge.ui/commit/6d6fd007afb224f9e8c5fa0188b8da2282067435))
+* **docs:** Update docs ([6147408](https://mahmoud-nb.github.io/surge.ui/commit/614740863bec1cf2de9ce625da9c0e17a762eeba))
+
+
+### ♻️ Code Refactoring
+
+* **FormField:** update class naming convention and improve structure ([3b72762](https://mahmoud-nb.github.io/surge.ui/commit/3b72762087e28c8d805db6e0eb63858208bf0d17))
+* **SelectBox:** update class naming convention and remove unused dir prop ([da2079a](https://mahmoud-nb.github.io/surge.ui/commit/da2079a0d207387123d5843047f7854911e22082))
+
+
+### ✨ Features
+
+* add and configure environment variables ([044df7d](https://mahmoud-nb.github.io/surge.ui/commit/044df7dbbd42a25ab4d0820dc03ab9a6b0061f16))
+* add Input component with full HTML type support, prefixes/suffixes, and accessibility features ([bceb065](https://mahmoud-nb.github.io/surge.ui/commit/bceb065d4d442845a8cf4211636075f7c8c053c6))
+* add Slider component with dual-range support, tooltips, and accessibility features ([446c778](https://mahmoud-nb.github.io/surge.ui/commit/446c7780954219df8988dc08daeab21df4916d62))
+* add SuTextarea component with advanced features and accessibility support ([93a404e](https://mahmoud-nb.github.io/surge.ui/commit/93a404e7b02a598f6e1cd8fd9bbd40d2b37fe327))
+* enhance Icon component with dynamic loading and accessibility improvements ([40275be](https://mahmoud-nb.github.io/surge.ui/commit/40275bec7e0a6d41e5b4e297014cd2715e2123ca))
+* **FormField:** add slot support for label and message rendering ([818f941](https://mahmoud-nb.github.io/surge.ui/commit/818f941039355bab747f9a26e0259437396d28d0))
+* **formFieldGroup:** rename FormFields to FormFieldGroup and update documentation ([c169a50](https://mahmoud-nb.github.io/surge.ui/commit/c169a502b226cebb48a0c20a713a6877ff08ce10))
+* **Icons:** bind args to Icon component in InButton story for improved flexibility ([bbace28](https://mahmoud-nb.github.io/surge.ui/commit/bbace2844229b0c173578a339744c6afbd8d1034))
+* implement global theme management with dynamic preview and theme selector components ([87f96c8](https://mahmoud-nb.github.io/surge.ui/commit/87f96c80dce9d27685d94d71a9ff125815ab8119))
+* **Link:** add external link handling and improve story examples ([8556fbb](https://mahmoud-nb.github.io/surge.ui/commit/8556fbb9d353ca7c56535926b6eb2428170b9f06))
+* **link:** update Link component to support 'top' icon display option and enhance documentation examples ([e5df58e](https://mahmoud-nb.github.io/surge.ui/commit/e5df58e67d443e80d185a675d66fbe568a91d975))
+
 ## [1.1.0](https://mahmoud-nb.github.io/surge.ui/compare/v1.0.5...v1.1.0) (2025-12-01)
 
 
