@@ -15,11 +15,14 @@ Cette section contient la documentation de tous les composants disponibles dans 
 ## Formulaires
 
 - [Input](/components/input) - Composant input avec plusieurs variantes
-- [Password](/components/password) - Composant password avec validation et barre de progression
+- [Textarea](/components/textareafield) - Composant textarea field avec compteur et auto-resize
+- [SelectBox](/components/selectbox) - Composant SelectBox avec support de la sélection multiple
+- [RadioGroup](/components/radio-group) - Composant RadioGroup pour la sélection unique avec diférents modes d'affichage
+- [CheckboxGroup](/components/checkbox-group) - Composant CheckboxGroup pour la sélection multiple avec diférents modes d'affichage
 - [Switch](/components/switch) - Composant switch pour les actions de basculement
 - [FileUpload](/components/fileupload) - Composant upload de fichiers avec drag & drop
-- [TextareaField](/components/textareafield) - Composant textarea field avec compteur et auto-resize
 - [Slider](/components/slider) - Composant slider pour les valeurs numériques
+- [Password](/components/password) - Composant password avec validation et barre de progression
 
 ## Actions
 
@@ -33,13 +36,3 @@ Cette section contient la documentation de tous les composants disponibles dans 
 
 - [FormFieldGroup](/components/formfieldgroup) - Groupe de champs de formulaire avec espacement contrôlé
 - [FloatButton](/components/floatbutton) - Bouton flottant positionné dans les coins de l'écran
-
-## Navigation
-
-*Composants de navigation à venir...*
-
-
----
-
-
-~ 📘 Dernière mise à jour : {{new Date('2025-10-25').toLocaleDateString()}} ~

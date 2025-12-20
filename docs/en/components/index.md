@@ -9,17 +9,20 @@ This section contains the documentation for all components available in the Surg
 - [AvatarGroup](/en/components/avatargroup) - Avatar group with overflow management
 - [Badge](/en/components/badge) - Modern badge component with variants and icons
 - [Dialog](/en/components/dialog) - Versatile modal/drawer component
-- [Tabs](en/components/tabs) - tabs component
-- [Progress](en/components/progress) - Composant Progress
+- [Tabs](/en/components/tabs) - tabs component
+- [Progress](/en/components/progress) - Composant Progress
 
 ## Forms
 
-- [InputField](/en/components/inputfield) - InputField component with multiple variants
-- [Password](/en/components/password) - Password component with validation and progress bar
+- [Input](/en/components/input) - InputField component with multiple variants
+- [Textarea](/en/components/textarea) - Textarea field component with counter and auto-resize
+- [SelectBox](/en/components/selectbox) - SelectBox component with multiple selection support
+- [RadioGroup](/en/components/radio-group) - Radio Group component for single selection with different display modes
+- [CheckboxGroup](/en/components/checkbox-group) - Checkbox Group component for multiple selection with different display modes
 - [Switch](/en/components/switch) - Switch component for toggle actions
 - [FileUpload](/en/components/fileupload) - File upload component with drag & drop
-- [TextareaField](/en/components/textareafield) - Textarea field component with counter and auto-resize
 - [Slider](/en/components/slider) - Slider component for numeric values
+- [Password](/en/components/password) - Password component with validation and progress bar
 
 ## Actions
 
@@ -31,9 +34,5 @@ This section contains the documentation for all components available in the Surg
 
 ## Organization
 
-- [FormFields](/en/components/formfields) - Form field group with controlled spacing
+- [FormFieldGroup](/en/components/formfieldGroup) - Form field group with controlled spacing
 - [FloatButton](/en/components/floatbutton) - Floating button positioned in screen corners
-
-## Navigation
-
-*Navigation components coming soon...*
