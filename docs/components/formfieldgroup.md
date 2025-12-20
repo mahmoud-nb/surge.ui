@@ -1,16 +1,16 @@
-# FormFields
+# FormFieldGroup
 
-Composant FormFields pour organiser et aligner des champs de formulaire avec un espacement contrôlé. Supporte la propagation de la prop `size` aux champs enfants et la gestion des sections avec slots `head` et `footer`.
+Composant FormFieldGroup pour organiser et aligner des champs de formulaire avec un espacement contrôlé. Supporte la propagation de la prop `size` aux champs enfants et la gestion des sections avec slots `head` et `footer`.
 
 ## Exemples d'utilisation
 
-### FormFields de base
+### FormFieldGroup de base
 
 <div class="component-demo">
   <div class="demo-section">
     <h4>Formulaire simple</h4>
     <div class="demo-inputs">
-      <SuFormFields style="width: 400px;">
+      <SuFormFieldGroup style="width: 400px;">
         <SuInputField 
           label="Nom complet"
           placeholder="Entrez votre nom"
@@ -38,7 +38,7 @@ Composant FormFields pour organiser et aligner des champs de formulaire avec un 
           rightLabel="Activées"
           message="Recevoir des notifications par email"
         />
-      </SuFormFields>
+      </SuFormFieldGroup>
     </div>
   </div>
 </div>
@@ -55,7 +55,7 @@ const options = [
 </script>
 
 <template>
-  <SuFormFields>
+  <SuFormFieldGroup>
     <SuInputField 
       label="Nom complet"
       placeholder="Entrez votre nom"
@@ -79,7 +79,7 @@ const options = [
       rightLabel="Activées"
       message="Recevoir des notifications par email"
     />
-  </SuFormFields>
+  </SuFormFieldGroup>
 </template>
 ```
 
@@ -91,35 +91,35 @@ const options = [
     <div class="demo-buttons-vertical">
       <div>
         <p><strong>Gap Small</strong></p>
-        <SuFormFields gap="sm" style="width: 300px;">
+        <SuFormFieldGroup gap="sm" style="width: 300px;">
           <SuInputField label="Nom" placeholder="Votre nom" />
           <SuInputField type="email" label="Email" placeholder="email@exemple.com" />
           <SuSwitchField label="Newsletter" rightLabel="Oui" />
-        </SuFormFields>
+        </SuFormFieldGroup>
       </div>
       <div>
         <p><strong>Gap Medium (défaut)</strong></p>
-        <SuFormFields gap="md" style="width: 300px;">
+        <SuFormFieldGroup gap="md" style="width: 300px;">
           <SuInputField label="Nom" placeholder="Votre nom" />
           <SuInputField type="email" label="Email" placeholder="email@exemple.com" />
           <SuSwitchField label="Newsletter" rightLabel="Oui" />
-        </SuFormFields>
+        </SuFormFieldGroup>
       </div>
       <div>
         <p><strong>Gap Large</strong></p>
-        <SuFormFields gap="lg" style="width: 300px;">
+        <SuFormFieldGroup gap="lg" style="width: 300px;">
           <SuInputField label="Nom" placeholder="Votre nom" />
           <SuInputField type="email" label="Email" placeholder="email@exemple.com" />
           <SuSwitchField label="Newsletter" rightLabel="Oui" />
-        </SuFormFields>
+        </SuFormFieldGroup>
       </div>
       <div>
         <p><strong>Gap Extra Large</strong></p>
-        <SuFormFields gap="xl" style="width: 300px;">
+        <SuFormFieldGroup gap="xl" style="width: 300px;">
           <SuInputField label="Nom" placeholder="Votre nom" />
           <SuInputField type="email" label="Email" placeholder="email@exemple.com" />
           <SuSwitchField label="Newsletter" rightLabel="Oui" />
-        </SuFormFields>
+        </SuFormFieldGroup>
       </div>
     </div>
   </div>
@@ -128,32 +128,32 @@ const options = [
 ```vue
 <template>
   <!-- Espacement petit -->
-  <SuFormFields gap="sm">
+  <SuFormFieldGroup gap="sm">
     <SuInputField label="Nom" placeholder="Votre nom" />
     <SuInputField type="email" label="Email" placeholder="email@exemple.com" />
     <SuSwitchField label="Newsletter" rightLabel="Oui" />
-  </SuFormFields>
+  </SuFormFieldGroup>
   
   <!-- Espacement moyen (défaut) -->
-  <SuFormFields gap="md">
+  <SuFormFieldGroup gap="md">
     <SuInputField label="Nom" placeholder="Votre nom" />
     <SuInputField type="email" label="Email" placeholder="email@exemple.com" />
     <SuSwitchField label="Newsletter" rightLabel="Oui" />
-  </SuFormFields>
+  </SuFormFieldGroup>
   
   <!-- Espacement large -->
-  <SuFormFields gap="lg">
+  <SuFormFieldGroup gap="lg">
     <SuInputField label="Nom" placeholder="Votre nom" />
     <SuInputField type="email" label="Email" placeholder="email@exemple.com" />
     <SuSwitchField label="Newsletter" rightLabel="Oui" />
-  </SuFormFields>
+  </SuFormFieldGroup>
   
   <!-- Espacement extra large -->
-  <SuFormFields gap="xl">
+  <SuFormFieldGroup gap="xl">
     <SuInputField label="Nom" placeholder="Votre nom" />
     <SuInputField type="email" label="Email" placeholder="email@exemple.com" />
     <SuSwitchField label="Newsletter" rightLabel="Oui" />
-  </SuFormFields>
+  </SuFormFieldGroup>
 </template>
 ```
 
@@ -165,7 +165,7 @@ const options = [
     <div class="demo-buttons-vertical">
       <div>
         <p><strong>Taille Small forcée</strong></p>
-        <SuFormFields size="sm" style="width: 300px;">
+        <SuFormFieldGroup size="sm" style="width: 300px;">
           <SuInputField label="Nom" placeholder="Petit champ" />
           <SuSelectBoxField 
             :options="[
@@ -176,11 +176,11 @@ const options = [
             placeholder="Petit select" 
           />
           <SuTextareaField label="Message" placeholder="Petit textarea" />
-        </SuFormFields>
+        </SuFormFieldGroup>
       </div>
       <div>
         <p><strong>Taille Medium forcée</strong></p>
-        <SuFormFields size="md" style="width: 300px;">
+        <SuFormFieldGroup size="md" style="width: 300px;">
           <SuInputField label="Nom" placeholder="Champ moyen" />
           <SuSelectBoxField 
             :options="[
@@ -191,11 +191,11 @@ const options = [
             placeholder="Select moyen" 
           />
           <SuTextareaField label="Message" placeholder="Textarea moyen" />
-        </SuFormFields>
+        </SuFormFieldGroup>
       </div>
       <div>
         <p><strong>Taille Large forcée</strong></p>
-        <SuFormFields size="lg" style="width: 300px;">
+        <SuFormFieldGroup size="lg" style="width: 300px;">
           <SuInputField label="Nom" placeholder="Grand champ" />
           <SuSelectBoxField 
             :options="[
@@ -206,7 +206,7 @@ const options = [
             placeholder="Grand select" 
           />
           <SuTextareaField label="Message" placeholder="Grand textarea" />
-        </SuFormFields>
+        </SuFormFieldGroup>
       </div>
     </div>
   </div>
@@ -215,18 +215,18 @@ const options = [
 ```vue
 <template>
   <!-- Tous les champs seront en taille small -->
-  <SuFormFields size="sm">
+  <SuFormFieldGroup size="sm">
     <SuInputField label="Nom" placeholder="Petit champ" />
     <SuSelectBoxField :options="options" label="Sélection" placeholder="Petit select" />
     <SuTextareaField label="Message" placeholder="Petit textarea" />
-  </SuFormFields>
+  </SuFormFieldGroup>
   
   <!-- Tous les champs seront en taille large -->
-  <SuFormFields size="lg">
+  <SuFormFieldGroup size="lg">
     <SuInputField label="Nom" placeholder="Grand champ" />
     <SuSelectBoxField :options="options" label="Sélection" placeholder="Grand select" />
     <SuTextareaField label="Message" placeholder="Grand textarea" />
-  </SuFormFields>
+  </SuFormFieldGroup>
 </template>
 ```
 
@@ -236,7 +236,7 @@ const options = [
   <div class="demo-section">
     <h4>Champs alignés horizontalement</h4>
     <div class="demo-inputs">
-      <SuFormFields direction="horizontal" gap="md" style="width: 100%; max-width: 800px;">
+      <SuFormFieldGroup direction="horizontal" gap="md" style="width: 100%; max-width: 800px;">
         <SuInputField 
           label="Prénom"
           placeholder="Votre prénom"
@@ -256,14 +256,14 @@ const options = [
           label="Pays"
           placeholder="Sélectionnez votre pays"
         />
-      </SuFormFields>
+      </SuFormFieldGroup>
     </div>
   </div>
 </div>
 
 ```vue
 <template>
-  <SuFormFields direction="horizontal" gap="md">
+  <SuFormFieldGroup direction="horizontal" gap="md">
     <SuInputField 
       label="Prénom"
       placeholder="Votre prénom"
@@ -279,7 +279,7 @@ const options = [
       label="Pays"
       placeholder="Sélectionnez votre pays"
     />
-  </SuFormFields>
+  </SuFormFieldGroup>
 </template>
 ```
 
@@ -289,7 +289,7 @@ const options = [
   <div class="demo-section">
     <h4>Formulaire avec en-tête et pied de page</h4>
     <div class="demo-inputs">
-      <SuFormFields style="width: 500px;" sectionGap="lg" role="form" aria-label="Formulaire d'inscription">
+      <SuFormFieldGroup style="width: 500px;" sectionGap="lg" role="form" aria-label="Formulaire d'inscription">
         <template #head>
           <div style="text-align: center; padding: 1.5rem; background-color: #f8fafc; border-radius: 0.5rem;">
             <h2 style="margin: 0 0 0.5rem 0; color: #1e293b; font-size: 1.5rem; font-weight: 600;">
@@ -337,7 +337,7 @@ const options = [
             </div>
           </div>
         </template>
-      </SuFormFields>
+      </SuFormFieldGroup>
     </div>
   </div>
 </div>
@@ -348,7 +348,7 @@ import { UserIcon, AtSymbolIcon, LockClosedIcon } from '@heroicons/vue/24/outlin
 </script>
 
 <template>
-  <SuFormFields role="form" aria-label="Formulaire d'inscription">
+  <SuFormFieldGroup role="form" aria-label="Formulaire d'inscription">
     <template #head>
       <div class="form-header">
         <h2>Créer un compte</h2>
@@ -391,7 +391,7 @@ import { UserIcon, AtSymbolIcon, LockClosedIcon } from '@heroicons/vue/24/outlin
         <SuButton variant="primary">Créer le compte</SuButton>
       </div>
     </template>
-  </SuFormFields>
+  </SuFormFieldGroup>
 </template>
 ```
 
@@ -403,7 +403,7 @@ import { UserIcon, AtSymbolIcon, LockClosedIcon } from '@heroicons/vue/24/outlin
     <div class="demo-buttons-vertical">
       <div>
         <p><strong>Section Gap Small</strong></p>
-        <SuFormFields sectionGap="sm" style="width: 300px;">
+        <SuFormFieldGroup sectionGap="sm" style="width: 300px;">
           <template #head>
             <h3 style="margin: 0; color: #374151;">Informations personnelles</h3>
           </template>
@@ -412,11 +412,11 @@ import { UserIcon, AtSymbolIcon, LockClosedIcon } from '@heroicons/vue/24/outlin
           <template #footer>
             <SuButton variant="primary" block>Sauvegarder</SuButton>
           </template>
-        </SuFormFields>
+        </SuFormFieldGroup>
       </div>
       <div>
         <p><strong>Section Gap Large (défaut)</strong></p>
-        <SuFormFields sectionGap="lg" style="width: 300px;">
+        <SuFormFieldGroup sectionGap="lg" style="width: 300px;">
           <template #head>
             <h3 style="margin: 0; color: #374151;">Informations personnelles</h3>
           </template>
@@ -425,11 +425,11 @@ import { UserIcon, AtSymbolIcon, LockClosedIcon } from '@heroicons/vue/24/outlin
           <template #footer>
             <SuButton variant="primary" block>Sauvegarder</SuButton>
           </template>
-        </SuFormFields>
+        </SuFormFieldGroup>
       </div>
       <div>
         <p><strong>Section Gap Extra Large</strong></p>
-        <SuFormFields sectionGap="xl" style="width: 300px;">
+        <SuFormFieldGroup sectionGap="xl" style="width: 300px;">
           <template #head>
             <h3 style="margin: 0; color: #374151;">Informations personnelles</h3>
           </template>
@@ -438,7 +438,7 @@ import { UserIcon, AtSymbolIcon, LockClosedIcon } from '@heroicons/vue/24/outlin
           <template #footer>
             <SuButton variant="primary" block>Sauvegarder</SuButton>
           </template>
-        </SuFormFields>
+        </SuFormFieldGroup>
       </div>
     </div>
   </div>
@@ -447,7 +447,7 @@ import { UserIcon, AtSymbolIcon, LockClosedIcon } from '@heroicons/vue/24/outlin
 ```vue
 <template>
   <!-- Espacement petit entre sections -->
-  <SuFormFields sectionGap="sm">
+  <SuFormFieldGroup sectionGap="sm">
     <template #head>
       <h3>Informations personnelles</h3>
     </template>
@@ -456,10 +456,10 @@ import { UserIcon, AtSymbolIcon, LockClosedIcon } from '@heroicons/vue/24/outlin
     <template #footer>
       <SuButton variant="primary" block>Sauvegarder</SuButton>
     </template>
-  </SuFormFields>
+  </SuFormFieldGroup>
   
   <!-- Espacement extra large entre sections -->
-  <SuFormFields sectionGap="xl">
+  <SuFormFieldGroup sectionGap="xl">
     <template #head>
       <h3>Informations personnelles</h3>
     </template>
@@ -468,7 +468,7 @@ import { UserIcon, AtSymbolIcon, LockClosedIcon } from '@heroicons/vue/24/outlin
     <template #footer>
       <SuButton variant="primary" block>Sauvegarder</SuButton>
     </template>
-  </SuFormFields>
+  </SuFormFieldGroup>
 </template>
 ```
 
@@ -478,7 +478,7 @@ import { UserIcon, AtSymbolIcon, LockClosedIcon } from '@heroicons/vue/24/outlin
   <div class="demo-section">
     <h4>Formulaire complet avec tous les types de champs</h4>
     <div class="demo-inputs">
-      <SuFormFields style="width: 500px;" gap="lg" size="md">
+      <SuFormFieldGroup style="width: 500px;" gap="lg" size="md">
         <template #head>
           <div style="text-align: center; padding: 1.5rem; background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%); border-radius: 0.75rem; color: white;">
             <h2 style="margin: 0 0 0.5rem 0; font-size: 1.5rem; font-weight: 700;">
@@ -557,14 +557,14 @@ import { UserIcon, AtSymbolIcon, LockClosedIcon } from '@heroicons/vue/24/outlin
             <SuButton variant="primary">Sauvegarder le profil</SuButton>
           </div>
         </template>
-      </SuFormFields>
+      </SuFormFieldGroup>
     </div>
   </div>
 </div>
 
 ```vue
 <template>
-  <SuFormFields gap="lg" size="md">
+  <SuFormFieldGroup gap="lg" size="md">
     <template #head>
       <div class="form-header">
         <h2>Profil complet</h2>
@@ -587,7 +587,7 @@ import { UserIcon, AtSymbolIcon, LockClosedIcon } from '@heroicons/vue/24/outlin
         <SuButton variant="primary">Sauvegarder</SuButton>
       </div>
     </template>
-  </SuFormFields>
+  </SuFormFieldGroup>
 </template>
 ```
 
@@ -622,15 +622,15 @@ import { UserIcon, AtSymbolIcon, LockClosedIcon } from '@heroicons/vue/24/outlin
 
 ### 🔄 Propagation automatique
 
-Quand `size` est définie sur le `FormFields`, elle **surcharge** automatiquement les props des champs enfants :
+Quand `size` est définie sur le `FormFieldGroup`, elle **surcharge** automatiquement les props des champs enfants :
 
 ```vue
 <!-- Les champs auront TOUS la taille 'lg' -->
-<SuFormFields size="lg">
+<SuFormFieldGroup size="lg">
   <SuInputField size="sm" label="Champ 1" />  <!-- Devient lg -->
   <SuInputField label="Champ 2" />            <!-- Devient lg -->
   <SuSelectBoxField size="md" label="Select" /> <!-- Devient lg -->
-</SuFormFields>
+</SuFormFieldGroup>
 ```
 
 ### 🎯 Validation du contenu
@@ -670,21 +670,21 @@ En mode horizontal, le composant passe automatiquement en vertical sur mobile (�
 
 ```vue
 <!-- Vertical -->
-<SuFormFields direction="vertical">
+<SuFormFieldGroup direction="vertical">
   <SuInputField label="Champ 1" />
   <SuInputField label="Champ 2" />
-</SuFormFields>
+</SuFormFieldGroup>
 
 <!-- Horizontal -->
-<SuFormFields direction="horizontal">
+<SuFormFieldGroup direction="horizontal">
   <SuInputField label="Prénom" />
   <SuInputField label="Nom" />
-</SuFormFields>
+</SuFormFieldGroup>
 ```
 
 ## Accessibilité
 
-Le composant FormFields respecte les normes WCAG 2.1 AA :
+Le composant FormFieldGroup respecte les normes WCAG 2.1 AA :
 
 ### ✅ Fonctionnalités d'accessibilité
 
@@ -699,17 +699,17 @@ Le composant FormFields respecte les normes WCAG 2.1 AA :
 
 ```vue
 <!-- Formulaire principal -->
-<SuFormFields 
+<SuFormFieldGroup 
   gap="lg" 
   role="form" 
   aria-label="Formulaire d'inscription"
 >
   <SuInputField label="Email" type="email" required />
   <SuInputField label="Mot de passe" type="password" required />
-</SuFormFields>
+</SuFormFieldGroup>
 
 <!-- Section de paramètres -->
-<SuFormFields 
+<SuFormFieldGroup 
   gap="md" 
   role="group" 
   aria-label="Paramètres de notification"
@@ -717,11 +717,11 @@ Le composant FormFields respecte les normes WCAG 2.1 AA :
 >
   <SuSwitchField label="Notifications email" />
   <SuSwitchField label="Notifications push" />
-</SuFormFields>
+</SuFormFieldGroup>
 <div id="notification-help">Configurez vos préférences de notification</div>
 
 <!-- Formulaire horizontal responsive -->
-<SuFormFields 
+<SuFormFieldGroup 
   direction="horizontal" 
   gap="md"
   role="form"
@@ -730,7 +730,7 @@ Le composant FormFields respecte les normes WCAG 2.1 AA :
   <SuInputField label="Prénom" required />
   <SuInputField label="Nom" required />
   <SuInputField label="Code postal" required />
-</SuFormFields>
+</SuFormFieldGroup>
 ```
 
 ## Exemples d'usage avancés
@@ -762,7 +762,7 @@ const preferences = [
 </script>
 
 <template>
-  <SuFormFields 
+  <SuFormFieldGroup 
     gap="lg" 
     sectionGap="xl"
     role="form" 
@@ -815,7 +815,7 @@ const preferences = [
         <SuButton variant="primary">Envoyer</SuButton>
       </div>
     </template>
-  </SuFormFields>
+  </SuFormFieldGroup>
 </template>
 ```
 
@@ -854,7 +854,7 @@ const themes = [
 </script>
 
 <template>
-  <SuFormFields 
+  <SuFormFieldGroup 
     gap="lg" 
     sectionGap="xl"
     size="md"
@@ -925,7 +925,7 @@ const themes = [
         </div>
       </div>
     </template>
-  </SuFormFields>
+  </SuFormFieldGroup>
 </template>
 ```
 
@@ -952,7 +952,7 @@ const previousStep = () => {
 </script>
 
 <template>
-  <SuFormFields 
+  <SuFormFieldGroup 
     gap="lg" 
     sectionGap="xl"
     role="form" 
@@ -1010,13 +1010,13 @@ const previousStep = () => {
         </SuButton>
       </div>
     </template>
-  </SuFormFields>
+  </SuFormFieldGroup>
 </template>
 ```
 
 ## Contrôle du contenu du slot
 
-Le composant `FormFields` vérifie automatiquement le contenu de son slot :
+Le composant `FormFieldGroup` vérifie automatiquement le contenu de son slot :
 
 ### ✅ Éléments acceptés
 - Composants de formulaire du design system : `InputField`, `SelectBoxField`, `RadioGroupField`, `CheckboxGroupField`, `SwitchField`, `FileUploadField`, `TextareaField`, `SliderField`
@@ -1032,18 +1032,18 @@ Le composant `FormFields` vérifie automatiquement le contenu de son slot :
 
 ```vue
 <!-- ✅ Correct -->
-<SuFormFields>
+<SuFormFieldGroup>
   <SuInputField label="Nom" />
   <SuSelectBoxField :options="options" label="Choix" />
   <!-- Commentaire ignoré -->
-</SuFormFields>
+</SuFormFieldGroup>
 
 <!-- ⚠️ Avertissement dans la console -->
-<SuFormFields>
+<SuFormFieldGroup>
   <SuInputField label="Champ valide" />
   <div>Élément non-champ</div> <!-- Ignoré avec avertissement -->
   <SuSwitchField label="Switch valide" />
-</SuFormFields>
+</SuFormFieldGroup>
 ```
 
 Cette approche garantit la cohérence visuelle et fonctionnelle tout en informant les développeurs des problèmes potentiels.

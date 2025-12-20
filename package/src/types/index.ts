@@ -520,8 +520,8 @@ export interface FileUploadFieldProps extends AccessibilityProps {
   loading?: boolean;
 }
 
-// FormFields.vue
-export interface FormFieldsProps extends AccessibilityProps {
+// FormFieldGroup.vue
+export interface FormFieldGroupProps extends AccessibilityProps {
   gap?: 'sm' | 'md' | 'lg' | 'xl';
   sectionGap?: 'sm' | 'md' | 'lg' | 'xl';
   size?: Size;

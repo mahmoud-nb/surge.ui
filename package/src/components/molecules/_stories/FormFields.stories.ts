@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import { UserIcon, AtSymbolIcon, LockClosedIcon, BuildingOfficeIcon } from '@heroicons/vue/24/outline'
-import FormFields from '../FormFields.vue'
+import FormFieldGroup from '../FormFieldGroup.vue'
 import InputField from '../InputField.vue'
 import SelectBoxField from '@/components/molecules/SelectBoxField.vue'
 import RadioGroupField from '@/components/molecules/RadioGroupField.vue'
@@ -11,14 +11,14 @@ import TextareaField from '@/components/molecules/TextareaField.vue'
 import SliderField from '@/components/molecules/SliderField.vue'
 import Button from '@/components/atoms/Button.vue'
 
-const meta: Meta<typeof FormFields> = {
-  title: 'Molecules/FormFields',
-  component: FormFields,
+const meta: Meta<typeof FormFieldGroup> = {
+  title: 'Molecules/FormFieldGroup',
+  component: FormFieldGroup,
   parameters: {
     layout: 'centered',
     docs: {
       description: {
-        component: 'Composant FormFields pour organiser et aligner des champs de formulaire avec un espacement contrôlé. Supporte la propagation de la prop size aux champs enfants et la gestion des sections avec slots head et footer.'
+        component: 'Composant FormFieldGroup pour organiser et aligner des champs de formulaire avec un espacement contrôlé. Supporte la propagation de la prop size aux champs enfants et la gestion des sections avec slots head et footer.'
       }
     }
   },
@@ -78,12 +78,12 @@ const accountTypes = [
 
 export const Default: Story = {
   render: (args) => ({
-    components: { FormFields, InputField, SelectBoxField, SwitchField },
+    components: { FormFieldGroup, InputField, SelectBoxField, SwitchField },
     setup() {
       return { args, basicOptions, AtSymbolIcon, LockClosedIcon }
     },
     template: `
-      <FormFields v-bind="args" style="width: 400px;">
+      <FormFieldGroup v-bind="args" style="width: 400px;">
         <InputField 
           label="Nom complet"
           placeholder="Entrez votre nom"
@@ -106,14 +106,14 @@ export const Default: Story = {
           rightLabel="Activées"
           message="Recevoir des notifications par email"
         />
-      </FormFields>
+      </FormFieldGroup>
     `
   })
 }
 
 export const WithGaps: Story = {
   render: () => ({
-    components: { FormFields, InputField, SwitchField },
+    components: { FormFieldGroup, InputField, SwitchField },
     setup() {
       return { AtSymbolIcon }
     },
@@ -121,38 +121,38 @@ export const WithGaps: Story = {
       <div style="display: flex; flex-direction: column; gap: 3rem; align-items: flex-start;">
         <div>
           <h4 style="margin-bottom: 1rem;">Gap Small</h4>
-          <FormFields gap="sm" style="width: 300px;">
+          <FormFieldGroup gap="sm" style="width: 300px;">
             <InputField label="Nom" placeholder="Votre nom" />
             <InputField type="email" label="Email" placeholder="email@exemple.com" :prefixIcon="AtSymbolIcon" />
             <SwitchField label="Newsletter" rightLabel="Oui" />
-          </FormFields>
+          </FormFieldGroup>
         </div>
         
         <div>
           <h4 style="margin-bottom: 1rem;">Gap Medium (défaut)</h4>
-          <FormFields gap="md" style="width: 300px;">
+          <FormFieldGroup gap="md" style="width: 300px;">
             <InputField label="Nom" placeholder="Votre nom" />
             <InputField type="email" label="Email" placeholder="email@exemple.com" :prefixIcon="AtSymbolIcon" />
             <SwitchField label="Newsletter" rightLabel="Oui" />
-          </FormFields>
+          </FormFieldGroup>
         </div>
         
         <div>
           <h4 style="margin-bottom: 1rem;">Gap Large</h4>
-          <FormFields gap="lg" style="width: 300px;">
+          <FormFieldGroup gap="lg" style="width: 300px;">
             <InputField label="Nom" placeholder="Votre nom" />
             <InputField type="email" label="Email" placeholder="email@exemple.com" :prefixIcon="AtSymbolIcon" />
             <SwitchField label="Newsletter" rightLabel="Oui" />
-          </FormFields>
+          </FormFieldGroup>
         </div>
         
         <div>
           <h4 style="margin-bottom: 1rem;">Gap Extra Large</h4>
-          <FormFields gap="xl" style="width: 300px;">
+          <FormFieldGroup gap="xl" style="width: 300px;">
             <InputField label="Nom" placeholder="Votre nom" />
             <InputField type="email" label="Email" placeholder="email@exemple.com" :prefixIcon="AtSymbolIcon" />
             <SwitchField label="Newsletter" rightLabel="Oui" />
-          </FormFields>
+          </FormFieldGroup>
         </div>
       </div>
     `
@@ -161,7 +161,7 @@ export const WithGaps: Story = {
 
 export const ForcedSize: Story = {
   render: () => ({
-    components: { FormFields, InputField, SelectBoxField, TextareaField },
+    components: { FormFieldGroup, InputField, SelectBoxField, TextareaField },
     setup() {
       return { basicOptions }
     },
@@ -169,29 +169,29 @@ export const ForcedSize: Story = {
       <div style="display: flex; flex-direction: column; gap: 3rem; align-items: flex-start;">
         <div>
           <h4 style="margin-bottom: 1rem;">Taille Small forcée</h4>
-          <FormFields size="sm" style="width: 300px;">
+          <FormFieldGroup size="sm" style="width: 300px;">
             <InputField label="Nom" placeholder="Petit champ" />
             <SelectBoxField :options="basicOptions" label="Sélection" placeholder="Petit select" />
             <TextareaField label="Message" placeholder="Petit textarea" />
-          </FormFields>
+          </FormFieldGroup>
         </div>
         
         <div>
           <h4 style="margin-bottom: 1rem;">Taille Medium forcée</h4>
-          <FormFields size="md" style="width: 300px;">
+          <FormFieldGroup size="md" style="width: 300px;">
             <InputField label="Nom" placeholder="Champ moyen" />
             <SelectBoxField :options="basicOptions" label="Sélection" placeholder="Select moyen" />
             <TextareaField label="Message" placeholder="Textarea moyen" />
-          </FormFields>
+          </FormFieldGroup>
         </div>
         
         <div>
           <h4 style="margin-bottom: 1rem;">Taille Large forcée</h4>
-          <FormFields size="lg" style="width: 300px;">
+          <FormFieldGroup size="lg" style="width: 300px;">
             <InputField label="Nom" placeholder="Grand champ" />
             <SelectBoxField :options="basicOptions" label="Sélection" placeholder="Grand select" />
             <TextareaField label="Message" placeholder="Grand textarea" />
-          </FormFields>
+          </FormFieldGroup>
         </div>
       </div>
     `
@@ -200,14 +200,14 @@ export const ForcedSize: Story = {
 
 export const Horizontal: Story = {
   render: () => ({
-    components: { FormFields, InputField, SelectBoxField },
+    components: { FormFieldGroup, InputField, SelectBoxField },
     setup() {
       return { countryOptions }
     },
     template: `
       <div style="width: 100%; max-width: 800px;">
         <h4 style="margin-bottom: 1rem;">Direction horizontale</h4>
-        <FormFields direction="horizontal" gap="md">
+        <FormFieldGroup direction="horizontal" gap="md">
           <InputField 
             label="Prénom"
             placeholder="Votre prénom"
@@ -223,7 +223,7 @@ export const Horizontal: Story = {
             label="Pays"
             placeholder="Sélectionnez votre pays"
           />
-        </FormFields>
+        </FormFieldGroup>
       </div>
     `
   })
@@ -231,12 +231,12 @@ export const Horizontal: Story = {
 
 export const WithSections: Story = {
   render: () => ({
-    components: { FormFields, InputField, SelectBoxField, RadioGroupField, SwitchField, Button },
+    components: { FormFieldGroup, InputField, SelectBoxField, RadioGroupField, SwitchField, Button },
     setup() {
       return { countryOptions, accountTypes, AtSymbolIcon, LockClosedIcon }
     },
     template: `
-      <FormFields style="width: 500px;" sectionGap="lg" role="form" aria-label="Formulaire d'inscription">
+      <FormFieldGroup style="width: 500px;" sectionGap="lg" role="form" aria-label="Formulaire d'inscription">
         <template #head>
           <div style="text-align: center; padding: 1.5rem; background-color: #f8fafc; border-radius: 0.5rem; border: 1px solid #e2e8f0;">
             <h2 style="margin: 0 0 0.5rem 0; color: #1e293b; font-size: 1.5rem; font-weight: 600;">
@@ -304,19 +304,19 @@ export const WithSections: Story = {
             </div>
           </div>
         </template>
-      </FormFields>
+      </FormFieldGroup>
     `
   })
 }
 
 export const SectionGaps: Story = {
   render: () => ({
-    components: { FormFields, InputField, Button },
+    components: { FormFieldGroup, InputField, Button },
     template: `
       <div style="display: flex; flex-direction: column; gap: 3rem; align-items: flex-start;">
         <div>
           <h4 style="margin-bottom: 1rem;">Section Gap Small</h4>
-          <FormFields sectionGap="sm" style="width: 300px;">
+          <FormFieldGroup sectionGap="sm" style="width: 300px;">
             <template #head>
               <h3 style="margin: 0; color: #374151;">Informations personnelles</h3>
             </template>
@@ -325,12 +325,12 @@ export const SectionGaps: Story = {
             <template #footer>
               <Button variant="primary" block>Sauvegarder</Button>
             </template>
-          </FormFields>
+          </FormFieldGroup>
         </div>
         
         <div>
           <h4 style="margin-bottom: 1rem;">Section Gap Large (défaut)</h4>
-          <FormFields sectionGap="lg" style="width: 300px;">
+          <FormFieldGroup sectionGap="lg" style="width: 300px;">
             <template #head>
               <h3 style="margin: 0; color: #374151;">Informations personnelles</h3>
             </template>
@@ -339,12 +339,12 @@ export const SectionGaps: Story = {
             <template #footer>
               <Button variant="primary" block>Sauvegarder</Button>
             </template>
-          </FormFields>
+          </FormFieldGroup>
         </div>
         
         <div>
           <h4 style="margin-bottom: 1rem;">Section Gap Extra Large</h4>
-          <FormFields sectionGap="xl" style="width: 300px;">
+          <FormFieldGroup sectionGap="xl" style="width: 300px;">
             <template #head>
               <h3 style="margin: 0; color: #374151;">Informations personnelles</h3>
             </template>
@@ -353,7 +353,7 @@ export const SectionGaps: Story = {
             <template #footer>
               <Button variant="primary" block>Sauvegarder</Button>
             </template>
-          </FormFields>
+          </FormFieldGroup>
         </div>
       </div>
     `
@@ -362,7 +362,7 @@ export const SectionGaps: Story = {
 
 export const ContactForm: Story = {
   render: () => ({
-    components: { FormFields, InputField, SelectBoxField, TextareaField, CheckboxGroupField, Button },
+    components: { FormFieldGroup, InputField, SelectBoxField, TextareaField, CheckboxGroupField, Button },
     setup() {
       const subjects = [
         { value: 'support', label: 'Support technique' },
@@ -379,7 +379,7 @@ export const ContactForm: Story = {
       return { subjects, preferences, AtSymbolIcon }
     },
     template: `
-      <FormFields 
+      <FormFieldGroup 
         style="width: 600px;" 
         gap="lg" 
         sectionGap="xl"
@@ -442,14 +442,14 @@ export const ContactForm: Story = {
             <Button variant="primary">Envoyer le message</Button>
           </div>
         </template>
-      </FormFields>
+      </FormFieldGroup>
     `
   })
 }
 
 export const UserProfile: Story = {
   render: () => ({
-    components: { FormFields, InputField, SelectBoxField, RadioGroupField, SwitchField, SliderField, Button },
+    components: { FormFieldGroup, InputField, SelectBoxField, RadioGroupField, SwitchField, SliderField, Button },
     setup() {
       const languages = [
         { value: 'fr', label: 'Français' },
@@ -466,7 +466,7 @@ export const UserProfile: Story = {
       return { languages, themes, accountTypes }
     },
     template: `
-      <FormFields 
+      <FormFieldGroup 
         style="width: 500px;" 
         gap="lg" 
         sectionGap="xl"
@@ -546,20 +546,20 @@ export const UserProfile: Story = {
             </div>
           </div>
         </template>
-      </FormFields>
+      </FormFieldGroup>
     `
   })
 }
 
 export const HorizontalLayout: Story = {
   render: () => ({
-    components: { FormFields, InputField, SelectBoxField },
+    components: { FormFieldGroup, InputField, SelectBoxField },
     setup() {
       return { countryOptions }
     },
     template: `
       <div style="width: 100%; max-width: 900px;">
-        <FormFields direction="horizontal" gap="md" sectionGap="lg">
+        <FormFieldGroup direction="horizontal" gap="md" sectionGap="lg">
           <template #head>
             <h3 style="margin: 0; color: #374151; text-align: center;">Adresse de livraison</h3>
           </template>
@@ -590,7 +590,7 @@ export const HorizontalLayout: Story = {
               </p>
             </div>
           </template>
-        </FormFields>
+        </FormFieldGroup>
       </div>
     `
   })
@@ -598,7 +598,7 @@ export const HorizontalLayout: Story = {
 
 export const ComplexForm: Story = {
   render: () => ({
-    components: { FormFields, InputField, SelectBoxField, RadioGroupField, CheckboxGroupField, SwitchField, FileUploadField, TextareaField, SliderField, Button },
+    components: { FormFieldGroup, InputField, SelectBoxField, RadioGroupField, CheckboxGroupField, SwitchField, FileUploadField, TextareaField, SliderField, Button },
     setup() {
       const skills = [
         { value: 'js', label: 'JavaScript' },
@@ -622,7 +622,7 @@ export const ComplexForm: Story = {
       return { skills, experience, benefits, countryOptions }
     },
     template: `
-      <FormFields 
+      <FormFieldGroup 
         style="width: 600px;" 
         gap="lg" 
         sectionGap="xl"
@@ -750,31 +750,31 @@ export const ComplexForm: Story = {
             </div>
           </div>
         </template>
-      </FormFields>
+      </FormFieldGroup>
     `
   })
 }
 
 export const WithAccessibility: Story = {
   render: () => ({
-    components: { FormFields, InputField, SwitchField, Button },
+    components: { FormFieldGroup, InputField, SwitchField, Button },
     template: `
       <div style="display: flex; flex-direction: column; gap: 3rem; align-items: flex-start;">
         <div>
           <h4 style="margin-bottom: 1rem;">Formulaire avec rôle form</h4>
-          <FormFields 
+          <FormFieldGroup 
             style="width: 400px;"
             role="form" 
             aria-label="Paramètres de compte"
           >
             <InputField label="Nom d'utilisateur" placeholder="Votre nom d'utilisateur" />
             <SwitchField label="Notifications" rightLabel="Activées" />
-          </FormFields>
+          </FormFieldGroup>
         </div>
         
         <div>
           <h4 style="margin-bottom: 1rem;">Section avec description</h4>
-          <FormFields 
+          <FormFieldGroup 
             style="width: 400px;"
             role="group" 
             aria-label="Informations de sécurité"
@@ -795,7 +795,7 @@ export const WithAccessibility: Story = {
             <template #footer>
               <Button variant="primary" block>Mettre à jour la sécurité</Button>
             </template>
-          </FormFields>
+          </FormFieldGroup>
         </div>
       </div>
     `
@@ -804,14 +804,14 @@ export const WithAccessibility: Story = {
 
 export const ResponsiveForm: Story = {
   render: () => ({
-    components: { FormFields, InputField, SelectBoxField, Button },
+    components: { FormFieldGroup, InputField, SelectBoxField, Button },
     setup() {
       return { countryOptions }
     },
     template: `
       <div style="width: 100%; max-width: 1000px;">
         <h4 style="margin-bottom: 1rem;">Formulaire responsive (horizontal → vertical sur mobile)</h4>
-        <FormFields direction="horizontal" gap="md" sectionGap="lg">
+        <FormFieldGroup direction="horizontal" gap="md" sectionGap="lg">
           <template #head>
             <div style="text-align: center; padding: 1rem; background-color: #f0f9ff; border-radius: 0.5rem; border: 1px solid #0ea5e9;">
               <h3 style="margin: 0; color: #0c4a6e;">Informations de facturation</h3>
@@ -848,7 +848,7 @@ export const ResponsiveForm: Story = {
               <Button variant="primary">Valider l'adresse</Button>
             </div>
           </template>
-        </FormFields>
+        </FormFieldGroup>
       </div>
     `
   })

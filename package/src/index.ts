@@ -45,7 +45,7 @@ import SwitchField from './components/molecules/SwitchField.vue'
 import SliderField from './components/molecules/SliderField.vue'
 import FileUploadField from './components/molecules/FileUploadField.vue'
 
-import FormFields from './components/molecules/FormFields.vue'
+import FormFieldGroup from './components/molecules/FormFieldGroup.vue'
 
 import * as accessibility from './utils/accessibility'
 import { SurgeuiTheme, ThemeSymbol } from './plugin/theme'
@@ -56,7 +56,7 @@ export { Tabs, Accordion, AccordionItem, Alert }
 export { Link, LinkGroup, Button, ButtonGroup, FloatButton, Dropdown }
 export { Input, Textarea, SelectBox, RadioGroup, CheckboxGroup, FileUpload, Switch, Slider, Password }
 export { InputField, SelectBoxField, RadioGroupField, CheckboxGroupField, SwitchField, FileUploadField, TextareaField, SliderField }
-export { FormField, FormFields }
+export { FormField, FormFieldGroup }
 export { accessibility }
 
 export interface SurgeUpDSOptions {
@@ -217,8 +217,8 @@ export default {
     app.component(`${prefix}SliderField`, SliderField)
     app.component(`${prefix}FileUploadField`, FileUploadField)
     
-    // ...... FormFields container
-    app.component(`${prefix}FormFields`, FormFields)
+    // ...... FormFieldGroup container
+    app.component(`${prefix}FormFieldGroup`, FormFieldGroup)
   }
 }
 export * from './types'

@@ -55,7 +55,7 @@ const getNavItems = (section: string = 'display', lang: string = 'fr') => {
       //{ text: 'SwitchField', link: `${langPrefix}/components/switchfield` },
       { text: 'Password', link: `${langPrefix}/components/password` },
       { text: 'FormField', link: `${langPrefix}/components/formfield` },
-      { text: 'FormFields', link: `${langPrefix}/components/formfields` },
+      { text: 'FormFieldGroup', link: `${langPrefix}/components/formfieldgroup` },
     ]
   }
 

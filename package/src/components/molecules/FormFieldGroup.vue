@@ -8,9 +8,9 @@ import Switch from './SwitchField.vue'
 import FileUpload from './FileUploadField.vue'
 import Textarea from './TextareaField.vue'
 import Slider from './SliderField.vue'
-import type { FormFieldsProps } from '@/types'
+import type { FormFieldGroupProps } from '@/types'
 
-export interface Props extends FormFieldsProps {}
+export interface Props extends FormFieldGroupProps {}
 
 const props = withDefaults(defineProps<Props>(), {
   gap: 'md',
@@ -57,10 +57,10 @@ const processedFields = computed(() => {
     
     if (isFormFieldComponent) {
       // Crée un nouvel objet de props en fusionnant les props existantes
-      // avec les props du FormFields (qui ont la priorité)
+      // avec les props du FormFieldGroup (qui ont la priorité)
       const newProps = { ...vnode.props }
 
-      // Force la prop size si définie sur le FormFields
+      // Force la prop size si définie sur le FormFieldGroup
       if (props.size) {
         newProps.size = props.size
       }
@@ -72,7 +72,7 @@ const processedFields = computed(() => {
       continue
     } else {
       // Avertit si un élément non-champ de formulaire est trouvé
-      console.warn('FormFields expects only form field components as children. Found:', vnode.type)
+      console.warn('FormFieldGroup expects only form field components as children. Found:', vnode.type)
       // Pour la cohérence, on l'ignore ici
     }
   }

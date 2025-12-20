@@ -14,7 +14,7 @@ Cette section contient la documentation de tous les composants disponibles dans 
 
 ## Formulaires
 
-- [InputField](/components/inputfield) - Composant input avec plusieurs variantes
+- [Input](/components/input) - Composant input avec plusieurs variantes
 - [Password](/components/password) - Composant password avec validation et barre de progression
 - [Switch](/components/switch) - Composant switch pour les actions de basculement
 - [FileUpload](/components/fileupload) - Composant upload de fichiers avec drag & drop
@@ -31,7 +31,7 @@ Cette section contient la documentation de tous les composants disponibles dans 
 
 ## Organisation
 
-- [FormFields](/components/formfields) - Groupe de champs de formulaire avec espacement contrôlé
+- [FormFieldGroup](/components/formfieldgroup) - Groupe de champs de formulaire avec espacement contrôlé
 - [FloatButton](/components/floatbutton) - Bouton flottant positionné dans les coins de l'écran
 
 ## Navigation
