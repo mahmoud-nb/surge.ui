@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, useAttrs, useId } from 'vue'
+import { computed, ref, useAttrs, useId, onBeforeUnmount } from 'vue'
 import { announceToScreenReader } from '@/utils/accessibility'
 import type { SliderProps } from '@/types'
 
@@ -44,16 +44,14 @@ const showTooltip2 = ref(false)
 
 const fieldId = 'slider-' + useId()
 const sliderId = computed(() => attrs.id as string || fieldId)
+const messageId = computed(() => props.message ? `${sliderId.value}-message` : undefined)
 
 // Détection automatique du mode dual-range
-const isDualRange = computed(() => {
-  return Array.isArray(modelValue.value)
-})
+const isDualRange = computed(() => Array.isArray(modelValue.value))
 
-// Valeurs normalisées
+// Valeurs normalisées avec valeur par défaut
 const currentValue = computed({
-  get() {
-    // Si modelValue n'est pas défini, utiliser les valeurs par défaut
+  get(): number | [number, number] {
     if (modelValue.value === undefined || modelValue.value === null) {
       return props.min
     }
@@ -67,29 +65,30 @@ const currentValue = computed({
 })
 
 const minValue = computed(() => {
-  return isDualRange.value ? (currentValue.value as [number, number])[0] : (currentValue.value as number)
+  return isDualRange.value 
+    ? (currentValue.value as [number, number])[0] 
+    : (currentValue.value as number)
 })
 
 const maxValue = computed(() => {
-  return isDualRange.value ? (currentValue.value as [number, number])[1] : (currentValue.value as number)
+  return isDualRange.value 
+    ? (currentValue.value as [number, number])[1] 
+    : (currentValue.value as number)
 })
 
-// Formatage des valeurs
+// Formatage
 const formatValue = (value: number): string => {
-  if (props.formatValue) {
-    return props.formatValue(value)
-  }
-  return value.toString()
+  return props.formatValue ? props.formatValue(value) : value.toString()
 }
 
-// Calcul des pourcentages
-const minPercent = computed(() => {
-  return ((minValue.value - props.min) / (props.max - props.min)) * 100
-})
+// Calcul des pourcentages (mémoïsés)
+const minPercent = computed(() => 
+  ((minValue.value - props.min) / (props.max - props.min)) * 100
+)
 
-const maxPercent = computed(() => {
-  return ((maxValue.value - props.min) / (props.max - props.min)) * 100
-})
+const maxPercent = computed(() => 
+  ((maxValue.value - props.min) / (props.max - props.min)) * 100
+)
 
 // Classes CSS
 const containerClasses = computed(() => [
@@ -125,9 +124,9 @@ const getThumbClasses = (thumbType: 'min' | 'max') => [
 ]
 
 // Attributs ARIA
-const getAriaAttributes = (thumbType: 'min' | 'max') => {
+const getAriaAttributes = (thumbType: 'min' | 'max'): Record<string, string | number | boolean> => {
   const value = thumbType === 'min' ? minValue.value : maxValue.value
-  const attrs: Record<string, any> = {
+  const baseAttrs: Record<string, string | number | boolean> = {
     role: 'slider',
     'aria-valuemin': props.min,
     'aria-valuemax': props.max,
@@ -137,22 +136,23 @@ const getAriaAttributes = (thumbType: 'min' | 'max') => {
   }
   
   if (props.ariaLabel) {
-    attrs['aria-label'] = isDualRange.value 
+    baseAttrs['aria-label'] = isDualRange.value 
       ? `${props.ariaLabel} ${thumbType === 'min' ? 'minimum' : 'maximum'}` 
       : props.ariaLabel
   }
-  if (props.ariaInvalid !== undefined) attrs['aria-invalid'] = props.ariaInvalid
-  if (props.ariaRequired !== undefined) attrs['aria-required'] = props.ariaRequired
-  if (props.required) attrs['aria-required'] = 'true'
-  if (props.state === 'error') attrs['aria-invalid'] = 'true'
+  if (props.ariaLabelledBy) baseAttrs['aria-labelledby'] = props.ariaLabelledBy
+  if (messageId.value) baseAttrs['aria-describedby'] = messageId.value
+  if (props.ariaDescribedBy) baseAttrs['aria-describedby'] = props.ariaDescribedBy
+  if (props.ariaInvalid !== undefined) baseAttrs['aria-invalid'] = props.ariaInvalid
+  if (props.ariaRequired !== undefined || props.required) baseAttrs['aria-required'] = true
+  if (props.state === 'error') baseAttrs['aria-invalid'] = true
   
-  return attrs
+  return baseAttrs
 }
 
-// Utilitaires de calcul
-const clampValue = (value: number): number => {
-  return Math.max(props.min, Math.min(props.max, value))
-}
+// Utilitaires
+const clampValue = (value: number): number => 
+  Math.max(props.min, Math.min(props.max, value))
 
 const snapToStep = (value: number): number => {
   const steps = Math.round((value - props.min) / props.step)
@@ -163,20 +163,18 @@ const getValueFromPosition = (clientX: number, clientY: number): number => {
   if (!trackRef.value) return props.min
   
   const rect = trackRef.value.getBoundingClientRect()
-  let percent: number
+  const percent = props.orientation === 'horizontal'
+    ? (clientX - rect.left) / rect.width
+    : 1 - (clientY - rect.top) / rect.height
   
-  if (props.orientation === 'horizontal') {
-    percent = (clientX - rect.left) / rect.width
-  } else {
-    percent = 1 - (clientY - rect.top) / rect.height
-  }
-  
-  percent = Math.max(0, Math.min(1, percent))
-  const rawValue = props.min + (percent * (props.max - props.min))
+  const clampedPercent = Math.max(0, Math.min(1, percent))
+  const rawValue = props.min + (clampedPercent * (props.max - props.min))
   return snapToStep(clampValue(rawValue))
 }
 
-// Gestionnaires d'événements
+// Gestion des événements - avec nettoyage
+let cleanupDrag: (() => void) | null = null
+
 const updateValue = (newValue: number, thumbType: 'min' | 'max' = 'min') => {
   if (props.disabled || props.readonly) return
   
@@ -184,12 +182,9 @@ const updateValue = (newValue: number, thumbType: 'min' | 'max' = 'min') => {
   
   if (isDualRange.value) {
     const [currentMin, currentMax] = currentValue.value as [number, number]
-    
-    if (thumbType === 'min') {
-      currentValue.value = [Math.min(clampedValue, currentMax), currentMax]
-    } else {
-      currentValue.value = [currentMin, Math.max(clampedValue, currentMin)]
-    }
+    currentValue.value = thumbType === 'min'
+      ? [Math.min(clampedValue, currentMax), currentMax]
+      : [currentMin, Math.max(clampedValue, currentMin)]
   } else {
     currentValue.value = clampedValue
   }
@@ -201,31 +196,46 @@ const updateValue = (newValue: number, thumbType: 'min' | 'max' = 'min') => {
   announceToScreenReader(announcement)
 }
 
-const handleMouseDown = (event: MouseEvent, thumbType: 'min' | 'max' = 'min') => {
+// Support souris ET tactile
+const handlePointerDown = (event: PointerEvent, thumbType: 'min' | 'max' = 'min') => {
   if (props.disabled || props.readonly) return
   
   event.preventDefault()
   isDragging.value = true
   activeThumb.value = thumbType
   
-  const handleMouseMove = (e: MouseEvent) => {
+  // Capture du pointer pour gérer les mouvements en dehors de l'élément
+  const target = event.currentTarget as HTMLElement
+  target.setPointerCapture(event.pointerId)
+  
+  const handlePointerMove = (e: PointerEvent) => {
     const newValue = getValueFromPosition(e.clientX, e.clientY)
     updateValue(newValue, thumbType)
   }
   
-  const handleMouseUp = () => {
+  const handlePointerUp = (e: PointerEvent) => {
     isDragging.value = false
     activeThumb.value = null
-    document.removeEventListener('mousemove', handleMouseMove)
-    document.removeEventListener('mouseup', handleMouseUp)
+    target.releasePointerCapture(e.pointerId)
+    document.removeEventListener('pointermove', handlePointerMove)
+    document.removeEventListener('pointerup', handlePointerUp)
+    cleanupDrag = null
   }
   
-  document.addEventListener('mousemove', handleMouseMove)
-  document.addEventListener('mouseup', handleMouseUp)
+  document.addEventListener('pointermove', handlePointerMove)
+  document.addEventListener('pointerup', handlePointerUp)
+  
+  // Fonction de nettoyage
+  cleanupDrag = () => {
+    isDragging.value = false
+    activeThumb.value = null
+    document.removeEventListener('pointermove', handlePointerMove)
+    document.removeEventListener('pointerup', handlePointerUp)
+  }
 }
 
 const handleTrackClick = (event: MouseEvent) => {
-  if (props.disabled || props.readonly) return
+  if (props.disabled || props.readonly || isDragging.value) return
   
   const newValue = getValueFromPosition(event.clientX, event.clientY)
   
@@ -284,51 +294,42 @@ const handleKeyDown = (event: KeyboardEvent, thumbType: 'min' | 'max' = 'min') =
 
 const handleFocus = (event: FocusEvent, thumbType: 'min' | 'max' = 'min') => {
   if (props.tooltip !== 'none') {
-    if (thumbType === 'min') {
-      showTooltip1.value = true
-    } else {
-      showTooltip2.value = true
-    }
+    thumbType === 'min' ? showTooltip1.value = true : showTooltip2.value = true
   }
   emit('focus', event)
 }
 
 const handleBlur = (event: FocusEvent, thumbType: 'min' | 'max' = 'min') => {
   if (props.tooltip !== 'none') {
-    if (thumbType === 'min') {
-      showTooltip1.value = false
-    } else {
-      showTooltip2.value = false
-    }
+    thumbType === 'min' ? showTooltip1.value = false : showTooltip2.value = false
   }
   emit('blur', event)
 }
 
-const handleMouseEnter = (thumbType: 'min' | 'max' = 'min') => {
+const handlePointerEnter = (thumbType: 'min' | 'max' = 'min') => {
   if (props.tooltip !== 'none' && !props.disabled) {
-    if (thumbType === 'min') {
-      showTooltip1.value = true
-    } else {
-      showTooltip2.value = true
-    }
+    thumbType === 'min' ? showTooltip1.value = true : showTooltip2.value = true
   }
 }
 
-const handleMouseLeave = (thumbType: 'min' | 'max' = 'min') => {
+const handlePointerLeave = (thumbType: 'min' | 'max' = 'min') => {
   if (props.tooltip !== 'none') {
-    if (thumbType === 'min') {
-      showTooltip1.value = false
-    } else {
-      showTooltip2.value = false
-    }
+    thumbType === 'min' ? showTooltip1.value = false : showTooltip2.value = false
   }
 }
+
+// Nettoyage au démontage
+onBeforeUnmount(() => {
+  if (cleanupDrag) {
+    cleanupDrag()
+  }
+})
 
 // Génération des ticks
 const ticks = computed(() => {
   if (!props.showTicks) return []
   
-  const tickCount = Math.min(21, (props.max - props.min) / props.step + 1)
+  const tickCount = Math.min(21, Math.floor((props.max - props.min) / props.step) + 1)
   const tickStep = (props.max - props.min) / (tickCount - 1)
   
   return Array.from({ length: tickCount }, (_, i) => {
@@ -340,20 +341,18 @@ const ticks = computed(() => {
 
 // Génération des marques
 const processedMarks = computed(() => {
-  if (!props.marks || props.marks.length === 0) return []
+  if (!props.marks?.length) return []
   
   return props.marks
     .filter(mark => mark >= props.min && mark <= props.max)
-    .map(mark => {
-      const percent = ((mark - props.min) / (props.max - props.min)) * 100
-      return { value: mark, percent }
-    })
+    .map(mark => ({
+      value: mark,
+      percent: ((mark - props.min) / (props.max - props.min)) * 100
+    }))
 })
 
 // Méthodes exposées
-const focus = () => {
-  thumb1Ref.value?.focus()
-}
+const focus = () => thumb1Ref.value?.focus()
 
 defineExpose({
   focus,
@@ -373,7 +372,7 @@ defineExpose({
       <slot name="before" />
     </div>
 
-    <!-- Labels min/max (si activés) -->
+    <!-- Labels min/max -->
     <div
       v-if="showLabels"
       class="su-slider-labels"
@@ -384,7 +383,7 @@ defineExpose({
 
     <!-- Container du slider -->
     <div class="su-slider-wrapper">
-      <!-- Valeur affichée (si activée et pas de tooltip) -->
+      <!-- Valeur affichée -->
       <div
         v-if="showValue && tooltip === 'none'"
         class="su-slider-value"
@@ -409,7 +408,7 @@ defineExpose({
       <div 
         ref="sliderRef"
         class="su-slider-slider"
-        :aria-describedby="'messageId'"
+        :aria-describedby="messageId"
         @click="handleTrackClick"
       >
         <!-- Track de fond -->
@@ -426,7 +425,7 @@ defineExpose({
             }"
           />
 
-          <!-- Ticks (si activés) -->
+          <!-- Ticks -->
           <div
             v-if="showTicks"
             class="su-slider-ticks"
@@ -461,7 +460,7 @@ defineExpose({
             </div>
           </div>
 
-          <!-- Thumb principal (ou minimum pour dual) -->
+          <!-- Thumb principal -->
           <div
             :id="isDualRange ? `${sliderId}-min` : sliderId"
             ref="thumb1Ref"
@@ -471,18 +470,18 @@ defineExpose({
             }"
             :tabindex="disabled ? -1 : 0"
             v-bind="getAriaAttributes('min')"
-            @mousedown="handleMouseDown($event, 'min')"
+            @pointerdown="handlePointerDown($event, 'min')"
             @keydown="handleKeyDown($event, 'min')"
             @focus="handleFocus($event, 'min')"
             @blur="handleBlur($event, 'min')"
-            @mouseenter="handleMouseEnter('min')"
-            @mouseleave="handleMouseLeave('min')"
+            @pointerenter="handlePointerEnter('min')"
+            @pointerleave="handlePointerLeave('min')"
           >
             <div class="su-slider-thumb-handle" />
             
-            <!-- Tooltip pour le thumb principal -->
+            <!-- Tooltip -->
             <div 
-              v-if="tooltip !== 'none' && (showTooltip1 || isDragging && activeThumb === 'min')"
+              v-if="tooltip !== 'none' && (showTooltip1 || (isDragging && activeThumb === 'min'))"
               class="su-slider-tooltip"
               :class="`su-slider-tooltip--${tooltip}`"
             >
@@ -490,7 +489,7 @@ defineExpose({
             </div>
           </div>
 
-          <!-- Thumb maximum (dual seulement) -->
+          <!-- Thumb maximum (dual) -->
           <div
             v-if="isDualRange"
             :id="`${sliderId}-max`"
@@ -501,18 +500,18 @@ defineExpose({
             }"
             :tabindex="disabled ? -1 : 0"
             v-bind="getAriaAttributes('max')"
-            @mousedown="handleMouseDown($event, 'max')"
+            @pointerdown="handlePointerDown($event, 'max')"
             @keydown="handleKeyDown($event, 'max')"
             @focus="handleFocus($event, 'max')"
             @blur="handleBlur($event, 'max')"
-            @mouseenter="handleMouseEnter('max')"
-            @mouseleave="handleMouseLeave('max')"
+            @pointerenter="handlePointerEnter('max')"
+            @pointerleave="handlePointerLeave('max')"
           >
             <div class="su-slider-thumb-handle" />
             
-            <!-- Tooltip pour le thumb maximum -->
+            <!-- Tooltip -->
             <div 
-              v-if="tooltip !== 'none' && (showTooltip2 || isDragging && activeThumb === 'max')"
+              v-if="tooltip !== 'none' && (showTooltip2 || (isDragging && activeThumb === 'max'))"
               class="su-slider-tooltip"
               :class="`su-slider-tooltip--${tooltip}`"
             >
@@ -529,6 +528,16 @@ defineExpose({
       class="su-slider-after"
     >
       <slot name="after" />
+    </div>
+
+    <!-- Message -->
+    <div
+      v-if="message"
+      :id="messageId"
+      class="su-slider-message"
+      :class="`su-slider-message--${state}`"
+    >
+      {{ message }}
     </div>
   </div>
 </template>
@@ -593,14 +602,6 @@ defineExpose({
   
   .su-slider-label {
     font-weight: 500;
-    
-    &--min {
-      color: $text-secondary;
-    }
-    
-    &--max {
-      color: $text-secondary;
-    }
   }
 }
 
@@ -644,8 +645,8 @@ defineExpose({
   flex: 1;
   cursor: pointer;
   width: 100%;
+  touch-action: none; /* Améliore le support tactile */
   
-  // Tailles
   &--sm {
     height: 1.5rem;
   }
@@ -665,7 +666,6 @@ defineExpose({
   border-radius: 9999px;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   
-  // Orientation horizontale
   &--horizontal {
     top: 50%;
     left: 0;
@@ -673,7 +673,6 @@ defineExpose({
     transform: translateY(-50%);
   }
   
-  // Orientation verticale
   &--vertical {
     left: 50%;
     top: 0;
@@ -681,7 +680,6 @@ defineExpose({
     transform: translateX(-50%);
   }
   
-  // Tailles
   &--sm {
     &.su-slider-track--horizontal {
       height: 0.25rem;
@@ -712,7 +710,6 @@ defineExpose({
     }
   }
   
-  // États
   &--error {
     background-color: $error-50;
   }
@@ -732,7 +729,6 @@ defineExpose({
   border-radius: inherit;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   
-  // Orientation
   .su-slider-track--horizontal & {
     top: 0;
     height: 100%;
@@ -743,7 +739,6 @@ defineExpose({
     width: 100%;
   }
   
-  // États
   .su-slider-track--error & {
     background-color: $error-500;
   }
@@ -1095,4 +1090,4 @@ defineExpose({
     transform: none;
   }
 }
-</style>
+</style>         
