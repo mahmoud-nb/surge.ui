@@ -48,12 +48,12 @@ Composant conteneur pour les champs de formulaire avec gestion du label, des mes
     label="Email" 
     message="Utilisé pour la connexion"
   >
-    <template #default="{ fieldId, messageId, state, disabled }">
+    <template #default="slotProps">
       <input 
-        :id="fieldId"
-        :aria-describedby="messageId"
-        :aria-invalid="state === 'error'"
-        :disabled="disabled"
+        :id="slotProps?.fieldId"
+        :aria-describedby="slotProps?.messageId"
+        :aria-invalid="slotProps?.state === 'error'"
+        :disabled="slotProps?.disabled"
         type="email"
       />
     </template>
@@ -68,7 +68,7 @@ Le slot par défaut expose automatiquement les props suivantes pour faciliter l'
 ```vue
 <template>
   <SuFormField label="Champ exemple" message="Message d'aide">
-    <template #default="{ fieldId, messageId, state, disabled }">
+    <template #default="slotProps">
       <!-- fieldId : ID unique du champ (ex: "field-123") -->
       <!-- messageId : ID du message d'aide (ex: "message-123") -->
       <!-- state : État actuel ('default' | 'error' | 'success' | 'warning') -->
@@ -76,10 +76,10 @@ Le slot par défaut expose automatiquement les props suivantes pour faciliter l'
       <!-- disabled : Booléen indiquant si le champ est désactivé -->
       
       <YourComponent 
-        :id="fieldId"
-        :aria-describedby="messageId"
-        :state="state"
-        :disabled="disabled"
+        :id="slotProps?.fieldId"
+        :aria-describedby="slotProps?.messageId"
+        :state="slotProps?.state"
+        :disabled="slotProps?.disabled"
       />
     </template>
   </SuFormField>
@@ -347,11 +347,11 @@ import { UserIcon, InformationCircleIcon } from '@heroicons/vue/24/outline'
         :disabled="true"
         message="Ce champ est désactivé"
       >
-        <template #default="{ fieldId, messageId, disabled }">
+        <template #default="slotProps">
           <SuInput 
-            :id="fieldId"
-            :aria-describedby="messageId"
-            :disabled="disabled"
+            :id="slotProps?.fieldId"
+            :aria-describedby="slotProps?.messageId"
+            :disabled="slotProps?.disabled"
             type="text"
             value="Valeur désactivée"
           />

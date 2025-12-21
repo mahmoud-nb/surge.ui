@@ -346,11 +346,11 @@ import { UserIcon, InformationCircleIcon } from '@heroicons/vue/24/outline'
         :disabled="true"
         message="This field is disabled"
       >
-        <template #default="{ fieldId, messageId, disabled }">
+        <template #default="slotProps">
           <input 
-            :id="fieldId"
-            :aria-describedby="messageId"
-            :disabled="disabled"
+            :id="slotProps?.fieldId"
+            :aria-describedby="slotProps?.messageId"
+            :disabled="slotProps?.disabled"
             type="text"
             value="Disabled value"
           />
