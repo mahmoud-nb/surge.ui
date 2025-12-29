@@ -80,3 +80,120 @@
   min-height: $size;
   min-width: $size;
 }
+
+/**
+  * Mixin pour les bordures arrondies
+  * @param {String} $size - Taille du radius ('sm', 'md', 'lg', 'xl', 'full')
+  * @param {String} $shape - Forme de l'arrondi (round, squircle, bevel, scoop)
+  */
+@mixin su-border-radius($size: 'md', $shape: 'round') {
+  border-radius: var(--su-radius-#{$size});
+  @if $shape not 'round' {
+    corner-shape: $shape;
+  }
+}
+
+// ### Textes
+/**
+  * Mixin pour les styles de texte
+  * @param {String} $size - Taille de la police (clé du thème)
+  * @param {String|null} $color (optionnelle) - Couleur du texte (primary, secondary, tertiary, inverse, disabled)
+  * @param {String|null} $weight (optionnelle) - Poids de la police (light, normal, medium, semibold, bold)
+  * @param {String|null} $line-height (optionnelle) - Hauteur de ligne (tight, normal, relaxed)
+  */
+@mixin su-text($size: 'base', $color: null, $weight: null, $line-height: null) {
+  font-size: var(--su-font-size-#{$size});
+  @if $weight != null {
+    font-weight: var(--su-font-weight-#{$weight});
+  }
+  @if $color != null {
+    color: var(--su-text-#{$color});
+  }
+  @if $line-height != null {
+    line-height: var(--su-line-height-#{$line-height});
+  }
+}
+
+@mixin su-text-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// ### Forms
+@mixin su-form-field-state($color) {
+  border-color: $color;
+
+  &:focus-within {
+    border-color: $color;
+    box-shadow: 0 0 0 3px rgba($color, 0.1);
+  }
+}
+
+/**
+ * Mixin pour les containers d'input
+ */
+@mixin su-form-field-container {
+  position: relative;
+  background-color: var(--su-bg-surface);
+  border: 1px solid var(--su-border-default);
+  border-radius: var(--su-radius-md);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  &:focus-within {
+    border-color: var(--su--border-focus);
+    box-shadow: 0 0 0 3px rgba(var(--su--border-focus), 0.1);
+  }
+  
+  // Variations d’état
+  &--error    { @include su-form-field-state(var(--su-state-error)); }
+  &--success  { @include su-form-field-state(var(--su-state-success)); }
+  &--warning  { @include su-form-field-state(var(--su-state-warning)); }
+
+  &--disabled {
+    background-color: var(--su-bg-disabled);
+    border-color: var(--su-border-disabled);
+    cursor: not-allowed;
+    
+    &:focus-within {
+      border-color: var(--su-border-focus);
+      box-shadow: none;
+    }
+  }
+  
+  &--readonly {
+    background-color: var(--su-bg-canvas);
+    
+    &:focus-within {
+      box-shadow: 0 0 0 3px rgba(var(--su-text-primary), 0.1);
+    }
+  }
+}
+
+/**
+  * Mixin pour les éléments de formulaire (back-office)
+  */
+@mixin su-formfield-box($self) {
+  box-sizing: border-box;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: inherit;
+  color: var(--su-text-primary);
+  
+  &::placeholder {
+    color: var(--su-text-tertiary);
+  }
+
+  #{$self}--disabled & {
+    color: var(--su-text-disabled);
+    background-color: var(--su-bg-disabled);
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  #{$self}--readonly & {
+    background-color: var(--su-bg-disabled);
+    cursor: default;
+  }
+}

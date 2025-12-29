@@ -102,7 +102,7 @@ const labelClasses = computed(() => [
 </template>
 
 <style lang="scss">
-@use '../../styles/main' as *;
+@use '../../styles2/main' as *;
 
 .su-form-field {
   $self: &;
@@ -113,121 +113,84 @@ const labelClasses = computed(() => [
 
   &__label {
     display: block;
-    font-size: $font-size-sm;
-    font-weight: 500;
-    color: $text-primary;
-    line-height: $line-height-tight;
+
+    @include su-text('sm', 'primary', 'medium', 'tight');
     
+    // TODO : Removed individual properties in favor of mixin
+    //font-size: var(--su-font-size-sm);
+    //font-weight: 500;
+    //color: var(--su-text-primary);
+    //line-height: var(--su-line-height-tight);
+
     &--required {
       .su-indicator-required {
-        color: $error-500;
-        margin-left: 0.125rem;
+        color: var(--su-state-error);
+        margin-inline-start: 0.125rem;
       }
     }
     
     &--disabled {
-      color: $text-tertiary;
+      color: var(--su-text-tertiary);
       cursor: not-allowed;
     }
   }
 
   &__message {
-    font-size: $font-size-sm;
-    line-height: $line-height-tight;
-    
+    font-size: var(--su-font-size-sm);
+    line-height: var(--su-line-height-tight);
+
     &--default {
-      color: $text-secondary;
+      color: var(--su-text-secondary);
     }
     
     &--error {
-      color: $error-600;
+      color: var(--su-error-600);
     }
     
     &--success {
-      color: $success-600;
+      color: var(--su-success-600);
     }
     
     &--warning {
-      color: $warning-600;
+      color: var(--su-warning-600);
     }
   }
 
   &--sm {
     #{$self}__label {
-      font-size: $font-size-sm;
+      font-size: var(--su-font-size-sm);
     }
     #{$self}__message {
-      font-size: $font-size-sm;
+      font-size: var(--su-font-size-sm);
     } 
   }
 
   &--md {
     #{$self}__label {
-      font-size: $font-size-base;
+      font-size: var(--su-font-size-base);
     }
     #{$self}__message {
-      font-size: $font-size-base;
+      font-size: var(--su-font-size-base);
     } 
   }
 
   &--lg {
     #{$self}__label {
-      font-size: $font-size-lg;
+      font-size: var(--su-font-size-lg);
     }
     #{$self}__message {
-      font-size: $font-size-lg;
+      font-size: var(--su-font-size-lg);
     } 
   }
 }
 
+// TODO : Removed individual properties in favor of mixin
 @media (prefers-contrast: high) {
   .su-form-field-container {
     border-width: 2px;
     
     &:focus-within {
       border-width: 3px;
-    }
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  .su-form-field__label {
-    color: $text-primary-dark;
-    
-    &--disabled {
-      color: $text-tertiary-dark;
-    }
-  }
-  
-  .su-form-field-container {
-    background-color: $gray-800;
-    border-color: $gray-600;
-    
-    &--disabled {
-      background-color: $gray-900;
-      border-color: $gray-700;
-    }
-    
-    &--readonly {
-      background-color: $gray-900;
-    }
-  }
-  
-  .su-form-field-element {
-    color: $text-primary-dark;
-    
-    &::placeholder {
-      color: $text-tertiary-dark;
-    }
-    
-    &--disabled {
-      color: $text-tertiary-dark;
-    }
-  }
-  
-  .su-form-field__message {
-    &--default {
-      color: $text-secondary-dark;
     }
   }
 }

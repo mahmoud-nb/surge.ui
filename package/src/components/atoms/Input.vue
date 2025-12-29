@@ -240,7 +240,7 @@ defineExpose({ focus, select, inputRef })
 </template>
 
 <style lang="scss">
-@use '../../styles/main' as *;
+@use '../../styles2/main' as *;
 
 @mixin su-input--size($self, $name, $fontSize, $padding, $minHeight) {
   &--#{$name} {
@@ -276,10 +276,10 @@ defineExpose({ focus, select, inputRef })
   @include su-form-field-container;
 
   &__element {
-    @include su-formfield-element($self);
+    @include su-formfield-box($self);
 
     width: 100%;
-    line-height: $line-height-normal;
+    line-height: var(--su-line-height-normal);
 
     &[type='number'] {
       appearance: textfield;
@@ -299,9 +299,9 @@ defineExpose({ focus, select, inputRef })
   }
 
   // Sizes
-  @include su-input--size(&, sm, $font-size-sm, 0.25rem 0.5rem, 2rem);
-  @include su-input--size(&, md, $font-size-base, 0.5rem 0.75rem, 2.5rem);
-  @include su-input--size(&, lg, $font-size-sm, 0.75rem 1rem, 3rem);
+  @include su-input--size(&, sm, var(--su-font-size-sm), 0.25rem 0.5rem, 2rem);
+  @include su-input--size(&, md, var(--su-font-size-base), 0.5rem 0.75rem, 2.5rem);
+  @include su-input--size(&, lg, var(--su-font-size-lg), 0.75rem 1rem, 3rem);
 
   // Text align
   @include su-input--align(&, left);
@@ -314,7 +314,7 @@ defineExpose({ focus, select, inputRef })
     display: flex;
     align-items: center;
     flex-wrap: nowrap;
-    color: $text-secondary;
+    color: var(--su-text-secondary);
     height: -webkit-fill-available;
     
     &__text {
@@ -337,41 +337,24 @@ defineExpose({ focus, select, inputRef })
       transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
       
       &:hover:not(.su-input--disabled, .su-input--readonly) {
-        background-color: $gray-100;
-        color: $text-primary;
+        background-color: var(--su-bg-hover);
+        color: var(--su-text-primary);
       }
       
       &:active:not(.su-input--disabled, .su-input--readonly) {
-        background-color: $gray-200;
+        background-color: var(--su-bg-active);
       }
     }
   }
 
   &__prefix {
-    border-top-left-radius: $border-radius-md;
-    border-bottom-left-radius: $border-radius-md;
+    border-top-left-radius: var(--su-radius-md);
+    border-bottom-left-radius: var(--su-radius-md);
   }
 
   &__suffix {
-    border-top-right-radius: $border-radius-md;
-    border-bottom-right-radius: $border-radius-md;
-  }
-
-  // Styles spécifiques au mode sombre pour les préfixes/suffixes
-  @media (prefers-color-scheme: dark) {
-    &__prefix,
-    &__suffix {
-      color: $text-secondary-dark;
-      
-      &--clickable:hover:not(.su-input--disabled, .su-input--readonly) {
-        background-color: $gray-700;
-        color: $text-primary-dark;
-      }
-      
-      &--clickable:active:not(.su-input--disabled, .su-input--readonly) {
-        background-color: $gray-600;
-      }
-    }
+    border-top-right-radius: var(--su-radius-md);
+    border-bottom-right-radius: var(--su-radius-md);
   }
 }
 </style>
