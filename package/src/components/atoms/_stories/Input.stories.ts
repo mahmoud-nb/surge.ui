@@ -94,7 +94,9 @@ const createInteractiveStory = (args: any): Story => ({
       return { args: restArgs, formFieldArgs, value };
     },
     template: `<FormField v-bind="formFieldArgs">
-        <Input v-bind="args" v-model="value" />
+        <template #default="{ fieldId, ...slotProps }">
+          <Input :id="fieldId" v-bind="{ ...args, ...slotProps }" v-model="value" />
+        </template>
       </FormField>`,
   }),
   args,
@@ -175,7 +177,14 @@ export const ClickablePrefix: Story = {
       return { args, MagnifyingGlassIcon, handlePrefixIconClick }
     },
     template: `<FormField>
-      <Input v-bind="args" :prefixIcon="MagnifyingGlassIcon" @prefix-icon-click="handlePrefixIconClick" />
+      <template #default="{ fieldId, ...slotProps }">
+        <Input 
+          :id="fieldId"
+          v-bind="{ ...args, ...slotProps }"
+          :prefixIcon="MagnifyingGlassIcon"
+          @prefix-icon-click="handlePrefixIconClick"
+        />
+      </template>
     </FormField>`
   })
 }
@@ -195,26 +204,42 @@ export const ClickableSuffix: Story = {
       return { args, handleSuffixClick }
     },
     template: `<FormField>
-      <Input v-bind="args" :prefixIcon="MagnifyingGlassIcon" @suffix-click="handleSuffixClick" />
+      <template #default="{ fieldId, ...slotProps }">
+        <Input
+          :id="fieldId" 
+          v-bind="{ ...args, ...slotProps }" 
+          :prefixIcon="MagnifyingGlassIcon" 
+          @suffix-click="handleSuffixClick"
+        />
+      </template>
     </FormField>`
   })
 }
+
 export const States: Story = {
   render: () => ({
     components: { Input, FormField },
     template: `
       <div style="display: flex; flex-direction: column; gap: 1rem; width: 300px;">
         <FormField label="État par défaut">
-          <Input placeholder="Entrez du texte" />
+          <template #default="{ fieldId, ...slotProps }">
+          <Input :id="fieldId" v-bind="slotProps" placeholder="Entrez du texte" />
+          </template>
         </FormField>
         <FormField label="État d'erreur" message="Ce champ contient une erreur" state="error">
-          <Input state="error" placeholder="Entrez du texte" />
+          <template #default="{ fieldId, ...slotProps }">
+            <Input :id="fieldId" v-bind="slotProps" state="error" placeholder="Entrez du texte" />
+          </template>
         </FormField>
         <FormField label="État de succès" message="Valeur valide !" state="success">
-          <Input state="success" placeholder="Entrez du texte" />
+          <template #default="{ fieldId, ...slotProps }">
+            <Input :id="fieldId" v-bind="slotProps" state="success" placeholder="Entrez du texte" />
+          </template>
         </FormField>
         <FormField label="État d'avertissement" message="Attention à cette valeur" state="warning">
-          <Input placeholder="Entrez du texte" v-slot={ state } />
+          <template #default="{ fieldId, ...slotProps }">
+            <Input :id="fieldId" v-bind="slotProps" placeholder="Entrez du texte" />
+          </template>
         </FormField>
       </div>
     `
@@ -227,13 +252,19 @@ export const Sizes: Story = {
     template: `
       <div style="display: flex; flex-direction: column; gap: 1rem; width: 300px;">
         <FormField label="Small">
-          <Input size="sm" placeholder="Petit input" />
+          <template #default="{ fieldId, ...slotProps }">
+            <Input :id="fieldId" v-bind="slotProps" size="sm" placeholder="Petit input" />
+          </template>
         </FormField>
         <FormField label="Medium">
-          <Input size="md" placeholder="Input moyen" />
+          <template #default="{ fieldId, ...slotProps }">
+          <Input :id="fieldId" v-bind="slotProps" size="md" placeholder="Input moyen" />
+          </template>
         </FormField>
         <FormField label="Large">
-          <Input size="lg" placeholder="Grand input" />
+          <template #default="{ fieldId, ...slotProps }">
+            <Input :id="fieldId" v-bind="slotProps" size="lg" placeholder="Grand input" />
+          </template>
       </div>
     `
   })
@@ -245,13 +276,19 @@ export const TextAlignment: Story = {
     template: `
       <div style="display: flex; flex-direction: column; gap: 1rem; width: 300px;">
         <FormField label="Alignement à gauche" >
-          <InputtextAlign="left" value="Aligné à gauche" />
+          <template #default="{ fieldId, ...slotProps }">
+            <Input :id="fieldId" v-bind="slotProps" textAlign="left" value="Aligné à gauche" />
+          </template>
         </FormField>
         <FormField label="Alignement centré">
-          <Input textAlign="center" value="Centré" />
+          <template #default="{ fieldId, ...slotProps }">
+            <Input :id="fieldId" v-bind="slotProps" textAlign="center" value="Centré" />
+          </template>
         </FormField>
         <FormField label="Alignement à droite"> 
-          <Input textAlign="right" value="Aligné à droite" />
+          <template #default="{ fieldId, ...slotProps }">
+            <Input :id="fieldId" v-bind="slotProps" textAlign="right" value="Aligné à droite" />
+          </template>
         </FormField>
       </div>
     `
@@ -264,23 +301,35 @@ export const SupportRTL: Story = {
     template: `
       <div dir="rtl" style="display: flex; flex-direction: column; gap: 1rem; width: 300px;">
         <FormField label="Texte arabe (RTL)">
-          <Input 
-            placeholder="أدخل النص هنا"
-            value="النص العربي"
-          />
+          <template #default="{ fieldId, ...slotProps }">
+            <Input 
+              :id="fieldId"
+              v-bind="slotProps"
+              placeholder="أدخل النص هنا"
+              value="النص العربي"
+            />
+          </template>
         </FormField>
         <FormField label="Texte hébreu (RTL)">
-          <Input 
-            placeholder="הכנס טקסט כאן"
-            value="טקסט עברי"
-          />
+          <template #default="{ fieldId, ...slotProps }">
+            <Input 
+              :id="fieldId"
+              v-bind="slotProps"
+              placeholder="הכנס טקסט כאן"
+              value="טקסט עברי"
+            />
+          </template>
         </FormField>
         <FormField label="Prix (RTL avec suffixe)">
-          <Input 
-            placeholder="0.00"
-            suffix="$"
-            type="number"
-          />
+          <template #default="{ fieldId, ...slotProps }">
+            <Input 
+              :id="fieldId"
+              v-bind="slotProps"
+              placeholder="0.00"
+              suffix="$"
+              type="number"
+            />
+          </template>
         </FormField>
       </div>
     `
@@ -288,10 +337,10 @@ export const SupportRTL: Story = {
 }
 
 export const Disabled: Story = createInteractiveStory({
-  disabled: true,
   modelValue: 'Valeur désactivée',
   formFieldArgs: {
-    label: 'Input désactivé'
+    label: 'Input désactivé',
+    disabled: true,
   }
 })
 
@@ -304,9 +353,9 @@ export const Readonly: Story = createInteractiveStory({
 })
 
 export const Required: Story = createInteractiveStory({
-  required: true,
   modelValue: 'Ce champ est obligatoire',
   formFieldArgs: {
-    label: 'Champ requis'
+    label: 'Champ requis',
+    required: true
   }
 })  

@@ -204,6 +204,7 @@ export interface ImageProps extends AccessibilityProps {
 // Input.vue
 export type InputType = 'text' | 'email' | 'password' | 'number' | 'tel' | 'url' | 'search' | 'date' | 'time' | 'datetime-local' | 'month' | 'week';
 export interface InputProps extends AccessibilityProps {
+  name?: string;
   type?: InputType;
   size?: Size;
   state?: State;
@@ -216,6 +217,7 @@ export interface InputProps extends AccessibilityProps {
   prefixIcon?: Component;
   suffixIcon?: Component;
   textAlign?: TextAlign;
+  // HTML native attributes
   autocomplete?: string;
   min?: number | string;
   max?: number | string;

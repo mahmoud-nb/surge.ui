@@ -14,14 +14,14 @@ Composant input flexible avec support complet des types HTML, préfixes/suffixes
   <div class="demo-section">
     <h4>champs de texte simple</h4>
     <div class="demo-inputs">
-      <SuInput type="text" placeholder="Entrez du texte" />
+      <SuInput type="text" name="input-name" placeholder="Entrez du texte" />
     </div>
   </div>
 </div>
 
 ```vue
 <template>
-  <SuInput type="text" placeholder="Entrez du texte" />
+  <SuInput type="text" name="input-name" placeholder="Entrez du texte" />
 </template>
 ```
 
@@ -31,8 +31,10 @@ Composant input flexible avec support complet des types HTML, préfixes/suffixes
   <div class="demo-section">
     <h4>Types d'input supportés</h4>
     <div class="demo-inputs">
-      <SuFormField label="Nom d'utilisateur">
-        <SuInput placeholder="Entrez votre nom" />
+      <SuFormField label="Nom d'utilisateur" field-id="inputId">
+        <template #default="slotProps">
+          <SuInput :id="slotProps.fieldId" placeholder="Entrez votre nom" />
+        </template>
       </SuFormField>
     </div>
   </div>
@@ -40,8 +42,14 @@ Composant input flexible avec support complet des types HTML, préfixes/suffixes
 
 ```vue
 <template>
-  <SuFormField label="Nom d'utilisateur">
-    <SuInput placeholder="Entrez votre nom" />
+  <SuFormField label="Nom d'utilisateur" field-id="inputId">
+    <SuInput id="inputId" placeholder="Entrez votre nom" />
+  </SuFormField>
+  <!-- or -->
+  <SuFormField label="Nom d'utilisateur" field-id="inputId">
+    <template #default="{ fieldId }">
+      <SuInput :id="fieldId" placeholder="Entrez votre nom" />
+    </template>
   </SuFormField>
 </template>
 ```
@@ -307,7 +315,6 @@ import {
 
 <div class="component-demo">
   <div class="demo-section">
-    <h4>Alignement du texte</h4>
     <div class="demo-inputs">
       <SuFormField label="Alignement à gauche" >
         <SuInput textAlign="left" value="Aligné à gauche" />

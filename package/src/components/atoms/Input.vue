@@ -14,8 +14,6 @@ const props = withDefaults(defineProps<InputProps>(), {
   textAlign: 'default'
 })
 
-console.log('props', props);
-
 const emit = defineEmits<{
   input: [event: Event]
   change: [event: Event]
@@ -42,25 +40,15 @@ const hasSuffixIconClickListener = computed(() => typeof attrs.onSuffixIconClick
 
 // Classes CSS
 const containerClasses = computed(() => [
-  'su-input-container',
-  `su-input-container--${props.size}`,
-  `su-input-container--${props.state}`,
-  {
-    'su-input-container--disabled': props.disabled,
-    'su-input-container--readonly': props.readonly,
-    'su-input-container--has-prefix': props.prefix || props.prefixIcon,
-    'su-input-container--has-suffix': props.suffix || props.suffixIcon
-  }
-])
-
-const inputClasses = computed(() => [
   'su-input',
   `su-input--${props.size}`,
   `su-input--${props.state}`,
   `su-input--align-${props.textAlign}`,
   {
     'su-input--disabled': props.disabled,
-    'su-input--readonly': props.readonly
+    'su-input--readonly': props.readonly,
+    'su-input--has-prefix': props.prefix || props.prefixIcon,
+    'su-input--has-suffix': props.suffix || props.suffixIcon
   }
 ])
 
@@ -78,18 +66,21 @@ const ariaAttributes = computed(() => {
 
 // Attributs HTML natifs
 const nativeAttributes = computed(() => {
-  const attrs: Record<string, any> = {}
+  const inputAttrs: Record<string, any> = {}
+
+  const { name } = attrs as Record<string, any>
+
+  if (name) inputAttrs.name = name
+  if (props.autocomplete) inputAttrs.autocomplete = props.autocomplete
+  if (props.min !== undefined) inputAttrs.min = props.min
+  if (props.max !== undefined) inputAttrs.max = props.max
+  if (props.step !== undefined) inputAttrs.step = props.step
+  if (props.minLength !== undefined) inputAttrs.minlength = props.minLength
+  if (props.maxLength !== undefined) inputAttrs.maxlength = props.maxLength
+  if (props.pattern) inputAttrs.pattern = props.pattern
+  if (props.placeholder) inputAttrs.placeholder = props.placeholder
   
-  if (props.autocomplete) attrs.autocomplete = props.autocomplete
-  if (props.min !== undefined) attrs.min = props.min
-  if (props.max !== undefined) attrs.max = props.max
-  if (props.step !== undefined) attrs.step = props.step
-  if (props.minLength !== undefined) attrs.minlength = props.minLength
-  if (props.maxLength !== undefined) attrs.maxlength = props.maxLength
-  if (props.pattern) attrs.pattern = props.pattern
-  if (props.placeholder) attrs.placeholder = props.placeholder
-  
-  return attrs
+  return inputAttrs
 })
 
 const dataAttributes = computed(() =>
@@ -145,20 +136,20 @@ defineExpose({ focus, select, inputRef })
     <!-- Préfixe -->
     <div
       v-if="prefix || prefixIcon || $slots.prefix"
-      class="su-input-prefix"
+      class="su-input__prefix"
     >
       <!-- Préfixe slot -->
       <slot
         v-if="$slots.prefix"
         name="prefix"
-        class="su-input-prefix__slot"
+        class="su-input__prefix__slot"
       />
     
       <!-- Préfixe icône -->
       <div 
         v-if="prefixIcon" 
-        class="su-input-prefix__icon"
-        :class="{ 'su-input-prefix--clickable': hasPrefixIconClickListener }"
+        class="su-input__prefix__icon"
+        :class="{ 'su-input__prefix--clickable': hasPrefixIconClickListener }"
         :tabindex="hasPrefixIconClickListener && !disabled && !readonly ? 0 : -1"
         @click="handlePrefixIconClick"
         @keydown.enter.prevent="handlePrefixIconClick"
@@ -174,8 +165,8 @@ defineExpose({ focus, select, inputRef })
       <!-- Préfixe texte -->
       <div 
         v-if="prefix" 
-        class="su-input-prefix__text"
-        :class="{ 'su-input-prefix--clickable': hasPrefixClickListener }"
+        class="su-input__prefix__text"
+        :class="{ 'su-input__prefix--clickable': hasPrefixClickListener }"
         :tabindex="hasPrefixClickListener && !disabled && !readonly ? 0 : -1"
         @click="handlePrefixClick"
         @keydown.enter.prevent="handlePrefixClick"
@@ -188,7 +179,7 @@ defineExpose({ focus, select, inputRef })
     <input
       :id="inputId"
       ref="inputRef"
-      :class="inputClasses"
+      class="su-input__element"
       :type="type"
       :value="modelValue"
       :disabled="disabled"
@@ -206,13 +197,13 @@ defineExpose({ focus, select, inputRef })
     <!-- Suffixe -->
     <div
       v-if="suffix || suffixIcon || $slots.suffix"
-      class="su-input-suffix"
+      class="su-input__suffix"
     >
       <!-- Suffixe texte -->
       <div 
         v-if="suffix" 
-        class="su-input-suffix__text"
-        :class="{ 'su-input-suffix--clickable': hasSuffixClickListener }"
+        class="su-input__suffix__text"
+        :class="{ 'su-input__suffix--clickable': hasSuffixClickListener }"
         :tabindex="hasSuffixClickListener && !disabled && !readonly ? 0 : -1"
         @click="handleSuffixClick"
         @keydown.enter.prevent="handleSuffixClick"
@@ -224,8 +215,8 @@ defineExpose({ focus, select, inputRef })
       <!-- Suffixe icône -->
       <div
         v-if="suffixIcon"
-        class="su-input-suffix__icon"
-        :class="{ 'su-input-suffix--clickable': hasSuffixIconClickListener }"
+        class="su-input__suffix__icon"
+        :class="{ 'su-input__suffix--clickable': hasSuffixIconClickListener }"
         :tabindex="hasSuffixIconClickListener && !disabled && !readonly ? 0 : -1"
         @click="handleSuffixIconClick"
         @keydown.enter.prevent="handleSuffixIconClick"
@@ -242,7 +233,7 @@ defineExpose({ focus, select, inputRef })
       <slot
         v-if="$slots.suffix"
         name="suffix"
-        class="su-input-suffix__slot"
+        class="su-input__suffix__slot"
       />
     </div>
   </div>
@@ -251,155 +242,135 @@ defineExpose({ focus, select, inputRef })
 <style lang="scss">
 @use '../../styles/main' as *;
 
-@mixin su-input-container-size($name, $fontSize, $padding, $minHeight) {
+@mixin su-input--size($self, $name, $fontSize, $padding, $minHeight) {
   &--#{$name} {
-    min-height: $minHeight; // calc(#{$padding} * 2 + 1rem);
-    .su-input {
+    //min-height: $minHeight; // calc(#{$padding} * 2 + 1rem);
+
+    #{$self}__element {
       padding: $padding;
-      font-size: $fontSize;
+      font-size: $fontSize; 
     }
 
-    .su-input-prefix,
-    .su-input-suffix {
+    .su-input__prefix,
+    .su-input__suffix {
       padding: $padding;
       font-size: $fontSize;
     }
   }
 }
 
-.su-input-container {
+@mixin su-input--align($self, $align) {
+  &--align-#{$align} {
+    #{$self}__element {
+      text-align: $align;
+    }
+  }
+}
+
+.su-input {
+  $self: &;
+  
   display: flex;
   align-items: center;
 
   @include su-form-field-container;
-  
-  // Tailles
-  @include su-input-container-size(sm, $font-size-sm, 0.375rem 0.5rem, 2rem);
-  @include su-input-container-size(md, $font-size-base, 0.5rem 0.75rem, 2.5rem);
-  @include su-input-container-size(lg, $font-size-sm, 0.75rem 1rem, 3rem);
-}
 
-.su-input {
-  width: 100%;
-  line-height: $line-height-normal;
+  &__element {
+    @include su-formfield-element($self);
 
-  @include su-form-field-element;
+    width: 100%;
+    line-height: $line-height-normal;
 
-  &--sm {
-    padding: 0.375rem 0.75rem;
-    font-size: $font-size-sm;
-  }
+    &[type='number'] {
+      appearance: textfield;
 
-  &--md {
-    padding: 0.5rem 0.75rem;
-    font-size: $font-size-base;
-  }
+      &::-webkit-outer-spin-button,
+      &::-webkit-inner-spin-button {
+        appearance: none;
+        margin: 0;
+      }
+    }
 
-  &--lg {
-    padding: 0.75rem 1rem;
-    font-size: $font-size-lg;
-  }
-
-  &--align-left {
-    text-align: left;
-  }
-
-  &--align-center {
-    text-align: center;
-  }
-
-  &--align-right {
-    text-align: right;
-  }
-
-  &[type='number'] {
-    appearance: textfield;
-
-    &::-webkit-outer-spin-button,
-    &::-webkit-inner-spin-button {
-      appearance: none;
-      margin: 0;
+    &[type='search'] {
+      &::-webkit-search-cancel-button {
+        appearance: none;
+      }
     }
   }
 
-  &[type='search'] {
-    &::-webkit-search-cancel-button {
-      appearance: none;
-    }
-  }
+  // Sizes
+  @include su-input--size(&, sm, $font-size-sm, 0.25rem 0.5rem, 2rem);
+  @include su-input--size(&, md, $font-size-base, 0.5rem 0.75rem, 2.5rem);
+  @include su-input--size(&, lg, $font-size-sm, 0.75rem 1rem, 3rem);
 
-  &--disabled {
-    cursor: not-allowed;
-    opacity: 0.6;
-  }
+  // Text align
+  @include su-input--align(&, left);
+  @include su-input--align(&, center);
+  @include su-input--align(&, right);
 
-  &--readonly {
-    background-color: $gray-100;
-    cursor: default;
-  }
-}
-
-.su-input-prefix,
-.su-input-suffix {
-  display: flex;
-  align-items: center;
-  flex-wrap: nowrap;
-  color: $text-secondary;
-  height: -webkit-fill-available;
-  
-  &__text {
-    font-weight: 500;
-  }
-
-  &__icon {
+  // Prefix & Suffix
+  &__prefix,
+  &__suffix {
     display: flex;
     align-items: center;
-    justify-content: center;
+    flex-wrap: nowrap;
+    color: $text-secondary;
+    height: -webkit-fill-available;
+    
+    &__text {
+      font-weight: 500;
+    }
 
-    .su-input-icon {
-      width: 1.25em;
-      height: 1.25em;
+    &__icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      .su-input-icon {
+        width: 1.25em;
+        height: 1.25em;
+      }
+    }
+    
+    &--clickable {
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      
+      &:hover:not(.su-input--disabled, .su-input--readonly) {
+        background-color: $gray-100;
+        color: $text-primary;
+      }
+      
+      &:active:not(.su-input--disabled, .su-input--readonly) {
+        background-color: $gray-200;
+      }
     }
   }
-  
-  &--clickable {
-    cursor: pointer;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    
-    &:hover:not(.su-input-container--disabled, .su-input-container--readonly) {
-      background-color: $gray-100;
-      color: $text-primary;
-    }
-    
-    &:active:not(.su-input-container--disabled, .su-input-container--readonly) {
-      background-color: $gray-200;
-    }
+
+  &__prefix {
+    border-top-left-radius: $border-radius-md;
+    border-bottom-left-radius: $border-radius-md;
   }
-}
 
-.su-input-prefix {
-  border-top-left-radius: $border-radius-md;
-  border-bottom-left-radius: $border-radius-md;
-}
+  &__suffix {
+    border-top-right-radius: $border-radius-md;
+    border-bottom-right-radius: $border-radius-md;
+  }
 
-.su-input-suffix {
-  border-top-right-radius: $border-radius-md;
-  border-bottom-right-radius: $border-radius-md;
-}
-
-// Styles spécifiques au mode sombre pour les préfixes/suffixes
-@media (prefers-color-scheme: dark) {
-  .su-input-prefix,
-  .su-input-suffix {
-    color: $text-secondary-dark;
-    
-    &--clickable:hover:not(.su-input-container--disabled, .su-input-container--readonly) {
-      background-color: $gray-700;
-      color: $text-primary-dark;
-    }
-    
-    &--clickable:active:not(.su-input-container--disabled, .su-input-container--readonly) {
-      background-color: $gray-600;
+  // Styles spécifiques au mode sombre pour les préfixes/suffixes
+  @media (prefers-color-scheme: dark) {
+    &__prefix,
+    &__suffix {
+      color: $text-secondary-dark;
+      
+      &--clickable:hover:not(.su-input--disabled, .su-input--readonly) {
+        background-color: $gray-700;
+        color: $text-primary-dark;
+      }
+      
+      &--clickable:active:not(.su-input--disabled, .su-input--readonly) {
+        background-color: $gray-600;
+      }
     }
   }
 }

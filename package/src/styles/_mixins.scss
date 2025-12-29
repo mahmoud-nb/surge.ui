@@ -58,13 +58,37 @@
 }
 
 // Mixin pour les éléments de formulaire
+@mixin su-formfield-element($self) {
+  border: none;
+  outline: none;
+  background: transparent;
+  box-sizing: border-box;
+  font-family: inherit;
+  color: var(--su-text-primary-color);
+  
+  &::placeholder {
+    color: $text-tertiary;
+  }
+
+  #{$self}--disabled & {
+    background-color: $gray-100;
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  #{$self}--readonly & {
+    background-color: $gray-100;
+    cursor: default;
+  }
+}
+
 @mixin su-form-field-element {
   border: none;
   outline: none;
   background: transparent;
-  color: $text-primary;
-  font-family: inherit;
   box-sizing: border-box;
+  font-family: inherit;
+  color: var(--su-text-primary-color);
   
   &::placeholder {
     color: $text-tertiary;

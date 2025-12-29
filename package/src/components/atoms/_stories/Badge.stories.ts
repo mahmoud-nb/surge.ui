@@ -86,11 +86,20 @@ export const Variants: Story = {
 export const Sizes: Story = {
   render: () => ({
     components: { Badge },
+    setup() {
+      return { CheckIcon, XMarkIcon, StarIcon, ExclamationTriangleIcon, InformationCircleIcon }
+    },
     template: `
       <div style="display: flex; gap: 1rem; align-items: center;">
         <Badge size="sm">Small</Badge>
         <Badge size="md">Medium</Badge>
         <Badge size="lg">Large</Badge>
+      </div>
+      <br /><br />
+      <div style="display: flex; gap: 1rem; align-items: center;">
+        <Badge size="sm" :icon="CheckIcon">Small</Badge>
+        <Badge size="md" :icon="CheckIcon">Medium</Badge>
+        <Badge size="lg" :icon="CheckIcon">Large</Badge>
       </div>
     `
   })
