@@ -539,7 +539,8 @@ defineExpose({
 </template>
 
 <style lang="scss">
-@use '../../styles/main' as *;
+@use '../../styles2/main' as *;
+@use '../../styles2/foundations/colors' as *;
 
 .su-file-upload-container {
   display: flex;
@@ -566,20 +567,20 @@ defineExpose({
   align-items: center;
   justify-content: center;
   padding: 2rem;
-  border: 2px dashed $gray-300;
-  border-radius: $border-radius-lg;
-  background-color: $gray-50;
+  border: 2px dashed var(--su-border-default);
+  border-radius: var(--su-radius-lg);
+  background-color: var(--su-bg-canvas);
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   
   &:hover:not(&--disabled, &--readonly) {
-    border-color: $primary-400;
-    background-color: $primary-50;
+    border-color: var(--su-border-hover);
+    background-color: var(--su-bg-primary-canvas);
   }
   
   &:focus {
     outline: none;
-    border-color: $primary-500;
+    border-color: var(--su-border-focus);
     box-shadow: 0 0 0 3px rgba($primary-500, 0.1);
   }
   
@@ -593,7 +594,7 @@ defineExpose({
     }
     
     .su-file-upload-primary-text {
-      font-size: $font-size-sm;
+      font-size: var(--su-font-size-sm);
     }
     
     .su-file-upload-secondary-text {
@@ -619,50 +620,51 @@ defineExpose({
     }
     
     .su-file-upload-primary-text {
-      font-size: $font-size-lg;
+      font-size: var(--su-font-size-lg);
     }
   }
   
   // États
   &--error {
-    border-color: $error-300;
-    background-color: $error-50;
+    border-color: var(--su-state-error-border-color, $error-300);
+    background-color: var(--su-state-error-bg, $error-50);
     
     &:hover:not(&--disabled, &--readonly) {
-      border-color: $error-400;
+      border-color: var(--su-state-error-border-hover, $error-400);
+      background-color: var(--su-state-error-bg, $error-50);
     }
     
     &:focus {
-      border-color: $error-500;
-      box-shadow: 0 0 0 3px rgba($error-500, 0.1);
+      border-color: var(--su-state-error-border-focus, $error-500);
+      box-shadow: 0 0 0 3px rgba(var(--su-state-error-border-focus, $error-500), 0.1);
     }
   }
   
   &--success {
-    border-color: $success-300;
-    background-color: $success-50;
+    border-color: var(--su-state-success-border-color, $success-300);
+    background-color: var(--su-state-success-bg, $success-50);
     
     &:hover:not(&--disabled, &--readonly) {
-      border-color: $success-400;
+      border-color: var(--su-state-success-border-hover, $success-400);
     }
     
     &:focus {
-      border-color: $success-500;
-      box-shadow: 0 0 0 3px rgba($success-500, 0.1);
+      border-color: var(--su-state-success-border-focus, $success-500);
+      box-shadow: 0 0 0 3px rgba(var(--su-state-success-border-focus, $success-500), 0.1);
     }
   }
   
   &--warning {
-    border-color: $warning-300;
-    background-color: $warning-50;
+    border-color: var(--su-state-warning-border-color, $warning-300);
+    background-color: var(--su-state-warning-bg, $warning-50);
     
     &:hover:not(&--disabled, &--readonly) {
-      border-color: $warning-400;
+      border-color: var(--su-state-warning-border-hover, $warning-400);
     }
     
     &:focus {
-      border-color: $warning-500;
-      box-shadow: 0 0 0 3px rgba($warning-500, 0.1);
+      border-color: var(--su-state-warning-border-focus, $warning-500);
+      box-shadow: 0 0 0 3px rgba(var(--su-state-warning-border-focus, $warning-500), 0.1);
     }
   }
   
@@ -686,7 +688,7 @@ defineExpose({
 .su-file-upload-icon {
   width: 3rem;
   height: 3rem;
-  color: $text-secondary;
+  color: var(--su-text-secondary);
   margin-bottom: 1rem;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   
@@ -723,7 +725,7 @@ defineExpose({
 
 .su-file-upload-progress-fill {
   height: 100%;
-  background-color: $primary-500;
+  background-color: var(--su-bg-canvas);
   border-radius: inherit;
   transition: width 0.3s ease;
 }
@@ -733,15 +735,15 @@ defineExpose({
 }
 
 .su-file-upload-primary-text {
-  font-size: $font-size-base;
+  font-size: var(--su-font-size-base);
   font-weight: 500;
-  color: $text-primary;
+  color: var(--su-text-primary);
   margin: 0 0 0.5rem;
 }
 
 .su-file-upload-secondary-text {
-  font-size: $font-size-sm;
-  color: $text-secondary;
+  font-size: var(--su-font-size-sm);
+  color: var(--su-text-secondary);
   margin: 0;
 }
 
@@ -758,7 +760,7 @@ defineExpose({
   padding: 0.75rem;
   background-color: white;
   border: 1px solid $gray-200;
-  border-radius: $border-radius-md;
+  border-radius: var(--su-radius-md);
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   
   &:hover {
@@ -766,18 +768,18 @@ defineExpose({
   }
   
   &--error {
-    border-color: $error-300;
-    background-color: $error-50;
+    border-color: var(--su-state-error-border-color, $error-300);
+    background-color: var(--su-state-error-bg, $error-50);
   }
   
   &--success {
-    border-color: $success-300;
-    background-color: $success-50;
+    border-color: var(--su-state-success-border-color, $success-300);
+    background-color: var(--su-state-success-bg, $success-50);
   }
   
   &--uploading {
-    border-color: $primary-300;
-    background-color: $primary-50;
+    border-color: var(--su-border-selected, $primary-300);
+    background-color: var(--su-bg-selected);
   }
 }
 
@@ -788,8 +790,8 @@ defineExpose({
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: $gray-100;
-  border-radius: $border-radius-sm;
+  background-color: var(--su-bg-canvas);
+  border-radius: var(--su-radius-sm);
   overflow: hidden;
 }
 
@@ -802,7 +804,7 @@ defineExpose({
 .su-file-upload-item-icon {
   width: 1.5rem;
   height: 1.5rem;
-  color: $text-secondary;
+  color: var(--su-text-secondary);
 }
 
 .su-file-upload-item-info {
@@ -812,7 +814,7 @@ defineExpose({
 
 .su-file-upload-item-name {
   font-weight: 500;
-  color: $text-primary;
+  color: var(--su-text-primary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -823,21 +825,21 @@ defineExpose({
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  font-size: $font-size-sm;
-  color: $text-secondary;
+  font-size: var(--su-font-size-sm);
+  color: var(--su-text-secondary);
 }
 
 .su-file-upload-item-size {
-  color: $text-secondary;
+  color: var(--su-text-secondary);
 }
 
 .su-file-upload-item-progress {
-  color: $primary-600;
+  color: var(--su-primary-default, $primary-600);
   font-weight: 500;
 }
 
 .su-file-upload-item-error {
-  color: $error-600;
+  color: var(--su-state-error);
   font-weight: 500;
 }
 
@@ -853,11 +855,11 @@ defineExpose({
   height: 1.25rem;
   
   &--success {
-    color: $success-600;
+    color: var(--su-state-success);
   }
   
   &--error {
-    color: $error-600;
+    color: var(--su-state-error);
   }
 }
 
@@ -869,7 +871,7 @@ defineExpose({
   .su-spinner {
     width: 1.25rem;
     height: 1.25rem;
-    color: $primary-600;
+    color: var(--su-primary-default, $primary-600);
     animation: spin 1s linear infinite;
   }
 }
@@ -885,12 +887,12 @@ defineExpose({
   border: none;
   border-radius: 50%;
   cursor: pointer;
-  color: $text-secondary;
+  color: var(--su-text-secondary);
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   
   &:hover {
-    background-color: $error-100;
-    color: $error-600;
+    background-color: var(--su-state-error-bg, $error-100);
+    color: var(--su-state-error, $error-600);
   }
   
   &:focus {
@@ -905,23 +907,23 @@ defineExpose({
 }
 
 .su-file-upload-message {
-  font-size: $font-size-sm;
-  line-height: $line-height-tight;
+  font-size: var(--su-font-size-sm);
+  line-height: var(--su-line-height-tight);
   
   &--default {
-    color: $text-secondary;
+    color: var(--su-text-secondary);
   }
   
   &--error {
-    color: $error-600;
+    color: var(--su-state-error);
   }
   
   &--success {
-    color: $success-600;
+    color: var(--su-state-success);
   }
   
   &--warning {
-    color: $warning-600;
+    color: var(--su-state-warning);
   }
 }
 
@@ -953,11 +955,11 @@ defineExpose({
   }
   
   .su-file-upload-primary-text {
-    color: $text-primary-dark;
+    color: var(--su-text-primary);
   }
   
   .su-file-upload-secondary-text {
-    color: $text-secondary-dark;
+    color: var(--su-text-secondary);
   }
   
   .su-file-upload-item {
@@ -970,16 +972,16 @@ defineExpose({
   }
   
   .su-file-upload-item-name {
-    color: $text-primary-dark;
+    color: var(--su-text-primary);
   }
   
   .su-file-upload-item-details {
-    color: $text-secondary-dark;
+    color: var(--su-text-secondary);
   }
   
   .su-file-upload-message {
     &--default {
-      color: $text-secondary-dark;
+      color: var(--su-text-secondary);
     }
   }
 }

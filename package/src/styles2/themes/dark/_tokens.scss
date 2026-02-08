@@ -4,6 +4,7 @@ $theme-dark: (
   'text-primary': $gray-50,
   'text-secondary': $gray-300,
   'text-tertiary': $gray-400,
+  'text-placeholder': $gray-400,
   'text-disabled': $gray-600,
   'text-inverse': $gray-900,
   
@@ -27,6 +28,8 @@ $theme-dark: (
   'border-strong': $gray-600,
   'border-focus': $primary-500,
   'border-disabled': $gray-800,
+
+  'border-hover': $gray-600,
   
   'state-success': $success-500,
   'state-success-bg': rgba($success-500, 0.15),

@@ -56,13 +56,13 @@ const groupClasses = computed(() => [
 ])
 
 const getOptionClasses = (option: any) => [
-  'su-checkbox-option',
-  `su-checkbox-option--${props.size}`,
-  `su-checkbox-option--${props.state}`,
-  `su-checkbox-option--${props.displayType}`,
+  'su-checkbox__option',
+  `su-checkbox__option--${props.size}`,
+  `su-checkbox__option--${props.state}`,
+  `su-checkbox__option--${props.displayType}`,
   {
-    'su-checkbox-option--selected': selectedValues.value.includes(option.value),
-    'su-checkbox-option--disabled': option.disabled || props.disabled
+    'su-checkbox__option--selected': selectedValues.value.includes(option.value),
+    'su-checkbox__option--disabled': option.disabled || props.disabled
   }
 ]
 
@@ -132,7 +132,7 @@ const isDisabled = (option: any) => {
   >
     <!-- Options -->
     <div 
-      class="su-checkbox-group-options"
+      class="su-checkbox-group__options"
       :style="{ maxHeight: maxHeight || undefined, overflowY: maxHeight ? 'auto' : undefined }"
     >
       <!-- Slot before: contenu entre le label et les options -->
@@ -157,7 +157,7 @@ const isDisabled = (option: any) => {
           :checked="isChecked(option.value)"
           :disabled="isDisabled(option)"
           :required="required && selectedValues.length === 0"
-          class="su-checkbox-input"
+          class="su-checkbox__input"
           @change="handleChange(option.value, ($event.target as HTMLInputElement).checked)"
           @focus="handleFocus"
           @blur="handleBlur"
@@ -165,32 +165,32 @@ const isDisabled = (option: any) => {
 
         <!-- Indicateur checkbox personnalisé -->
         <div 
-          class="su-checkbox-indicator"
+          class="su-checkbox__indicator"
           :class="{
-            'su-checkbox-indicator--checked': isChecked(option.value),
-            'su-checkbox-indicator--indeterminate': false
+            'su-checkbox__indicator--checked': isChecked(option.value),
+            'su-checkbox__indicator--indeterminate': false
           }"
         >
           <CheckIcon 
             v-if="isChecked(option.value)"
-            class="su-checkbox-check" 
+            class="su-checkbox__check" 
             aria-hidden="true"
           />
         </div>
 
         <!-- Contenu de l'option -->
-        <div class="su-checkbox-content">
+        <div class="su-checkbox__content">
           <!-- Icône -->
           <component 
             :is="option.icon" 
             v-if="option.icon" 
-            class="su-checkbox-icon"
+            class="su-checkbox__icon"
             aria-hidden="true"
           />
           
           <!-- Texte -->
-          <div class="su-checkbox-text">
-            <div class="su-checkbox-label">{{ option.label }}</div>
+          <div class="su-checkbox__text">
+            <div class="su-checkbox__label">{{ option.label }}</div>
           </div>
         </div>
       </label>
@@ -207,12 +207,28 @@ const isDisabled = (option: any) => {
 </template>
 
 <style lang="scss">
-@use '../../styles/main' as *;
+@use '../../styles2/main' as *;
+@use '../../styles2/foundations/colors' as *;
 
-.su-checkbox-group-wrapper {
-  display: flex;
-  flex-direction: column;
-  gap: 0.375rem;
+@mixin su-checkbox-state($stateColor50, $stateColor300, $stateColor500) {
+  &.su-checkbox__option--inline-card,
+  &.su-checkbox__option--block-card {
+    border-color: #{$stateColor300};
+    
+    &--selected {
+      border-color: #{$stateColor500};
+      background-color: #{$stateColor50};
+    }
+  }
+  
+  .su-checkbox__indicator {
+    border-color: #{$stateColor500};
+    
+    &--checked {
+      background-color: #{$stateColor500};
+      border-color: #{$stateColor500};
+    }
+  }
 }
 
 .su-checkbox-group {
@@ -220,41 +236,39 @@ const isDisabled = (option: any) => {
   padding: 0;
   margin: 0;
   
-  &-label {
+  &__label {
     display: block;
-    font-size: $font-size-sm;
-    font-weight: 500;
-    color: $text-primary;
-    line-height: $line-height-tight;
     margin-bottom: 0.75rem;
+    
+    @include su-text('sm', 'primary', 'medium', 'tight');
     
     &--required {
       .su-checkbox-group-required {
-        color: $error-500;
-        margin-left: 0.125rem;
+        color: var(--su-error-500);
+        margin-inline-start: 0.125rem;
       }
     }
     
     &--disabled {
-      color: $text-tertiary;
+      color: var(--su-text-tertiary);
       cursor: not-allowed;
     }
   }
   
-  &-options {
+  &__options {
     display: flex;
     gap: 0.75rem;
   }
   
   // Direction
   &--vertical {
-    .su-checkbox-group-options {
+    .su-checkbox-group__options {
       flex-direction: column;
     }
   }
   
   &--horizontal {
-    .su-checkbox-group-options {
+    .su-checkbox-group__options {
       flex-flow: row wrap;
     }
   }
@@ -262,62 +276,49 @@ const isDisabled = (option: any) => {
   // Style carte
   &--inline-card,
   &--block-card {
-    .su-checkbox-group-options {
+    .su-checkbox-group__options {
       gap: 0.75rem;
     }
   }
   
   &--inline-card {
-    .su-checkbox-group-options {
+    .su-checkbox-group__options {
       gap: 0.5rem;
     }
   }
   
   // Scroll
   &--scrollable {
-    .su-checkbox-group-options {
-      overflow-y: auto;
-      scrollbar-width: thin;
-      scrollbar-color: $gray-400 $gray-100;
-      
-      &::-webkit-scrollbar {
-        width: 6px;
-      }
-      
-      &::-webkit-scrollbar-track {
-        background: $gray-100;
-        border-radius: 3px;
-      }
-      
-      &::-webkit-scrollbar-thumb {
-        background: $gray-400;
-        border-radius: 3px;
-        
-        &:hover {
-          background: $gray-500;
-        }
-      }
-    }
+    @include scrollable-container;
+
+    padding-inline-end: 0.75rem;
   }
 }
 
-.su-checkbox-option {
+.su-checkbox__option {
+  $self: &;
+
   display: flex;
   align-items: flex-start;
   gap: 0.75rem;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
+  box-sizing: border-box;
   
   // Style par défaut
   &--default {
     padding: 0.25rem 0;
     
     &:hover:not(&--disabled) {
-      .su-checkbox-indicator {
-        border-color: $primary-400;
+      .su-checkbox__indicator {
+        border-color: var('--su-border-hover', $primary-400);
       }
     }
+  }
+
+  &--block-card {
+    width: 100%;
   }
   
   // Style carte
@@ -325,209 +326,153 @@ const isDisabled = (option: any) => {
   &--block-card {
     padding: 1rem;
     border: 1px solid $gray-200;
-    border-radius: $border-radius-md;
-    background-color: white;
+    border-radius: var(--su-radius-md);
+    background-color: var(--su-bg-surface);
     
     &:hover:not(&--disabled) {
-      border-color: $primary-300;
-      box-shadow: 0 2px 4px rgb(0 0 0 / 5%);
+      border-color: var(--su-border-default);
+      box-shadow: var(--su-shadow-md);
     }
     
     &--selected {
-      border-color: $primary-500;
-      background-color: $primary-50;
-      box-shadow: 0 0 0 1px $primary-500;
+      border-color: var(--su-border-default);
+      background-color: var(--su-primary-50);
+      box-shadow: var(--su-shadow-md);
     }
   }
   
   &--inline-card {
-    .su-checkbox-content {
+    .su-checkbox__content {
       text-align: center;
     }
     
-    .su-checkbox-indicator {
+    .su-checkbox__indicator {
       align-self: center;
     }
   }
   
-  &--block-card {
-    width: 100%;
-  }
-  
   // Tailles
   &--sm {
-    .su-checkbox-indicator {
-      width: 1rem;
-      height: 1rem;
+    .su-checkbox__indicator {
+      @include squareSize(1rem);
       
-      .su-checkbox-check {
-        width: 0.75rem;
-        height: 0.75rem;
+      .su-checkbox__check {
+        @include squareSize(0.75rem);
       }
     }
     
-    .su-checkbox-label {
-      font-size: $font-size-sm;
+    .su-checkbox__label {
+      font-size: var(--su-font-size-sm);
     }
     
-    .su-checkbox-description {
-      font-size: 0.75rem;
+    .su-checkbox__description {
+      font-size: var(--su-font-size-xs);
     }
     
-    &.su-checkbox-option--inline-card,
-    &.su-checkbox-option--block-card {
+    &.su-checkbox__option--inline-card,
+    &.su-checkbox__option--block-card {
       padding: 0.75rem;
     }
   }
   
   &--md {
-    .su-checkbox-indicator {
-      width: 1.25rem;
-      height: 1.25rem;
+    .su-checkbox__indicator {
+      @include squareSize(1.25rem);
       
-      .su-checkbox-check {
-        width: 1rem;
-        height: 1rem;
+      .su-checkbox__check {
+        @include squareSize(1rem);
       }
     }
     
-    .su-checkbox-label {
-      font-size: $font-size-base;
+    .su-checkbox__label {
+      font-size: var(--su-font-size-base);
     }
     
-    .su-checkbox-description {
-      font-size: $font-size-sm;
+    .su-checkbox__description {
+      font-size: var(--su-font-size-sm);
+    }
+
+    &.su-checkbox__option--inline-card,
+    &.su-checkbox__option--block-card {
+      padding: 1rem;
     }
   }
   
   &--lg {
-    .su-checkbox-indicator {
-      width: 1.5rem;
-      height: 1.5rem;
+    .su-checkbox__indicator {
+      @include squareSize(1.5rem);
       
-      .su-checkbox-check {
-        width: 1.25rem;
-        height: 1.25rem;
+      .su-checkbox__check {
+        @include squareSize(1.25rem);
       }
     }
     
-    .su-checkbox-label {
-      font-size: $font-size-lg;
+    .su-checkbox__label {
+      font-size: var(--su-font-size-lg);
     }
     
-    .su-checkbox-description {
-      font-size: $font-size-base;
+    .su-checkbox__description {
+      font-size: var(--su-font-size-base);
     }
     
-    &.su-checkbox-option--inline-card,
-    &.su-checkbox-option--block-card {
+    &.su-checkbox__option--inline-card,
+    &.su-checkbox__option--block-card {
       padding: 1.25rem;
     }
   }
   
   // États
   &--error {
-    &.su-checkbox-option--inline-card,
-    &.su-checkbox-option--block-card {
-      border-color: $error-300;
-      
-      &--selected {
-        border-color: $error-500;
-        background-color: $error-50;
-      }
-    }
-    
-    .su-checkbox-indicator {
-      border-color: $error-500;
-      
-      &--checked {
-        background-color: $error-500;
-        border-color: $error-500;
-      }
-    }
+    @include su-checkbox-state($error-50, $error-300, $error-500);
   }
   
   &--success {
-    &.su-checkbox-option--inline-card,
-    &.su-checkbox-option--block-card {
-      border-color: $success-300;
-      
-      &--selected {
-        border-color: $success-500;
-        background-color: $success-50;
-      }
-    }
-    
-    .su-checkbox-indicator {
-      border-color: $success-500;
-      
-      &--checked {
-        background-color: $success-500;
-        border-color: $success-500;
-      }
-    }
+    @include su-checkbox-state($success-50, $success-300, $success-500);
   }
   
   &--warning {
-    &.su-checkbox-option--inline-card,
-    &.su-checkbox-option--block-card {
-      border-color: $warning-300;
-      
-      &--selected {
-        border-color: $warning-500;
-        background-color: $warning-50;
-      }
-    }
-    
-    .su-checkbox-indicator {
-      border-color: $warning-500;
-      
-      &--checked {
-        background-color: $warning-500;
-        border-color: $warning-500;
-      }
-    }
+    @include su-checkbox-state($warning-50, $warning-300, $warning-500);
   }
   
   &--disabled {
     opacity: 0.6;
     cursor: not-allowed;
     
-    &.su-checkbox-option--inline-card,
-    &.su-checkbox-option--block-card {
-      background-color: $gray-50;
-      border-color: $gray-200;
+    &.su-checkbox__option--inline-card,
+    &.su-checkbox__option--block-card {
+      background-color: var(--su-bg-disabled);
+      border-color: var(--su-border-disabled);
     }
   }
 }
 
-.su-checkbox-input {
+.su-checkbox__input {
   position: absolute;
   opacity: 0;
   width: 0;
   height: 0;
   
-  &:focus + .su-checkbox-indicator {
+  &:focus + .su-checkbox__indicator {
     box-shadow: 0 0 0 3px rgba($primary-500, 0.2);
   }
   
-  &:checked + .su-checkbox-indicator {
+  &:checked + .su-checkbox__indicator {
     border-color: $primary-500;
     background-color: $primary-500;
     
-    .su-checkbox-check {
+    .su-checkbox__check {
       color: white;
     }
   }
 }
 
-.su-checkbox-indicator {
+.su-checkbox__indicator {
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid $gray-300;
-  border-radius: $border-radius-sm;
-  background-color: white;
+  border: 1px solid var(--su-border-default);
+  border-radius: var(--su-radius-sm);
+  background-color: var(--su-bg-surface);
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   flex-shrink: 0;
   
@@ -550,12 +495,12 @@ const isDisabled = (option: any) => {
   }
 }
 
-.su-checkbox-check {
+.su-checkbox__check {
   color: white;
   stroke-width: 3;
 }
 
-.su-checkbox-content {
+.su-checkbox__content {
   flex: 1;
   min-width: 0;
   display: flex;
@@ -563,37 +508,37 @@ const isDisabled = (option: any) => {
   gap: 0.5rem;
 }
 
-.su-checkbox-icon {
+.su-checkbox__icon {
   width: 1.25em;
   height: 1.25em;
   flex-shrink: 0;
-  color: $text-secondary;
+  color: var(--su-text-secondary);
   margin-top: 0.125rem;
 }
 
-.su-checkbox-text {
+.su-checkbox__text {
   flex: 1;
   min-width: 0;
 }
 
-.su-checkbox-label {
+.su-checkbox__label {
   font-weight: 500;
-  color: $text-primary;
-  line-height: $line-height-tight;
+  color: var(--su-text-primary);
+  line-height: var(--su-line-height-tight);
 }
 
-.su-checkbox-description {
-  color: $text-secondary;
-  line-height: $line-height-normal;
+.su-checkbox__description {
+  color: var(--su-text-secondary);
+  line-height: var(--su-line-height-normal);
   margin-top: 0.25rem;
 }
 
 .su-checkbox-group-message {
-  font-size: $font-size-sm;
-  line-height: $line-height-tight;
+  font-size: var(--su-font-size-sm);
+  line-height: var(--su-line-height-tight);
   
   &--default {
-    color: $text-secondary;
+    color: var(--su-text-secondary);
   }
   
   &--error {
@@ -624,15 +569,15 @@ const isDisabled = (option: any) => {
 
 // Mode sombre
 @media (prefers-color-scheme: dark) {
-  .su-checkbox-group-label {
-    color: $text-primary-dark;
+  .su-checkbox-group__label {
+    color: var(--su-text-primary)-dark;
     
     &--disabled {
-      color: $text-tertiary-dark;
+      color: var(--su-text-tertiary);
     }
   }
   
-  .su-checkbox-option {
+  .su-checkbox__option {
     &--inline-card,
     &--block-card {
       background-color: $gray-800;
@@ -654,7 +599,7 @@ const isDisabled = (option: any) => {
     }
   }
   
-  .su-checkbox-indicator {
+  .su-checkbox__indicator {
     border-color: $gray-500;
     background-color: $gray-800;
     
@@ -664,12 +609,12 @@ const isDisabled = (option: any) => {
     }
   }
   
-  .su-checkbox-label {
-    color: $text-primary-dark;
+  .su-checkbox__label {
+    color: var(--su-text-primary)-dark;
   }
   
-  .su-checkbox-description {
-    color: $text-secondary-dark;
+  .su-checkbox__description {
+    color: var(--su-text-secondary)-dark;
   }
   
   .su-checkbox-group-toggle {
@@ -685,27 +630,27 @@ const isDisabled = (option: any) => {
   
   .su-checkbox-group-message {
     &--default {
-      color: $text-secondary-dark;
+      color: var(--su-text-secondary)-dark;
     }
   }
 }
 
 // Mode de contraste élevé
 @media (prefers-contrast: high) {
-  .su-checkbox-indicator {
+  .su-checkbox__indicator {
     border-width: 3px;
   }
   
-  .su-checkbox-option--inline-card,
-  .su-checkbox-option--block-card {
+  .su-checkbox__option--inline-card,
+  .su-checkbox__option--block-card {
     border-width: 2px;
   }
 }
 
 // Support de la réduction des animations
 @media (prefers-reduced-motion: reduce) {
-  .su-checkbox-option,
-  .su-checkbox-indicator {
+  .su-checkbox__option,
+  .su-checkbox__indicator {
     transition: none;
   }
 }

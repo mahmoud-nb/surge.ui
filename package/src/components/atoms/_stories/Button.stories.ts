@@ -56,7 +56,7 @@ const meta: Meta<typeof Button> = {
 
 export default meta
 type Story = StoryObj<typeof meta>
-
+/*
 export const Primary: Story = {
   args: {
     variant: 'primary'
@@ -109,18 +109,7 @@ export const Ghost: Story = {
   })
 }
 
-export const Default: Story = {
-  args: {
-    variant: 'default'
-  },
-  render: (args) => ({
-    components: { Button },
-    setup() {
-      return { args }
-    },
-    template: '<Button v-bind="args">Default Button</Button>'
-  })
-}
+*/
 
 export const Variants: Story = {
   render: () => ({
@@ -148,31 +137,26 @@ export const RadiusVariations: Story = {
           <Button radius="md">Medium</Button>
           <Button radius="lg">Large</Button>
           <Button radius="xl">Extra Large</Button>
-          <Button radius="max">Full...</Button>
+          <Button radius="max">Full radius</Button>
         </div>
       </div>
     `
   })
 }
 
-export const DefaultConfigurations: Story = {
+export const Sizes: Story = {
   render: () => ({
     components: { Button },
     template: `
-      <div style="display: flex; flex-direction: column; gap: 1rem; align-items: flex-start;">
-        <div>
-          <h4 style="margin-bottom: 0.5rem;">Utilisation des valeurs par défaut</h4>
-          <div style="display: flex; gap: 1rem; align-items: center;">
-            <Button variant="default" size="default" radius="default">Tout par défaut</Button>
-            <Button size="default" radius="default">Variante explicite</Button>
-            <Button variant="default" radius="default">Taille explicite</Button>
-            <Button variant="default" size="default">Radius explicite</Button>
-          </div>
+        <div style="display: flex; gap: 1rem; align-items: center;">
+          <Button size="sm">Small</Button>
+          <Button size="md">Medium</Button>
+          <Button size="lg">Large</Button>
         </div>
-      </div>
     `
   })
 }
+
 export const WithIconBefore: Story = {
   args: {
     variant: 'primary',
@@ -258,18 +242,5 @@ export const Block: Story = {
       return { args }
     },
     template: '<div style="width: 320px;"><Button v-bind="args">Block Button</Button></div>'
-  })
-}
-
-export const Sizes: Story = {
-  render: () => ({
-    components: { Button },
-    template: `
-        <div style="display: flex; gap: 1rem; align-items: center;">
-          <Button size="sm">Small</Button>
-          <Button size="md">Medium</Button>
-          <Button size="lg">Large</Button>
-        </div>
-    `
   })
 }

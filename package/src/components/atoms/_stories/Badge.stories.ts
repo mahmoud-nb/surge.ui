@@ -27,7 +27,7 @@ const meta: Meta<typeof Badge> = {
     },
     radius: {
       control: { type: 'select' },
-      options: ['none', 'sm', 'md', 'lg', 'xl', 'max'],
+      options: ['none', 'sm', 'md', 'lg', 'xl', 'full'],
       description: 'Rayon de bordure du badge'
     },
     icon: {
@@ -68,54 +68,60 @@ export const Default: Story = {
 }
 
 export const Variants: Story = {
-  render: () => ({
+  render: (args) => ({
     components: { Badge },
+    setup() {
+      return { args }
+    },
     template: `
       <div style="display: flex; flex-wrap: wrap; gap: 1rem; align-items: center;">
-        <Badge variant="default">Default</Badge>
-        <Badge variant="primary">Primary</Badge>
-        <Badge variant="secondary">Secondary</Badge>
-        <Badge variant="success">Success</Badge>
-        <Badge variant="warning">Warning</Badge>
-        <Badge variant="error">Error</Badge>
+        <Badge v-bind="args" variant="default">Default</Badge>
+        <Badge v-bind="args" variant="primary">Primary</Badge>
+        <Badge v-bind="args" variant="secondary">Secondary</Badge>
+        <Badge v-bind="args" variant="success">Success</Badge>
+        <Badge v-bind="args" variant="warning">Warning</Badge>
+        <Badge v-bind="args" variant="error">Error</Badge>
       </div>
     `
   })
 }
 
 export const Sizes: Story = {
-  render: () => ({
+  render: (args) => ({
     components: { Badge },
     setup() {
-      return { CheckIcon, XMarkIcon, StarIcon, ExclamationTriangleIcon, InformationCircleIcon }
+      return { args, CheckIcon, XMarkIcon, StarIcon, ExclamationTriangleIcon, InformationCircleIcon }
     },
     template: `
       <div style="display: flex; gap: 1rem; align-items: center;">
-        <Badge size="sm">Small</Badge>
-        <Badge size="md">Medium</Badge>
-        <Badge size="lg">Large</Badge>
+        <Badge v-bind="args" size="sm">Small</Badge>
+        <Badge v-bind="args" size="md">Medium</Badge>
+        <Badge v-bind="args" size="lg">Large</Badge>
       </div>
       <br /><br />
       <div style="display: flex; gap: 1rem; align-items: center;">
-        <Badge size="sm" :icon="CheckIcon">Small</Badge>
-        <Badge size="md" :icon="CheckIcon">Medium</Badge>
-        <Badge size="lg" :icon="CheckIcon">Large</Badge>
+        <Badge v-bind="args" size="sm" :icon="CheckIcon">Small</Badge>
+        <Badge v-bind="args" size="md" :icon="CheckIcon">Medium</Badge>
+        <Badge v-bind="args" size="lg" :icon="CheckIcon">Large</Badge>
       </div>
     `
   })
 }
 
 export const Radius: Story = {
-  render: () => ({
+  render: (args) => ({
     components: { Badge },
+    setup() {
+      return { args }
+    },
     template: `
       <div style="display: flex; flex-wrap: wrap; gap: 1rem; align-items: center;">
-        <Badge radius="none">None</Badge>
-        <Badge radius="sm">Small</Badge>
-        <Badge radius="md">Medium</Badge>
-        <Badge radius="lg">Large</Badge>
-        <Badge radius="xl">Extra Large</Badge>
-        <Badge radius="max">max</Badge>
+        <Badge v-bind="args" radius="none">None</Badge>
+        <Badge v-bind="args" radius="sm">Small</Badge>
+        <Badge v-bind="args" radius="md">Medium</Badge>
+        <Badge v-bind="args" radius="lg">Large</Badge>
+        <Badge v-bind="args" radius="xl">Extra Large</Badge>
+        <Badge v-bind="args" radius="full">Full</Badge>
       </div>
     `
   })
@@ -195,19 +201,19 @@ export const StatusBadges: Story = {
         <div>
           <h4 style="margin-bottom: 1rem;">Niveaux d'utilisateur</h4>
           <div style="display: flex; gap: 1rem; align-items: center;">
-            <Badge variant="default" radius="max">Débutant</Badge>
-            <Badge variant="primary" radius="max">Intermédiaire</Badge>
-            <Badge variant="warning" radius="max">Avancé</Badge>
-            <Badge variant="error" radius="max">Expert</Badge>
+            <Badge variant="default" radius="full">Débutant</Badge>
+            <Badge variant="primary" radius="full">Intermédiaire</Badge>
+            <Badge variant="warning" radius="full">Avancé</Badge>
+            <Badge variant="error" radius="full">Expert</Badge>
           </div>
         </div>
         
         <div>
           <h4 style="margin-bottom: 1rem;">Notifications</h4>
           <div style="display: flex; gap: 1rem; align-items: center;">
-            <Badge variant="error" radius="max" size="sm">3</Badge>
-            <Badge variant="warning" radius="max" size="sm">12</Badge>
-            <Badge variant="success" radius="max" size="sm">99+</Badge>
+            <Badge variant="error" radius="full" size="sm">3</Badge>
+            <Badge variant="warning" radius="full" size="sm">12</Badge>
+            <Badge variant="success" radius="full" size="sm">99+</Badge>
           </div>
         </div>
       </div>
@@ -284,29 +290,29 @@ export const ProductLabels: Story = {
         <div style="padding: 1.5rem; background-color: white; border-radius: 0.75rem; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
           <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
             <h3 style="margin: 0; font-size: 1.125rem; font-weight: 600;">MacBook Pro</h3>
-            <Badge variant="success" size="sm" radius="max">En stock</Badge>
+            <Badge variant="success" size="sm" radius="full">En stock</Badge>
           </div>
           <p style="margin: 0 0 1rem 0; color: #6b7280; font-size: 0.875rem;">
             Ordinateur portable haute performance
           </p>
           <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-            <Badge variant="primary" size="sm" radius="max">Nouveau</Badge>
-            <Badge variant="warning" size="sm" radius="max">Promo</Badge>
-            <Badge variant="default" size="sm" radius="max">13"</Badge>
+            <Badge variant="primary" size="sm" radius="full">Nouveau</Badge>
+            <Badge variant="warning" size="sm" radius="full">Promo</Badge>
+            <Badge variant="default" size="sm" radius="full">13"</Badge>
           </div>
         </div>
         
         <div style="padding: 1.5rem; background-color: white; border-radius: 0.75rem; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
           <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
             <h3 style="margin: 0; font-size: 1.125rem; font-weight: 600;">iPhone 15</h3>
-            <Badge variant="error" size="sm" radius="max">Rupture</Badge>
+            <Badge variant="error" size="sm" radius="full">Rupture</Badge>
           </div>
           <p style="margin: 0 0 1rem 0; color: #6b7280; font-size: 0.875rem;">
             Smartphone dernière génération
           </p>
           <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-            <Badge variant="secondary" size="sm" radius="max">128GB</Badge>
-            <Badge variant="default" size="sm" radius="max">Bleu</Badge>
+            <Badge variant="secondary" size="sm" radius="full">128GB</Badge>
+            <Badge variant="default" size="sm" radius="full">Bleu</Badge>
           </div>
         </div>
       </div>
@@ -322,10 +328,10 @@ export const NotificationBadges: Story = {
         <div>
           <h4 style="margin-bottom: 1rem;">Compteurs de notifications</h4>
           <div style="display: flex; gap: 1rem; align-items: center;">
-            <Badge variant="error" radius="max" size="sm">3</Badge>
-            <Badge variant="error" radius="max" size="sm">12</Badge>
-            <Badge variant="error" radius="max" size="sm">99+</Badge>
-            <Badge variant="error" radius="max" size="sm">999+</Badge>
+            <Badge variant="error" radius="full" size="sm">3</Badge>
+            <Badge variant="error" radius="full" size="sm">12</Badge>
+            <Badge variant="error" radius="full" size="sm">99+</Badge>
+            <Badge variant="error" radius="full" size="sm">999+</Badge>
           </div>
         </div>
         
@@ -338,7 +344,7 @@ export const NotificationBadges: Story = {
               </button>
               <Badge 
                 variant="error" 
-                radius="max" 
+                radius="full" 
                 size="sm" 
                 style="position: absolute; top: -0.375rem; right: -0.375rem;"
               >
@@ -352,7 +358,7 @@ export const NotificationBadges: Story = {
               </button>
               <Badge 
                 variant="warning" 
-                radius="max" 
+                radius="full" 
                 size="sm" 
                 style="position: absolute; top: -0.375rem; right: -0.375rem;"
               >
@@ -414,7 +420,7 @@ export const Interactive: Story = {
               @click="handleBadgeClick('premium')"
               style="background: none; border: none; padding: 0; cursor: pointer;"
             >
-              <Badge variant="primary" :icon="StarIcon" iconDisplay="left" radius="max">
+              <Badge variant="primary" :icon="StarIcon" iconDisplay="left" radius="full">
                 Premium
               </Badge>
             </button>
@@ -423,7 +429,7 @@ export const Interactive: Story = {
               @click="handleBadgeClick('verified')"
               style="background: none; border: none; padding: 0; cursor: pointer;"
             >
-              <Badge variant="success" :icon="CheckIcon" iconDisplay="left" radius="max">
+              <Badge variant="success" :icon="CheckIcon" iconDisplay="left" radius="full">
                 Vérifié
               </Badge>
             </button>

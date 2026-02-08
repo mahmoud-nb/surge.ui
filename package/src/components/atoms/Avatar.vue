@@ -69,10 +69,6 @@ const statusClasses = computed(() => [
   `su-avatar-status--${props.status}`
 ])
 
-const badgeClasses = computed(() => [
-  'su-avatar-badge'
-])
-
 // Attributs ARIA
 const ariaAttributes = computed(() => {
   const attrs: Record<string, any> = {}
@@ -136,7 +132,7 @@ defineExpose({
     <!-- Spinner de chargement -->
     <Spinner
       v-if="loading"
-      class="su-avatar-loading"
+      class="su-avatar__loading"
       :label="'Chargement en cours...'"
       color="#3b82f6"
       size="16"
@@ -152,7 +148,7 @@ defineExpose({
       fit="cover"
       position="center"
       :placeholder="false"
-      class="su-avatar-image"
+      class="su-avatar__image"
       @load="handleImageLoad"
       @error="handleImageError"
     />
@@ -160,7 +156,7 @@ defineExpose({
     <!-- Initiales -->
     <div 
       v-else-if="showInitials"
-      class="su-avatar-initials"
+      class="su-avatar__initials"
       :aria-label="`Avatar avec initiales de ${name}`"
     >
       {{ initials }}
@@ -169,11 +165,11 @@ defineExpose({
     <!-- Placeholder par défaut -->
     <div 
       v-else
-      class="su-avatar-placeholder"
+      class="su-avatar__placeholder"
       aria-label="Avatar par défaut"
     >
       <svg
-        class="su-avatar-placeholder-icon"
+        class="su-avatar__placeholder-icon"
         viewBox="0 0 24 24"
         fill="currentColor"
         aria-hidden="true"
@@ -192,9 +188,9 @@ defineExpose({
     <!-- Badge de notification -->
     <Badge 
       v-if="badge"
-      :class="badgeClasses" 
+      class="su-avatar__badge" 
       size="sm" 
-      radius="max" 
+      radius="full" 
       variant="error"
       :aria-label="`${badge} notification(s)`"
       v-bind="badgeProps"
@@ -205,71 +201,76 @@ defineExpose({
 </template>
 
 <style lang="scss">
-@use '../../styles/main' as *;
+@use '../../styles2/main' as *;
+@use '../../styles2/foundations/colors' as *;
+
+$avatar-forme: (
+  circle: 'full',
+  rounded: 'lg',
+  square: 'sm'
+);
+
+@mixin use-avatar-forme {
+  @each $key, $value in $avatar-forme {
+    &--#{$key} {
+      border-radius: var(--su-radius-#{$value});
+
+      .su-image-container {
+        border-radius: var(--su-radius-#{$value});
+      }
+    }
+  }
+}
 
 .su-avatar {
   position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background-color: $gray-200;
-  color: $text-secondary;
+  background-color: var(--su-bg-canvas);
+  color: var(--su-text-secondary);
   font-weight: 600;
   flex-shrink: 0;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   
   // Variantes de forme
-  &--circle {
-    border-radius: 50%;
-
-    .su-image-container {
-      border-radius: 50%;
-    }
-  }
+  @include use-avatar-forme;
   
-  &--rounded {
-    border-radius: $border-radius-lg;
-  }
-  
-  &--square {
-    border-radius: $border-radius-sm;
-  }
-  
-  // Tailles
+  // Sizes
   &--xs {
-    width: 1.5rem;
-    height: 1.5rem;
     font-size: 0.625rem;
+
+    @include squareSize(1.5rem);
   }
   
   &--sm {
-    width: 2rem;
-    height: 2rem;
     font-size: 0.75rem;
+
+    @include squareSize(2rem);
   }
   
   &--md {
-    width: 2.5rem;
-    height: 2.5rem;
     font-size: 0.875rem;
+
+    @include squareSize(2.5rem);
   }
   
   &--lg {
-    width: 3rem;
-    height: 3rem;
     font-size: 1rem;
+
+    @include squareSize(3rem);
   }
   
   &--xl {
-    width: 4rem;
-    height: 4rem;
     font-size: 1.25rem;
+
+    @include squareSize(4rem);
   }
   
   &--2xl {
-    width: 5rem;
-    height: 5rem;
     font-size: 1.5rem;
+
+    @include squareSize(5rem);
   }
   
   // États
@@ -298,38 +299,37 @@ defineExpose({
   }
 
   &--loading {
-    background: $gray-100;
+    background: var(--su-bg-disabled);
   }
 }
 
-.su-avatar-image {
-  width: 100%;
-  height: 100%;
+.su-avatar__image {
+  @include squareSize(100%);
+
   object-fit: cover;
 }
 
-.su-avatar-initials {
+.su-avatar__initials {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.025em;
 }
 
-.su-avatar-placeholder {
-  width: 100%;
-  height: 100%;
+.su-avatar__placeholder {
+ @include squareSize(100%);
+
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: $gray-200;
-  color: $gray-400;
+  background-color: var(--su-bg-canvas);
+  color: var(--su-text-placeholder);
   
   &-icon {
-    width: 60%;
-    height: 60%;
+    @include squareSize(60%);
   }
 }
 
-.su-avatar-loading {
+.su-avatar__loading {
   position: absolute;
   top: 0;
   left: 0;
@@ -338,7 +338,7 @@ defineExpose({
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: $gray-100;
+  background-color: var(--su-bg-disabled);
 }
 
 .su-avatar-status {
@@ -407,7 +407,7 @@ defineExpose({
   }
 }
 
-.su-avatar-badge {
+.su-avatar__badge {
   position: absolute;
   top: -0.25rem;
   right: -0.25rem;
@@ -416,20 +416,18 @@ defineExpose({
 // Mode sombre
 @media (prefers-color-scheme: dark) {
   .su-avatar {
-    background-color: $gray-700;
-    color: $text-secondary-dark;
-    
     &--initials {
       background: linear-gradient(135deg, $primary-400, $primary-500);
     }
   }
-  
-  .su-avatar-placeholder {
+
+  /*
+  .su-avatar__placeholder {
     background-color: $gray-700;
     color: $gray-500;
   }
   
-  .su-avatar-loading {
+  .su-avatar__loading {
     background-color: $gray-800;
   }
   
@@ -437,9 +435,10 @@ defineExpose({
     border-color: $gray-800;
   }
   
-  .su-avatar-badge {
+  .su-avatar__badge {
     border-color: $gray-800;
   }
+  */
 }
 
 // Support de la réduction des animations

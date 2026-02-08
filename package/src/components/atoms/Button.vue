@@ -152,9 +152,9 @@ const ariaAttributes = computed(() => {
 
   // Focus visible amélioré pour l'accessibilité
   &:focus-visible {
-    outline: 2px solid $primary-600;
+    outline: 2px solid var(--su-primary-focus, $primary-600);
     outline-offset: 2px;
-    box-shadow: 0 0 0 4px rgba($primary-600, 0.2);
+    box-shadow: 0 0 0 4px rgba(var(--su-primary-focus, $primary-600), 0.2);
   }
 
   &:hover:not(&--disabled, &--loading) {
@@ -163,24 +163,6 @@ const ariaAttributes = computed(() => {
 
   &:active:not(&--disabled, &--loading) {
     transform: translateY(0);
-  }
-
-  // Support du mode de contraste élevé
-  @media (prefers-contrast: high) {
-    border-width: 2px;
-    
-    &:focus-visible {
-      outline-width: 3px;
-    }
-  }
-
-  // Support de la réduction des animations
-  @media (prefers-reduced-motion: reduce) {
-    transition: none;
-    
-    &:hover:not(&--disabled, &--loading) {
-      transform: none;
-    }
   }
 
   // Radius
@@ -225,29 +207,29 @@ const ariaAttributes = computed(() => {
 
   // Variants
   &--primary {
-    background-color: $primary-600;
-    color: white;
+    background-color: var(--su-primary-default, $primary-600);
+    color: var(--su-primary-text, white);
     
     &:hover:not(&--disabled, &--loading) {
-      background-color: $primary-700;
+      background-color: var(--su-primary-hover, $primary-700);
       transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba($primary-600, 0.4);
+      box-shadow: 0 4px 12px rgba(var(--su-primary-default, $primary-600), 0.4);
     }
 
     &:active:not(&--disabled, &--loading) {
       transform: translateY(0);
-      box-shadow: 0 2px 4px rgba($primary-600, 0.4);
+      box-shadow: 0 2px 4px rgba(var(--su-primary-default, $primary-600), 0.4);
     }
   }
 
   &--secondary {
-    background-color: $gray-100;
-    color: $gray-900;
-    border-color: $gray-200;
+    background-color: var(--su-secondary-default, $gray-100);
+    color: var(--su-secondary-text, $gray-900);
+    border-color: var(--su-secondary-border, $gray-200); // TODO: définir la variable
 
     &:hover:not(&--disabled, &--loading) {
-      background-color: $gray-200;
-      border-color: $gray-300;
+      background-color: var(--su-secondary-hover, $gray-200);
+      border-color: var(--su-secondary-border, $gray-300);
       transform: translateY(-1px);
       box-shadow: 0 4px 12px rgba($gray-500, 0.15);
     }
@@ -336,49 +318,67 @@ const ariaAttributes = computed(() => {
       height: 1.25em;
     }
   }
-}
 
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
+    // Support du mode de contraste élevé
+  @media (prefers-contrast: high) {
+    border-width: 2px;
+    
+    &:focus-visible {
+      outline-width: 3px;
+    }
   }
 
-  to {
-    transform: rotate(360deg);
+  // Support de la réduction des animations
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+    
+    &:hover:not(&--disabled, &--loading) {
+      transform: none;
+    }
+  }
+}
+
+@mixin dark-mode-button {
+  &--secondary {
+    background-color: $gray-800;
+    color: $gray-100;
+    border-color: $gray-700;
+
+    &:hover:not(&--disabled, &--loading) {
+      background-color: $gray-700;
+      border-color: $gray-600;
+    }
+  }
+
+  &--outline {
+    color: $primary-400; // Meilleur contraste en mode sombre
+    border-color: $primary-400;
+
+    &:hover:not(&--disabled, &--loading) {
+      background-color: rgba($primary-400, 0.1);
+      border-color: $primary-300;
+    }
+  }
+
+  &--ghost {
+    color: $primary-400;
+
+    &:hover:not(&--disabled, &--loading) {
+      background-color: rgba($primary-400, 0.1);
+    }
   }
 }
 
 // Dark mode
+.dark, [data-theme="dark"] {
+  .su-button {
+    @include dark-mode-button;
+  }
+}
+
 @media (prefers-color-scheme: dark) {
   .su-button {
-    &--secondary {
-      background-color: $gray-800;
-      color: $gray-100;
-      border-color: $gray-700;
-
-      &:hover:not(&--disabled, &--loading) {
-        background-color: $gray-700;
-        border-color: $gray-600;
-      }
-    }
-
-    &--outline {
-      color: $primary-400; // Meilleur contraste en mode sombre
-      border-color: $primary-400;
-
-      &:hover:not(&--disabled, &--loading) {
-        background-color: rgba($primary-400, 0.1);
-        border-color: $primary-300;
-      }
-    }
-
-    &--ghost {
-      color: $primary-400;
-
-      &:hover:not(&--disabled, &--loading) {
-        background-color: rgba($primary-400, 0.1);
-      }
-    }
+    @include dark-mode-button;
   }
 }
 </style>

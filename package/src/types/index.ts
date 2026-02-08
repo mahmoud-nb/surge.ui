@@ -3,7 +3,7 @@ import type { Component } from "vue";
 export type Variant = 'primary' | 'secondary' | 'tertiary' | 'quaternary' | 'ghost' | 'link'
 export type Size = 'sm' | 'md' | 'lg'
 export type State = 'default' | 'error' | 'success' | 'warning'
-export type Radius = 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'max'
+export type Radius = 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'
 export type Gap = 'none' | 'sm' | 'md' | 'lg'
 export type Orientation = 'horizontal' | 'vertical'
 export type TextAlign = 'default' | 'left' | 'center' | 'right'
@@ -69,7 +69,7 @@ export interface BadgeProps extends AccessibilityProps {
 // Button.vue
 export type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'custom';
 export type ButtonSize = 'sm' | 'md' | 'lg';
-export type ButtonRadius = 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'max';
+export type ButtonRadius = 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'full';
 export interface ButtonProps extends AccessibilityProps {
   variant?: ButtonVariant;
   size?: ButtonSize;

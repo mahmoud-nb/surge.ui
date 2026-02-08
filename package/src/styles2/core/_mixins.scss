@@ -1,3 +1,5 @@
+@use 'sass:list';
+
 // ============================================================
 // MIXINS UTILITAIRES
 // ============================================================
@@ -73,12 +75,58 @@
   }
 }
 
+@mixin scrollable-container {
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--su-border-default) var(--su-bg-surface);
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: var(--su-bg-surface);
+    border-radius: 3px;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--su-border-default);
+    border-radius: 3px;
+    border: 1px solid var(--su-bg-surface);
+
+    &:hover {
+      background-color: var(--su-border-strong);
+    }
+  }
+}
+
 /**
  * Mixin pour respecter les touch targets WCAG
  */
 @mixin touch-target($size: 44px) {
   min-height: $size;
   min-width: $size;
+}
+
+$su-border-radius: (
+  'none': var(--su-radius-none),
+  'xs': var(--su-radius-xs),
+  'sm': var(--su-radius-sm),
+  'md': var(--su-radius-md),
+  'lg': var(--su-radius-lg),
+  'xl': var(--su-radius-xl),
+  'full': var(--su-radius-full)
+) !default;
+
+@mixin use-border-radius($base: '&', $keys: null) {
+  @each $key, $value in $su-border-radius {
+    @if $keys == null or list.index($keys, $key) {
+      #{$base}--radius-#{$key} {
+        border-radius: $value;
+        //corner-shape: squircle;
+      }
+    }
+  }
 }
 
 /**
@@ -93,6 +141,11 @@
   }
 }
 
+@mixin squareSize($size) {
+  width: $size;
+  height: $size;
+}
+
 // ### Textes
 /**
   * Mixin pour les styles de texte
@@ -104,13 +157,25 @@
 @mixin su-text($size: 'base', $color: null, $weight: null, $line-height: null) {
   font-size: var(--su-font-size-#{$size});
   @if $weight != null {
-    font-weight: var(--su-font-weight-#{$weight});
+    @if list.index((light, normal, medium, semibold, bold), $weight) {
+      font-weight: var(--su-font-weight-#{$weight});
+    } @else {
+      font-weight: $weight;
+    }
   }
   @if $color != null {
-    color: var(--su-text-#{$color});
+    @if list.index((primary, secondary, tertiary, inverse, disabled), $color) {
+      color: var(--su-text-#{$color});
+    } @else {
+      color: $color;
+    }
   }
   @if $line-height != null {
-    line-height: var(--su-line-height-#{$line-height});
+    @if list.index((tight, normal, relaxed), $line-height) {
+      line-height: var(--su-line-height-#{$line-height});
+    } @else {
+      line-height: $line-height;
+    }
   }
 }
 

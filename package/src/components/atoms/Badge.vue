@@ -105,7 +105,8 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !slots.def
 </template>
 
 <style lang="scss">
-@use '../../styles/main' as *;
+@use '../../styles2/main' as *;
+@use '../../styles2/foundations/colors' as *;
 
 .su-badge {
   display: inline-flex;
@@ -134,8 +135,7 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !slots.def
     min-height: 0.75rem;
     
     .su-badge__icon {
-      width: 0.75rem;
-      height: 0.75rem;
+      @include squareSize(0.75rem);
     }
   }
   
@@ -146,8 +146,7 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !slots.def
     min-height: 1rem;
     
     .su-badge__icon {
-      width: 1rem;
-      height: 1rem;
+      @include squareSize(1rem);
     }
   }
   
@@ -158,8 +157,7 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !slots.def
     min-height: 1.25rem;
     
     .su-badge__icon {
-      width: 1.25rem;
-      height: 1.25rem;
+      @include squareSize(1.25rem);
     }
   }
   
@@ -213,8 +211,7 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !slots.def
     gap: 0;
     
     .su-badge__icon {
-      width: 1em;
-      height: 1em;
+      @include squareSize(1rem);
     }
   }
 }
