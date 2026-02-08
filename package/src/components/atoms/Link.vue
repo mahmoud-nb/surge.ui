@@ -147,7 +147,8 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel) {
 </template>
 
 <style lang="scss">
-@use '../../styles/main' as *;
+@use '../../styles2/main' as *;
+@use '../../styles2/foundations/colors' as *;
 
 .su-link {
   $self: &;
@@ -159,14 +160,14 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel) {
   text-decoration: none;
   cursor: pointer;
   box-sizing: border-box;
-  border-radius: $border-radius-sm;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: var(--su-radius-sm);
+  transition: all var(--su-duration-fast) cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
 
   &:focus-visible {
-    outline: 2px solid $primary-600;
+    outline: 2px solid var(--su-link-default);
     outline-offset: 2px;
-    box-shadow: 0 0 0 4px rgba($primary-600, 0.2);
+    box-shadow: 0 0 0 4px rgb(37 99 235 / 20%);
   }
 
   // Support du mode de contraste élevé
@@ -212,8 +213,8 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel) {
 
   // Tailles
   &--sm {
-    font-size: $font-size-sm;
-    line-height: $line-height-tight;
+    font-size: var(--su-font-size-sm);
+    line-height: var(--su-line-height-tight);
     padding: 0.125rem 0.25rem;
     
     .su-link__icon {
@@ -230,8 +231,8 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel) {
   }
 
   &--md {
-    font-size: $font-size-base;
-    line-height: $line-height-normal;
+    font-size: var(--su-font-size-base);
+    line-height: var(--su-line-height-normal);
     padding: 0.25rem 0.375rem;
     
     .su-link__icon {
@@ -248,8 +249,8 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel) {
   }
 
   &--lg {
-    font-size: $font-size-lg;
-    line-height: $line-height-normal;
+    font-size: var(--su-font-size-lg);
+    line-height: var(--su-line-height-normal);
     padding: 0.375rem 0.5rem;
     
     .su-link__icon {
@@ -267,68 +268,68 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel) {
 
   // Variantes
   &--default {
-    color: $primary-600;
+    color: var(--su-link-default);
     
     &:hover:not(&--disabled) {
-      color: $primary-700;
+      color: var(--su-link-hover);
     }
 
     &:active:not(&--disabled) {
-      color: $primary-800;
+      color: var(--su-link-active);
     }
   }
 
   &--primary {
-    color: $primary-600;
+    color: var(--su-link-default);
     font-weight: 600;
     
     &:hover:not(&--disabled) {
-      color: $primary-700;
-      background-color: $primary-50;
+      color: var(--su-link-hover);
+      background-color: var(--su-bg-selected);
     }
 
     &:active:not(&--disabled) {
-      background-color: $primary-100;
+      background-color: var(--su-bg-hover);
     }
   }
 
   &--secondary {
-    color: $text-primary;
+    color: var(--su-text-primary);
     
     &:hover:not(&--disabled) {
-      color: $primary-600;
-      background-color: $gray-50;
+      color: var(--su-link-default);
+      background-color: var(--su-bg-hover);
     }
 
     &:active:not(&--disabled) {
-      background-color: $gray-100;
+      background-color: var(--su-bg-active);
     }
   }
 
   &--muted {
-    color: $text-secondary;
+    color: var(--su-text-secondary);
     
     &:hover:not(&--disabled) {
-      color: $text-primary;
+      color: var(--su-text-primary);
     }
 
     &:active:not(&--disabled) {
-      color: $primary-600;
+      color: var(--su-link-default);
     }
   }
 
   &--custom {
-    color: var('--su-custom-link-color', $primary-600);
+    color: var(--su-custom-link-color, var(--su-link-default));
     font-weight: 600;
     
     &:hover:not(&--disabled) {
-      color: var('--su-custom-link-hover-color', $primary-700);
-      background-color: $primary-50;
+      color: var(--su-custom-link-hover-color, var(--su-link-hover));
+      background-color: var(--su-bg-selected);
     }
 
     &:active:not(&--disabled) {
-      color: var('--su-custom-link-active-color', $primary-600);
-      background-color: $primary-100;
+      color: var(--su-custom-link-active-color, var(--su-link-default));
+      background-color: var(--su-bg-hover);
     }
   }
 
@@ -377,7 +378,7 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel) {
     .su-link__icon {
       opacity: 0.7;
       flex-shrink: 0;
-      transition: opacity 0.2s;
+      transition: opacity var(--su-duration-fast);
     }
   }
   
@@ -400,36 +401,36 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel) {
 @media (prefers-color-scheme: dark) {
   .su-link {
     &--default {
-      color: $primary-400;
+      color: var(--su-link-default);
       
       &:hover:not(&--disabled) {
-        color: $primary-300;
+        color: var(--su-link-hover);
       }
     }
 
     &--primary {
-      color: $primary-400;
+      color: var(--su-link-default);
       
       &:hover:not(&--disabled) {
-        color: $primary-300;
-        background-color: rgba($primary-400, 0.1);
+        color: var(--su-link-hover);
+        background-color: var(--su-bg-selected);
       }
     }
 
     &--secondary {
-      color: $text-primary-dark;
+      color: var(--su-text-primary);
       
       &:hover:not(&--disabled) {
-        color: $primary-400;
-        background-color: $gray-800;
+        color: var(--su-link-default);
+        background-color: var(--su-bg-hover);
       }
     }
 
     &--muted {
-      color: $text-secondary-dark;
+      color: var(--su-text-secondary);
       
       &:hover:not(&--disabled) {
-        color: $text-primary-dark;
+        color: var(--su-text-primary);
       }
     }
   }

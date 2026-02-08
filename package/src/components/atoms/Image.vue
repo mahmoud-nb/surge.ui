@@ -223,12 +223,13 @@ onMounted(() => {
 </template>
 
 <style lang="scss">
-@use '../../styles/main' as *;
+@use '../../styles2/main' as *;
+@use '../../styles2/foundations/colors' as *;
 
 .su-image {
   width: 100%;
   height: 100%;
-  transition: opacity 0.3s ease;
+  transition: opacity var(--su-duration-normal) ease;
   
   // Object-fit variants
   &--fit-cover {
@@ -298,12 +299,12 @@ onMounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: opacity 0.3s ease;
+  transition: opacity var(--su-duration-normal) ease;
   
   &-icon {
     width: 3rem;
     height: 3rem;
-    color: $text-tertiary;
+    color: var(--su-text-tertiary);
   }
 }
 
@@ -311,7 +312,7 @@ onMounted(() => {
   position: relative;
   display: inline-block;
   overflow: hidden;
-  background-color: $gray-100;
+  background-color: var(--su-bg-disabled);
   
   &--has-ratio {
     width: 100%;
@@ -351,18 +352,18 @@ onMounted(() => {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: $gray-100;
-  color: $text-secondary;
+  background-color: var(--su-bg-disabled);
+  color: var(--su-text-secondary);
   
   &-icon {
     width: 2rem;
     height: 2rem;
-    color: $error-500;
+    color: var(--su-state-error);
     margin-bottom: 0.5rem;
   }
   
   &-text {
-    font-size: $font-size-sm;
+    font-size: var(--su-font-size-sm);
     font-weight: 500;
   }
 }
@@ -370,23 +371,23 @@ onMounted(() => {
 // Mode sombre
 @media (prefers-color-scheme: dark) {
   .su-image-container {
-    background-color: $gray-700;
+    background-color: var(--su-bg-surface);
   }
   
   .su-image-placeholder {
-    background-color: $gray-800;
+    background-color: var(--su-bg-surface);
     
     &-icon {
-      color: $text-tertiary-dark;
+      color: var(--su-text-tertiary);
     }
   }
   
   .su-image-error {
-    background-color: $gray-800;
-    color: $text-secondary-dark;
+    background-color: var(--su-bg-surface);
+    color: var(--su-text-secondary);
     
     &-text {
-      color: $text-secondary-dark;
+      color: var(--su-text-secondary);
     }
   }
 }
