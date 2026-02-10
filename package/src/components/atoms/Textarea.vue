@@ -233,14 +233,18 @@ watch(() => props.autoResize, (newValue) => {
 </template>
 
 <style lang="scss">
-@use '../../styles/main' as *;
+@use '../../styles2/main' as *;
+@use '../../styles2/foundations/colors' as *;
 
 .su-textarea {
+  $self: &;
+
   display: block;
   resize: vertical;
   width: 100%;
 
-  @include su-form-field-element;
+  //@include su-form-field-element;
+  @include su-formfield-box($self);
   
   &--disabled {
     resize: none;
@@ -256,7 +260,7 @@ watch(() => props.autoResize, (newValue) => {
   }
   
   &--over-limit {
-    color: $error-600;
+    color: var(--su-state-error);
   }
 }
 
@@ -267,7 +271,7 @@ watch(() => props.autoResize, (newValue) => {
   &--sm {
     .su-textarea {
       padding: 0.5rem 0.75rem;
-      font-size: $font-size-sm;
+      font-size: var(--su-font-size-sm);
       line-height: 1.4;
     }
   }
@@ -275,7 +279,7 @@ watch(() => props.autoResize, (newValue) => {
   &--md {
     .su-textarea {
       padding: 0.75rem;
-      font-size: $font-size-base;
+      font-size: var(--su-font-size-base);
       line-height: 1.5;
     }
   }
@@ -283,17 +287,17 @@ watch(() => props.autoResize, (newValue) => {
   &--lg {
     .su-textarea {
       padding: 1rem;
-      font-size: $font-size-lg;
+      font-size: var(--su-font-size-lg);
       line-height: 1.6;
     }
   }
   
   &--over-limit {
-    border-color: $error-500;
+    border-color: var(--su-state-error);
     
     &:focus-within {
-      border-color: $error-500;
-      box-shadow: 0 0 0 3px rgba($error-500, 0.1);
+      border-color: var(--su-state-error);
+      box-shadow: 0 0 0 3px rgb(var(--su-state-error-rgb) / 10%);
     }
   }
 }
@@ -313,17 +317,17 @@ watch(() => props.autoResize, (newValue) => {
 
 .su-textarea-counter {
   flex-shrink: 0;
-  font-size: $font-size-sm;
+  font-size: var(--su-font-size-sm);
   font-weight: 500;
-  color: $text-secondary;
-  line-height: $line-height-tight;
+  color: var(--su-text-secondary);
+  line-height: var(--su-line-height-tight);
   
   &--near-limit {
-    color: $warning-600;
+    color: var(--su-state-warning);
   }
   
   &--over-limit {
-    color: $error-600;
+    color: var(--su-state-error);
     font-weight: 600;
   }
 }

@@ -120,7 +120,8 @@ const trackStyle = computed(() => ({
 </template>
 
 <style lang="scss" scoped>
-@use '../../styles/main' as *;
+@use '../../styles2/main' as *;
+@use '../../styles2/foundations/colors' as *;
 
 /* Sizes */
 $su-progress-size-sm: 0.25rem;
@@ -146,7 +147,7 @@ $su-progress-size-lg: 1rem;
 
   &__bar {
     height: 100%;
-    transition: width 0.3s ease;
+    transition: width var(--su-duration-normal) ease;
     will-change: width, transform, left;
     position: relative;
   }
@@ -161,8 +162,8 @@ $su-progress-size-lg: 1rem;
   }
 
   &__label {
-    font-size: 0.875rem;
-    color: $gray-700;
+    font-size: var(--su-font-size-sm);
+    color: var(--su-text-secondary);
     min-width: 2.5rem;
     text-align: right;
   }
@@ -173,12 +174,12 @@ $su-progress-size-lg: 1rem;
   &--lg .su-progress__track { height: $su-progress-size-lg; }
 
   /* States (fallback — inline styles take precedence) */
-  &--error .su-progress__bar { background-color: $error-500; }
-  &--success .su-progress__bar { background-color: $success-500; }
-  &--warning .su-progress__bar { background-color: $warning-500; }
+  &--error .su-progress__bar { background-color: var(--su-state-error); }
+  &--success .su-progress__bar { background-color: var(--su-state-success); }
+  &--warning .su-progress__bar { background-color: var(--su-state-warning); }
 
   &:focus-visible {
-    outline: 2px solid $primary-600;
+    outline: 2px solid var(--su-link-default);
     outline-offset: 2px;
   }
 
@@ -207,7 +208,7 @@ $su-progress-size-lg: 1rem;
   // Mode sombre
   @media (prefers-color-scheme: dark) {
     .su-progress__label {
-      color: $gray-300;
+      color: var(--su-text-tertiary);
     }
 
     .su-progress__bar {

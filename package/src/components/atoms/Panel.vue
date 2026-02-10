@@ -41,41 +41,42 @@ withDefaults(defineProps<PanelProps>(), {
 </template>
 
 <style lang="scss" scoped>
-@use '../../styles/main' as *;
+@use '../../styles2/main' as *;
+@use '../../styles2/foundations/colors' as *;
 
 .su-panel {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  color: var(--su-text-primary-color);
-  background-color: var(--su-bg-global-color);
-  border-radius: $su-default-border-radius;
-  padding: $spacing-4;
-  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+  color: var(--su-text-primary);
+  background-color: var(--su-bg-canvas);
+  border-radius: var(--su-radius-md);
+  padding: var(--su-spacing-4);
+  transition: background-color var(--su-duration-normal) ease, box-shadow var(--su-duration-normal) ease;
 
   &--bordered {
-    border: 1px solid $gray-200;
+    border: 1px solid var(--su-border-default);
   }
 
   &--elevated {
-    box-shadow: $shadow-md;
+    box-shadow: var(--su-shadow-md);
   }
 
   &--subtle {
-    background-color: $gray-100;
+    background-color: var(--su-bg-hover);
   }
 
   &--highlight {
-    background-color: $primary-50;
+    background-color: var(--su-bg-selected);
   }
 
   [data-theme='dark'] &, .dark & {    
     &--subtle {
-      background-color: $gray-700;
+      background-color: var(--su-bg-hover);
     }
 
     &--highlight {
-      background-color: rgba($primary-600, 0.15);
+      background-color: var(--su-bg-selected);
     }
   }
 }

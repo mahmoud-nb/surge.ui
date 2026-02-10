@@ -149,7 +149,8 @@ defineExpose({
 </template>
 
 <style lang="scss">
-@use '../../styles/main' as *;
+@use '../../styles2/main' as *;
+@use '../../styles2/foundations/colors' as *;
 
 .su-switch-container {
   display: flex;
@@ -166,18 +167,18 @@ defineExpose({
 }
 
 .su-switch-side-label {
-  font-size: $font-size-sm;
+  font-size: var(--su-font-size-sm);
   font-weight: 500;
-  color: $text-secondary;
-  transition: color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  color: var(--su-text-secondary);
+  transition: color var(--su-duration-fast) cubic-bezier(0.4, 0, 0.2, 1);
   user-select: none;
   
   &--active {
-    color: $text-primary;
+    color: var(--su-text-primary);
   }
   
   &--disabled {
-    color: $text-tertiary;
+    color: var(--su-text-tertiary);
     cursor: not-allowed;
   }
 }
@@ -187,10 +188,10 @@ defineExpose({
   cursor: pointer;
   outline: none;
   border-radius: 9999px;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all var(--su-duration-fast) cubic-bezier(0.4, 0, 0.2, 1);
   
   &:focus-visible {
-    box-shadow: 0 0 0 3px rgba($primary-500, 0.2);
+    box-shadow: 0 0 0 3px rgb(var(--su-link-default-rgb) / 20%);
   }
   
   // Tailles
@@ -257,29 +258,29 @@ defineExpose({
   // États
   &--checked {
     .su-switch-track {
-      background-color: $primary-600;
+      background-color: var(--su-link-default);
     }
     
     .su-switch-thumb {
-      background-color: white;
+      background-color: var(--su-bg-surface);
     }
   }
   
   &--error {
     &.su-switch--checked .su-switch-track {
-      background-color: $error-500;
+      background-color: var(--su-state-error);
     }
   }
   
   &--success {
     &.su-switch--checked .su-switch-track {
-      background-color: $success-500;
+      background-color: var(--su-state-success);
     }
   }
   
   &--warning {
     &.su-switch--checked .su-switch-track {
-      background-color: $warning-500;
+      background-color: var(--su-state-warning);
     }
   }
   
@@ -300,17 +301,17 @@ defineExpose({
 .su-switch-track {
   width: 100%;
   height: 100%;
-  background-color: $gray-300;
+  background-color: var(--su-border-default);
   border-radius: 9999px;
-  transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: background-color var(--su-duration-fast) cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
 }
 
 .su-switch-thumb {
-  background-color: white;
+  background-color: var(--su-bg-surface);
   border-radius: 9999px;
   box-shadow: 0 2px 4px rgb(0 0 0 / 20%);
-  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform var(--su-duration-fast) cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -326,14 +327,14 @@ defineExpose({
 }
 
 .su-switch-icon {
-  color: $gray-600;
+  color: var(--su-text-secondary);
   
   &--check {
-    color: $primary-600;
+    color: var(--su-link-default);
   }
   
   &--cross {
-    color: $gray-400;
+    color: var(--su-text-tertiary);
   }
   
   &--custom {

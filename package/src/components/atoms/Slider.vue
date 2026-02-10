@@ -543,7 +543,8 @@ defineExpose({
 </template>
 
 <style lang="scss">
-@use '../../styles/main' as *;
+@use '../../styles2/main' as *;
+@use '../../styles2/foundations/colors' as *;
 
 .su-slider-container {
   display: flex;
@@ -597,8 +598,8 @@ defineExpose({
 .su-slider-labels {
   display: flex;
   justify-content: space-between;
-  font-size: $font-size-sm;
-  color: $text-secondary;
+  font-size: var(--su-font-size-sm);
+  color: var(--su-text-secondary);
   
   .su-slider-label {
     font-weight: 500;
@@ -612,11 +613,11 @@ defineExpose({
   
   &-display {
     font-weight: 600;
-    color: $text-primary;
-    font-size: $font-size-sm;
+    color: var(--su-text-primary);
+    font-size: var(--su-font-size-sm);
     padding: 0.25rem 0.5rem;
-    background-color: $gray-100;
-    border-radius: $border-radius-sm;
+    background-color: var(--su-bg-hover);
+    border-radius: var(--su-radius-sm);
   }
   
   &-dual {
@@ -624,19 +625,19 @@ defineExpose({
     align-items: center;
     gap: 0.25rem;
     font-weight: 600;
-    color: $text-primary;
-    font-size: $font-size-sm;
+    color: var(--su-text-primary);
+    font-size: var(--su-font-size-sm);
   }
   
   &-min,
   &-max {
     padding: 0.25rem 0.5rem;
-    background-color: $gray-100;
-    border-radius: $border-radius-sm;
+    background-color: var(--su-bg-hover);
+    border-radius: var(--su-radius-sm);
   }
   
   &-separator {
-    color: $text-secondary;
+    color: var(--su-text-secondary);
   }
 }
 
@@ -662,9 +663,9 @@ defineExpose({
 
 .su-slider-track {
   position: absolute;
-  background-color: $gray-200;
+  background-color: var(--su-border-default);
   border-radius: 9999px;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all var(--su-duration-fast) cubic-bezier(0.4, 0, 0.2, 1);
   
   &--horizontal {
     top: 50%;
@@ -711,23 +712,23 @@ defineExpose({
   }
   
   &--error {
-    background-color: $error-50;
+    background-color: var(--su-state-error-light);
   }
   
   &--success {
-    background-color: $success-50;
+    background-color: var(--su-state-success-light);
   }
   
   &--warning {
-    background-color: $warning-50;
+    background-color: var(--su-state-warning-light);
   }
 }
 
 .su-slider-track-active {
   position: absolute;
-  background-color: $primary-500;
+  background-color: var(--su-link-default);
   border-radius: inherit;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all var(--su-duration-fast) cubic-bezier(0.4, 0, 0.2, 1);
   
   .su-slider-track--horizontal & {
     top: 0;
@@ -740,15 +741,15 @@ defineExpose({
   }
   
   .su-slider-track--error & {
-    background-color: $error-500;
+    background-color: var(--su-state-error);
   }
   
   .su-slider-track--success & {
-    background-color: $success-500;
+    background-color: var(--su-state-success);
   }
   
   .su-slider-track--warning & {
-    background-color: $warning-500;
+    background-color: var(--su-state-warning);
   }
 }
 
@@ -772,7 +773,7 @@ defineExpose({
 
 .su-slider-tick {
   position: absolute;
-  background-color: $gray-400;
+  background-color: var(--su-text-tertiary);
   
   .su-slider-track--horizontal & {
     width: 1px;
@@ -823,7 +824,7 @@ defineExpose({
   &-dot {
     width: 0.375rem;
     height: 0.375rem;
-    background-color: $gray-400;
+    background-color: var(--su-text-tertiary);
     border-radius: 50%;
     margin-bottom: 0.25rem;
     
@@ -835,7 +836,7 @@ defineExpose({
   
   &-label {
     font-size: 0.75rem;
-    color: $text-secondary;
+    color: var(--su-text-secondary);
     font-weight: 500;
     white-space: nowrap;
   }
@@ -844,7 +845,7 @@ defineExpose({
 .su-slider-thumb {
   position: absolute;
   cursor: grab;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all var(--su-duration-fast) cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 1;
   
   &:focus {
@@ -852,7 +853,7 @@ defineExpose({
     z-index: 2;
     
     .su-slider-thumb-handle {
-      box-shadow: 0 0 0 3px rgba($primary-500, 0.3);
+      box-shadow: 0 0 0 3px rgb(var(--su-link-default-rgb) / 30%);
     }
   }
   
@@ -904,8 +905,8 @@ defineExpose({
     cursor: not-allowed;
     
     .su-slider-thumb-handle {
-      background-color: $gray-300;
-      border-color: $gray-400;
+      background-color: var(--su-bg-subtle);
+      border-color: var(--su-text-tertiary);
     }
   }
   
@@ -915,31 +916,31 @@ defineExpose({
   
   &--error {
     .su-slider-thumb-handle {
-      border-color: $error-500;
+      border-color: var(--su-state-error);
     }
     
     &:focus .su-slider-thumb-handle {
-      box-shadow: 0 0 0 3px rgba($error-500, 0.3);
+      box-shadow: 0 0 0 3px rgb(var(--su-state-error-rgb) / 30%);
     }
   }
   
   &--success {
     .su-slider-thumb-handle {
-      border-color: $success-500;
+      border-color: var(--su-state-success);
     }
     
     &:focus .su-slider-thumb-handle {
-      box-shadow: 0 0 0 3px rgba($success-500, 0.3);
+      box-shadow: 0 0 0 3px rgb(var(--su-state-success-rgb) / 30%);
     }
   }
   
   &--warning {
     .su-slider-thumb-handle {
-      border-color: $warning-500;
+      border-color: var(--su-state-warning);
     }
     
     &:focus .su-slider-thumb-handle {
-      box-shadow: 0 0 0 3px rgba($warning-500, 0.3);
+      box-shadow: 0 0 0 3px rgb(var(--su-state-warning-rgb) / 30%);
     }
   }
 }
@@ -948,10 +949,10 @@ defineExpose({
   width: 1.25rem;
   height: 1.25rem;
   background-color: white;
-  border: 2px solid $primary-500;
+  border: 2px solid var(--su-link-default);
   border-radius: 50%;
   box-shadow: 0 2px 4px rgb(0 0 0 / 10%);
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all var(--su-duration-fast) cubic-bezier(0.4, 0, 0.2, 1);
   
   &:hover {
     transform: scale(1.05);
@@ -962,11 +963,11 @@ defineExpose({
 .su-slider-tooltip {
   position: absolute;
   padding: 0.25rem 0.5rem;
-  background-color: $gray-900;
+  background-color: var(--su-text-primary);
   color: white;
   font-size: 0.75rem;
   font-weight: 500;
-  border-radius: $border-radius-sm;
+  border-radius: var(--su-radius-sm);
   white-space: nowrap;
   pointer-events: none;
   z-index: 10;
@@ -990,7 +991,7 @@ defineExpose({
       top: 100%;
       left: 50%;
       transform: translateX(-50%);
-      border-top-color: $gray-900;
+      border-top-color: var(--su-text-primary);
     }
   }
   
@@ -1004,7 +1005,7 @@ defineExpose({
       bottom: 100%;
       left: 50%;
       transform: translateX(-50%);
-      border-bottom-color: $gray-900;
+      border-bottom-color: var(--su-text-primary);
     }
   }
 }
@@ -1012,55 +1013,55 @@ defineExpose({
 // Mode sombre
 @media (prefers-color-scheme: dark) {
   .su-slider-track {
-    background-color: $gray-600;
+    background-color: var(--su-border-default);
   }
   
   .su-slider-track-active {
-    background-color: $primary-400;
+    background-color: var(--su-link-hover);
     
     .su-slider-track--error & {
-      background-color: $error-400;
+      background-color: var(--su-state-error-light);
     }
     
     .su-slider-track--success & {
-      background-color: $success-400;
+      background-color: var(--su-state-success-light);
     }
     
     .su-slider-track--warning & {
-      background-color: $warning-400;
+      background-color: var(--su-state-warning-light);
     }
   }
   
   .su-slider-thumb-handle {
-    background-color: $gray-800;
-    border-color: $primary-400;
+    background-color: var(--su-bg-subtle);
+    border-color: var(--su-link-hover);
   }
   
   .su-slider-value-display,
   .su-slider-value-min,
   .su-slider-value-max {
-    background-color: $gray-700;
-    color: $text-primary-dark;
+    background-color: var(--su-bg-inverse);
+    color: var(--su-text-primary);
   }
   
   .su-slider-labels {
-    color: $text-secondary-dark;
+    color: var(--su-text-secondary);
   }
   
   .su-slider-mark-label {
-    color: $text-secondary-dark;
+    color: var(--su-text-secondary);
   }
   
   .su-slider-tooltip {
-    background-color: $gray-100;
-    color: $gray-900;
+    background-color: var(--su-bg-hover);
+    color: var(--su-text-primary);
     
     &--top::after {
-      border-top-color: $gray-100;
+      border-top-color: var(--su-bg-hover);
     }
     
     &--bottom::after {
-      border-bottom-color: $gray-100;
+      border-bottom-color: var(--su-bg-hover);
     }
   }
 }
@@ -1072,7 +1073,7 @@ defineExpose({
   }
   
   .su-slider-track {
-    border: 1px solid $gray-400;
+    border: 1px solid var(--su-text-tertiary);
   }
 }
 

@@ -670,8 +670,6 @@ watch(modelValue, () => {
 </template>
 
 <style lang="scss">
-@use '../../styles/main' as *;
-
 .su-select {
   $self: &;
 
@@ -682,65 +680,65 @@ watch(modelValue, () => {
     gap: 0.5rem;
     width: 100%;
     background-color: white;
-    border: 1px solid $gray-300;
-    border-radius: $border-radius-md;
+    border: 1px solid var(--su-border-default);
+    border-radius: var(--su-radius-md);
     cursor: pointer;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all var(--su-duration-fast) cubic-bezier(0.4, 0, 0.2, 1);
     box-sizing: border-box;
     
     &:focus {
       outline: none;
-      border-color: $primary-500;
-      box-shadow: 0 0 0 3px rgba($primary-500, 0.1);
+      border-color: var(--su-link-default);
+      box-shadow: 0 0 0 3px rgb(var(--su-link-default-rgb) / 10%);
     }
     
     // États
     &--error {
-      border-color: $error-500;
+      border-color: var(--su-state-error);
       
       &:focus {
-        border-color: $error-500;
-        box-shadow: 0 0 0 3px rgba($error-500, 0.1);
+        border-color: var(--su-state-error);
+        box-shadow: 0 0 0 3px rgb(var(--su-state-error-rgb) / 10%);
       }
     }
     
     &--success {
-      border-color: $success-500;
+      border-color: var(--su-state-success);
       
       &:focus {
-        border-color: $success-500;
-        box-shadow: 0 0 0 3px rgba($success-500, 0.1);
+        border-color: var(--su-state-success);
+        box-shadow: 0 0 0 3px rgb(var(--su-state-success-rgb) / 10%);
       }
     }
     
     &--warning {
-      border-color: $warning-500;
+      border-color: var(--su-state-warning);
       
       &:focus {
-        border-color: $warning-500;
-        box-shadow: 0 0 0 3px rgba($warning-500, 0.1);
+        border-color: var(--su-state-warning);
+        box-shadow: 0 0 0 3px rgb(var(--su-state-warning-rgb) / 10%);
       }
     }
     
     &--disabled {
-      background-color: $gray-50;
-      border-color: $gray-200;
+      background-color: var(--su-bg-disabled);
+      border-color: var(--su-border-disabled);
       cursor: not-allowed;
       
       &:focus {
-        border-color: $gray-200;
+        border-color: var(--su-border-disabled);
         box-shadow: none;
       }
     }
     
     &--readonly {
-      background-color: $gray-50;
+      background-color: var(--su-bg-disabled);
       cursor: default;
     }
     
     &--open {
-      border-color: $primary-500;
-      box-shadow: 0 0 0 3px rgba($primary-500, 0.1);
+      border-color: var(--su-link-default);
+      box-shadow: 0 0 0 3px rgb(var(--su-link-default-rgb) / 10%);
     }
     
     // Alignement
@@ -758,7 +756,7 @@ watch(modelValue, () => {
     
     &--placeholder {
       .su-select-display-text {
-        color: $text-tertiary;
+        color: var(--su-text-tertiary);
       }
     }
   }
@@ -770,7 +768,7 @@ watch(modelValue, () => {
       #{$self}__trigger {
         min-height: 2rem;
         padding: 0.375rem 0.75rem;
-        font-size: $font-size-sm;
+        font-size: var(--su-font-size-sm);
       }
     }
     
@@ -778,7 +776,7 @@ watch(modelValue, () => {
       #{$self}__trigger {
         min-height: 2.5rem;
         padding: 0.5rem 0.75rem;
-        font-size: $font-size-base;
+        font-size: var(--su-font-size-base);
       }
     }
     
@@ -786,7 +784,7 @@ watch(modelValue, () => {
       #{$self}__trigger {
         min-height: 3rem;
         padding: 0.75rem 1rem;
-        font-size: $font-size-lg;
+        font-size: var(--su-font-size-lg);
       }
     }
   }
@@ -812,7 +810,7 @@ watch(modelValue, () => {
     width: 1.25em;
     height: 1.25em;
     flex-shrink: 0;
-    color: $text-secondary;
+    color: var(--su-text-secondary);
   }
   
   &-text {
@@ -820,7 +818,7 @@ watch(modelValue, () => {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    color: $text-primary;
+    color: var(--su-text-primary);
   }
 }
 
@@ -836,15 +834,15 @@ watch(modelValue, () => {
   align-items: center;
   gap: 0.25rem;
   padding: 0.125rem 0.375rem;
-  background-color: $primary-100;
-  color: $primary-800;
-  border-radius: $border-radius-sm;
+  background-color: var(--su-bg-selected);
+  color: var(--su-text-primary);
+  border-radius: var(--su-radius-sm);
   font-size: 0.875em;
   max-width: 150px;
   
   &--more {
-    background-color: $gray-100;
-    color: $gray-700;
+    background-color: var(--su-bg-hover);
+    color: var(--su-text-secondary);
   }
   
   &-icon {
@@ -867,12 +865,12 @@ watch(modelValue, () => {
     background: none;
     border: none;
     cursor: pointer;
-    color: $primary-600;
+    color: var(--su-link-default);
     border-radius: 50%;
-    transition: all 0.2s;
+    transition: all var(--su-duration-fast);
     
     &:hover {
-      background-color: $primary-200;
+      background-color: var(--su-bg-hover);
     }
     
     &-icon {
@@ -902,13 +900,13 @@ watch(modelValue, () => {
   background: none;
   border: none;
   cursor: pointer;
-  color: $text-secondary;
+  color: var(--su-text-secondary);
   border-radius: 50%;
-  transition: all 0.2s;
+  transition: all var(--su-duration-fast);
   
   &:hover {
-    background-color: $gray-100;
-    color: $text-primary;
+    background-color: var(--su-bg-hover);
+    color: var(--su-text-primary);
   }
   
   &-icon {
@@ -920,8 +918,8 @@ watch(modelValue, () => {
 .su-select-chevron {
   width: 1.25em;
   height: 1.25em;
-  color: $text-secondary;
-  transition: transform 0.2s;
+  color: var(--su-text-secondary);
+  transition: transform var(--su-duration-fast);
   
   &--open {
     transform: rotate(180deg);
@@ -936,15 +934,15 @@ watch(modelValue, () => {
   z-index: 50;
   margin-top: 0.25rem;
   background-color: white;
-  border: 1px solid $gray-200;
-  border-radius: $border-radius-md;
-  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 10%), 0 4px 6px -2px rgb(0 0 0 / 5%);
+  border: 1px solid var(--su-border-default);
+  border-radius: var(--su-radius-md);
+  box-shadow: var(--su-shadow-md);
   overflow: hidden;
 }
 
 .su-select-search {
   padding: 0.75rem;
-  border-bottom: 1px solid $gray-200;
+  border-bottom: 1px solid var(--su-border-default);
   
   &-container {
     position: relative;
@@ -957,21 +955,21 @@ watch(modelValue, () => {
     left: 0.75rem;
     width: 1.25em;
     height: 1.25em;
-    color: $text-secondary;
+    color: var(--su-text-secondary);
     pointer-events: none;
   }
   
   &-input {
     width: 100%;
     padding: 0.5rem 0.75rem 0.5rem 2.5rem;
-    border: 1px solid $gray-300;
-    border-radius: $border-radius-sm;
-    font-size: $font-size-sm;
+    border: 1px solid var(--su-border-default);
+    border-radius: var(--su-radius-sm);
+    font-size: var(--su-font-size-sm);
     
     &:focus {
       outline: none;
-      border-color: $primary-500;
-      box-shadow: 0 0 0 2px rgba($primary-500, 0.1);
+      border-color: var(--su-link-default);
+      box-shadow: 0 0 0 2px rgb(var(--su-link-default-rgb) / 10%);
     }
   }
 }
@@ -983,11 +981,11 @@ watch(modelValue, () => {
 
 .su-select-group-header {
   padding: 0.5rem 0.75rem;
-  font-size: $font-size-sm;
+  font-size: var(--su-font-size-sm);
   font-weight: 600;
-  color: $text-secondary;
-  background-color: $gray-50;
-  border-bottom: 1px solid $gray-200;
+  color: var(--su-text-secondary);
+  background-color: var(--su-bg-hover);
+  border-bottom: 1px solid var(--su-border-default);
 }
 
 .su-select-option {
@@ -996,19 +994,19 @@ watch(modelValue, () => {
   gap: 0.75rem;
   padding: 0.75rem;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all var(--su-duration-fast);
   
   &:hover:not(&--disabled) {
-    background-color: $gray-50;
+    background-color: var(--su-bg-hover);
   }
   
   &--focused:not(&--disabled) {
-    background-color: $primary-50;
+    background-color: var(--su-bg-selected);
   }
   
   &--selected:not(&--disabled) {
-    background-color: $primary-100;
-    color: $primary-900;
+    background-color: var(--su-bg-selected);
+    color: var(--su-text-primary);
   }
   
   &--disabled {
@@ -1024,7 +1022,7 @@ watch(modelValue, () => {
     width: 1.25em;
     height: 1.25em;
     flex-shrink: 0;
-    color: $text-secondary;
+    color: var(--su-text-secondary);
   }
   
   &-content {
@@ -1034,15 +1032,15 @@ watch(modelValue, () => {
   
   &-label {
     font-weight: 500;
-    color: $text-primary;
+    color: var(--su-text-primary);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
   
   &-description {
-    font-size: $font-size-sm;
-    color: $text-secondary;
+    font-size: var(--su-font-size-sm);
+    color: var(--su-text-secondary);
     margin-top: 0.125rem;
     white-space: nowrap;
     overflow: hidden;
@@ -1052,7 +1050,7 @@ watch(modelValue, () => {
   &-check {
     width: 1.25em;
     height: 1.25em;
-    color: $primary-600;
+    color: var(--su-link-default);
     flex-shrink: 0;
   }
 }
@@ -1060,16 +1058,16 @@ watch(modelValue, () => {
 .su-select-checkbox {
   width: 1.25rem;
   height: 1.25rem;
-  border: 2px solid $gray-300;
-  border-radius: $border-radius-sm;
+  border: 2px solid var(--su-border-default);
+  border-radius: var(--su-radius-sm);
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.2s;
+  transition: all var(--su-duration-fast);
   
   &--checked {
-    background-color: $primary-600;
-    border-color: $primary-600;
+    background-color: var(--su-link-default);
+    border-color: var(--su-link-default);
     
     .su-select-checkbox-icon {
       color: white;
@@ -1085,35 +1083,35 @@ watch(modelValue, () => {
 .su-select-no-options {
   padding: 1rem 0.75rem;
   text-align: center;
-  color: $text-secondary;
+  color: var(--su-text-secondary);
   font-style: italic;
 }
 
 .su-select-message {
-  font-size: $font-size-sm;
-  line-height: $line-height-tight;
+  font-size: var(--su-font-size-sm);
+  line-height: var(--su-line-height-tight);
   
   &--default {
-    color: $text-secondary;
+    color: var(--su-text-secondary);
   }
   
   &--error {
-    color: $error-600;
+    color: var(--su-state-error);
   }
   
   &--success {
-    color: $success-600;
+    color: var(--su-state-success);
   }
   
   &--warning {
-    color: $warning-600;
+    color: var(--su-state-warning);
   }
 }
 
 // Animations
 .su-select-dropdown-enter-active,
 .su-select-dropdown-leave-active {
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all var(--su-duration-fast) cubic-bezier(0.4, 0, 0.2, 1);
   transform-origin: top;
 }
 
@@ -1136,74 +1134,74 @@ watch(modelValue, () => {
 // Mode sombre
 @media (prefers-color-scheme: dark) {
   .su-select-label {
-    color: $text-primary-dark;
+    color: var(--su-text-primary);
     
     &--disabled {
-      color: $text-tertiary-dark;
+      color: var(--su-text-tertiary);
     }
   }
   
   .su-select__trigger {
-    background-color: $gray-800;
-    border-color: $gray-600;
+    background-color: var(--su-bg-default);
+    border-color: var(--su-border-default);
     
     &--disabled {
-      background-color: $gray-900;
-      border-color: $gray-700;
+      background-color: var(--su-bg-disabled);
+      border-color: var(--su-border-disabled);
     }
     
     &--readonly {
-      background-color: $gray-900;
+      background-color: var(--su-bg-disabled);
     }
   }
   
   .su-select-display-text {
-    color: $text-primary-dark;
+    color: var(--su-text-primary);
   }
   
   .su-select-dropdown {
-    background-color: $gray-800;
-    border-color: $gray-600;
+    background-color: var(--su-bg-default);
+    border-color: var(--su-border-default);
   }
   
   .su-select-search-input {
-    background-color: $gray-700;
-    border-color: $gray-600;
-    color: $text-primary-dark;
+    background-color: var(--su-bg-hover);
+    border-color: var(--su-border-default);
+    color: var(--su-text-primary);
   }
   
   .su-select-group-header {
-    background-color: $gray-900;
-    border-color: $gray-600;
-    color: $text-secondary-dark;
+    background-color: var(--su-bg-hover);
+    border-color: var(--su-border-default);
+    color: var(--su-text-secondary);
   }
   
   .su-select-option {
     &:hover:not(&--disabled) {
-      background-color: $gray-700;
+      background-color: var(--su-bg-hover);
     }
     
     &--focused:not(&--disabled) {
-      background-color: rgba($primary-400, 0.2);
+      background-color: var(--su-bg-selected);
     }
     
     &--selected:not(&--disabled) {
-      background-color: rgba($primary-400, 0.3);
-      color: $primary-200;
+      background-color: var(--su-bg-selected);
+      color: var(--su-text-primary);
     }
     
     &-label {
-      color: $text-primary-dark;
+      color: var(--su-text-primary);
     }
     
     &-description {
-      color: $text-secondary-dark;
+      color: var(--su-text-secondary);
     }
   }
   
   .su-select-message {
     &--default {
-      color: $text-secondary-dark;
+      color: var(--su-text-secondary);
     }
   }
 }

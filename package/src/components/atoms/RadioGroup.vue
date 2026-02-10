@@ -168,7 +168,8 @@ const handleBlur = (event: FocusEvent) => {
 </template>
 
 <style lang="scss">
-@use '../../styles/main' as *;
+@use '../../styles2/main' as *;
+@use '../../styles2/foundations/colors' as *;
 
 .su-radio-group-wrapper {
   display: flex;
@@ -183,21 +184,21 @@ const handleBlur = (event: FocusEvent) => {
   
   &-label {
     display: block;
-    font-size: $font-size-sm;
+    font-size: var(--su-font-size-sm);
     font-weight: 500;
-    color: $text-primary;
-    line-height: $line-height-tight;
+    color: var(--su-text-primary);
+    line-height: var(--su-line-height-tight);
     margin-bottom: 0.75rem;
     
     &--required {
       .su-radio-group-required {
-        color: $error-500;
+        color: var(--su-state-error);
         margin-left: 0.125rem;
       }
     }
     
     &--disabled {
-      color: $text-tertiary;
+      color: var(--su-text-tertiary);
       cursor: not-allowed;
     }
   }
@@ -239,23 +240,23 @@ const handleBlur = (event: FocusEvent) => {
     .su-radio-group-options {
       overflow-y: auto;
       scrollbar-width: thin;
-      scrollbar-color: $gray-400 $gray-100;
+      scrollbar-color: var(--su-border-default) var(--su-bg-hover);
       
       &::-webkit-scrollbar {
         width: 6px;
       }
       
       &::-webkit-scrollbar-track {
-        background: $gray-100;
+        background: var(--su-bg-hover);
         border-radius: 3px;
       }
       
       &::-webkit-scrollbar-thumb {
-        background: $gray-400;
+        background: var(--su-border-default);
         border-radius: 3px;
         
         &:hover {
-          background: $gray-500;
+          background: var(--su-border-strong);
         }
       }
     }
@@ -267,7 +268,7 @@ const handleBlur = (event: FocusEvent) => {
   align-items: center;
   gap: 0.75rem;
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all var(--su-duration-fast) cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   
   // Style par défaut
@@ -276,7 +277,7 @@ const handleBlur = (event: FocusEvent) => {
     
     &:hover:not(&--disabled) {
       .su-radio-indicator {
-        border-color: $primary-400;
+        border-color: var(--su-link-hover);
       }
     }
   }
@@ -285,19 +286,19 @@ const handleBlur = (event: FocusEvent) => {
   &--inline-card,
   &--block-card {
     padding: 1rem;
-    border: 1px solid $gray-200;
-    border-radius: $border-radius-md;
-    background-color: white;
+    border: 1px solid var(--su-border-default);
+    border-radius: var(--su-radius-md);
+    background-color: var(--su-bg-surface);
     
     &:hover:not(&--disabled) {
-      border-color: $primary-300;
+      border-color: var(--su-link-hover);
       box-shadow: 0 2px 4px rgb(0 0 0 / 5%);
     }
     
     &--selected {
-      border-color: $primary-500;
-      background-color: $primary-50;
-      box-shadow: 0 0 0 1px $primary-500;
+      border-color: var(--su-link-default);
+      background-color: var(--su-bg-selected);
+      box-shadow: 0 0 0 1px var(--su-link-default);
     }
   }
   
@@ -328,7 +329,7 @@ const handleBlur = (event: FocusEvent) => {
     }
     
     .su-radio-label {
-      font-size: $font-size-sm;
+      font-size: var(--su-font-size-sm);
     }
     
     .su-radio-description {
@@ -353,11 +354,11 @@ const handleBlur = (event: FocusEvent) => {
     }
     
     .su-radio-label {
-      font-size: $font-size-base;
+      font-size: var(--su-font-size-base);
     }
     
     .su-radio-description {
-      font-size: $font-size-sm;
+      font-size: var(--su-font-size-sm);
     }
   }
   
@@ -373,11 +374,11 @@ const handleBlur = (event: FocusEvent) => {
     }
     
     .su-radio-label {
-      font-size: $font-size-lg;
+      font-size: var(--su-font-size-lg);
     }
     
     .su-radio-description {
-      font-size: $font-size-base;
+      font-size: var(--su-font-size-base);
     }
     
     &.su-radio-option--inline-card,
@@ -390,19 +391,19 @@ const handleBlur = (event: FocusEvent) => {
   &--error {
     &.su-radio-option--inline-card,
     &.su-radio-option--block-card {
-      border-color: $error-300;
+      border-color: var(--su-state-error-bg);
       
       &--selected {
-        border-color: $error-500;
-        background-color: $error-50;
+        border-color: var(--su-state-error);
+        background-color: var(--su-state-error-bg);
       }
     }
     
     .su-radio-indicator {
-      border-color: $error-500;
+      border-color: var(--su-state-error);
       
       &.su-radio-indicator--checked {
-        background-color: $error-500;
+        background-color: var(--su-state-error);
       }
     }
   }
@@ -410,19 +411,19 @@ const handleBlur = (event: FocusEvent) => {
   &--success {
     &.su-radio-option--inline-card,
     &.su-radio-option--block-card {
-      border-color: $success-300;
+      border-color: var(--su-state-success-bg);
       
       &--selected {
-        border-color: $success-500;
-        background-color: $success-50;
+        border-color: var(--su-state-success);
+        background-color: var(--su-state-success-bg);
       }
     }
     
     .su-radio-indicator {
-      border-color: $success-500;
+      border-color: var(--su-state-success);
       
       &.su-radio-indicator--checked {
-        background-color: $success-500;
+        background-color: var(--su-state-success);
       }
     }
   }
@@ -430,19 +431,19 @@ const handleBlur = (event: FocusEvent) => {
   &--warning {
     &.su-radio-option--inline-card,
     &.su-radio-option--block-card {
-      border-color: $warning-300;
+      border-color: var(--su-state-warning-bg);
       
       &--selected {
-        border-color: $warning-500;
-        background-color: $warning-50;
+        border-color: var(--su-state-warning);
+        background-color: var(--su-state-warning-bg);
       }
     }
     
     .su-radio-indicator {
-      border-color: $warning-500;
+      border-color: var(--su-state-warning);
       
       &.su-radio-indicator--checked {
-        background-color: $warning-500;
+        background-color: var(--su-state-warning);
       }
     }
   }
@@ -453,8 +454,8 @@ const handleBlur = (event: FocusEvent) => {
     
     &.su-radio-option--inline-card,
     &.su-radio-option--block-card {
-      background-color: $gray-50;
-      border-color: $gray-200;
+      background-color: var(--su-bg-hover);
+      border-color: var(--su-border-default);
     }
   }
 }
@@ -466,15 +467,15 @@ const handleBlur = (event: FocusEvent) => {
   height: 0;
   
   &:focus + .su-radio-indicator {
-    box-shadow: 0 0 0 3px rgba($primary-500, 0.2);
+    box-shadow: 0 0 0 3px rgb(var(--su-link-default-rgb) / 20%);
   }
   
   &:checked + .su-radio-indicator {
-    border-color: $primary-500;
-    background-color: white;
+    border-color: var(--su-link-default);
+    background-color: var(--su-bg-surface);
     
     .su-radio-dot {
-      background-color: $primary-500;
+      background-color: var(--su-link-default);
       transform: scale(1);
     }
   }
@@ -484,10 +485,10 @@ const handleBlur = (event: FocusEvent) => {
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid $gray-300;
+  border: 1px solid var(--su-border-default);
   border-radius: 50%;
-  background-color: white;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  background-color: var(--su-bg-surface);
+  transition: all var(--su-duration-fast) cubic-bezier(0.4, 0, 0.2, 1);
   flex-shrink: 0;
   
   &-dot {
@@ -510,7 +511,7 @@ const handleBlur = (event: FocusEvent) => {
   width: 1.25em;
   height: 1.25em;
   flex-shrink: 0;
-  color: $text-secondary;
+  color: var(--su-text-secondary);
   margin-top: 0.125rem;
 }
 
@@ -521,13 +522,13 @@ const handleBlur = (event: FocusEvent) => {
 
 .su-radio-label {
   font-weight: 500;
-  color: $text-primary;
-  line-height: $line-height-tight;
+  color: var(--su-text-primary);
+  line-height: var(--su-line-height-tight);
 }
 
 .su-radio-description {
-  color: $text-secondary;
-  line-height: $line-height-normal;
+  color: var(--su-text-secondary);
+  line-height: var(--su-line-height-normal);
   margin-top: 0.25rem;
 }
 
@@ -535,43 +536,43 @@ const handleBlur = (event: FocusEvent) => {
   margin-top: 0.75rem;
   padding: 0.5rem 1rem;
   background-color: transparent;
-  border: 1px solid $gray-300;
-  border-radius: $border-radius-md;
-  color: $primary-600;
-  font-size: $font-size-sm;
+  border: 1px solid var(--su-border-default);
+  border-radius: var(--su-radius-md);
+  color: var(--su-link-default);
+  font-size: var(--su-font-size-sm);
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all var(--su-duration-fast) cubic-bezier(0.4, 0, 0.2, 1);
   
   &:hover {
-    background-color: $gray-50;
-    border-color: $primary-300;
+    background-color: var(--su-bg-hover);
+    border-color: var(--su-link-hover);
   }
   
   &:focus {
     outline: none;
-    box-shadow: 0 0 0 3px rgba($primary-500, 0.2);
+    box-shadow: 0 0 0 3px rgb(var(--su-link-default-rgb) / 20%);
   }
 }
 
 .su-radio-group-message {
-  font-size: $font-size-sm;
-  line-height: $line-height-tight;
+  font-size: var(--su-font-size-sm);
+  line-height: var(--su-line-height-tight);
   
   &--default {
-    color: $text-secondary;
+    color: var(--su-text-secondary);
   }
   
   &--error {
-    color: $error-600;
+    color: var(--su-state-error);
   }
   
   &--success {
-    color: $success-600;
+    color: var(--su-state-success);
   }
   
   &--warning {
-    color: $warning-600;
+    color: var(--su-state-warning);
   }
 }
 
@@ -591,62 +592,62 @@ const handleBlur = (event: FocusEvent) => {
 // Mode sombre
 @media (prefers-color-scheme: dark) {
   .su-radio-group-label {
-    color: $text-primary-dark;
+    color: var(--su-text-primary);
     
     &--disabled {
-      color: $text-tertiary-dark;
+      color: var(--su-text-tertiary);
     }
   }
   
   .su-radio-option {
     &--inline-card,
     &--block-card {
-      background-color: $gray-800;
-      border-color: $gray-600;
+      background-color: var(--su-bg-surface);
+      border-color: var(--su-border-default);
       
       &:hover:not(&--disabled) {
-        border-color: $primary-400;
+        border-color: var(--su-link-hover);
       }
       
       &--selected {
-        border-color: $primary-400;
-        background-color: rgba($primary-400, 0.1);
+        border-color: var(--su-link-default);
+        background-color: var(--su-bg-selected);
       }
       
       &--disabled {
-        background-color: $gray-900;
-        border-color: $gray-700;
+        background-color: var(--su-bg-hover);
+        border-color: var(--su-border-default);
       }
     }
   }
   
   .su-radio-indicator {
-    border-color: $gray-500;
-    background-color: $gray-800;
+    border-color: var(--su-border-default);
+    background-color: var(--su-bg-surface);
   }
   
   .su-radio-label {
-    color: $text-primary-dark;
+    color: var(--su-text-primary);
   }
   
   .su-radio-description {
-    color: $text-secondary-dark;
+    color: var(--su-text-secondary);
   }
   
   .su-radio-group-toggle {
-    background-color: $gray-800;
-    border-color: $gray-600;
-    color: $primary-400;
+    background-color: var(--su-bg-surface);
+    border-color: var(--su-border-default);
+    color: var(--su-link-default);
     
     &:hover {
-      background-color: $gray-700;
-      border-color: $primary-400;
+      background-color: var(--su-bg-hover);
+      border-color: var(--su-link-default);
     }
   }
   
   .su-radio-group-message {
     &--default {
-      color: $text-secondary-dark;
+      color: var(--su-text-secondary);
     }
   }
 }
