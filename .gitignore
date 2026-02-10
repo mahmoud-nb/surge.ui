@@ -139,3 +139,6 @@ test-results/
 
 # Nx
 .nx/cache
+
+#Agents
+AGENTS.md
