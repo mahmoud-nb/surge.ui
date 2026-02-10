@@ -341,7 +341,7 @@ defineExpose({
 </script>
 
 <style lang="scss">
-@use '../../styles/main' as *;
+@use '../../styles2/core/mixins' as *;
 
 .su-popover {
   position: relative;
@@ -366,10 +366,10 @@ defineExpose({
   &__content {
     position: absolute;
     z-index: 9999;
-    background-color: var(--su-popover-bg, #ffffff);
+    background-color: var(--su-popover-bg, #fff);
     border: 1px solid var(--su-popover-border, #e5e7eb);
     border-radius: var(--su-popover-radius, 8px);
-    box-shadow: var(--su-popover-shadow, 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05));
+    box-shadow: var(--su-popover-shadow, 0 10px 15px -3px rgb(0 0 0 / 10%), 0 4px 6px -2px rgb(0 0 0 / 5%));
     padding: var(--su-popover-padding, 12px);
     min-width: 200px;
     max-width: 320px;
@@ -448,24 +448,24 @@ defineExpose({
     @media (prefers-color-scheme: dark) {
       --su-popover-bg: #1f2937;
       --su-popover-border: #374151;
-      --su-popover-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+      --su-popover-shadow: 0 10px 15px -3px rgb(0 0 0 / 50%), 0 4px 6px -2px rgb(0 0 0 / 30%);
     }
 
     [data-theme="dark"] & {
       --su-popover-bg: #1f2937;
       --su-popover-border: #374151;
-      --su-popover-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+      --su-popover-shadow: 0 10px 15px -3px rgb(0 0 0 / 50%), 0 4px 6px -2px rgb(0 0 0 / 30%);
     }
 
     // High contrast mode
     @media (prefers-contrast: high) {
       border-width: 2px;
-      border-color: var(--su-popover-border-contrast, #000000);
+      border-color: var(--su-popover-border-contrast, #000);
     }
 
     [data-contrast="high"] & {
       border-width: 2px;
-      border-color: var(--su-popover-border-contrast, #000000);
+      border-color: var(--su-popover-border-contrast, #000);
     }
 
     // RTL support
@@ -478,77 +478,9 @@ defineExpose({
     position: absolute;
     width: 8px;
     height: 8px;
-    background-color: var(--su-popover-bg, #ffffff);
+    background-color: var(--su-popover-bg, #fff);
     border: 1px solid var(--su-popover-border, #e5e7eb);
     transform: rotate(45deg);
-    
-    // Arrow positions based on placement
-    .su-popover__content--top &,
-    .su-popover__content--top-start &,
-    .su-popover__content--top-end & {
-      bottom: -5px;
-      border-top: none;
-      border-left: none;
-    }
-
-    .su-popover__content--bottom &,
-    .su-popover__content--bottom-start &,
-    .su-popover__content--bottom-end & {
-      top: -5px;
-      border-bottom: none;
-      border-right: none;
-    }
-
-    .su-popover__content--left &,
-    .su-popover__content--left-start &,
-    .su-popover__content--left-end & {
-      right: -5px;
-      border-left: none;
-      border-bottom: none;
-    }
-
-    .su-popover__content--right &,
-    .su-popover__content--right-start &,
-    .su-popover__content--right-end & {
-      left: -5px;
-      border-right: none;
-      border-top: none;
-    }
-
-    // Center arrow for non-start/end positions
-    .su-popover__content--top &,
-    .su-popover__content--bottom & {
-      left: 50%;
-      transform: translateX(-50%) rotate(45deg);
-    }
-
-    .su-popover__content--left &,
-    .su-popover__content--right & {
-      top: 50%;
-      transform: translateY(-50%) rotate(45deg);
-    }
-
-    // Start position arrows
-    .su-popover__content--top-start &,
-    .su-popover__content--bottom-start & {
-      left: 16px;
-    }
-
-    .su-popover__content--left-start &,
-    .su-popover__content--right-start & {
-      top: 16px;
-    }
-
-    // End position arrows
-    .su-popover__content--top-end &,
-    .su-popover__content--bottom-end & {
-      right: 16px;
-    }
-
-    .su-popover__content--left-end &,
-    .su-popover__content--right-end & {
-      bottom: 16px;
-    }
     
     @media (prefers-color-scheme: dark) {
       background-color: #1f2937;
@@ -624,11 +556,8 @@ defineExpose({
 
   &__backdrop {
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
+    inset: 0;
+    background-color: rgb(0 0 0 / 50%);
     z-index: 9998;
   }
 }

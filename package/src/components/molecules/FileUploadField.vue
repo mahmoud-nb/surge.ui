@@ -555,12 +555,14 @@ defineExpose({
 </template>
 
 <style lang="scss">
-@use '../../styles/main' as *;
+@use '../../styles2/core/mixins' as *;
+@use '../../styles2/foundations/spacing' as space;
+@use '../../styles2/foundations/typography' as typo;
 
 .su-file-upload-container {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: space.$spacing-4;
   
   &--disabled {
     opacity: 0.6;
@@ -581,110 +583,72 @@ defineExpose({
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 2rem;
-  border: 2px dashed $gray-300;
-  border-radius: $border-radius-lg;
-  background-color: $gray-50;
+  padding: space.$spacing-8;
+  border: 2px dashed var(--su-gray-300);
+  border-radius: var(--su-radius-lg);
+  background-color: var(--su-gray-50);
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+  @include transition(all);
   
-  &:hover:not(&--disabled, &--readonly) {
-    border-color: $primary-400;
-    background-color: $primary-50;
-  }
-  
+  // Focus state - MUST come before hover state for specificity
   &:focus {
     outline: none;
-    border-color: $primary-500;
-    box-shadow: 0 0 0 3px rgba($primary-500, 0.1);
+    border-color: var(--su-primary-500);
+    box-shadow: 0 0 0 3px rgb(var(--su-primary-500-rgb) / 10%);
   }
   
-  // Tailles
-  &--sm {
-    padding: 1.5rem;
-    
-    .su-file-upload-icon {
-      width: 2rem;
-      height: 2rem;
-    }
-    
-    .su-file-upload-primary-text {
-      font-size: $font-size-sm;
-    }
-    
-    .su-file-upload-secondary-text {
-      font-size: 0.75rem;
-    }
+  &:hover:not(&--disabled, &--readonly) {
+    border-color: var(--su-primary-400);
+    background-color: var(--su-primary-50);
   }
   
-  &--md {
-    padding: 2rem;
-    
-    .su-file-upload-icon {
-      width: 3rem;
-      height: 3rem;
-    }
-  }
-  
-  &--lg {
-    padding: 2.5rem;
-    
-    .su-file-upload-icon {
-      width: 4rem;
-      height: 4rem;
-    }
-    
-    .su-file-upload-primary-text {
-      font-size: $font-size-lg;
-    }
-  }
-  
-  // États
+  // States must come before nested size modifiers for specificity
   &--error {
-    border-color: $error-300;
-    background-color: $error-50;
-    
-    &:hover:not(&--disabled, &--readonly) {
-      border-color: $error-400;
-    }
+    border-color: var(--su-error-300);
+    background-color: var(--su-error-50);
     
     &:focus {
-      border-color: $error-500;
-      box-shadow: 0 0 0 3px rgba($error-500, 0.1);
+      border-color: var(--su-error-500);
+      box-shadow: 0 0 0 3px rgb(var(--su-error-500-rgb) / 10%);
+    }
+    
+    &:hover:not(&--disabled, &--readonly) {
+      border-color: var(--su-error-400);
     }
   }
   
   &--success {
-    border-color: $success-300;
-    background-color: $success-50;
-    
-    &:hover:not(&--disabled, &--readonly) {
-      border-color: $success-400;
-    }
+    border-color: var(--su-success-300);
+    background-color: var(--su-success-50);
     
     &:focus {
-      border-color: $success-500;
-      box-shadow: 0 0 0 3px rgba($success-500, 0.1);
+      border-color: var(--su-success-500);
+      box-shadow: 0 0 0 3px rgb(var(--su-success-500-rgb) / 10%);
+    }
+    
+    &:hover:not(&--disabled, &--readonly) {
+      border-color: var(--su-success-400);
     }
   }
   
   &--warning {
-    border-color: $warning-300;
-    background-color: $warning-50;
-    
-    &:hover:not(&--disabled, &--readonly) {
-      border-color: $warning-400;
-    }
+    border-color: var(--su-warning-300);
+    background-color: var(--su-warning-50);
     
     &:focus {
-      border-color: $warning-500;
-      box-shadow: 0 0 0 3px rgba($warning-500, 0.1);
+      border-color: var(--su-warning-500);
+      box-shadow: 0 0 0 3px rgb(var(--su-warning-500-rgb) / 10%);
+    }
+    
+    &:hover:not(&--disabled, &--readonly) {
+      border-color: var(--su-warning-400);
     }
   }
   
   &--dragging {
-    border-color: $primary-500;
-    background-color: $primary-100;
+    border-color: var(--su-primary-500);
+    background-color: var(--su-primary-100);
     transform: scale(1.02);
   }
   
@@ -693,29 +657,48 @@ defineExpose({
     cursor: not-allowed;
     
     &:hover {
-      border-color: $gray-300;
-      background-color: $gray-50;
+      border-color: var(--su-gray-300);
+      background-color: var(--su-gray-50);
     }
   }
 }
 
+// Base elements - declare these BEFORE modifiers that use them
 .su-file-upload-icon {
   width: 3rem;
   height: 3rem;
-  color: $text-secondary;
-  margin-bottom: 1rem;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  color: var(--su-text-secondary);
+  margin-bottom: space.$spacing-4;
+
+  @include transition(all);
   
   &--dragging {
-    color: $primary-600;
+    color: var(--su-primary-600);
     transform: scale(1.1);
   }
 }
 
+.su-file-upload-primary-text {
+  font-size: typo.$font-size-base;
+  font-weight: 500;
+  color: var(--su-text-primary);
+  margin: 0 0 0.5rem;
+}
+
+.su-file-upload-secondary-text {
+  font-size: typo.$font-size-sm;
+  color: var(--su-text-secondary);
+  margin: 0;
+}
+
+.su-file-upload-text {
+  text-align: center;
+}
+
 .su-file-upload-loading {
   position: absolute;
-  top: 1rem;
-  right: 1rem;
+  top: space.$spacing-4;
+  right: space.$spacing-4;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -723,7 +706,7 @@ defineExpose({
   .su-spinner {
     width: 1.5rem;
     height: 1.5rem;
-    color: $primary-600;
+    color: var(--su-primary-600);
     animation: spin 1s linear infinite;
   }
 }
@@ -731,7 +714,7 @@ defineExpose({
 .su-file-upload-progress-bar {
   width: 100%;
   height: 0.25rem;
-  background-color: $gray-200;
+  background-color: var(--su-gray-200);
   border-radius: 9999px;
   overflow: hidden;
   margin-top: 0.5rem;
@@ -739,61 +722,85 @@ defineExpose({
 
 .su-file-upload-progress-fill {
   height: 100%;
-  background-color: $primary-500;
+  background-color: var(--su-primary-500);
   border-radius: inherit;
   transition: width 0.3s ease;
 }
 
-.su-file-upload-text {
-  text-align: center;
+// Size modifiers - now can safely reference base elements (after they're defined)
+.su-file-upload-dropzone--sm {
+  padding: space.$spacing-6;
+  
+  .su-file-upload-icon {
+    width: 2rem;
+    height: 2rem;
+  }
+  
+  .su-file-upload-primary-text {
+    font-size: typo.$font-size-sm;
+  }
+  
+  .su-file-upload-secondary-text {
+    font-size: 0.75rem;
+  }
 }
 
-.su-file-upload-primary-text {
-  font-size: $font-size-base;
-  font-weight: 500;
-  color: $text-primary;
-  margin: 0 0 0.5rem;
+.su-file-upload-dropzone--md {
+  padding: space.$spacing-8;
+  
+  .su-file-upload-icon {
+    width: 3rem;
+    height: 3rem;
+  }
 }
 
-.su-file-upload-secondary-text {
-  font-size: $font-size-sm;
-  color: $text-secondary;
-  margin: 0;
+.su-file-upload-dropzone--lg {
+  padding: 2.5rem;
+  
+  .su-file-upload-icon {
+    width: 4rem;
+    height: 4rem;
+  }
+  
+  .su-file-upload-primary-text {
+    font-size: typo.$font-size-lg;
+  }
 }
 
 .su-file-upload-list {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: space.$spacing-3;
 }
 
 .su-file-upload-item {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.75rem;
+  gap: space.$spacing-3;
+  padding: space.$spacing-2;
   background-color: white;
-  border: 1px solid $gray-200;
-  border-radius: $border-radius-md;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid var(--su-gray-200);
+  border-radius: var(--su-radius-md);
+
+  @include transition(all);
   
   &:hover {
     box-shadow: 0 2px 4px rgb(0 0 0 / 5%);
   }
   
   &--error {
-    border-color: $error-300;
-    background-color: $error-50;
+    border-color: var(--su-error-300);
+    background-color: var(--su-error-50);
   }
   
   &--success {
-    border-color: $success-300;
-    background-color: $success-50;
+    border-color: var(--su-success-300);
+    background-color: var(--su-success-50);
   }
   
   &--uploading {
-    border-color: $primary-300;
-    background-color: $primary-50;
+    border-color: var(--su-primary-300);
+    background-color: var(--su-primary-50);
   }
 }
 
@@ -804,8 +811,8 @@ defineExpose({
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: $gray-100;
-  border-radius: $border-radius-sm;
+  background-color: var(--su-gray-100);
+  border-radius: var(--su-radius-sm);
   overflow: hidden;
 }
 
@@ -818,7 +825,7 @@ defineExpose({
 .su-file-upload-item-icon {
   width: 1.5rem;
   height: 1.5rem;
-  color: $text-secondary;
+  color: var(--su-text-secondary);
 }
 
 .su-file-upload-item-info {
@@ -828,7 +835,7 @@ defineExpose({
 
 .su-file-upload-item-name {
   font-weight: 500;
-  color: $text-primary;
+  color: var(--su-text-primary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -839,21 +846,21 @@ defineExpose({
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  font-size: $font-size-sm;
-  color: $text-secondary;
+  font-size: typo.$font-size-sm;
+  color: var(--su-text-secondary);
 }
 
 .su-file-upload-item-size {
-  color: $text-secondary;
+  color: var(--su-text-secondary);
 }
 
 .su-file-upload-item-progress {
-  color: $primary-600;
+  color: var(--su-primary-600);
   font-weight: 500;
 }
 
 .su-file-upload-item-error {
-  color: $error-600;
+  color: var(--su-error-600);
   font-weight: 500;
 }
 
@@ -869,11 +876,11 @@ defineExpose({
   height: 1.25rem;
   
   &--success {
-    color: $success-600;
+    color: var(--su-success-600);
   }
   
   &--error {
-    color: $error-600;
+    color: var(--su-error-600);
   }
 }
 
@@ -885,7 +892,7 @@ defineExpose({
   .su-spinner {
     width: 1.25rem;
     height: 1.25rem;
-    color: $primary-600;
+    color: var(--su-primary-600);
     animation: spin 1s linear infinite;
   }
 }
@@ -901,17 +908,18 @@ defineExpose({
   border: none;
   border-radius: 50%;
   cursor: pointer;
-  color: $text-secondary;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  color: var(--su-text-secondary);
+
+  @include transition(all);
   
   &:hover {
-    background-color: $error-100;
-    color: $error-600;
+    background-color: var(--su-error-100);
+    color: var(--su-error-600);
   }
   
   &:focus {
     outline: none;
-    box-shadow: 0 0 0 2px rgba($error-500, 0.2);
+    box-shadow: 0 0 0 2px rgb(var(--su-error-500-rgb) / 20%);
   }
 }
 
@@ -921,23 +929,23 @@ defineExpose({
 }
 
 .su-file-upload-message {
-  font-size: $font-size-sm;
-  line-height: $line-height-tight;
+  font-size: typo.$font-size-sm;
+  line-height: var(--su-line-height-tight);
   
   &--default {
-    color: $text-secondary;
+    color: var(--su-text-secondary);
   }
   
   &--error {
-    color: $error-600;
+    color: var(--su-error-600);
   }
   
   &--success {
-    color: $success-600;
+    color: var(--su-success-600);
   }
   
   &--warning {
-    color: $warning-600;
+    color: var(--su-warning-600);
   }
 }
 
@@ -951,56 +959,54 @@ defineExpose({
   }
 }
 
-// Mode sombre
 @media (prefers-color-scheme: dark) {
   .su-file-upload-dropzone {
-    background-color: $gray-800;
-    border-color: $gray-600;
+    background-color: var(--su-gray-800);
+    border-color: var(--su-gray-600);
     
     &:hover:not(&--disabled, &--readonly) {
-      background-color: $gray-700;
-      border-color: $primary-400;
+      background-color: var(--su-gray-700);
+      border-color: var(--su-primary-400);
     }
     
     &--dragging {
-      background-color: rgba($primary-400, 0.2);
-      border-color: $primary-400;
+      background-color: rgb(var(--su-primary-400-rgb) / 20%);
+      border-color: var(--su-primary-400);
     }
   }
   
   .su-file-upload-primary-text {
-    color: $text-primary-dark;
+    color: var(--su-text-primary);
   }
   
   .su-file-upload-secondary-text {
-    color: $text-secondary-dark;
+    color: var(--su-text-secondary);
   }
   
   .su-file-upload-item {
-    background-color: $gray-800;
-    border-color: $gray-600;
+    background-color: var(--su-gray-800);
+    border-color: var(--su-gray-600);
   }
   
   .su-file-upload-item-preview {
-    background-color: $gray-700;
+    background-color: var(--su-gray-700);
   }
   
   .su-file-upload-item-name {
-    color: $text-primary-dark;
+    color: var(--su-text-primary);
   }
   
   .su-file-upload-item-details {
-    color: $text-secondary-dark;
+    color: var(--su-text-secondary);
   }
   
   .su-file-upload-message {
     &--default {
-      color: $text-secondary-dark;
+      color: var(--su-text-secondary);
     }
   }
 }
 
-// Mode de contraste élevé
 @media (prefers-contrast: high) {
   .su-file-upload-dropzone {
     border-width: 3px;
@@ -1011,13 +1017,12 @@ defineExpose({
   }
 }
 
-// Support de la réduction des animations
 @media (prefers-reduced-motion: reduce) {
   .su-file-upload-dropzone,
   .su-file-upload-icon,
   .su-file-upload-item,
   .su-file-upload-remove-button {
-    transition: none;
+    @include transition(none);
   }
   
   .su-file-upload-dropzone--dragging {

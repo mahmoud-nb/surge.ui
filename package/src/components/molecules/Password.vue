@@ -265,8 +265,6 @@ watch(validation, (newValidation) => {
 </template>
 
 <style lang="scss">
-@use '../../styles/main' as *;
-
 .su-password-wrapper {
   display: flex;
   flex-direction: column;

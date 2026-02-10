@@ -139,23 +139,22 @@ const ariaAttributes = computed(() => {
 </template>
 
 <style lang="scss">
-@use '../../styles/main' as *;
+@use '../../styles2/foundations/spacing' as space;
 
 .su-form-fields {
   display: flex;
   flex-direction: column;
   
-  // Section gaps (espacement entre head, content, footer)
   &--section-gap-sm {
-    gap: 1rem;
+    gap: space.$spacing-4;
   }
   
   &--section-gap-md {
-    gap: 1.5rem;
+    gap: space.$spacing-6;
   }
   
   &--section-gap-lg {
-    gap: 2rem;
+    gap: space.$spacing-8;
   }
   
   &--section-gap-xl {
@@ -172,29 +171,26 @@ const ariaAttributes = computed(() => {
   display: flex;
   flex: 1;
   
-  // Direction
   .su-form-fields--vertical & {
     flex-direction: column;
   }
   
-  // Gaps pour les champs (dans le content)
   .su-form-fields--gap-sm & {
-    gap: 0.75rem;
+    gap: space.$spacing-3;
   }
   
   .su-form-fields--gap-md & {
-    gap: 1rem;
+    gap: space.$spacing-4;
   }
   
   .su-form-fields--gap-lg & {
-    gap: 1.5rem;
+    gap: space.$spacing-6;
   }
   
   .su-form-fields--gap-xl & {
-    gap: 2rem;
+    gap: space.$spacing-8;
   }
   
-  // Ajustements pour la direction horizontale
   .su-form-fields--horizontal & {
     flex-flow: row wrap;
     align-items: flex-start;
@@ -206,7 +202,6 @@ const ariaAttributes = computed(() => {
   }
 }
 
-// Responsive : passer en vertical sur mobile
 @media (width <= 768px) {
   .su-form-fields--horizontal {
     .su-form-fields-content {

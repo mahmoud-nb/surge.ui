@@ -131,15 +131,37 @@ const ariaAttributes = computed(() => {
 </template>
 
 <style lang="scss">
-@use '../../styles/main' as *;
+@use '../../styles2/core/mixins' as *;
+@use '../../styles2/foundations/spacing' as space;
+
+// Base styles - must come FIRST before modifier-specific styles
+.su-links-group-separator {
+  color: var(--su-text-tertiary);
+  font-weight: 500;
+  user-select: none;
+  font-size: 0.875em;
+}
 
 .su-links-group {
-  @include component-group(md); // Gap par défaut
+  display: inline-flex;
+  align-items: center;
+  gap: space.$spacing-2;
   
-  &--gap-sm { @include component-group(sm); }
-  &--gap-md { @include component-group(md); }
-  &--gap-lg { @include component-group(lg); }
-  &--gap-none { @include component-group(none); }
+  &--gap-sm {
+    gap: space.$spacing-1;
+  }
+  
+  &--gap-md {
+    gap: space.$spacing-2;
+  }
+  
+  &--gap-lg {
+    gap: space.$spacing-3;
+  }
+  
+  &--gap-none {
+    gap: 0;
+  }
   
   // Direction
   &--vertical {
@@ -154,104 +176,113 @@ const ariaAttributes = computed(() => {
   // Avec séparateurs
   &--with-separator {
     align-items: center;
-    
-    &.su-links-group--vertical {
-      .su-links-group-separator {
-        display: none; // Masquer les séparateurs en mode vertical
-      }
-    }
   }
   
   // Style connecté pour gap='none'
   &--connected {
-    .su-links-group__link {
-      @include connected-elements;
+    gap: 0;
+  }
+}
 
-      border: 1px solid transparent;
-      
-      // Bordures pour l'effet connecté
-      &:not(.su-link--disabled) {
-        border-color: $gray-200;
-        background-color: white;
-        
-        &:hover {
-          border-color: $primary-300;
-          background-color: $primary-50;
-        }
-        
-        &:focus-visible {
-          border-color: $primary-500;
-        }
-        
-        &:active {
-          background-color: $primary-100;
-        }
-      }
+// MUST come before compound selectors using them
+.su-links-group--vertical .su-links-group-separator {
+  display: none;
+}
+
+// Connected element styles - completely flattened
+.su-links-group--connected .su-links-group__link {
+  position: relative;
+  border: 1px solid transparent;
+}
+
+.su-links-group--connected .su-links-group__link:not(:first-child) {
+  margin-left: -1px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.su-links-group--connected .su-links-group__link:not(:last-child) {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+// Generic interactive states - placed FIRST  
+.su-links-group--connected .su-links-group__link:focus-visible {
+  z-index: 1;
+}
+
+.su-links-group--connected .su-links-group__link:hover:not(:disabled) {
+  z-index: 1;
+}
+
+.su-links-group--connected .su-links-group__link:active:not(:disabled) {
+  z-index: 1;
+}
+
+// Base state for enabled (non-disabled) links
+.su-links-group--connected .su-links-group__link:not(.su-link--disabled) {
+  border-color: var(--su-gray-200);
+  background-color: white;
+}
+
+// More specific multi-class variant
+.su-links-group--connected.su-links-group--vertical .su-links-group__link {
+  margin-left: 0;
+  margin-top: -1px;
+}
+
+.su-links-group--connected.su-links-group--vertical .su-links-group__link:first-child {
+  margin-top: 0;
+  border-radius: var(--su-radius-sm) var(--su-radius-sm) 0 0;
+}
+
+.su-links-group--connected.su-links-group--vertical .su-links-group__link:last-child {
+  border-radius: 0 0 var(--su-radius-sm) var(--su-radius-sm);
+}
+
+.su-links-group--connected.su-links-group--vertical .su-links-group__link:only-child {
+  border-radius: var(--su-radius-sm);
+}
+
+// Compound states for enabled links
+.su-links-group--connected .su-links-group__link:not(.su-link--disabled):hover {
+  border-color: var(--su-primary-300);
+  background-color: var(--su-primary-50);
+}
+
+.su-links-group--connected .su-links-group__link:not(.su-link--disabled):focus-visible {
+  border-color: var(--su-primary-500);
+}
+
+.su-links-group--connected .su-links-group__link:not(.su-link--disabled):active {
+  background-color: var(--su-primary-100);
+}
+
+.su-links-group--with-separator.su-links-group--vertical .su-links-group-separator {
+  display: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  .su-links-group--connected .su-links-group__link:not(.su-link--disabled) {
+    border-color: var(--su-gray-600);
+    background-color: var(--su-gray-800);
+    
+    &:hover {
+      border-color: var(--su-primary-400);
+      background-color: rgb(var(--su-primary-400-rgb) / 10%);
     }
     
-    // Direction verticale pour les liens connectés
-    &.su-links-group--vertical {
-      .su-links-group__link {
-        // Override pour la direction verticale
-        margin-left: 0;
-        margin-top: -1px;
-        
-        &:first-child {
-          margin-top: 0;
-          border-radius: $border-radius-sm $border-radius-sm 0 0;
-        }
-        
-        &:last-child {
-          border-radius: 0 0 $border-radius-sm $border-radius-sm;
-        }
-        
-        &:only-child {
-          border-radius: $border-radius-sm;
-        }
-      }
+    &:focus-visible {
+      border-color: var(--su-primary-400);
     }
-  }
-}
-
-.su-links-group-separator {
-  color: $text-tertiary;
-  font-weight: 500;
-  user-select: none;
-  font-size: 0.875em;
-  
-  .su-links-group--vertical & {
-    display: none; // Masquer les séparateurs en mode vertical
-  }
-  
-  .su-links-group--vertical & {
-    display: none; // Masquer les séparateurs en mode vertical
-  }
-}
-
-// Mode sombre
-@media (prefers-color-scheme: dark) {
-  .su-links-group--connected {
-    .su-links-group__link:not(.su-link--disabled) {
-      border-color: $gray-600;
-      background-color: $gray-800;
-      
-      &:hover {
-        border-color: $primary-400;
-        background-color: rgba($primary-400, 0.1);
-      }
-      
-      &:focus-visible {
-        border-color: $primary-400;
-      }
-      
-      &:active {
-        background-color: rgba($primary-400, 0.2);
-      }
+    
+    &:active {
+      background-color: rgb(var(--su-primary-400-rgb) / 20%);
     }
   }
   
   .su-links-group-separator {
-    color: $text-tertiary-dark;
+    color: var(--su-text-tertiary);
   }
 }
 </style>
