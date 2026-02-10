@@ -164,28 +164,32 @@ onUnmounted(() => {
 <!-- Le style reste identique à la version précédente -->
 
 <style lang="scss" scoped>
-@use '../../styles/main' as *;
+@use '../../styles2/core/mixins' as *;
+@use '../../styles2/foundations/colors' as colors;
+@use '../../styles2/foundations/spacing' as space;
+@use '../../styles2/foundations/typography' as typo;
 
 .su-accordion-item {
-  border: 1px solid $gray-200;
-  border-radius: $border-radius-md;
-  background: $gray-50;
+  border: 1px solid var(--su-gray-200);
+  border-radius: space.$radius-md;
+  background: var(--su-bg-surface);
   overflow: hidden;
-  color: $text-primary;
-  transition: border-color 0.2s ease;
+  color: var(--su-text-primary);
+
+  @include transition(border-color);
 
   &:focus-within {
-    border-color: $primary-500;
-    box-shadow: 0 0 0 3px rgba($primary-500, 0.1);
+    border-color: var(--su-primary-500);
+    box-shadow: 0 0 0 3px rgb(var(--su-primary-500-rgb), 0.1);
   }
 
   &.is-open {
-    border-color: $primary-300;
+    border-color: var(--su-primary-300);
   }
 
   &.is-disabled {
     opacity: 0.6;
-    background: $gray-100;
+    background: var(--su-gray-100);
   }
 
   &__heading {
@@ -194,84 +198,82 @@ onUnmounted(() => {
 
   &__header {
     width: 100%;
-    min-height: $min-touch-target;
+    min-height: 2.75rem; // 44px WCAG minimum
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: $spacing-4 $spacing-6;
-    background: white;
-    color: $text-primary;
-    font-size: $font-size-base;
-    font-weight: 600;
+    padding: space.$spacing-4 space.$spacing-6;
+    background: var(--su-bg-surface);
+    color: var(--su-text-primary);
+    font-size: typo.$font-size-base;
+    font-weight: typo.$font-weight-semibold;
     text-align: left;
     cursor: pointer;
     border: none;
     outline: none;
-    transition: all 0.2s ease;
+
+    @include transition(all);
+
     position: relative;
 
-    // Amélioration du focus visible
     &:focus-visible {
-      outline: 3px solid $focus-ring-color;
-      outline-offset: -2px;
-      background: $primary-50;
+      @include focus-ring(var(--su-border-focus));
+
+      background: var(--su-primary-50);
       z-index: 1;
-    }
-
-    &:hover:not(:disabled) {
-      background: $primary-50;
-      color: $primary-700;
-    }
-
-    &:active:not(:disabled) {
-      background: $primary-100;
-      transform: translateY(1px);
     }
 
     &:disabled {
       cursor: not-allowed;
-      background: $gray-100;
-      color: $gray-500;
-      
-      .su-accordion-item__icon {
-        color: $gray-400;
-      }
+      background: var(--su-gray-100);
+      color: var(--su-gray-500);
     }
 
-    // Indicateur pour les utilisateurs de clavier
+    &:hover:not(:disabled) {
+      background: var(--su-primary-50);
+      color: var(--su-primary-700);
+    }
+
+    &:active:not(:disabled) {
+      background: var(--su-primary-100);
+      transform: translateY(1px);
+    }
+
     &.keyboard-nav {
-      outline: 2px solid $primary-500;
+      outline: 2px solid var(--su-primary-500);
     }
   }
 
   &__label {
     flex: 1;
-    padding-right: $spacing-4;
+    padding-right: space.$spacing-4;
   }
 
   &__icon {
     width: 1.25rem;
     height: 1.25rem;
-    color: $gray-600;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    color: var(--su-gray-600);
+
+    @include transition(all);
+
     flex-shrink: 0;
 
     &.is-open {
       transform: rotate(180deg);
-      color: $primary-600;
+      color: var(--su-primary-600);
     }
 
     .su-accordion-item__header:hover & {
-      color: $primary-600;
+      color: var(--su-primary-600);
     }
 
     .su-accordion-item__header:disabled & {
-      color: $gray-400;
+      color: var(--su-gray-400);
     }
   }
 
   &__panel {
-    background: $gray-50;
+    background: var(--su-bg-surface);
     overflow: hidden;
     
     &[hidden] {
@@ -280,13 +282,11 @@ onUnmounted(() => {
   }
 
   &__panel-content {
-    padding: $spacing-4 $spacing-6;
-    color: $text-secondary;
-    font-size: $font-size-base;
-    line-height: $line-height-relaxed;
-    
-    // Animation d'ouverture smooth
-    animation: slideDown 0.3s ease-out;
+    padding: space.$spacing-4 space.$spacing-6;
+    color: var(--su-text-secondary);
+    font-size: typo.$font-size-base;
+    line-height: typo.$line-height-relaxed;
+    animation: slide-down 0.3s ease-out;
     
     > *:first-child {
       margin-top: 0;
@@ -299,7 +299,7 @@ onUnmounted(() => {
 }
 
 /* Animation */
-@keyframes slideDown {
+@keyframes slide-down {
   from {
     opacity: 0;
     transform: translateY(-10px);
@@ -311,68 +311,72 @@ onUnmounted(() => {
   }
 }
 
-/* 🌙 Mode sombre */
+/* 🌙 Mode sombre - Custom properties s'ajustent automatiquement */
 @media (prefers-color-scheme: dark) {
   .su-accordion-item {
-    background: $gray-800;
-    border-color: $gray-700;
-    color: $text-primary-dark;
+    background: var(--su-gray-800);
+    border-color: var(--su-gray-700);
+    color: var(--su-text-primary);
 
     &:focus-within {
-      border-color: $primary-400;
-      box-shadow: 0 0 0 3px rgba($primary-400, 0.2);
+      border-color: var(--su-primary-400);
+      box-shadow: 0 0 0 3px rgb(var(--su-primary-400-rgb), 0.2);
     }
 
     &.is-open {
-      border-color: $primary-500;
+      border-color: var(--su-primary-500);
     }
 
     &.is-disabled {
-      background: $gray-700;
+      background: var(--su-gray-700);
     }
 
     &__header {
-      background: $gray-800;
-      color: $text-primary-dark;
+      background: var(--su-gray-800);
+      color: var(--su-text-primary);
 
       &:focus-visible {
-        background: $gray-700;
-        outline-color: $primary-400;
+        background: var(--su-gray-700);
+        outline-color: var(--su-border-focus);
       }
 
       &:hover:not(:disabled) {
-        background: $gray-700;
-        color: $primary-300;
+        background: var(--su-gray-700);
+        color: var(--su-primary-300);
       }
 
       &:active:not(:disabled) {
-        background: $gray-600;
+        background: var(--su-gray-600);
       }
 
       &:disabled {
-        background: $gray-700;
-        color: $gray-500;
+        background: var(--su-gray-700);
+        color: var(--su-gray-500);
       }
     }
 
     &__icon {
-      color: $gray-400;
+      color: var(--su-gray-400);
 
       &.is-open {
-        color: $primary-400;
+        color: var(--su-primary-400);
       }
 
       .su-accordion-item__header:hover & {
-        color: $primary-400;
+        color: var(--su-primary-400);
+      }
+
+      .su-accordion-item__header:disabled & {
+        color: var(--su-gray-400);
       }
     }
 
     &__panel {
-      background: $gray-900;
+      background: var(--su-gray-900);
     }
 
     &__panel-content {
-      color: $text-secondary-dark;
+      color: var(--su-text-secondary);
     }
   }
 }
@@ -383,7 +387,8 @@ onUnmounted(() => {
     &__header,
     &__icon,
     &__panel-content {
-      transition: none;
+      @include transition(none);
+
       animation: none;
     }
   }

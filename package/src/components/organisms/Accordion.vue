@@ -247,24 +247,25 @@ onUnmounted(() => {
 </template>
 
 <style lang="scss" scoped>
-@use '../../styles/main' as *;
+@use '../../styles2/core/mixins' as *;
+@use '../../styles2/foundations/spacing' as space;
 
 .su-accordion {
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: $spacing-2;
+  gap: space.$spacing-2;
 
   &--gap-sm {
-    gap: $spacing-1;
+    gap: space.$spacing-1;
   }
 
   &--gap-md {
-    gap: $spacing-2;
+    gap: space.$spacing-2;
   }
 
   &--gap-lg {
-    gap: $spacing-3;
+    gap: space.$spacing-3;
   }
 
   &--gap-none {
@@ -276,7 +277,8 @@ onUnmounted(() => {
 @media (prefers-reduced-motion: reduce) {
   .su-accordion {
     * {
-      transition: none;
+      @include transition(none);
+
       animation: none;
     }
   }
