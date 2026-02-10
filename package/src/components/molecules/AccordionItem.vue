@@ -340,6 +340,11 @@ onUnmounted(() => {
         outline-color: var(--su-border-focus);
       }
 
+      &:disabled {
+        background: var(--su-gray-700);
+        color: var(--su-gray-500);
+      }
+
       &:hover:not(:disabled) {
         background: var(--su-gray-700);
         color: var(--su-primary-300);
@@ -347,11 +352,6 @@ onUnmounted(() => {
 
       &:active:not(:disabled) {
         background: var(--su-gray-600);
-      }
-
-      &:disabled {
-        background: var(--su-gray-700);
-        color: var(--su-gray-500);
       }
     }
 

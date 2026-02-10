@@ -284,7 +284,7 @@ $avatar-forme: (
     
     &:focus {
       outline: none;
-      box-shadow: 0 0 0 3px rgba($primary-500, 0.2);
+      box-shadow: 0 0 0 3px rgb(var(--su-primary-500-rgb) / 20%);
     }
     
     &:active {
@@ -294,7 +294,7 @@ $avatar-forme: (
   
   // Couleurs d'arrière-plan pour les initiales
   &--initials {
-    background: linear-gradient(135deg, $primary-500, $primary-600);
+    background: linear-gradient(135deg, var(--su-primary-500), var(--su-primary-600));
     color: white;
   }
 
@@ -391,19 +391,19 @@ $avatar-forme: (
   
   // Couleurs de statut
   &--online {
-    background-color: $success-500;
+    background-color: var(--su-success-500);
   }
   
   &--offline {
-    background-color: $gray-400;
+    background-color: var(--su-gray-400);
   }
   
   &--away {
-    background-color: $warning-500;
+    background-color: var(--su-warning-500);
   }
   
   &--busy {
-    background-color: $error-500;
+    background-color: var(--su-error-500);
   }
 }
 
@@ -417,7 +417,7 @@ $avatar-forme: (
 @media (prefers-color-scheme: dark) {
   .su-avatar {
     &--initials {
-      background: linear-gradient(135deg, $primary-400, $primary-500);
+      background: linear-gradient(135deg, var(--su-primary-400), var(--su-primary-500));
     }
   }
 

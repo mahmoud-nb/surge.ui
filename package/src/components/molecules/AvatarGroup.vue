@@ -135,91 +135,36 @@ const handleMoreClick = (event: MouseEvent) => {
   </div>
 </template>
 
-<style lang="scss">
-@use '../../styles/main' as *;
+<style lang="scss" scoped>
+@use '../../styles2/core/mixins' as *;
+@use '../../styles2/foundations/spacing' as *;
 
 .su-avatars-group {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: $spacing-2;
   
   &-list {
     display: flex;
     align-items: center;
   }
   
-  // Espacement entre les avatars
-  &--spacing-none {
-    .su-avatars-group-list {
-      gap: 0;
-      
-      .su-avatars-group-avatar {
-        margin-left: -0.25rem;
-        border: 2px solid white;
-        
-        &:first-child {
-          margin-left: 0;
-        }
-        
-        &:hover {
-          z-index: 1;
-        }
-      }
-      
-      .su-avatars-group-more {
-        margin-left: -0.25rem;
-        border: 2px solid white;
-        z-index: 0;
-        
-        &:hover {
-          z-index: 1;
-        }
-      }
-    }
-  }
-  
   &--spacing-sm {
     .su-avatars-group-list {
-      gap: 0.25rem;
+      gap: $spacing-1;
     }
   }
   
   &--spacing-md {
     .su-avatars-group-list {
-      gap: 0.5rem;
+      gap: $spacing-2;
     }
   }
   
   &--spacing-lg {
     .su-avatars-group-list {
-      gap: 0.75rem;
+      gap: $spacing-3;
     }
-  }
-}
-
-.su-avatars-group-avatar {
-  position: relative;
-  z-index: 0;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.su-avatars-group-more {
-  background-color: $gray-300;
-  color: $text-secondary;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  z-index: 0;
-  
-  &-text {
-    font-size: 0.75em;
-  }
-  
-  &:hover {
-    background-color: $gray-400;
-    color: $text-primary;
   }
 }
 
@@ -229,34 +174,82 @@ const handleMoreClick = (event: MouseEvent) => {
   align-items: center;
 }
 
-// Mode sombre
-@media (prefers-color-scheme: dark) {
-  .su-avatars-group--spacing-none {
-    .su-avatars-group-avatar,
-    .su-avatars-group-more {
-      border-color: $gray-800;
-    }
+.su-avatars-group-avatar {
+  position: relative;
+  z-index: 0;
+
+  @include transition(all);
+  
+  &:hover {
+    z-index: 1;
+  }
+}
+
+.su-avatars-group-more {
+  background-color: var(--su-gray-300);
+  color: var(--su-text-secondary);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 0;
+
+  @include transition(all);
+  
+  &:hover {
+    background-color: var(--su-gray-400);
+    color: var(--su-text-primary);
+    z-index: 1;
   }
   
-  .su-avatars-group-more {
-    background-color: $gray-600;
-    color: $text-secondary-dark;
+  &-text {
+    font-size: 0.75em;
+  }
+  
+  @media (prefers-color-scheme: dark) {
+    background-color: var(--su-gray-600);
+    color: var(--su-text-secondary);
     
     &:hover {
-      background-color: $gray-500;
-      color: $text-primary-dark;
+      background-color: var(--su-gray-500);
+      color: var(--su-text-primary);
+    }
+  }
+
+  [data-theme='dark'] & {
+    background-color: var(--su-gray-600);
+    color: var(--su-text-secondary);
+    
+    &:hover {
+      background-color: var(--su-gray-500);
+      color: var(--su-text-primary);
     }
   }
 }
 
-// Support de la réduction des animations
-@media (prefers-reduced-motion: reduce) {
-  .su-avatars-group-avatar {
-    transition: none;
-  }
+.su-avatars-group--spacing-none .su-avatars-group-avatar {
+  margin-left: -$spacing-1;
+  border: 2px solid var(--su-bg-surface);
   
+  &:first-child {
+    margin-left: 0;
+  }
+}
+
+.su-avatars-group--spacing-none .su-avatars-group-more {
+  margin-left: -$spacing-1;
+  border: 2px solid var(--su-bg-surface);
+  
+  @media (prefers-color-scheme: dark) {
+    border-color: var(--su-bg-surface);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .su-avatars-group-avatar,
   .su-avatars-group-more {
-    transition: none;
+    @include transition(none);
   }
 }
 </style>
