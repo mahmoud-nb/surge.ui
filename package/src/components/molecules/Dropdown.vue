@@ -442,8 +442,10 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !props.lab
   </div>
 </template>
 
-<style lang="scss">
-@use '../../styles/main' as *;
+<style lang="scss" scoped>
+@use '../../styles2/core/mixins' as *;
+@use '../../styles2/foundations/spacing' as space;
+@use '../../styles2/foundations/typography' as typo;
 
 .su-dropdown-container {
   position: relative;
@@ -465,37 +467,36 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !props.lab
   font-weight: 500;
   border: 1px solid transparent;
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   text-decoration: none;
   white-space: nowrap;
   user-select: none;
   position: relative;
-  gap: 0.5rem;
-  border-radius: $border-radius-md;
+  gap: space.$spacing-2;
+  border-radius: var(--su-radius-md);
   
+  @include transition(all);
+
   // Focus visible pour l'accessibilité
   &:focus-visible {
-    outline: 2px solid $primary-600;
-    outline-offset: 2px;
-    box-shadow: 0 0 0 4px rgba($primary-600, 0.2);
+    @include focus-ring;
   }
 
   // Tailles
   &--sm {
-    padding: 0.5rem 0.75rem;
-    font-size: $font-size-sm;
+    padding: space.$spacing-1 space.$spacing-2;
+    font-size: typo.$font-size-sm;
     line-height: 1.25rem;
     min-height: 2rem;
     
     &.su-dropdown-trigger--icon-only {
-      padding: 0.5rem;
+      padding: space.$spacing-1;
       width: 2rem;
     }
   }
 
   &--md {
-    padding: 0.625rem 1rem;
-    font-size: $font-size-sm;
+    padding: 0.625rem space.$spacing-3;
+    font-size: typo.$font-size-sm;
     line-height: 1.25rem;
     min-height: 2.5rem;
     
@@ -506,43 +507,43 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !props.lab
   }
 
   &--lg {
-    padding: 0.75rem 1.5rem;
-    font-size: $font-size-base;
+    padding: space.$spacing-2 1.5rem;
+    font-size: typo.$font-size-base;
     line-height: 1.5rem;
     min-height: 3rem;
     
     &.su-dropdown-trigger--icon-only {
-      padding: 0.75rem;
+      padding: space.$spacing-2;
       width: 3rem;
     }
   }
 
   // Variantes
   &--primary {
-    background-color: $primary-600;
+    background-color: var(--su-primary-600);
     color: white;
     border-color: transparent;
     
     &:hover:not(#{$self}--disabled):not(#{$self}--loading) {
-      background-color: $primary-700;
+      background-color: var(--su-primary-700);
       transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgb(59 130 246 / 40%);
+      box-shadow: 0 4px 12px rgb(var(--su-primary-600-rgb) / 40%);
     }
 
     &:active:not(#{$self}--disabled):not(#{$self}--loading) {
       transform: translateY(0);
-      box-shadow: 0 2px 4px rgb(59 130 246 / 40%);
+      box-shadow: 0 2px 4px rgb(var(--su-primary-600-rgb) / 40%);
     }
   }
 
   &--secondary {
-    background-color: $gray-100;
-    color: $gray-900;
-    border-color: $gray-200;
+    background-color: var(--su-gray-100);
+    color: var(--su-gray-900);
+    border-color: var(--su-gray-200);
 
     &:hover:not(#{$self}--disabled):not(#{$self}--loading) {
-      background-color: $gray-200;
-      border-color: $gray-300;
+      background-color: var(--su-gray-200);
+      border-color: var(--su-gray-300);
       transform: translateY(-1px);
       box-shadow: 0 4px 12px rgb(107 114 128 / 15%);
     }
@@ -550,23 +551,23 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !props.lab
 
   &--outline {
     background-color: transparent;
-    color: $primary-600;
-    border-color: $primary-200;
+    color: var(--su-primary-600);
+    border-color: var(--su-primary-200);
 
     &:hover:not(#{$self}--disabled):not(#{$self}--loading) {
-      background-color: $primary-50;
-      border-color: $primary-300;
+      background-color: var(--su-primary-50);
+      border-color: var(--su-primary-300);
       transform: translateY(-1px);
     }
   }
 
   &--ghost {
     background-color: transparent;
-    color: $primary-600;
+    color: var(--su-primary-600);
     border-color: transparent;
 
     &:hover:not(#{$self}--disabled):not(#{$self}--loading) {
-      background-color: $primary-50;
+      background-color: var(--su-primary-50);
       transform: translateY(-1px);
     }
   }
@@ -583,18 +584,8 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !props.lab
 
   &--loading {
     cursor: wait;
-    
-    .su-dropdown-label {
-      opacity: 0.7;
-    }
   }
 
-  &--open {
-    .su-dropdown-chevron {
-      transform: rotate(180deg);
-    }
-  }
-  
   // Direction de l'icône
   &--icon-right {
     flex-direction: row-reverse;
@@ -610,30 +601,40 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !props.lab
   // Ajustements pour les boutons avec icônes seules
   &--icon-only {
     gap: 0;
-    
-    .su-dropdown-icon {
-      width: 1.25em;
-      height: 1.25em;
-    }
   }
 }
 
+/* Top-level selectors (lower specificity) must come before compound selectors */
 .su-dropdown-icon {
   width: 1em;
   height: 1em;
   flex-shrink: 0;
 }
 
+.su-dropdown-trigger--icon-only .su-dropdown-icon {
+  width: 1.25em;
+  height: 1.25em;
+}
+
 .su-dropdown-label {
   min-width: 0;
+
+  .su-dropdown-trigger--loading & {
+    opacity: 0.7;
+  }
 }
 
 .su-dropdown-chevron {
   width: 1em;
   height: 1em;
   color: currentcolor;
-  transition: transform 0.2s;
   flex-shrink: 0;
+
+  @include transition(transform);
+
+  .su-dropdown-trigger--open & {
+    transform: rotate(180deg);
+  }
 }
 
 .su-dropdown-spinner {
@@ -653,8 +654,8 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !props.lab
   z-index: 50;
   margin-top: 0.25rem;
   background-color: white;
-  border: 1px solid $gray-200;
-  border-radius: $border-radius-md;
+  border: 1px solid var(--su-gray-200);
+  border-radius: var(--su-radius-md);
   box-shadow: 0 10px 15px -3px rgb(0 0 0 / 10%), 0 4px 6px -2px rgb(0 0 0 / 5%);
   overflow: hidden;
   min-width: 12rem;
@@ -724,38 +725,39 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !props.lab
 
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: space.$spacing-3;
   box-sizing: border-box;
   width: 100%;
-  padding: 0.75rem 1rem;
+  padding: space.$spacing-2 space.$spacing-3;
   text-align: left;
   background: none;
   border: none;
   cursor: pointer;
-  transition: all 0.2s;
-  color: $text-primary;
+  color: var(--su-text-primary);
   text-decoration: none;
 
+  @include transition(all);
+
   &:hover:not(#{$self}--disabled) {
-    background-color: $gray-50;
+    background-color: var(--su-gray-50);
   }
 
   &--focused:not(#{$self}--disabled) {
-    background-color: $primary-50;
-    color: $primary-900;
+    background-color: var(--su-primary-50);
+    color: var(--su-primary-900);
   }
   
   &--disabled {
     opacity: 0.6;
     cursor: not-allowed;
-    color: $text-tertiary;
+    color: var(--su-text-tertiary);
   }
   
   &-icon {
     width: 1.25em;
     height: 1.25em;
     flex-shrink: 0;
-    color: $text-secondary;
+    color: var(--su-text-secondary);
   }
   
   &-content {
@@ -772,8 +774,8 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !props.lab
   }
   
   &-description {
-    font-size: $font-size-sm;
-    color: $text-secondary;
+    font-size: typo.$font-size-sm;
+    color: var(--su-text-secondary);
     margin-top: 0.125rem;
     white-space: nowrap;
     overflow: hidden;
@@ -784,20 +786,21 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !props.lab
 .su-dropdown-external-icon {
   width: 1em;
   height: 1em;
-  color: $text-tertiary;
+  color: var(--su-text-tertiary);
   flex-shrink: 0;
 }
 
 .su-dropdown-separator {
   height: 1px;
-  background-color: $gray-200;
+  background-color: var(--su-gray-200);
   margin: 0.25rem 0;
 }
 
 // Animations
 .su-dropdown-enter-active,
 .su-dropdown-leave-active {
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  @include transition(all);
+
   transform-origin: top;
 }
 
@@ -817,75 +820,73 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !props.lab
   }
 }
 
-// Mode sombre
 @media (prefers-color-scheme: dark) {
   .su-dropdown-trigger {
     &--secondary {
-      background-color: $gray-800;
-      color: $gray-100;
-      border-color: $gray-700;
+      background-color: var(--su-gray-800);
+      color: var(--su-gray-100);
+      border-color: var(--su-gray-700);
 
       &:hover:not(&--disabled, &--loading) {
-        background-color: $gray-700;
-        border-color: $gray-600;
+        background-color: var(--su-gray-700);
+        border-color: var(--su-gray-600);
       }
     }
 
     &--outline {
-      color: $primary-400;
-      border-color: $primary-400;
+      color: var(--su-primary-400);
+      border-color: var(--su-primary-400);
 
       &:hover:not(&--disabled, &--loading) {
-        background-color: rgba($primary-400, 0.1);
-        border-color: $primary-300;
+        background-color: rgb(var(--su-primary-400-rgb) / 10%);
+        border-color: var(--su-primary-300);
       }
     }
 
     &--ghost {
-      color: $primary-400;
+      color: var(--su-primary-400);
 
       &:hover:not(&--disabled, &--loading) {
-        background-color: rgba($primary-400, 0.1);
+        background-color: rgb(var(--su-primary-400-rgb) / 10%);
       }
     }
   }
   
   .su-dropdown-menu {
-    background-color: $gray-800;
-    border-color: $gray-600;
+    background-color: var(--su-gray-800);
+    border-color: var(--su-gray-600);
   }
   
   .su-dropdown-option {
-    color: $text-primary-dark;
+    color: var(--su-text-primary);
     
     &:hover:not(&--disabled) {
-      background-color: $gray-700;
+      background-color: var(--su-gray-700);
     }
     
     &--focused:not(&--disabled) {
-      background-color: rgba($primary-400, 0.2);
-      color: $primary-200;
+      background-color: rgb(var(--su-primary-400-rgb) / 20%);
+      color: var(--su-primary-200);
     }
     
     &--disabled {
-      color: $text-tertiary-dark;
+      color: var(--su-text-tertiary);
     }
     
     &-icon {
-      color: $text-secondary-dark;
+      color: var(--su-text-secondary);
     }
     
     &-description {
-      color: $text-secondary-dark;
+      color: var(--su-text-secondary);
     }
   }
   
   .su-dropdown-separator {
-    background-color: $gray-600;
+    background-color: var(--su-gray-600);
   }
 }
 
-// Mode de contraste élevé
 @media (prefers-contrast: high) {
   .su-dropdown-trigger {
     border-width: 2px;
@@ -900,14 +901,13 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !props.lab
   }
 }
 
-// Support de la réduction des animations
 @media (prefers-reduced-motion: reduce) {
   .su-dropdown-trigger,
   .su-dropdown-chevron,
   .su-dropdown-option,
   .su-dropdown-enter-active,
   .su-dropdown-leave-active {
-    transition: none;
+    @include transition(none);
   }
   
   .su-dropdown-trigger:hover:not(.su-dropdown-trigger--disabled, .su-dropdown-trigger--loading) {

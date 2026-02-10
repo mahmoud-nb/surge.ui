@@ -229,15 +229,18 @@ defineExpose({
   </div>
 </template>
 
-<style lang="scss">
-@use '../../styles/main' as *;
+<style lang="scss" scoped>
+@use '../../styles2/core/mixins' as *;
+@use '../../styles2/foundations/spacing' as space;
+@use '../../styles2/foundations/typography' as typo;
 
 .su-float-button-container {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 1rem;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  gap: space.$spacing-4;
+
+  @include transition(all);
   
   &--left {
     align-items: flex-start;
@@ -255,15 +258,15 @@ defineExpose({
   
   // Tailles
   &--sm {
-    gap: 0.75rem;
+    gap: space.$spacing-3;
   }
   
   &--md {
-    gap: 1rem;
+    gap: space.$spacing-4;
   }
   
   &--lg {
-    gap: 1.25rem;
+    gap: space.$spacing-5;
   }
 }
 
@@ -272,10 +275,10 @@ defineExpose({
   flex-direction: column;
   align-items: flex-end;
   background-color: white;
-  border: 1px solid $gray-200;
-  border-radius: $border-radius-lg;
+  border: 1px solid var(--su-gray-200);
+  border-radius: var(--su-radius-lg);
   box-shadow: 0 10px 25px rgb(0 0 0 / 15%);
-  padding: 0.5rem;
+  padding: space.$spacing-1;
   
   // Animation d'apparition
   animation: slide-up 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -295,9 +298,10 @@ defineExpose({
 .su-float-button {
   border-radius: 50% !important;
   box-shadow: 0 8px 25px rgb(0 0 0 / 15%);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   
+  @include transition(all);
+
   &:hover:not(:disabled) {
     transform: translateY(-2px);
     box-shadow: 0 12px 35px rgb(0 0 0 / 20%);
@@ -351,17 +355,14 @@ defineExpose({
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: $error-500;
+  background-color: var(--su-error-500);
   color: white;
-  font-size: 0.75rem;
+  font-size: typo.$font-size-xs;
   font-weight: 600;
   border-radius: 9999px;
   padding: 0 0.375rem;
   border: 1px solid white;
   z-index: 1;
-  
-  // Animation de pulsation pour attirer l'attention
-  // animation: pulse 2s infinite;
 }
 
 .su-float-button-tooltip-arrow {
@@ -373,12 +374,12 @@ defineExpose({
 
 .su-float-button-tooltip {
   position: absolute;
-  padding: 0.5rem 0.75rem;
-  background-color: $gray-900;
+  padding: space.$spacing-1 0.75rem;
+  background-color: var(--su-gray-900);
   color: white;
-  font-size: $font-size-sm;
+  font-size: typo.$font-size-sm;
   font-weight: 500;
-  border-radius: $border-radius-md;
+  border-radius: var(--su-radius-md);
   white-space: nowrap;
   pointer-events: none;
   z-index: 2;
@@ -399,7 +400,7 @@ defineExpose({
     
     .su-float-button-tooltip-arrow {
       top: 100%;
-      border-top-color: $gray-900;
+      border-top-color: var(--su-gray-900);
     }
   }
   
@@ -417,7 +418,7 @@ defineExpose({
     
     .su-float-button-tooltip-arrow {
       bottom: 100%;
-      border-bottom-color: $gray-900;
+      border-bottom-color: var(--su-gray-900);
     }
   }
   
@@ -431,7 +432,7 @@ defineExpose({
       left: 100%;
       top: 50%;
       transform: translateY(-50%);
-      border-left-color: $gray-900;
+      border-left-color: var(--su-gray-900);
     }
   }
   
@@ -445,12 +446,11 @@ defineExpose({
       right: 100%;
       top: 50%;
       transform: translateY(-50%);
-      border-right-color: $gray-900;
+      border-right-color: var(--su-gray-900);
     }
   }
 }
 
-// Animations
 @keyframes slide-up {
   from {
     opacity: 0;
@@ -463,50 +463,38 @@ defineExpose({
   }
 }
 
-@keyframes pulse {
-  0%, 100% {
-    transform: scale(1);
-  }
-
-  50% {
-    transform: scale(1.1);
-  }
-}
-
-// Mode sombre
 @media (prefers-color-scheme: dark) {
   .su-float-button-slot {
-    background-color: $gray-800;
-    border-color: $gray-600;
+    background-color: var(--su-gray-800);
+    border-color: var(--su-gray-600);
   }
   
   .su-float-button-tooltip {
-    background-color: $gray-100;
-    color: $gray-900;
+    background-color: var(--su-gray-100);
+    color: var(--su-gray-900);
     
     &--top .su-float-button-tooltip-arrow {
-      border-top-color: $gray-100;
+      border-top-color: var(--su-gray-100);
     }
     
     &--bottom .su-float-button-tooltip-arrow {
-      border-bottom-color: $gray-100;
+      border-bottom-color: var(--su-gray-100);
     }
     
     &--left .su-float-button-tooltip-arrow {
-      border-left-color: $gray-100;
+      border-left-color: var(--su-gray-100);
     }
     
     &--right .su-float-button-tooltip-arrow {
-      border-right-color: $gray-100;
+      border-right-color: var(--su-gray-100);
     }
   }
   
   .su-float-button-badge {
-    border-color: $gray-800;
+    border-color: var(--su-gray-800);
   }
 }
 
-// Mode de contraste élevé
 @media (prefers-contrast: high) {
   .su-float-button {
     border: 3px solid currentcolor;
@@ -517,16 +505,16 @@ defineExpose({
   }
   
   .su-float-button-tooltip {
-    border: 2px solid $gray-600;
+    border: 2px solid var(--su-gray-600);
   }
 }
 
-// Support de la réduction des animations
 @media (prefers-reduced-motion: reduce) {
   .su-float-button-container,
   .su-float-button,
   .su-float-button-slot {
-    transition: none;
+    @include transition(none);
+
     animation: none;
   }
   
@@ -543,12 +531,10 @@ defineExpose({
   }
 }
 
-// Responsive
 @media (width <= 768px) {
   .su-float-button-container {
     bottom: 16px !important;
   
-    // Ajustement automatique des offsets sur mobile
     &--right {
       right: 16px !important;
     }
@@ -566,11 +552,10 @@ defineExpose({
   
   .su-float-button-tooltip {
     max-width: 150px;
-    font-size: 0.75rem;
+    font-size: typo.$font-size-xs;
   }
 }
 
-// Support des zones sûres (iPhone X+)
 @supports (padding: max(0px)) {
   .su-float-button-container {
     bottom: max(24px, env(safe-area-inset-bottom));

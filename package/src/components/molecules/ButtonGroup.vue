@@ -89,21 +89,52 @@ const ariaAttributes = computed(() => {
   </div>
 </template>
 
-<style lang="scss">
-@use '../../styles/main' as *;
+<style lang="scss" scoped>
+@use '../../styles2/core/mixins' as *;
+@use '../../styles2/foundations/spacing' as space;
 
 .su-buttons-group {
-  @include component-group(md); // Gap par défaut
-  
-  &--gap-sm { @include component-group(sm); }
-  &--gap-md { @include component-group(md); }
-  &--gap-lg { @include component-group(lg); }
-  &--gap-none { @include component-group(none); }
-  
+  display: inline-flex;
+  align-items: center;
+  gap: space.$spacing-2;
+
+  &--gap-sm {
+    gap: space.$spacing-1;
+  }
+
+  &--gap-md {
+    gap: space.$spacing-2;
+  }
+
+  &--gap-lg {
+    gap: space.$spacing-3;
+  }
+
+  &--gap-none {
+    gap: 0;
+  }
+
   // Style connecté pour gap='none'
   &--connected {
     .su-buttons-group__button {
-      @include connected-elements;
+      position: relative;
+
+      &:not(:first-child) {
+        margin-left: -1px;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+      }
+
+      &:not(:last-child) {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+
+      &:focus-visible,
+      &:hover:not(:disabled),
+      &:active:not(:disabled) {
+        z-index: 1;
+      }
     }
   }
 }

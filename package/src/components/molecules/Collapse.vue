@@ -124,47 +124,49 @@ onMounted(() => nextTick(() => (headers.value = Array.from(document.querySelecto
 </template>
 
 <style lang="scss" scoped>
-@use '../../styles/main' as *;
+@use '../../styles2/core/mixins' as *;
+@use '../../styles2/foundations/spacing' as space;
+@use '../../styles2/foundations/typography' as typo;
 
 .su-accordion {
-  border: 1px solid $gray-200;
-  border-radius: $border-radius-md;
-  background: $gray-50;
+  border: 1px solid var(--su-gray-200);
+  border-radius: var(--su-radius-md);
+  background: var(--su-gray-50);
   overflow: hidden;
-  color: $text-primary;
+  color: var(--su-text-primary);
 
   &__item + &__item {
-    border-top: 1px solid $gray-200;
+    border-top: 1px solid var(--su-gray-200);
   }
 
   &__header {
     width: 100%;
-    min-height: $min-touch-target;
+    min-height: 44px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: $spacing-4 $spacing-6;
+    padding: space.$spacing-4 space.$spacing-6;
     background: white;
-    color: $text-primary;
-    font-size: $font-size-base;
+    color: var(--su-text-primary);
+    font-size: typo.$font-size-base;
     text-align: left;
     cursor: pointer;
     border: none;
     outline: none;
-    transition: background 0.2s ease, color 0.2s ease;
 
-    &:hover:not(:disabled) {
-      background: $primary-50;
-    }
-
-    &:focus-visible {
-      outline: $focus-ring-width solid $focus-ring-color;
-      outline-offset: $focus-ring-offset;
-    }
+    @include transition(background, color);
 
     &:disabled {
       opacity: 0.6;
       cursor: not-allowed;
+    }
+
+    &:focus-visible {
+      @include focus-ring;
+    }
+
+    &:hover:not(:disabled) {
+      background: var(--su-primary-50);
     }
   }
 
@@ -175,21 +177,22 @@ onMounted(() => nextTick(() => (headers.value = Array.from(document.querySelecto
   &__icon {
     width: 1rem;
     height: 1rem;
-    color: $gray-600;
-    transition: transform 0.2s ease, color 0.2s ease;
+    color: var(--su-gray-600);
+
+    @include transition(transform, color);
 
     &.is-open {
       transform: rotate(180deg);
-      color: $primary-600;
+      color: var(--su-primary-600);
     }
   }
 
   &__panel {
-    padding: $spacing-4 $spacing-6;
-    background: $gray-50;
-    color: $text-secondary;
-    font-size: $font-size-base;
-    line-height: $line-height-normal;
+    padding: space.$spacing-4 space.$spacing-6;
+    background: var(--su-gray-50);
+    color: var(--su-text-secondary);
+    font-size: typo.$font-size-base;
+    line-height: var(--su-line-height-normal);
   }
 
   &__heading {
@@ -197,41 +200,40 @@ onMounted(() => nextTick(() => (headers.value = Array.from(document.querySelecto
   }
 }
 
-/* 🌙 Mode sombre */
 @media (prefers-color-scheme: dark) {
   .su-accordion {
-    background: $gray-800;
-    border-color: $gray-700;
-    color: $text-primary-dark;
+    background: var(--su-gray-800);
+    border-color: var(--su-gray-700);
+    color: var(--su-text-primary);
 
     &__item + &__item {
-      border-top-color: $gray-700;
+      border-top-color: var(--su-gray-700);
     }
 
     &__header {
-      background: $gray-800;
-      color: $text-primary-dark;
-
-      &:hover:not(:disabled) {
-        background: $gray-700;
-      }
+      background: var(--su-gray-800);
+      color: var(--su-text-primary);
 
       &:focus-visible {
-        outline-color: $primary-400;
+        outline-color: var(--su-primary-400);
+      }
+
+      &:hover:not(:disabled) {
+        background: var(--su-gray-700);
       }
     }
 
     &__icon {
-      color: $gray-400;
+      color: var(--su-gray-400);
 
       &.is-open {
-        color: $primary-400;
+        color: var(--su-primary-400);
       }
     }
 
     &__panel {
-      background: $gray-900;
-      color: $text-secondary-dark;
+      background: var(--su-gray-900);
+      color: var(--su-text-secondary);
     }
   }
 }
