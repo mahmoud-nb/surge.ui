@@ -552,7 +552,7 @@ defineExpose({
 </template>
 
 <style lang="scss">
-@use '../../styles/main' as *;
+@use '../../styles2/main' as *;
 
 .su-slider {
   $self: &;
@@ -602,18 +602,18 @@ defineExpose({
   &__labels {
     display: flex;
     justify-content: space-between;
-    font-size: $font-size-sm;
-    color: $text-secondary;
+    font-size: var(--su-font-size-sm);
+    color: var(--su-text-secondary);
     
     #{$self}-label {
       font-weight: 500;
       
       &--min {
-        color: $text-secondary;
+        color: var(--su-text-secondary);
       }
       
       &--max {
-        color: $text-secondary;
+        color: var(--su-text-secondary);
       }
     }
   }
@@ -634,11 +634,11 @@ defineExpose({
   
   &-display {
     font-weight: 600;
-    color: $text-primary;
-    font-size: $font-size-sm;
+    color: var(--su-text-primary);
+    font-size: var(--su-font-size-sm);
     padding: 0.25rem 0.5rem;
-    background-color: $gray-100;
-    border-radius: $border-radius-sm;
+    background-color: var(--su-bg-canvas);
+    border-radius: var(--su-radius-sm);
   }
   
   &-dual {
@@ -646,19 +646,19 @@ defineExpose({
     align-items: center;
     gap: 0.25rem;
     font-weight: 600;
-    color: $text-primary;
-    font-size: $font-size-sm;
+    color: var(--su-text-primary);
+    font-size: var(--su-font-size-sm);
   }
   
   &-min,
   &-max {
     padding: 0.25rem 0.5rem;
-    background-color: $gray-100;
-    border-radius: $border-radius-sm;
+    background-color: var(--su-bg-canvas);
+    border-radius: var(--su-radius-sm);
   }
   
   &-separator {
-    color: $text-secondary;
+    color: var(--su-text-secondary);
   }
 }
 
@@ -684,9 +684,9 @@ defineExpose({
 
 .su-slider-track {
   position: absolute;
-  background-color: $gray-200;
+  background-color: var(--su-bg-secondary);
   border-radius: 9999px;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all var(--su-duration-normal) var(--su-ease-in-out);
   
   // Orientation horizontale
   &--horizontal {
@@ -737,23 +737,23 @@ defineExpose({
   
   // États
   &--error {
-    background-color: $error-50;
+    background-color: var(--su-state-error-50);
   }
   
   &--success {
-    background-color: $success-50;
+    background-color: var(--su-state-success-50);
   }
   
   &--warning {
-    background-color: $warning-50;
+    background-color: var(--su-state-warning-50);
   }
 }
 
 .su-slider-track-active {
   position: absolute;
-  background-color: $primary-500;
+  background-color: var(--su-state-primary);
   border-radius: inherit;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all var(--su-duration-normal) var(--su-ease-in-out);
   
   // Orientation
   .su-slider-track--horizontal & {
@@ -768,15 +768,15 @@ defineExpose({
   
   // États
   .su-slider-track--error & {
-    background-color: $error-500;
+    background-color: var(--su-state-error);
   }
   
   .su-slider-track--success & {
-    background-color: $success-500;
+    background-color: var(--su-state-success);
   }
   
   .su-slider-track--warning & {
-    background-color: $warning-500;
+    background-color: var(--su-state-warning);
   }
 }
 
@@ -800,7 +800,7 @@ defineExpose({
 
 .su-slider-tick {
   position: absolute;
-  background-color: $gray-400;
+  background-color: var(--su-border-subtle);
   
   .su-slider-track--horizontal & {
     width: 1px;
@@ -851,7 +851,7 @@ defineExpose({
   &-dot {
     width: 0.375rem;
     height: 0.375rem;
-    background-color: $gray-400;
+    background-color: var(--su-border-subtle);
     border-radius: 50%;
     margin-bottom: 0.25rem;
     
@@ -863,24 +863,40 @@ defineExpose({
   
   &-label {
     font-size: 0.75rem;
-    color: $text-secondary;
+    color: var(--su-text-secondary);
     font-weight: 500;
     white-space: nowrap;
+  }
+}
+
+.su-slider-thumb-handle {
+  width: 1.25rem;
+  height: 1.25rem;
+  background-color: var(--su-bg-inverse);
+  border: 2px solid var(--su-state-primary);
+  border-radius: 50%;
+  box-shadow: var(--su-shadow-sm);
+  transition: all var(--su-duration-normal) var(--su-ease-in-out);
+  
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: var(--su-shadow-md);
   }
 }
 
 .su-slider-thumb {
   position: absolute;
   cursor: grab;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all var(--su-duration-normal) var(--su-ease-in-out);
   z-index: 1;
   
   &:focus {
     outline: none;
     z-index: 2;
     
+    /* stylelint-disable-next-line no-descending-specificity */
     .su-slider-thumb-handle {
-      box-shadow: 0 0 0 3px rgba($primary-500, 0.3);
+      box-shadow: 0 0 0 3px var(--su-focus-ring-color-primary);
     }
   }
   
@@ -889,6 +905,7 @@ defineExpose({
     cursor: grabbing;
     z-index: 3;
     
+    /* stylelint-disable-next-line no-descending-specificity */
     .su-slider-thumb-handle {
       transform: scale(1.1);
     }
@@ -907,6 +924,7 @@ defineExpose({
   
   // Tailles
   &--sm {
+    /* stylelint-disable-next-line no-descending-specificity */
     .su-slider-thumb-handle {
       width: 1rem;
       height: 1rem;
@@ -914,6 +932,7 @@ defineExpose({
   }
   
   &--md {
+    /* stylelint-disable-next-line no-descending-specificity */
     .su-slider-thumb-handle {
       width: 1.25rem;
       height: 1.25rem;
@@ -921,6 +940,7 @@ defineExpose({
   }
   
   &--lg {
+    /* stylelint-disable-next-line no-descending-specificity */
     .su-slider-thumb-handle {
       width: 1.5rem;
       height: 1.5rem;
@@ -931,9 +951,10 @@ defineExpose({
   &--disabled {
     cursor: not-allowed;
     
+    /* stylelint-disable-next-line no-descending-specificity */
     .su-slider-thumb-handle {
-      background-color: $gray-300;
-      border-color: $gray-400;
+      background-color: var(--su-bg-disabled);
+      border-color: var(--su-border-subtle);
     }
   }
   
@@ -942,59 +963,50 @@ defineExpose({
   }
   
   &--error {
+    /* stylelint-disable-next-line no-descending-specificity */
     .su-slider-thumb-handle {
-      border-color: $error-500;
+      border-color: var(--su-state-error);
     }
     
+    /* stylelint-disable-next-line no-descending-specificity */
     &:focus .su-slider-thumb-handle {
-      box-shadow: 0 0 0 3px rgba($error-500, 0.3);
+      box-shadow: 0 0 0 3px var(--su-focus-ring-color-error);
     }
   }
   
   &--success {
+    /* stylelint-disable-next-line no-descending-specificity */
     .su-slider-thumb-handle {
-      border-color: $success-500;
+      border-color: var(--su-state-success);
     }
     
+    /* stylelint-disable-next-line no-descending-specificity */
     &:focus .su-slider-thumb-handle {
-      box-shadow: 0 0 0 3px rgba($success-500, 0.3);
+      box-shadow: 0 0 0 3px var(--su-focus-ring-color-success);
     }
   }
   
   &--warning {
+    /* stylelint-disable-next-line no-descending-specificity */
     .su-slider-thumb-handle {
-      border-color: $warning-500;
+      border-color: var(--su-state-warning);
     }
     
+    /* stylelint-disable-next-line no-descending-specificity */
     &:focus .su-slider-thumb-handle {
-      box-shadow: 0 0 0 3px rgba($warning-500, 0.3);
+      box-shadow: 0 0 0 3px var(--su-focus-ring-color-warning);
     }
-  }
-}
-
-.su-slider-thumb-handle {
-  width: 1.25rem;
-  height: 1.25rem;
-  background-color: white;
-  border: 2px solid $primary-500;
-  border-radius: 50%;
-  box-shadow: 0 2px 4px rgb(0 0 0 / 10%);
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  
-  &:hover {
-    transform: scale(1.05);
-    box-shadow: 0 4px 8px rgb(0 0 0 / 15%);
   }
 }
 
 .su-slider-tooltip {
   position: absolute;
   padding: 0.25rem 0.5rem;
-  background-color: $gray-900;
-  color: white;
+  background-color: var(--su-bg-inverse);
+  color: var(--su-text-on-inverse);
   font-size: 0.75rem;
   font-weight: 500;
-  border-radius: $border-radius-sm;
+  border-radius: var(--su-radius-sm);
   white-space: nowrap;
   pointer-events: none;
   z-index: 10;
@@ -1018,7 +1030,7 @@ defineExpose({
       top: 100%;
       left: 50%;
       transform: translateX(-50%);
-      border-top-color: $gray-900;
+      border-top-color: var(--su-bg-inverse);
     }
   }
   
@@ -1032,66 +1044,14 @@ defineExpose({
       bottom: 100%;
       left: 50%;
       transform: translateX(-50%);
-      border-bottom-color: $gray-900;
+      border-bottom-color: var(--su-bg-inverse);
     }
   }
 }
 
-// Mode sombre
-@media (prefers-color-scheme: dark) {
-  .su-slider-track {
-    background-color: $gray-600;
-  }
-  
-  .su-slider-track-active {
-    background-color: $primary-400;
-    
-    .su-slider-track--error & {
-      background-color: $error-400;
-    }
-    
-    .su-slider-track--success & {
-      background-color: $success-400;
-    }
-    
-    .su-slider-track--warning & {
-      background-color: $warning-400;
-    }
-  }
-  
-  .su-slider-thumb-handle {
-    background-color: $gray-800;
-    border-color: $primary-400;
-  }
-  
-  .su-slider-value-display,
-  .su-slider-value-min,
-  .su-slider-value-max {
-    background-color: $gray-700;
-    color: $text-primary-dark;
-  }
-  
-  .su-slider__labels {
-    color: $text-secondary-dark;
-  }
-  
-  .su-slider-mark-label {
-    color: $text-secondary-dark;
-  }
-  
-  .su-slider-tooltip {
-    background-color: $gray-100;
-    color: $gray-900;
-    
-    &--top::after {
-      border-top-color: $gray-100;
-    }
-    
-    &--bottom::after {
-      border-bottom-color: $gray-100;
-    }
-  }
-}
+// CSS custom properties now handle dark mode automatically
+// Dark mode colors update automatically based on data-theme attribute
+// No dark mode overrides needed
 
 // Mode de contraste élevé
 @media (prefers-contrast: high) {
@@ -1100,11 +1060,12 @@ defineExpose({
   }
   
   .su-slider-track {
-    border: 1px solid $gray-400;
+    border: 1px solid var(--su-border-subtle);
   }
 }
 
 // Support de la réduction des animations
+/* stylelint-disable no-descending-specificity */
 @media (prefers-reduced-motion: reduce) {
   .su-slider-track,
   .su-slider-track-active,
@@ -1118,4 +1079,5 @@ defineExpose({
     transform: none;
   }
 }
+/* stylelint-enable no-descending-specificity */
 </style>

@@ -90,6 +90,8 @@ const tabClasses = (index: number) => [
 </template>
 
 <style scoped lang="scss">
+@use '../../styles2/main' as *;
+
 .su-tabs {
   display: flex;
   flex-direction: column;
@@ -99,7 +101,7 @@ const tabClasses = (index: number) => [
 .su-tabs-list {
   display: flex;
   gap: 1rem;
-  border-bottom: 2px solid #ddd;
+  border-bottom: 2px solid var(--su-border-default);
 }
 
 .su-tab {
@@ -107,28 +109,57 @@ const tabClasses = (index: number) => [
   border: none;
   padding: 0.5rem 1rem;
   cursor: pointer;
-  font-weight: 500;
-  color: #666;
-  transition: all 0.2s;
+  font-weight: var(--su-font-weight-medium);
+  font-size: var(--su-font-size-base);
+  color: var(--su-text-secondary);
+  transition: all var(--su-duration-normal) var(--su-ease-in-out);
+  position: relative;
 
   &--active {
-    color: #000;
-    border-bottom: 2px solid #007bff;
+    color: var(--su-text-primary);
+    border-bottom: 2px solid var(--su-primary-default);
   }
 
   &--contained.su-tab--active {
-    background-color: #007bff;
-    color: white;
-    border-radius: 6px 6px 0 0;
+    background-color: var(--su-primary-default);
+    color: var(--su-text-inverse);
+    border-radius: var(--su-radius-lg) var(--su-radius-lg) 0 0;
+    border-bottom: none;
+  }
+
+  &:hover:not(&--active) {
+    color: var(--su-text-primary);
+    background-color: var(--su-bg-hover);
   }
 
   &:focus-visible {
-    outline: 2px solid #007bff;
-    outline-offset: 2px;
+    outline: var(--su-focus-ring-width) solid var(--su-border-focus);
+    outline-offset: var(--su-focus-ring-offset);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
   }
 }
 
 .su-tab-panel {
   padding: 1rem;
+  animation: fadeIn var(--su-duration-normal) var(--su-ease-in-out);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .su-tab-panel {
+    animation: none;
+  }
 }
 </style>

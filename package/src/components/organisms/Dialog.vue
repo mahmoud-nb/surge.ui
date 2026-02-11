@@ -223,7 +223,8 @@ defineExpose({
 </template>
 
 <style lang="scss">
-@use '../../styles/main' as *;
+@use '../../styles2/main' as *;
+@use '../../styles2/foundations/colors' as *;
 
 .su-dialog-overlay {
   position: fixed;
@@ -252,15 +253,15 @@ defineExpose({
 }
 
 .su-dialog {
-  background-color: white;
+  background-color: var(--su-bg-surface);
   border: none;
-  border-radius: $border-radius-lg;
-  box-shadow: $shadow-lg;
+  border-radius: var(--su-radius-lg);
+  box-shadow: var(--su-shadow-lg);
   max-height: 90vh;
   max-width: 90vw;
   transform: scale(0.95);
   opacity: 0;
-  transition: all 0.3s ease;
+  transition: all var(--su-duration-normal) var(--su-ease-in-out);
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -365,7 +366,7 @@ defineExpose({
 
 .su-dialog-header {
   padding: 1rem 1.5rem;
-  border-bottom: 1px solid $gray-200;
+  border-bottom: 1px solid var(--su-border-default);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -374,9 +375,9 @@ defineExpose({
 
 .su-dialog-title {
   margin: 0;
-  font-size: $font-size-xl;
-  font-weight: 600;
-  color: $text-primary;
+  font-size: var(--su-font-size-xl);
+  font-weight: var(--su-font-weight-semibold);
+  color: var(--su-text-primary);
 }
 
 .su-dialog-content {
@@ -388,7 +389,7 @@ defineExpose({
 
 .su-dialog-footer {
   padding: 1rem 1.5rem;
-  border-top: 1px solid $gray-200;
+  border-top: 1px solid var(--su-border-default);
   display: flex;
   justify-content: flex-end;
   gap: 0.75rem;
@@ -398,7 +399,7 @@ defineExpose({
 // Transitions
 .su-dialog-transition-enter-active,
 .su-dialog-transition-leave-active {
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition: opacity var(--su-duration-normal) var(--su-ease-in-out), transform var(--su-duration-normal) var(--su-ease-in-out);
 }
 
 .su-dialog-transition-enter-from,
@@ -430,26 +431,6 @@ defineExpose({
   }
 }
 
-// Mode sombre
-@media (prefers-color-scheme: dark) {
-  .su-dialog {
-    background-color: $gray-800;
-    box-shadow: $shadow-lg; // Garder une ombre visible
-  }
-
-  .su-dialog-header {
-    border-bottom-color: $gray-700;
-  }
-
-  .su-dialog-title {
-    color: $text-primary-dark;
-  }
-
-  .su-dialog-footer {
-    border-top-color: $gray-700;
-  }
-}
-
 // Mode de contraste élevé
 @media (prefers-contrast: high) {
   .su-dialog-overlay {
@@ -466,7 +447,11 @@ defineExpose({
   .su-dialog-overlay,
   .su-dialog {
     transition: none !important;
-    transform: none !important;
+  }
+
+  .su-dialog-transition-enter-active,
+  .su-dialog-transition-leave-active {
+    transition: none !important;
   }
 }
 </style>

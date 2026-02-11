@@ -62,10 +62,12 @@ const gridStyle = computed(() => {
 </template>
 
 <style lang="scss" scoped>
+@use '../../styles2/main' as *;
+
 .su-grid-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: var(--su-spacing-4);
 }
 
 .su-grid-header {
@@ -74,19 +76,32 @@ const gridStyle = computed(() => {
 }
 
 .su-grid-toggle {
-  background: none;
-  border: 1px solid var(--su-border-color, #ccc);
-  border-radius: 6px;
-  padding: 0.5rem 1rem;
+  background: transparent;
+  border: 1px solid var(--su-border-default);
+  border-radius: var(--su-radius-md);
+  padding: var(--su-spacing-2) var(--su-spacing-4);
   cursor: pointer;
-  color: var(--su-text-primary, #111);
+  color: var(--su-text-primary);
+  font-size: var(--su-font-size-base);
+  font-weight: var(--su-font-weight-medium);
+  transition: all var(--su-duration-normal) var(--su-ease-in-out);
+
+  &:hover {
+    background-color: var(--su-bg-hover);
+    border-color: var(--su-border-strong);
+  }
+
+  &:focus-visible {
+    outline: var(--su-focus-ring-width) solid var(--su-border-focus);
+    outline-offset: var(--su-focus-ring-offset);
+  }
+
+  &:active {
+    background-color: var(--su-bg-active);
+  }
 
   @media (prefers-reduced-motion: reduce) {
     transition: none;
-  }
-
-  &:hover {
-    background-color: var(--su-hover-bg, #f5f5f5);
   }
 }
 

@@ -132,7 +132,7 @@ const ariaAttributes = computed(() => {
 </template>
 
 <style lang="scss">
-@use '../../styles/main' as *;
+@use '../../styles2/main' as *;
 
 .su-button {
   display: inline-flex;
@@ -152,9 +152,9 @@ const ariaAttributes = computed(() => {
 
   // Focus visible amélioré pour l'accessibilité
   &:focus-visible {
-    outline: 2px solid var(--su-primary-focus, $primary-600);
+    outline: 2px solid var(--su-border-focus);
     outline-offset: 2px;
-    box-shadow: 0 0 0 4px rgba(var(--su-primary-focus, $primary-600), 0.2);
+    box-shadow: 0 0 0 4px var(--su-focus-ring-color-primary);
   }
 
   &:hover:not(&--disabled, &--loading) {
@@ -207,70 +207,70 @@ const ariaAttributes = computed(() => {
 
   // Variants
   &--primary {
-    background-color: var(--su-primary-default, $primary-600);
-    color: var(--su-primary-text, white);
+    background-color: var(--su-state-primary);
+    color: var(--su-text-on-primary);
     
     &:hover:not(&--disabled, &--loading) {
-      background-color: var(--su-primary-hover, $primary-700);
+      background-color: var(--su-state-primary-dark);
       transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(var(--su-primary-default, $primary-600), 0.4);
+      box-shadow: var(--su-shadow-md);
     }
 
     &:active:not(&--disabled, &--loading) {
       transform: translateY(0);
-      box-shadow: 0 2px 4px rgba(var(--su-primary-default, $primary-600), 0.4);
+      box-shadow: var(--su-shadow-sm);
     }
   }
 
   &--secondary {
-    background-color: var(--su-secondary-default, $gray-100);
-    color: var(--su-secondary-text, $gray-900);
-    border-color: var(--su-secondary-border, $gray-200); // TODO: définir la variable
+    background-color: var(--su-bg-secondary);
+    color: var(--su-text-primary);
+    border-color: var(--su-border-default);
 
     &:hover:not(&--disabled, &--loading) {
-      background-color: var(--su-secondary-hover, $gray-200);
-      border-color: var(--su-secondary-border, $gray-300);
+      background-color: var(--su-bg-tertiary);
+      border-color: var(--su-border-subtle);
       transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba($gray-500, 0.15);
+      box-shadow: var(--su-shadow-sm);
     }
   }
 
   &--outline {
     background-color: transparent;
-    color: $primary-600;
-    border-color: $primary-200;
+    color: var(--su-state-primary);
+    border-color: var(--su-border-primary-light);
 
     &:hover:not(&--disabled, &--loading) {
-      background-color: $primary-50;
-      border-color: $primary-300;
+      background-color: var(--su-state-primary-50);
+      border-color: var(--su-border-primary-medium);
       transform: translateY(-1px);
     }
   }
 
   &--ghost {
     background-color: transparent;
-    color: $primary-600;
+    color: var(--su-state-primary);
 
     &:hover:not(&--disabled, &--loading) {
-      background-color: $primary-50;
+      background-color: var(--su-state-primary-50);
       transform: translateY(-1px);
     }
   }
   
   &--custom {
-    background-color: var('--su-custom-button-bg', $primary-600);
-    color: var('--su-custom-button-color', white);
-    border: var(--su-custom-button-border, 'none');
+    background-color: var(--su-custom-button-bg, var(--su-state-primary));
+    color: var(--su-custom-button-color, var(--su-text-on-primary));
+    border: var(--su-custom-button-border, 1px solid transparent);
     
     &:hover:not(&--disabled, &--loading) {
-      background-color: var('--su-custom-button-hover-bg', $primary-700);
+      background-color: var(--su-custom-button-hover-bg, var(--su-state-primary-dark));
       transform: translateY(-1px);
-      box-shadow: var(--su-custom-button-hover-shadow, 0 4px 12px rgba($primary-600, 0.4));
+      box-shadow: var(--su-custom-button-hover-shadow, var(--su-shadow-md));
     }
 
     &:active:not(&--disabled, &--loading) {
       transform: translateY(0);
-      box-shadow: 0 2px 4px rgba($primary-600, 0.4);
+      box-shadow: var(--su-shadow-sm);
     }
   }
 
@@ -338,47 +338,6 @@ const ariaAttributes = computed(() => {
   }
 }
 
-@mixin dark-mode-button {
-  &--secondary {
-    background-color: $gray-800;
-    color: $gray-100;
-    border-color: $gray-700;
-
-    &:hover:not(&--disabled, &--loading) {
-      background-color: $gray-700;
-      border-color: $gray-600;
-    }
-  }
-
-  &--outline {
-    color: $primary-400; // Meilleur contraste en mode sombre
-    border-color: $primary-400;
-
-    &:hover:not(&--disabled, &--loading) {
-      background-color: rgba($primary-400, 0.1);
-      border-color: $primary-300;
-    }
-  }
-
-  &--ghost {
-    color: $primary-400;
-
-    &:hover:not(&--disabled, &--loading) {
-      background-color: rgba($primary-400, 0.1);
-    }
-  }
-}
-
-// Dark mode
-.dark, [data-theme="dark"] {
-  .su-button {
-    @include dark-mode-button;
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  .su-button {
-    @include dark-mode-button;
-  }
-}
+// CSS custom properties now handle dark mode automatically
+// No dark mode overrides needed - colors update automatically based on data-theme attribute
 </style>

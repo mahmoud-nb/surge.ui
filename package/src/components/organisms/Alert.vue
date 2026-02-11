@@ -135,23 +135,19 @@ defineExpose({
 </template>
 
 <style lang="scss">
-@use '../../styles/main' as *;
-
-// Alert specific tokens
-$alert-icon-size-sm: 16px;
-$alert-icon-size-md: 20px;
-$alert-icon-size-lg: 24px;
-$alert-dismiss-icon-size: 16px;
+@use '../../styles2/main' as *;
+@use '../../styles2/foundations/colors' as *;
+@use '../../styles2/foundations/spacing' as *;
 
 .su-alert {
   display: flex;
   align-items: flex-start;
-  gap: $spacing-3;
-  padding: $spacing-3;
-  border: 1px solid $gray-200;
-  border-radius: $border-radius-lg;
-  background-color: $gray-50;
-  color: $gray-900;
+  gap: var(--su-spacing-3);
+  padding: var(--su-spacing-3);
+  border: 1px solid var(--su-border-default);
+  border-radius: var(--su-radius-lg);
+  background-color: var(--su-bg-canvas);
+  color: var(--su-text-primary);
   position: relative;
 
   &__icon-wrapper {
@@ -171,76 +167,76 @@ $alert-dismiss-icon-size: 16px;
     min-width: 0; // Prevent overflow
     display: flex;
     flex-direction: column;
-    gap: $spacing-2;
+    gap: var(--su-spacing-2);
   }
 
   &__title {
-    font-size: $font-size-base;
-    font-weight: 600;
-    line-height: $line-height-tight;
+    font-size: var(--su-font-size-base);
+    font-weight: var(--su-font-weight-semibold);
+    line-height: var(--su-line-height-tight);
   }
 
   &__description {
-    font-size: $font-size-base;
-    line-height: $line-height-normal;
-    color: $text-secondary;
+    font-size: var(--su-font-size-base);
+    line-height: var(--su-line-height-normal);
+    color: var(--su-text-secondary);
   }
 
   // Types
   &--success {
-    border-color: $success-200;
-    background-color: $success-50;
-    color: $success-900;
+    border-color: var(--su-state-success-border-color);
+    background-color: var(--su-state-success-bg);
+    color: var(--su-state-success);
     
     .su-alert__icon {
-      color: $success-500;
+      color: var(--su-state-success);
     }
   }
 
   &--warning {
-    border-color: $warning-200;
-    background-color: $warning-50;
-    color: $warning-900;
+    border-color: var(--su-state-warning-border-color);
+    background-color: var(--su-state-warning-bg);
+    color: var(--su-state-warning);
     
     .su-alert__icon {
-      color: $warning-500;
+      color: var(--su-state-warning);
     }
   }
 
   &--error {
-    border-color: $error-200;
-    background-color: $error-50;
-    color: $error-900;
+    border-color: var(--su-state-error-border-color);
+    background-color: var(--su-state-error-bg);
+    color: var(--su-state-error);
     
     .su-alert__icon {
-      color: $error-500;
+      color: var(--su-state-error);
     }
   }
 
   &--info {
-    border-color: $primary-200;
-    background-color: $primary-50;
-    color: $primary-900;
+    border-color: var(--su-state-info-border-color);
+    background-color: var(--su-state-info-bg);
+    color: var(--su-state-info);
     
     .su-alert__icon {
-      color: $primary-500;
+      color: var(--su-state-info);
     }
   }
 
   &--neutral {
-    border-color: $gray-200;
-    background-color: $gray-50;
-    color: $gray-900;
+    border-color: var(--su-border-subtle);
+    background-color: var(--su-bg-canvas);
+    color: var(--su-text-primary);
     
     .su-alert__icon {
-      color: $gray-500;
+      color: var(--su-text-tertiary);
     }
   }
 
   // Sizes
   &--sm {
-    padding: $spacing-2;
-    gap: $spacing-2;
+    padding: var(--su-spacing-2);
+    gap: var(--su-spacing-2);
     
     .su-alert__icon {
       width: 16px;
@@ -248,15 +244,15 @@ $alert-dismiss-icon-size: 16px;
     }
 
     .su-alert__content {
-      gap: $spacing-1;
+      gap: var(--su-spacing-1);
     }
     
     .su-alert__title {
-      font-size: $font-size-sm;
+      font-size: var(--su-font-size-sm);
     }
     
     .su-alert__description {
-      font-size: $font-size-sm;
+      font-size: var(--su-font-size-sm);
     }
   }
 
@@ -265,8 +261,8 @@ $alert-dismiss-icon-size: 16px;
   }
 
   &--lg {
-    padding: $spacing-4;
-    gap: $spacing-4;
+    padding: var(--su-spacing-4);
+    gap: var(--su-spacing-4);
     
     .su-alert__icon {
       width: 24px;
@@ -274,70 +270,66 @@ $alert-dismiss-icon-size: 16px;
     }
 
     .su-alert__content {
-      gap: $spacing-2;
+      gap: var(--su-spacing-2);
     }
     
     .su-alert__title {
-      font-size: $font-size-lg;
+      font-size: var(--su-font-size-lg);
     }
     
     .su-alert__description {
-      font-size: $font-size-base;
+      font-size: var(--su-font-size-base);
     }
   }
 
   &__actions {
-    margin-top: $spacing-3;
+    margin-top: var(--su-spacing-3);
     display: flex;
-    gap: $spacing-2;
+    gap: var(--su-spacing-2);
     flex-wrap: wrap;
     
     [dir="rtl"] & {
-      gap: $spacing-2;
+      gap: var(--su-spacing-2);
     }
   }
 
   .su-alert--dismissible {
-    padding-right: calc(#{$spacing-8} + #{$spacing-2});
+    padding-right: calc(44px + var(--su-spacing-2));
     
     [dir="rtl"] & {
-      padding-right: $spacing-4;
-      padding-left: calc(#{$spacing-8} + #{$spacing-2});
+      padding-right: var(--su-spacing-4);
+      padding-left: calc(44px + var(--su-spacing-2));
     }
   }
 
   &__dismiss-button {
     position: absolute;
-    top: $spacing-3;
-    right: $spacing-3;
+    top: var(--su-spacing-3);
+    right: var(--su-spacing-3);
     display: flex;
     align-items: center;
     justify-content: center;
-    width: $min-touch-target-sm;
-    height: $min-touch-target-sm;
+    width: 44px;
+    height: 44px;
     border: none;
-    border-radius: $border-radius-md;
+    border-radius: var(--su-radius-md);
     background: transparent;
     color: inherit;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all var(--su-duration-normal) var(--su-ease-in-out);
     
     [dir="rtl"] & {
       right: auto;
-      left: $spacing-3;
+      left: var(--su-spacing-3);
     }
     
     &:hover {
-      background-color: rgb(0 0 0 / 5%);
-      
-      @media (prefers-color-scheme: dark) {
-        background-color: rgb(255 255 255 / 10%);
-      }
+      background-color: var(--su-bg-hover);
     }
     
-    &:focus {
-      outline: $focus-ring-width solid $focus-ring-color;
-      outline-offset: $focus-ring-offset;
+    &:focus-visible {
+      outline: var(--su-focus-ring-width) solid var(--su-border-focus);
+      outline-offset: var(--su-focus-ring-offset);
       
       // High contrast
       @media (prefers-contrast: high) {
@@ -354,44 +346,24 @@ $alert-dismiss-icon-size: 16px;
       border: 1px solid currentcolor;
     }
 
-      &--success {
-      color: $success-500;
-      
-      @media (prefers-color-scheme: dark) {
-        color: $success-400;
-      }
+    &--success {
+      color: var(--su-state-success);
     }
     
     &--warning {
-      color: $warning-500;
-      
-      @media (prefers-color-scheme: dark) {
-        color: $warning-400;
-      }
+      color: var(--su-state-warning);
     }
     
     &--error {
-      color: $error-500;
-      
-      @media (prefers-color-scheme: dark) {
-        color: $error-400;
-      }
+      color: var(--su-state-error);
     }
     
     &--info {
-      color: $primary-500;
-      
-      @media (prefers-color-scheme: dark) {
-        color: $primary-400;
-      }
+      color: var(--su-state-info);
     }
     
     &--neutral {
-      color: $gray-500;
-      
-      @media (prefers-color-scheme: dark) {
-        color: $gray-400;
-      }
+      color: var(--su-text-tertiary);
     }
   }
 
@@ -400,100 +372,17 @@ $alert-dismiss-icon-size: 16px;
     height: 16px;
   }
 
-  // Dark mode
-  @media (prefers-color-scheme: dark) {
-    border-color: $gray-700;
-    background-color: $gray-800;
-    color: $text-primary-dark;
-
-    .su-alert__description {
-      color: $text-secondary-dark;
-    }
-
-    &.su-alert--success {
-      border-color: $success-800;
-      background-color: $success-900;
-      color: $text-primary-dark;
-      
-      .su-alert__icon {
-        color: $success-400;
-      }
-      
-      .su-alert__description {
-        color: $text-secondary-dark;
-      }
-    }
-
-    &.su-alert--warning {
-      border-color: $warning-800;
-      background-color: $warning-900;
-      color: $text-primary-dark;
-      
-      .su-alert__icon {
-        color: $warning-400;
-      }
-      
-      .su-alert__description {
-        color: $text-secondary-dark;
-      }
-    }
-
-    &.su-alert--error {
-      border-color: $error-800;
-      background-color: $error-900;
-      color: $text-primary-dark;
-      
-      .su-alert__icon {
-        color: $error-400;
-      }
-      
-      .su-alert__description {
-        color: $text-secondary-dark;
-      }
-    }
-
-    &.su-alert--info {
-      border-color: $primary-800;
-      background-color: $primary-900;
-      color: $text-primary-dark;
-      
-      .su-alert__icon {
-        color: $primary-400;
-      }
-      
-      .su-alert__description {
-        color: $text-secondary-dark;
-      }
-    }
-
-    &.su-alert--neutral {
-      border-color: $gray-700;
-      background-color: $gray-800;
-      color: $text-primary-dark;
-      
-      .su-alert__icon {
-        color: $gray-400;
-      }
-      
-      .su-alert__description {
-        color: $text-secondary-dark;
-      }
-    }
-  }
-
-    // High contrast support
+  // High contrast support
   @media (prefers-contrast: high) {
     border-width: 2px;
   }
   
   // Reduced motion support
   @media (prefers-reduced-motion: reduce) {
-    transition: none;
+    transition: none !important;
     
-    * {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
+    .su-alert__dismiss-button {
+      transition: none !important;
     }
   }
 }

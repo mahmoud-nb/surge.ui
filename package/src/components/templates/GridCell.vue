@@ -35,33 +35,33 @@ const customStyles = computed(() => {
 </template>
 
 <style lang="scss" scoped>
-@use '../../styles/main' as *;
+@use '../../styles2/main' as *;
+@use '../../styles2/foundations/colors' as *;
 
 .su-grid-cell {
-  &--bordered {
-    border: 1px solid var(--su-border-color, #ddd);
-  }
+  padding: var(--su-spacing-4);
+  background: var(--su-bg-surface);
+  color: var(--su-text-primary);
+  transition: all var(--su-duration-normal) var(--su-ease-in-out);
+  border-radius: var(--su-radius-md);
 
-  // Radius
   @include use-border-radius;
 
-  padding: 1rem;
-  background: var(--su-bg-surface, #fff);
-  color: var(--su-text-primary, #111);
-  transition: background-color 0.3s ease;
-
-  @media (prefers-reduced-motion: reduce) {
-    transition: none;
+  &--bordered {
+    border: 1px solid var(--su-border-default);
   }
 
-  @media (prefers-color-scheme: dark) {
-    background: var(--su-bg-surface-dark, #1f1f1f);
-    color: var(--su-text-light, #f5f5f5);
+  &:hover {
+    box-shadow: var(--su-shadow-md);
   }
 
   &:focus-within {
-    outline: 2px solid var(--su-focus-color, #2563eb);
-    outline-offset: 2px;
+    outline: var(--su-focus-ring-width) solid var(--su-border-focus);
+    outline-offset: var(--su-focus-ring-offset);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
   }
 }
 </style>
