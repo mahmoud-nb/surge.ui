@@ -896,7 +896,7 @@ defineExpose({
     
     /* stylelint-disable-next-line no-descending-specificity */
     .su-slider-thumb-handle {
-      box-shadow: 0 0 0 3px var(--su-focus-ring-color-primary);
+      box-shadow: 0 0 0 3px rgb(37 99 235 / 20%);
     }
   }
   
@@ -970,7 +970,7 @@ defineExpose({
     
     /* stylelint-disable-next-line no-descending-specificity */
     &:focus .su-slider-thumb-handle {
-      box-shadow: 0 0 0 3px var(--su-focus-ring-color-error);
+      box-shadow: 0 0 0 3px rgb(220 38 38 / 20%);
     }
   }
   
@@ -982,7 +982,7 @@ defineExpose({
     
     /* stylelint-disable-next-line no-descending-specificity */
     &:focus .su-slider-thumb-handle {
-      box-shadow: 0 0 0 3px var(--su-focus-ring-color-success);
+      box-shadow: 0 0 0 3px rgb(22 163 74 / 20%);
     }
   }
   
@@ -994,7 +994,7 @@ defineExpose({
     
     /* stylelint-disable-next-line no-descending-specificity */
     &:focus .su-slider-thumb-handle {
-      box-shadow: 0 0 0 3px var(--su-focus-ring-color-warning);
+      box-shadow: 0 0 0 3px rgb(217 119 6 / 20%);
     }
   }
 }

@@ -142,7 +142,7 @@ const ariaAttributes = computed(() => {
   font-family: inherit;
   font-weight: 500;
   border: 1px solid transparent;
-  border-radius: var(--su-radius-button);
+  border-radius: var(--su-radius-md);
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   text-decoration: none;
@@ -154,7 +154,7 @@ const ariaAttributes = computed(() => {
   &:focus-visible {
     outline: 2px solid var(--su-border-focus);
     outline-offset: 2px;
-    box-shadow: 0 0 0 4px var(--su-focus-ring-color-primary);
+    box-shadow: 0 0 0 4px rgb(37 99 235 / 15%);
   }
 
   &:hover:not(&--disabled, &--loading) {
@@ -207,11 +207,11 @@ const ariaAttributes = computed(() => {
 
   // Variants
   &--primary {
-    background-color: var(--su-state-primary);
-    color: var(--su-text-on-primary);
+    background-color: var(--su-primary-default);
+    color: var(--su-primary-text);
     
     &:hover:not(&--disabled, &--loading) {
-      background-color: var(--su-state-primary-dark);
+      background-color: var(--su-primary-hover);
       transform: translateY(-1px);
       box-shadow: var(--su-shadow-md);
     }
@@ -223,13 +223,13 @@ const ariaAttributes = computed(() => {
   }
 
   &--secondary {
-    background-color: var(--su-bg-secondary);
-    color: var(--su-text-primary);
+    background-color: var(--su-secondary-default);
+    color: var(--su-secondary-text);
     border-color: var(--su-border-default);
 
     &:hover:not(&--disabled, &--loading) {
-      background-color: var(--su-bg-tertiary);
-      border-color: var(--su-border-subtle);
+      background-color: var(--su-secondary-hover);
+      border-color: var(--su-border-hover);
       transform: translateY(-1px);
       box-shadow: var(--su-shadow-sm);
     }
@@ -237,33 +237,33 @@ const ariaAttributes = computed(() => {
 
   &--outline {
     background-color: transparent;
-    color: var(--su-state-primary);
-    border-color: var(--su-border-primary-light);
+    color: var(--su-primary-600);
+    border-color: var(--su-primary-200);
 
     &:hover:not(&--disabled, &--loading) {
-      background-color: var(--su-state-primary-50);
-      border-color: var(--su-border-primary-medium);
+      background-color: var(--su-primary-50);
+      border-color: var(--su-primary-300);
       transform: translateY(-1px);
     }
   }
 
   &--ghost {
     background-color: transparent;
-    color: var(--su-state-primary);
+    color: var(--su-primary-600);
 
     &:hover:not(&--disabled, &--loading) {
-      background-color: var(--su-state-primary-50);
+      background-color: var(--su-primary-50);
       transform: translateY(-1px);
     }
   }
   
   &--custom {
-    background-color: var(--su-custom-button-bg, var(--su-state-primary));
-    color: var(--su-custom-button-color, var(--su-text-on-primary));
+    background-color: var(--su-custom-button-bg, var(--su-primary-default));
+    color: var(--su-custom-button-color, var(--su-primary-text));
     border: var(--su-custom-button-border, 1px solid transparent);
     
     &:hover:not(&--disabled, &--loading) {
-      background-color: var(--su-custom-button-hover-bg, var(--su-state-primary-dark));
+      background-color: var(--su-custom-button-hover-bg, var(--su-primary-hover));
       transform: translateY(-1px);
       box-shadow: var(--su-custom-button-hover-shadow, var(--su-shadow-md));
     }
