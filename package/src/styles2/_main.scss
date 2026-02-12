@@ -8,7 +8,7 @@
 // ============================================================
 // OPTION 1 : Bundle minimal (Light + Dark uniquement)
 // ============================================================
-@include loader.load-system-themes();
+//@include loader.load-system-themes();
 
 // ============================================================
 // OPTION 2 : Sélection personnalisée
@@ -18,7 +18,7 @@
 // ============================================================
 // OPTION 3 : Tous les thèmes
 // ============================================================
-// @include loader.load-all-themes();
+@include loader.load-all-themes();
 
 // ============================================================
 // Support du contraste élevé

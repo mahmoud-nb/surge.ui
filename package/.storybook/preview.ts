@@ -63,7 +63,7 @@ const preview: Preview = {
       toolbar: {
         title: 'Theme',
         icon: 'circlehollow',
-        items: ['light', 'dark'],
+        items: ['light', 'dark', 'sunset', 'ocean', 'forest'], // Valeurs de thème personnalisées ('dawn', 'dusk', 'midnight', etc.)
         dynamicTitle: true
       }
     },
