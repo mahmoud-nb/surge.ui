@@ -1,8 +1,8 @@
-// _tokens.scss
 @use '../../foundations/colors' as *;
 
 // ============================================================
-// THÈME OCEAN - Ambiance maritime professionnelle
+// TOKENS SÉMANTIQUES - THÈME OCEAN
+// Ambiance maritime professionnelle
 // Palette: Bleu océan, turquoise, corail
 // ============================================================
 
@@ -17,6 +17,7 @@ $ocean-600: #0891b2;
 $ocean-700: #0e7490;
 $ocean-800: #155e75;
 $ocean-900: #164e63;
+$ocean-950: #082f49;
 
 $coral-400: #fb923c;
 $coral-500: #f97316;
@@ -28,7 +29,7 @@ $teal-500: #14b8a6;
 $teal-600: #0d9488;
 
 $theme-ocean: (
-  // Primary colors
+  // Primary colors - variations de bleu océan
   'primary-50': $ocean-50,
   'primary-100': $ocean-100,
   'primary-200': $ocean-200,
@@ -39,6 +40,7 @@ $theme-ocean: (
   'primary-700': $ocean-700,
   'primary-800': $ocean-800,
   'primary-900': $ocean-900,
+  'primary-950': $ocean-950,
 
   // Texte
   'text-primary': #0c4a6e,
@@ -55,6 +57,7 @@ $theme-ocean: (
   'link-muted': $ocean-400,
   
   // Backgrounds
+  'bg-primary-canvas': $ocean-50,
   'bg-canvas': #e0f2fe,        // Bleu très clair
   'bg-surface': $pure-white,
   'bg-surface-elevated': #f0f9ff,
@@ -72,21 +75,42 @@ $theme-ocean: (
   'border-strong': $ocean-300,
   'border-focus': $ocean-600,
   'border-disabled': $ocean-100,
+
+  // Borders interactifs
+  'border-hover': $ocean-400,
+  'border-selected': $ocean-300,
   
   // États
+  // .. success
   'state-success': $teal-600,
+  'state-success-border-color': $teal-300,
   'state-success-bg': $teal-50,
+  'state-success-border-hover': $teal-400,
+  'state-success-border-focus': $teal-500,
+  // .. warning
   'state-warning': $coral-500,
+  'state-warning-border-color': $coral-300,
   'state-warning-bg': #fff7ed,
+  'state-warning-border-hover': $coral-400,
+  'state-warning-border-focus': $coral-600,
+  // .. error
   'state-error': #dc2626,
+  'state-error-border-color': #fee2e2,
   'state-error-bg': #fef2f2,
+  'state-error-border-hover': #fca5a5,
+  'state-error-border-focus': #f87171,
+  // .. info
   'state-info': $ocean-600,
+  'state-info-border-color': $ocean-300,
   'state-info-bg': $ocean-50,
+  'state-info-border-hover': $ocean-400,
+  'state-info-border-focus': $ocean-500,
   
   // Primary action (Corail pour le contraste)
   'primary-default': $coral-500,
   'primary-hover': $coral-600,
   'primary-active': #c2410c,
+  'primary-focus': $coral-500,
   'primary-disabled': $coral-400,
   'primary-text': $pure-white,
   
@@ -94,6 +118,7 @@ $theme-ocean: (
   'secondary-default': $ocean-100,
   'secondary-hover': $ocean-200,
   'secondary-active': $ocean-300,
+  'secondary-focus': $ocean-200,
   'secondary-disabled': $ocean-50,
   'secondary-text': $ocean-900,
   

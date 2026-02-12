@@ -1,7 +1,8 @@
 @use '../../foundations/colors' as *;
 
 // ============================================================
-// THÈME SUNSET - Ambiance chaleureuse coucher de soleil
+// TOKENS SÉMANTIQUES - THÈME SUNSET
+// Ambiance chaleureuse coucher de soleil
 // Palette: Orange, rose, violet
 // ============================================================
 
@@ -45,6 +46,7 @@ $theme-sunset: (
   'link-muted': $sunset-orange-400,
   
   // Backgrounds
+  'bg-primary-canvas': #fff1f2,
   'bg-canvas': #fff7ed,
   'bg-surface': $pure-white,
   'bg-surface-elevated': #ffedd5,
@@ -62,21 +64,42 @@ $theme-sunset: (
   'border-strong': #fb923c,
   'border-focus': $sunset-purple-600,
   'border-disabled': #fed7aa,
+
+  // Borders interactifs
+  'border-hover': $sunset-orange-500,
+  'border-selected': $sunset-orange-400,
   
   // États
+  // .. success
   'state-success': #16a34a,
+  'state-success-border-color': #86efac,
   'state-success-bg': #f0fdf4,
+  'state-success-border-hover': #4ade80,
+  'state-success-border-focus': #22c55e,
+  // .. warning
   'state-warning': #d97706,
+  'state-warning-border-color': #fcd34d,
   'state-warning-bg': #fef3c7,
+  'state-warning-border-hover': #f59e0b,
+  'state-warning-border-focus': #f97316,
+  // .. error
   'state-error': #dc2626,
+  'state-error-border-color': #fee2e2,
   'state-error-bg': #fef2f2,
+  'state-error-border-hover': #fca5a5,
+  'state-error-border-focus': #f87171,
+  // .. info
   'state-info': #0284c7,
+  'state-info-border-color': #bfdbfe,
   'state-info-bg': #e0f2fe,
+  'state-info-border-hover': #7dd3fc,
+  'state-info-border-focus': #38bdf8,
   
   // Primary action
   'primary-default': $sunset-pink-600,
   'primary-hover': #be185d,
   'primary-active': #9f1239,
+  'primary-focus': $sunset-pink-600,
   'primary-disabled': $sunset-pink-500,
   'primary-text': $pure-white,
   
@@ -84,6 +107,7 @@ $theme-sunset: (
   'secondary-default': #fed7aa,
   'secondary-hover': #fdba74,
   'secondary-active': #fb923c,
+  'secondary-focus': #fdba74,
   'secondary-disabled': #ffedd5,
   'secondary-text': #7c2d12,
   

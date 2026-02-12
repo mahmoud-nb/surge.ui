@@ -12,3 +12,10 @@
 [data-theme='light'] {
   @include registry.generate-theme-vars($theme-light);
 }
+
+// Support de prefers-color-scheme - thème par défaut
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) {
+    @include registry.generate-theme-vars($theme-light);
+  }
+}
