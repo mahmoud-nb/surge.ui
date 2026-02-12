@@ -1,17 +1,18 @@
-@use './foundations/colors' as *;
+@use './colors' as *;
+@use './tokens' as *;
 
-@use './main.scss' as *;
+@use '../styles/main.scss' as *;
 
 // Styles globaux pour le body
 .su-preview-wrapper {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;;
-  color: $gray-900;
+  color: $text-primary;
   background-color: $gray-50;
   border-radius: 4px;
   padding: 1rem;
 
   &[data-theme=dark] {
-    color: $gray-50;
+    color: $text-primary-dark;
     background-color: $gray-900;
   }
 

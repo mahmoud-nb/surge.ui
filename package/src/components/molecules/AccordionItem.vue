@@ -164,10 +164,10 @@ onUnmounted(() => {
 <!-- Le style reste identique à la version précédente -->
 
 <style lang="scss" scoped>
-@use '../../styles2/core/mixins' as *;
-@use '../../styles2/foundations/colors' as colors;
-@use '../../styles2/foundations/spacing' as space;
-@use '../../styles2/foundations/typography' as typo;
+@use '../../styles/core/mixins' as *;
+@use '../../styles/foundations/colors' as colors;
+@use '../../styles/foundations/spacing' as space;
+@use '../../styles/foundations/typography' as typo;
 
 .su-accordion-item {
   border: 1px solid var(--su-gray-200);

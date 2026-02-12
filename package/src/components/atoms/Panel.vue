@@ -41,8 +41,8 @@ withDefaults(defineProps<PanelProps>(), {
 </template>
 
 <style lang="scss" scoped>
-@use '../../styles2/main' as *;
-@use '../../styles2/foundations/colors' as *;
+@use '../../styles/main' as *;
+@use '../../styles/foundations/colors' as *;
 
 .su-panel {
   display: flex;

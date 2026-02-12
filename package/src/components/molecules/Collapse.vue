@@ -124,9 +124,9 @@ onMounted(() => nextTick(() => (headers.value = Array.from(document.querySelecto
 </template>
 
 <style lang="scss" scoped>
-@use '../../styles2/core/mixins' as *;
-@use '../../styles2/foundations/spacing' as space;
-@use '../../styles2/foundations/typography' as typo;
+@use '../../styles/core/mixins' as *;
+@use '../../styles/foundations/spacing' as space;
+@use '../../styles/foundations/typography' as typo;
 
 .su-accordion {
   border: 1px solid var(--su-gray-200);

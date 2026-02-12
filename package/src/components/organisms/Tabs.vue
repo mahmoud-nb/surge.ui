@@ -90,7 +90,7 @@ const tabClasses = (index: number) => [
 </template>
 
 <style scoped lang="scss">
-@use '../../styles2/main' as *;
+@use '../../styles/main' as *;
 
 .su-tabs {
   display: flex;

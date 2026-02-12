@@ -62,7 +62,7 @@ const gridStyle = computed(() => {
 </template>
 
 <style lang="scss" scoped>
-@use '../../styles2/main' as *;
+@use '../../styles/main' as *;
 
 .su-grid-wrapper {
   display: flex;

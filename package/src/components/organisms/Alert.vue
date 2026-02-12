@@ -135,9 +135,9 @@ defineExpose({
 </template>
 
 <style lang="scss">
-@use '../../styles2/main' as *;
-@use '../../styles2/foundations/colors' as *;
-@use '../../styles2/foundations/spacing' as *;
+@use '../../styles/main' as *;
+@use '../../styles/foundations/colors' as *;
+@use '../../styles/foundations/spacing' as *;
 
 .su-alert {
   display: flex;

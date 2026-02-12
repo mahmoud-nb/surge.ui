@@ -35,8 +35,8 @@ const customStyles = computed(() => {
 </template>
 
 <style lang="scss" scoped>
-@use '../../styles2/main' as *;
-@use '../../styles2/foundations/colors' as *;
+@use '../../styles/main' as *;
+@use '../../styles/foundations/colors' as *;
 
 .su-grid-cell {
   padding: var(--su-spacing-4);

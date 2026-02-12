@@ -1,0 +1,42 @@
+@forward './colors';
+@forward './tokens';
+@forward './mixins';
+@use './themes/default' as *;
+
+$breakpoints: (
+  xs: 375px,    // Mobile (Base)  | 0 ~ 375
+  s:  768px,    // Petits Écrans  | 375 ~ 1024
+  m:  1024px,   // Tablettes      | 1024 ~ 1280
+  l:  1280px,   // Laptops        | 1280 ~ 1400
+  xl: 1400px    // Moniteurs      | 1400 ~ ..
+);
+
+// Styles globaux pour l'accessibilité
+
+/* Styles pour les annonces des lecteurs d'écran */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  //clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@mixin su-reset-style {
+  all: unset;
+  display: revert;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  color: inherit;
+  text-decoration: none;
+  outline: none;
+}
+

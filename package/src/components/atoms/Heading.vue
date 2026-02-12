@@ -54,8 +54,8 @@ const tag = computed(() => (props.level === 'div' ? 'div' : `h${props.level}`))
 </template>
 
 <style lang="scss" scoped>
-@use '../../styles2/main' as *;
-@use '../../styles2/foundations/colors' as *;
+@use '../../styles/main' as *;
+@use '../../styles/foundations/colors' as *;
 @use 'sass:map';
 
 $heading-level: (

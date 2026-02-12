@@ -443,9 +443,9 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !props.lab
 </template>
 
 <style lang="scss" scoped>
-@use '../../styles2/core/mixins' as *;
-@use '../../styles2/foundations/spacing' as space;
-@use '../../styles2/foundations/typography' as typo;
+@use '../../styles/core/mixins' as *;
+@use '../../styles/foundations/spacing' as space;
+@use '../../styles/foundations/typography' as typo;
 
 .su-dropdown-container {
   position: relative;

@@ -1,17 +1,29 @@
-@forward './colors';
-@forward './tokens';
-@forward './mixins';
-@use './themes/default' as *;
+@forward 'core/mixins';
+//@forward 'foundations/colors';
 
-$breakpoints: (
-  xs: 375px,    // Mobile (Base)  | 0 ~ 375
-  s:  768px,    // Petits Écrans  | 375 ~ 1024
-  m:  1024px,   // Tablettes      | 1024 ~ 1280
-  l:  1280px,   // Laptops        | 1280 ~ 1400
-  xl: 1400px    // Moniteurs      | 1400 ~ ..
-);
+// main.scss
+@use 'core/variables';
+@use 'core/theme-loader' as loader;
 
-// Styles globaux pour l'accessibilité
+// ============================================================
+// OPTION 1 : Bundle minimal (Light + Dark uniquement)
+// ============================================================
+//@include loader.load-system-themes();
+
+// ============================================================
+// OPTION 2 : Sélection personnalisée
+// ============================================================
+// @include loader.load-themes('light', 'dark', 'ocean');
+
+// ============================================================
+// OPTION 3 : Tous les thèmes
+// ============================================================
+@include loader.load-all-themes();
+
+// ============================================================
+// Support du contraste élevé
+// ============================================================
+@include loader.load-contrast(true);
 
 /* Styles pour les annonces des lecteurs d'écran */
 .sr-only {
@@ -26,7 +38,7 @@ $breakpoints: (
   border: 0;
 }
 
-@mixin su-reset-style {
+@mixin su-reset-styles {
   all: unset;
   display: revert;
   box-sizing: border-box;
@@ -39,4 +51,3 @@ $breakpoints: (
   text-decoration: none;
   outline: none;
 }
-

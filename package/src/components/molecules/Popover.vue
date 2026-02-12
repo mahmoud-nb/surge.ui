@@ -341,7 +341,7 @@ defineExpose({
 </script>
 
 <style lang="scss">
-@use '../../styles2/core/mixins' as *;
+@use '../../styles/core/mixins' as *;
 
 .su-popover {
   position: relative;

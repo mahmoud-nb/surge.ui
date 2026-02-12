@@ -168,8 +168,8 @@ const handleBlur = (event: FocusEvent) => {
 </template>
 
 <style lang="scss">
-@use '../../styles2/main' as *;
-@use '../../styles2/foundations/colors' as *;
+@use '../../styles/main' as *;
+@use '../../styles/foundations/colors' as *;
 
 .su-radio-group-wrapper {
   display: flex;

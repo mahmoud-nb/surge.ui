@@ -207,8 +207,8 @@ const isDisabled = (option: any) => {
 </template>
 
 <style lang="scss">
-@use '../../styles2/main' as *;
-@use '../../styles2/foundations/colors' as *;
+@use '../../styles/main' as *;
+@use '../../styles/foundations/colors' as *;
 
 @mixin su-checkbox-state($stateColor50, $stateColor300, $stateColor500) {
   &.su-checkbox__option--inline-card,

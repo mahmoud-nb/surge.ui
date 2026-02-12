@@ -230,9 +230,9 @@ defineExpose({
 </template>
 
 <style lang="scss" scoped>
-@use '../../styles2/core/mixins' as *;
-@use '../../styles2/foundations/spacing' as space;
-@use '../../styles2/foundations/typography' as typo;
+@use '../../styles/core/mixins' as *;
+@use '../../styles/foundations/spacing' as space;
+@use '../../styles/foundations/typography' as typo;
 
 .su-float-button-container {
   display: flex;

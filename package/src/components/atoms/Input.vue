@@ -240,7 +240,7 @@ defineExpose({ focus, select, inputRef })
 </template>
 
 <style lang="scss">
-@use '../../styles2/main' as *;
+@use '../../styles/main' as *;
 
 @mixin su-input--size($self, $name, $fontSize, $padding, $minHeight) {
   &--#{$name} {

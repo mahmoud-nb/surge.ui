@@ -139,7 +139,7 @@ const ariaAttributes = computed(() => {
 </template>
 
 <style lang="scss">
-@use '../../styles2/foundations/spacing' as space;
+@use '../../styles/foundations/spacing' as space;
 
 .su-form-fields {
   display: flex;

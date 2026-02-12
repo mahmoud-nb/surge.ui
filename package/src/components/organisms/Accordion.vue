@@ -247,8 +247,8 @@ onUnmounted(() => {
 </template>
 
 <style lang="scss" scoped>
-@use '../../styles2/core/mixins' as *;
-@use '../../styles2/foundations/spacing' as space;
+@use '../../styles/core/mixins' as *;
+@use '../../styles/foundations/spacing' as space;
 
 .su-accordion {
   width: 100%;

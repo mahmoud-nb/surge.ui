@@ -247,7 +247,7 @@ const handleReset = () => {
 };
 </script>
 <style scoped lang="scss">
-@use '../../styles2/core/mixins' as *;
+@use '../../styles/core/mixins' as *;
 
 .theme-selector {
   display: flex;

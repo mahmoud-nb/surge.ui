@@ -131,8 +131,8 @@ const ariaAttributes = computed(() => {
 </template>
 
 <style lang="scss">
-@use '../../styles2/core/mixins' as *;
-@use '../../styles2/foundations/spacing' as space;
+@use '../../styles/core/mixins' as *;
+@use '../../styles/foundations/spacing' as space;
 
 // Base styles - must come FIRST before modifier-specific styles
 .su-links-group-separator {

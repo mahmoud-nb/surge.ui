@@ -81,7 +81,7 @@ watch(
 </template>
 
 <style scoped lang="scss">
-@use '../../styles/main' as *;
+// @use '../../styles/main' as *;
 
 .accordion-item {
   border-bottom: 1px solid var(--accordion-border, #ddd);

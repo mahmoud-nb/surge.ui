@@ -552,7 +552,7 @@ defineExpose({
 </template>
 
 <style lang="scss">
-@use '../../styles2/main' as *;
+@use '../../styles/main' as *;
 
 .su-slider {
   $self: &;

@@ -102,7 +102,7 @@ const labelClasses = computed(() => [
 </template>
 
 <style lang="scss">
-@use '../../styles2/main' as *;
+@use '../../styles/main' as *;
 
 .su-form-field {
   $self: &;
