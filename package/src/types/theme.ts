@@ -5,7 +5,6 @@
 export type ThemeName = 'light' | 'dark' | 'ocean' | 'forest' | 'sunset' | 'auto';
 export type ContrastMode = 'normal' | 'high' | 'auto';
 export type MotionMode = 'normal' | 'reduce' | 'auto';
-export type TextDirection = 'ltr' | 'rtl'
 
 /**
  * Configuration du Design System
@@ -69,7 +68,6 @@ export interface UserThemeConfig {
   theme: ThemeName;
   contrast: ContrastMode;
   motion: MotionMode;
-  direction: TextDirection
 }
 
 /**

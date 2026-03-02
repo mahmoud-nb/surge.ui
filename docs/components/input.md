@@ -33,7 +33,7 @@ Composant input flexible avec support complet des types HTML, préfixes/suffixes
     <div class="demo-inputs">
       <SuFormField label="Nom d'utilisateur" field-id="inputId">
         <template #default="slotProps">
-          <SuInput :id="slotProps.fieldId" placeholder="Entrez votre nom" />
+          <SuInput :id="slotProps?.fieldId" placeholder="Entrez votre nom" />
         </template>
       </SuFormField>
     </div>

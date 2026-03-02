@@ -1,20 +1,20 @@
 <script setup lang="ts">
+  import { ref } from 'vue'
   import Heading from '../atoms/Heading.vue'
   import Panel from '../atoms/Panel.vue'
   import ThemeSelector from './ThemeSelector.vue'
-  import ThemeSelector2 from './ThemeSelector2.vue'
+  //import ThemeSelector2 from './ThemeSelector2.vue'
   import { useTheme } from '@/composables/useTheme'
 
-  const { themeMode, textDirection, contrastMode, motionMode } = useTheme()
+  const { themeName, contrastMode, motionMode } = useTheme()
+  const textDirection = ref('ltr') 
 </script>
 
 <template>
   <div 
     class="su-global-preview"
-    :data-theme="themeMode"
-  >
-    <ThemeSelector2 />  
-  
+    :data-theme="themeName"
+  >  
     <ThemeSelector />
     <Panel
       bordered
@@ -31,8 +31,8 @@
       </p>
 
       <ul>
-        <li><strong>Thème :</strong> {{ themeMode }}</li>
-        <li><strong>Direction :</strong> {{ textDirection === 'rtl' ? 'Droite à gauche' : 'Gauche à droite' }}</li>
+        <li><strong>Thème :</strong> {{ themeName }}</li>
+        <!-- <li><strong>Direction :</strong> {{ textDirection === 'rtl' ? 'Droite à gauche' : 'Gauche à droite' }}</li> -->
         <li><strong>Contraste :</strong> {{ contrastMode === 'high' ? 'Élevé' : 'Normal' }}</li>
         <li><strong>Animations :</strong> {{ motionMode === 'reduce' ? 'Réduites' : 'Normal' }}</li>
       </ul>

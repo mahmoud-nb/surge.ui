@@ -41,6 +41,7 @@ import TextareaField from './components/molecules/TextareaField.vue'
 import SelectBoxField from './components/molecules/SelectBoxField.vue'
 import RadioGroupField from './components/molecules/RadioGroupField.vue'
 import CheckboxGroupField from './components/molecules/CheckboxGroupField.vue'
+import PasswordField from './components/molecules/PasswordField.vue'
 import SwitchField from './components/molecules/SwitchField.vue'
 import SliderField from './components/molecules/SliderField.vue'
 import FileUploadField from './components/molecules/FileUploadField.vue'
@@ -55,7 +56,7 @@ export { Icon, Heading, Panel, Image, Avatar, AvatarGroup, Badge, Dialog, Progre
 export { Tabs, Accordion, AccordionItem, Alert }
 export { Link, LinkGroup, Button, ButtonGroup, FloatButton, Dropdown }
 export { Input, Textarea, SelectBox, RadioGroup, CheckboxGroup, FileUpload, Switch, Slider, Password }
-export { InputField, SelectBoxField, RadioGroupField, CheckboxGroupField, SwitchField, FileUploadField, TextareaField, SliderField }
+export { InputField, SelectBoxField, RadioGroupField, CheckboxGroupField, PasswordField, SwitchField, FileUploadField, TextareaField, SliderField }
 export { FormField, FormFieldGroup }
 export { accessibility }
 
@@ -213,6 +214,7 @@ export default {
     app.component(`${prefix}SelectBoxField`, SelectBoxField)
     app.component(`${prefix}RadioGroupField`, RadioGroupField)
     app.component(`${prefix}CheckboxGroupField`, CheckboxGroupField)
+    app.component(`${prefix}PasswordField`, PasswordField)
     app.component(`${prefix}SwitchField`, SwitchField)
     app.component(`${prefix}SliderField`, SliderField)
     app.component(`${prefix}FileUploadField`, FileUploadField)
@@ -221,4 +223,5 @@ export default {
     app.component(`${prefix}FormFieldGroup`, FormFieldGroup)
   }
 }
+export * from './composables'
 export * from './types'

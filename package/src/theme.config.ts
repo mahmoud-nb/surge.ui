@@ -14,7 +14,7 @@ export const themeConfig: ThemeConfig = {
    * Pour inclure tous les thèmes :
    * themes: ['light', 'dark', 'ocean', 'forest', 'sunset']
    */
-  themes: ['light', 'dark'],
+  themes: ['light', 'dark', 'ocean', 'forest', 'sunset'],
   
   /**
    * Thème par défaut au chargement
@@ -41,9 +41,9 @@ export const themeConfig: ThemeConfig = {
   
   /**
    * Clé de stockage localStorage
-   * @default 'app-theme-config'
+   * @default 'su-theme-config'
    */
-  storageKey: 'app-theme-config',
+  storageKey: 'su-theme-config',
 };
 
 export default themeConfig;

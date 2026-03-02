@@ -37,7 +37,7 @@ export const themeConfig = {
   prefix: 'su',
   highContrast: true,
   reducedMotion: true,
-  storageKey: 'app-theme-config',
+  storageKey: 'su-theme-config',
 };
 ```
 
@@ -93,7 +93,7 @@ Le composable `useTheme` est le point d'entrée principal pour gérer les thème
 import { useTheme } from '@/composables/useTheme';
 
 const { 
-  themeMode,           // Thème sélectionné ('auto' | 'light' | 'dark' | 'ocean' | 'forest' | 'sunset')
+  themeName,           // Thème sélectionné ('auto' | 'light' | 'dark' | 'ocean' | 'forest' | 'sunset')
   effectiveTheme,      // Thème effectif appliqué
   setTheme,            // Changer de thème
   toggleTheme,         // Basculer light/dark
@@ -519,7 +519,7 @@ interface UseThemeOptions {
 ```typescript
 {
   // État réactif
-  themeMode: Ref<ThemeName>;
+  themeName: Ref<ThemeName>;
   contrastMode: Ref<ContrastMode>;
   motionMode: Ref<MotionMode>;
   
@@ -602,7 +602,7 @@ useTheme();
 import { watch } from 'vue';
 import { useTheme } from '@/composables/useTheme';
 
-const { themeMode, effectiveTheme } = useTheme({
+const { themeName, effectiveTheme } = useTheme({
   defaultTheme: 'auto',
   storageKey: 'user-preferences-theme',
   persist: true

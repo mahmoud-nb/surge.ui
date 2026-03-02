@@ -60,7 +60,7 @@ const ALL_THEMES: ThemeMetadata[] = [
 // STATE
 // ============================================================
 let isInitialized = false;
-const themeMode = ref<ThemeName>(themeConfig.defaultTheme);
+const themeName = ref<ThemeName>(themeConfig.defaultTheme);
 const contrastMode = ref<ContrastMode>('auto');
 const motionMode = ref<MotionMode>('auto');
 
@@ -72,7 +72,7 @@ export function useTheme(options: UseThemeOptions = {}) {
   const opts = {
     availableThemes: options.availableThemes || themeConfig.themes,
     defaultTheme: options.defaultTheme || themeConfig.defaultTheme,
-    storageKey: options.storageKey || themeConfig.storageKey || 'app-theme-config',
+    storageKey: options.storageKey || themeConfig.storageKey || 'su-theme-config',
     persist: options.persist !== false
   };
   
@@ -116,18 +116,18 @@ export function useTheme(options: UseThemeOptions = {}) {
   // ========================================
   
   const effectiveTheme = computed<Exclude<ThemeName, 'auto'>>(() => {
-    if (themeMode.value === 'auto') {
+    if (themeName.value === 'auto') {
       return systemTheme.value;
     }
     
     // Vérifier si le thème est disponible
-    const isAvailable = availableThemes.value.some(t => t.id === themeMode.value);
+    const isAvailable = availableThemes.value.some(t => t.id === themeName.value);
     if (!isAvailable) {
-      console.warn(`Theme '${themeMode.value}' is not available. Falling back to system theme.`);
+      console.warn(`Theme '${themeName.value}' is not available. Falling back to system theme.`);
       return systemTheme.value;
     }
     
-    return themeMode.value;
+    return themeName.value;
   });
   
   const effectiveContrast = computed<'normal' | 'high'>(() => {
@@ -167,7 +167,7 @@ export function useTheme(options: UseThemeOptions = {}) {
     
     try {
       const config: UserThemeConfig = {
-        theme: themeMode.value,
+        theme: themeName.value,
         contrast: contrastMode.value,
         motion: motionMode.value,
       };
@@ -190,7 +190,7 @@ export function useTheme(options: UseThemeOptions = {}) {
             config.theme === 'light' || 
             config.theme === 'dark' ||
             availableThemes.value.some(t => t.id === config.theme)) {
-          themeMode.value = config.theme;
+          themeName.value = config.theme;
         }
         
         if (config.contrast) contrastMode.value = config.contrast;
@@ -206,7 +206,7 @@ export function useTheme(options: UseThemeOptions = {}) {
     
     try {
       localStorage.removeItem(opts.storageKey);
-      themeMode.value = opts.defaultTheme;
+      themeName.value = opts.defaultTheme;
       contrastMode.value = 'auto';
       motionMode.value = 'auto';
     } catch (error) {
@@ -228,7 +228,7 @@ export function useTheme(options: UseThemeOptions = {}) {
       }
     }
     
-    themeMode.value = theme;
+    themeName.value = theme;
     saveConfig();
   };
   
@@ -242,16 +242,16 @@ export function useTheme(options: UseThemeOptions = {}) {
     saveConfig();
   };
   const toggleTheme = () => {
-  if (themeMode.value === 'auto') {
+  if (themeName.value === 'auto') {
   setTheme(systemTheme.value === 'light' ? 'dark' : 'light');
-  } else if (themeMode.value === 'light' || themeMode.value === 'dark') {
-  setTheme(themeMode.value === 'light' ? 'dark' : 'light');
+  } else if (themeName.value === 'light' || themeName.value === 'dark') {
+  setTheme(themeName.value === 'light' ? 'dark' : 'light');
   } else {
   setTheme('auto');
   }
   };
   const cycleTheme = () => {
-  const current = availableThemes.value.findIndex(t => t.id === themeMode.value);
+  const current = availableThemes.value.findIndex(t => t.id === themeName.value);
   const next = (current + 1) % availableThemes.value.length;
   setTheme(availableThemes.value[next].id);
   };
@@ -291,9 +291,10 @@ export function useTheme(options: UseThemeOptions = {}) {
   // ========================================
   return {
   // État
-  themeMode,
+  themeName,
   contrastMode,
   motionMode,
+
   // Computed
   effectiveTheme,
   effectiveContrast,
@@ -316,5 +317,5 @@ export function useTheme(options: UseThemeOptions = {}) {
   toggleTheme,
   cycleTheme,
   clearConfig,
-  };
+  }
 }

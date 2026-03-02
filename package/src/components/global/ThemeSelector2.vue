@@ -42,7 +42,7 @@
         <button
           v-for="theme in systemThemes"
           :key="theme.id"
-          :class="['theme-card', { 'theme-card--active': themeMode === theme.id }]"
+          :class="['theme-card', { 'theme-card--active': themeName === theme.id }]"
           @click="setTheme(theme.id)"
         >
           <div class="theme-card__preview">
@@ -59,7 +59,7 @@
           <div class="theme-card__info">
             <span class="theme-card__name">{{ theme.name }}</span>
             <span
-              v-if="themeMode === theme.id"
+              v-if="themeName === theme.id"
               class="theme-card__check"
             >✓</span>
           </div>
@@ -76,7 +76,7 @@
         <button
           v-for="theme in colorThemes"
           :key="theme.id"
-          :class="['theme-card', { 'theme-card--active': themeMode === theme.id }]"
+          :class="['theme-card', { 'theme-card--active': themeName === theme.id }]"
           @click="setTheme(theme.id)"
         >
           <div class="theme-card__preview">
@@ -98,7 +98,7 @@
           <div class="theme-card__info">
             <span class="theme-card__name">{{ theme.name }}</span>
             <span
-              v-if="themeMode === theme.id"
+              v-if="themeName === theme.id"
               class="theme-card__check"
             >✓</span>
           </div>
@@ -110,6 +110,19 @@
       <h4 class="theme-selector__subtitle">
         Accessibilité
       </h4>
+
+      <div class="theme-option">
+        <BoldIcon />
+        <SelectBoxField
+          v-model="contrastMode"
+          label="Contraste"
+          message="Ajuster le contraste pour une meilleure visibilité"  
+          :options="[
+            { value: 'normal', label: 'Normal' },
+            { value: 'high', label: 'Élevé' }
+          ]"
+        />
+      </div>
   
       <div class="theme-option">
         <label
@@ -202,7 +215,7 @@
       </p>
       <ul class="theme-selector__info-list">
         <li>Thème : {{ systemTheme === 'dark' ? 'Sombre' : 'Clair' }}</li>
-        <li>Contraste : {{ systemContrast === 'high' ? 'Élevé' : 'Normal' }}</li>
+        <li>Contraste : {{ systemContrast === 'high' ? 'Élevé' : 'Normal' }} - {{ systemContrast }}</li>
         <li>Animations : {{ systemMotion === 'reduce' ? 'Réduites' : 'Activées' }}</li>
       </ul>
     </div>
@@ -210,10 +223,13 @@
 </template>
 <script setup lang="ts">
 import { computed } from 'vue';
+import SelectBoxField from '../molecules/SelectBoxField.vue'
 import { useTheme } from '@/composables/useTheme';
+import { BoldIcon } from '@heroicons/vue/24/outline'
+
 
 const { 
-  themeMode, 
+  themeName, 
   contrastMode, 
   motionMode,
   systemTheme,
@@ -235,7 +251,7 @@ const colorThemes = computed(() =>
 );
 
 const hasChanges = computed(() => {
-  return themeMode.value !== 'auto' || 
+  return themeName.value !== 'auto' || 
          contrastMode.value !== 'auto' || 
          motionMode.value !== 'auto';
 });
@@ -326,6 +342,7 @@ const handleReset = () => {
   border: 2px solid var(--su-border-default);
   border-radius: var(--su-radius-lg);
   cursor: pointer;
+  box-sizing: border-box;
 
   @include transition(border-color, transform, box-shadow);
   

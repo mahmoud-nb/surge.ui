@@ -90,6 +90,16 @@ export default defineConfig({
             ]
           },
           {
+            text: 'Thèmes',
+            items: [
+              { text: 'Introduction', link: '/theme/' },
+              { text: 'Guide des Couleurs', link: '/theme/colors' },
+              { text: 'Tokens sémantiques', link: '/theme/tokens' },
+              { text: 'Accessibilité', link: '/theme/accessibility' },
+              { text: 'Exemples complets', link: '/theme/examples' }
+            ]
+          },
+          {
             text: 'Composants',
             items: [
               { 
@@ -126,6 +136,16 @@ export default defineConfig({
             items: [
               { text: 'Introduction', link: '/en/' },
               { text: 'Installation', link: '/en/guide/installation' }
+            ]
+          },
+          {
+            text: 'Themes',
+            items: [
+              { text: 'Introduction', link: '/en/theme/' },
+              { text: 'Color Guide', link: '/en/theme/colors' },
+              { text: 'Semantic Tokens', link: '/en/theme/tokens' },
+              { text: 'Accessibility', link: '/en/theme/accessibility' },
+              { text: 'Full Examples', link: '/en/theme/examples' }
             ]
           },
           {
