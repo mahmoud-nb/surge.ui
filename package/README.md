@@ -66,43 +66,203 @@ app.use(SurgeUpDS)
 app.mount('#app')
 ```
 
+## 🎨 Customization & Theming
+
+SurgeUI provides a **declarative, CSS-based theming system** that allows you to customize colors and styles by defining custom CSS variables.
+
+### How It Works
+
+The customization system automatically converts theme properties into CSS variables with the `--su-custom-` prefix. These variables can override the default theme tokens when defined.
+
 ### Global Configuration
 
-Customize default component behavior when installing:
+Configure the design system when installing:
 
 ```ts
-import type { SurgeuiTheme } from '@surgeui/ds-vue'
+import { createApp } from 'vue'
+import SurgeUpDS from '@surgeui/ds-vue'
+import '@surgeui/ds-vue/style.css'
+import App from './App.vue'
 
-const options: SurgeuiTheme = {
+const app = createApp(App)
+
+const themeConfig = {
   // Component prefix (default: 'Su')
   prefix: 'My', // Components become MyButton, MyInput, etc.
 
-  // custom text color
-  textPrimaryColor: '#213222',
-  textSecondaryColor: '#454344',
-  textTeriaryColor: '#676965',
-
-  // Custom Button style
-  button: {
-    bg: '#101010',
-    color: '#FFFFFF',
-    border: 'none',
-    hoverBackground: '#383838',
-    hoverShadow: '0 0'
+  // Theme customization via CSS variables
+  theme: {
+    // Text colors
+    textPrimary: '#1f2937',
+    textSecondary: '#6b7280',
+    textTertiary: '#9ca3af',
+    textDisabled: '#d1d5db',
+    
+    // Background colors
+    bgCanvas: '#ffffff',
+    bgSurface: '#f9fafb',
+    bgOverlay: 'rgba(0, 0, 0, 0.5)',
+    
+    // Border colors
+    borderDefault: '#e5e7eb',
+    borderFocus: '#3b82f6',
+    
+    // Action colors
+    primaryDefault: '#3b82f6',
+    primaryHover: '#2563eb',
+    primaryText: '#ffffff',
+    
+    // State colors
+    stateSuccess: '#10b981',
+    stateWarning: '#f59e0b',
+    stateError: '#ef4444',
   }
-
-  // custom link style
-  link?: {
-    color: '#2563eb',
-    hoverColor: '#1e40af',
-    hoverBackground: 'none',
-    activeColor: '#1e3a8a',
-  }
-
-  // Other options are currently under development.
 }
 
-app.use(SurgeUpDS, options)
+app.use(SurgeUpDS, themeConfig)
+app.mount('#app')
+```
+
+### CSS Variable Generation
+
+All theme properties are automatically converted to CSS custom properties with the `--su-custom-` prefix:
+
+```ts
+theme: {
+  textPrimary: '#1f2937'        // → --su-custom-text-primary
+  bgSurface: '#f9fafb'          // → --su-custom-bg-surface
+  primaryDefault: '#3b82f6'     // → --su-custom-primary-default
+  stateSuccessBg: '#d1fae5'     // → --su-custom-state-success-bg
+}
+```
+
+### Using Custom Variables in CSS
+
+Define custom variables in your CSS and they will automatically take precedence over default theme tokens:
+
+```css
+/* In your global CSS file */
+:root {
+  /* Text customization */
+  --su-custom-text-primary: #1f2937;
+  --su-custom-text-secondary: #6b7280;
+  
+  /* Background customization */
+  --su-custom-bg-canvas: #ffffff;
+  --su-custom-bg-surface: #f9fafb;
+  
+  /* Button customization */
+  --su-custom-primary-default: #3b82f6;
+  --su-custom-primary-hover: #2563eb;
+  --su-custom-primary-text: #ffffff;
+  
+  /* State customization */
+  --su-custom-state-success: #10b981;
+  --su-custom-state-error: #ef4444;
+}
+
+/* Dark mode example */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --su-custom-text-primary: #f3f4f6;
+    --su-custom-bg-canvas: #111827;
+    --su-custom-bg-surface: #1f2937;
+  }
+}
+```
+
+### Available Theme Tokens
+
+#### Text Tokens
+- `textPrimary` - Primary text color
+- `textSecondary` - Secondary text color
+- `textTertiary` - Tertiary text color
+- `textDisabled` - Disabled text color
+- `textInverse` - Inverse text color (for contrast backgrounds)
+
+#### Background Tokens
+- `bgCanvas` - Canvas/page background
+- `bgSurface` - Card and modal backgrounds
+- `bgSurfaceElevated` - Elevated surface backgrounds
+- `bgHover` - Hover state background
+- `bgActive` - Active state background
+- `bgSelected` - Selected state background
+- `bgOverlay` - Overlay/backdrop background
+
+#### Border Tokens
+- `borderDefault` - Default border color
+- `borderSubtle` - Subtle border color
+- `borderStrong` - Strong border color
+- `borderFocus` - Focus state border
+- `borderDisabled` - Disabled border
+
+#### Action Tokens
+- `primaryDefault` - Primary action default
+- `primaryHover` - Primary action hover
+- `primaryActive` - Primary action active
+- `primaryDisabled` - Primary action disabled
+- `primaryText` - Primary action text
+- `secondaryDefault` - Secondary action default
+- `secondaryHover` - Secondary action hover
+- `secondaryText` - Secondary action text
+
+#### State Tokens
+- `stateSuccess` - Success state color
+- `stateSuccessBg` - Success background
+- `stateWarning` - Warning state color
+- `stateWarningBg` - Warning background
+- `stateError` - Error state color
+- `stateErrorBg` - Error background
+- `stateInfo` - Info state color
+- `stateInfoBg` - Info background
+
+#### Link Tokens (legacy configuration)
+- `linkVariant` - Default link variant
+- `linkSize` - Default link size
+- `linkUnderline` - Default underline style
+- `dialogDisplay` - Default dialog display mode
+
+### Variable Priority & Fallback
+
+Variables follow this priority order:
+
+1. **Custom CSS variables** (`--su-custom-*`) - Highest priority
+2. **Theme configuration** - Applied during plugin initialization
+3. **Default theme tokens** - Fallbacks from theme definitions
+
+This means:
+- CSS variables defined in `:root` or element styles always take precedence
+- Variables not defined in the theme config fall back to default tokens
+- You can override specific tokens without defining the entire theme
+
+### Scoped Customization
+
+Apply different themes to different parts of your application:
+
+```vue
+<template>
+  <!-- Light theme section -->
+  <section class="light-section">
+    <SuButton>Light Button</SuButton>
+  </section>
+
+  <!-- Dark theme section -->
+  <section class="dark-section">
+    <SuButton>Dark Button</SuButton>
+  </section>
+</template>
+
+<style scoped>
+.light-section {
+  --su-custom-text-primary: #1f2937;
+  --su-custom-bg-surface: #ffffff;
+}
+
+.dark-section {
+  --su-custom-text-primary: #f3f4f6;
+  --su-custom-bg-surface: #1f2937;
+}
+</style>
 ```
 
 ### With Icons

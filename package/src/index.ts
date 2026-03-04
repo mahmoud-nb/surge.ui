@@ -49,7 +49,7 @@ import FileUploadField from './components/molecules/FileUploadField.vue'
 import FormFieldGroup from './components/molecules/FormFieldGroup.vue'
 
 import * as accessibility from './utils/accessibility'
-import { SurgeuiTheme, ThemeSymbol } from './plugin/theme'
+import { SurgeuiTheme, ThemeSymbol, flattenThemeToCSS } from './plugin/theme'
 
 // Export des composants et de la fonction d'installation
 export { Icon, Heading, Panel, Image, Avatar, AvatarGroup, Badge, Dialog, Progress, Spinner }
@@ -72,102 +72,16 @@ export default {
     const { prefix = 'Su', theme = {} } = options
     const mergedTheme = { ...defaultTheme, ...theme }
     const root = document.documentElement
-    const { button, link } = mergedTheme
 
-    // injection globale
+    // Injection globale du thème pour accès reactif dans les composants
     app.provide(ThemeSymbol, mergedTheme)
-    
-    // Configuration globale des valeurs par défaut des boutons
+
+    // Génération et application des variables CSS personnalisées
     if (typeof document !== 'undefined') {
-
-      if (mergedTheme?.textPrimaryColor) {
-        root.style.setProperty('--su-text-primary-color', `${mergedTheme?.textPrimaryColor}`)
+      const cssVariables = flattenThemeToCSS(mergedTheme)
+      for (const [varName, value] of Object.entries(cssVariables)) {
+        root.style.setProperty(varName, value)
       }
-      if (mergedTheme?.textSecondaryColor) {
-        root.style.setProperty('--su-text-secondary-color', `${mergedTheme?.textSecondaryColor}`)
-      }
-      if (mergedTheme?.textTeriaryColor) {
-        root.style.setProperty('--su-text-tertiary-color', `${mergedTheme?.textTeriaryColor}`)
-      }
-
-      // button
-      if (button) {
-        root.style.setProperty('--su-custom-button-bg', button.bg)
-        root.style.setProperty('--su-custom-button-color', button.color)
-        root.style.setProperty('--su-custom-button-border', button.border)
-        root.style.setProperty('--su-custom-button-hover-bg', button.hoverBackground)
-        root.style.setProperty('--su-custom-button-hover-shadow', button.hoverShadow)
-      }
-
-      if (link) {
-        root.style.setProperty('--su-custom-link-color', link.color)
-        //root.style.setProperty('--su-custom-link-underline', link.underline)
-        root.style.setProperty('--su-custom-link-hover-color', link.hoverColor)
-        root.style.setProperty('--su-custom-link-hover-bg-color', link.hoverBackground)
-        root.style.setProperty('--su-custom-link-active-color', link.activeColor)
-      }
-    }
-    
-    // Configuration de la variante par défaut des liens
-    if (mergedTheme?.linkVariant) {
-      const variantMap = {
-        default: {
-          color: 'var(--su-link-variant-default-color)',
-          hoverColor: 'var(--su-link-variant-default-hover-color)',
-          activeColor: 'var(--su-link-variant-default-active-color)'
-        },
-        primary: {
-          color: 'var(--su-link-variant-primary-color)',
-          hoverColor: 'var(--su-link-variant-primary-hover-color)',
-          activeColor: 'var(--su-link-variant-primary-hover-color)'
-        },
-        secondary: {
-          color: 'var(--su-link-variant-secondary-color)',
-          hoverColor: 'var(--su-link-variant-secondary-hover-color)',
-          activeColor: 'var(--su-link-variant-secondary-hover-color)'
-        },
-        muted: {
-          color: 'var(--su-link-variant-muted-color)',
-          hoverColor: 'var(--su-link-variant-muted-hover-color)',
-          activeColor: 'var(--su-link-variant-muted-active-color)'
-        }
-      }
-      
-      const variant = variantMap[mergedTheme?.linkVariant]
-      if (variant) {
-        root.style.setProperty('--su-link-variant-default-color', variant.color)
-        root.style.setProperty('--su-link-variant-default-hover-color', variant.hoverColor)
-        root.style.setProperty('--su-link-variant-default-active-color', variant.activeColor)
-      }
-    }
-    
-    // Configuration de la taille par défaut des liens
-    if (mergedTheme?.linkSize) {
-      const sizeMap = {
-        sm: 'sm',
-        md: 'md',
-        lg: 'lg'
-      }
-      
-      const size = sizeMap[mergedTheme?.linkSize]
-      if (size) {
-        root.style.setProperty('--su-link-size-md-font-size', `var(--su-link-size-${size}-font-size)`)
-        root.style.setProperty('--su-link-size-md-line-height', `var(--su-link-size-${size}-line-height)`)
-        root.style.setProperty('--su-link-size-md-padding', `var(--su-link-size-${size}-padding)`)
-        root.style.setProperty('--su-link-size-md-icon-size', `var(--su-link-size-${size}-icon-size)`)
-        root.style.setProperty('--su-link-size-md-icon-only-padding', `var(--su-link-size-${size}-icon-only-padding)`)
-        root.style.setProperty('--su-link-size-md-icon-only-size', `var(--su-link-size-${size}-icon-only-size)`)
-      }
-    }
-    
-    // Configuration du soulignement par défaut des liens
-    if (mergedTheme?.linkUnderline) {
-      root.style.setProperty('--su-link-default-underline', mergedTheme?.linkUnderline)
-    }
-    
-    // Configuration de l'affichage par défaut des dialogues
-    if (mergedTheme?.dialogDisplay) {
-      root.style.setProperty('--su-dialog-default-display', mergedTheme?.dialogDisplay)
     }
 
     // ## Display Components
