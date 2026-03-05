@@ -3,7 +3,7 @@ import Popover from '../Popover.vue';
 import { ref } from 'vue';
 
 const meta: Meta<typeof Popover> = {
-  title: 'Components/Popover (Simple)',
+  title: 'Molecules/Popover',
   component: Popover,
   tags: ['autodocs'],
   argTypes: {

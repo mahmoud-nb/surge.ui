@@ -43,9 +43,16 @@ $_registered-themes: () !default;
 
 /**
  * Génère les CSS variables pour un thème
+ * AVEC support des variables custom qui surcharges les défauts
+ * 
+ * Exemple:
+ * var(--su-custom-primary-default, var(--su-primary-default))
+ * 
+ * Si --su-custom-primary-default est défini par l'utilisateur, il est utilisé
+ * Sinon, fallback sur --su-primary-default (valeur du thème)
  */
 @mixin generate-theme-vars($theme-map, $prefix: 'su') {
   @each $key, $value in $theme-map {
-    --#{$prefix}-#{$key}: #{$value};
+    --#{$prefix}-#{$key}: var(--#{$prefix}-custom-#{$key}, #{$value});
   }
 }

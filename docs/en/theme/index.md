@@ -344,6 +344,266 @@ Use automatically generated CSS variables:
 </style>
 ```
 
+## Advanced Customization with Custom CSS Variables
+
+The theme system supports dynamic color customization via **custom CSS variables**. This allows you to override theme colors without creating a complete new theme.
+
+### How it Works
+
+The custom variables system uses a **CSS fallback mechanism**:
+
+```scss
+// Automatically generated for each token
+--su-primary-default: var(--su-custom-primary-default, #3b82f6);
+```
+
+**Flow**:
+1. User defines `--su-custom-primary-default: #dc2626`
+2. CSS resolves `var(--su-custom-primary-default, ...)` → `#dc2626`
+3. All components using `--su-primary-default` receive the new value
+4. If no custom is defined, fallback to theme value
+
+### `useCustomTheme` Composable
+
+The `useCustomTheme` composable manages custom CSS variables reactively.
+
+```vue
+<script setup lang="ts">
+import { useCustomTheme } from '@surgeui/ds-vue'
+
+const { 
+  applyCustomTheme,    // Apply entire custom theme
+  setCustomVariable,   // Set individual variable
+  getCustomTheme,      // Get current custom theme
+  resetCustomTheme,    // Reset all customs
+  mergeWithTheme,      // Merge with existing theme
+  customTheme          // Reactive theme state
+} = useCustomTheme()
+</script>
+```
+
+### Usage Examples
+
+#### 1. Apply Complete Custom Theme
+
+```vue
+<script setup lang="ts">
+import { useCustomTheme } from '@surgeui/ds-vue'
+
+const { applyCustomTheme } = useCustomTheme()
+
+const applyBrandTheme = () => {
+  applyCustomTheme({
+    textPrimary: '#1f2937',
+    bgSurface: '#ffffff',
+    bgCanvas: '#f9fafb',
+    primaryDefault: '#dc2626',
+    primaryHover: '#b91c1c',
+    primaryActive: '#991b1b',
+    primaryText: '#ffffff',
+    stateSuccess: '#059669',
+    stateError: '#dc2626'
+  })
+}
+</script>
+
+<template>
+  <button @click="applyBrandTheme">
+    Apply Brand Theme
+  </button>
+</template>
+```
+
+#### 2. Modify Individual Color
+
+```vue
+<script setup lang="ts">
+import { useCustomTheme } from '@surgeui/ds-vue'
+
+const { setCustomVariable } = useCustomTheme()
+
+// Simple color change
+setCustomVariable('primaryDefault', '#3b82f6')
+
+// Reactive with input
+const handleColorChange = (color: string) => {
+  setCustomVariable('primaryDefault', color)
+}
+</script>
+
+<template>
+  <input 
+    type="color" 
+    @input="(e) => handleColorChange((e.target as HTMLInputElement).value)"
+    placeholder="Select primary color"
+  >
+</template>
+```
+
+#### 3. Interactive Color Picker
+
+```vue
+<script setup lang="ts">
+import { useCustomTheme } from '@surgeui/ds-vue'
+import { ref } from 'vue'
+
+const { setCustomVariable, resetCustomTheme } = useCustomTheme()
+
+const colors = ref({
+  primary: '#3b82f6',
+  secondary: '#6b7280',
+  success: '#10b981',
+  error: '#ef4444'
+})
+
+const applyColor = (name: string, value: string) => {
+  colors.value[name as keyof typeof colors.value] = value
+  
+  // Map to theme properties
+  const propertyMap: Record<string, string> = {
+    primary: 'primaryDefault',
+    secondary: 'secondaryDefault',
+    success: 'stateSuccess',
+    error: 'stateError'
+  }
+  
+  setCustomVariable(propertyMap[name], value)
+}
+
+const reset = () => {
+  colors.value = {
+    primary: '#3b82f6',
+    secondary: '#6b7280',
+    success: '#10b981',
+    error: '#ef4444'
+  }
+  resetCustomTheme()
+}
+</script>
+
+<template>
+  <div class="color-picker">
+    <div v-for="(color, name) in colors" :key="name" class="color-item">
+      <label>{{ name }}</label>
+      <input 
+        type="color" 
+        :value="color"
+        @input="(e) => applyColor(name, (e.target as HTMLInputElement).value)"
+      >
+      <code>{{ color }}</code>
+    </div>
+    <button @click="reset">Reset</button>
+  </div>
+</template>
+
+<style scoped lang="scss">
+.color-picker {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.color-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+  
+  input[type="color"] {
+    width: 44px;
+    height: 44px;
+    border: 2px solid var(--su-border-default);
+    border-radius: 6px;
+    cursor: pointer;
+  }
+}
+</style>
+```
+
+#### 4. Combine with `useTheme()`
+
+```vue
+<script setup lang="ts">
+import { useTheme } from '@surgeui/ds-vue'
+import { useCustomTheme } from '@surgeui/ds-vue'
+
+const { setTheme } = useTheme()
+const { setCustomVariable } = useCustomTheme()
+
+const applyDarkWithBrand = () => {
+  // Change theme
+  setTheme('dark')
+  
+  // Override with brand colors
+  setCustomVariable('primaryDefault', '#db2777')
+  setCustomVariable('primaryHover', '#be185d')
+}
+</script>
+
+<template>
+  <button @click="applyDarkWithBrand">
+    Dark Theme + Brand
+  </button>
+</template>
+```
+
+### Available Custom Variables
+
+You can customize any theme token using the `--su-custom-<token-name>` format:
+
+**Text**:
+- `--su-custom-text-primary`
+- `--su-custom-text-secondary`
+- `--su-custom-text-tertiary`
+- `--su-custom-text-disabled`
+- `--su-custom-text-inverse`
+
+**Backgrounds**:
+- `--su-custom-bg-canvas`
+- `--su-custom-bg-surface`
+- `--su-custom-bg-surface-elevated`
+- `--su-custom-bg-hover`
+- `--su-custom-bg-active`
+- `--su-custom-bg-selected`
+- `--su-custom-bg-disabled`
+
+**Borders**:
+- `--su-custom-border-default`
+- `--su-custom-border-subtle`
+- `--su-custom-border-strong`
+- `--su-custom-border-focus`
+- `--su-custom-border-disabled`
+
+**Actions**:
+- `--su-custom-primary-default`
+- `--su-custom-primary-hover`
+- `--su-custom-primary-active`
+- `--su-custom-primary-disabled`
+- `--su-custom-primary-text`
+- `--su-custom-secondary-default`
+- `--su-custom-secondary-hover`
+- `--su-custom-secondary-active`
+- `--su-custom-secondary-disabled`
+- `--su-custom-secondary-text`
+
+**States**:
+- `--su-custom-state-success`
+- `--su-custom-state-success-bg`
+- `--su-custom-state-warning`
+- `--su-custom-state-warning-bg`
+- `--su-custom-state-error`
+- `--su-custom-state-error-bg`
+- `--su-custom-state-info`
+- `--su-custom-state-info-bg`
+
+### Benefits of This Approach
+
+✅ **Dynamic** - Instant changes without page reload  
+✅ **Flexible** - Customize partially or completely  
+✅ **Performant** - No SCSS recompilation, CSS only  
+✅ **Compatible** - Works with all themes (light, dark, ocean, etc.)  
+✅ **Persistent** - Compatible with localStorage for user preferences  
+
 ## Available Tokens
 
 ### Text
