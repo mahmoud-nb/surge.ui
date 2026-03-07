@@ -68,6 +68,21 @@ export default defineConfig({
   
   title: '⚡SurgeUI Design System',
   description: 'Bibliothèque de composants Vue.js 3 moderne',
+
+  head: [
+    [
+      'script',
+      { async: '', src: 'https://www.googletagmanager.com/gtag/js?id=G-JRLT7HL8T0' }
+    ],
+    [
+      'script',
+      {},
+      `window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-JRLT7HL8T0');`
+    ]
+  ],
   
   locales: {
     root: {

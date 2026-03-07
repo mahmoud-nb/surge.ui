@@ -88,8 +88,6 @@ $heading-level: (
 .su-heading {
   $self: &;
 
-  //@include su-reset-styles;
-
   font-family: var(--su-font-family-base);
   font-weight: 600;
   color: var(--su-text-primary);
