@@ -2,6 +2,52 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.0.0](https://mahmoud-nb.github.io/surge.ui/compare/v1.0.5...v2.0.0) (2026-03-07)
+
+
+### ♻️ Code Refactoring
+
+* **FormField:** update class naming convention and improve structure ([3b72762](https://mahmoud-nb.github.io/surge.ui/commit/3b72762087e28c8d805db6e0eb63858208bf0d17))
+* **SelectBox:** update class naming convention and remove unused dir prop ([da2079a](https://mahmoud-nb.github.io/surge.ui/commit/da2079a0d207387123d5843047f7854911e22082))
+
+
+### 🐛 Bug Fixes
+
+* (theme) somes fixies ([7eba59d](https://mahmoud-nb.github.io/surge.ui/commit/7eba59d640e7fa11f52f87900192b79f8914ab1b))
+* **docs:** fix use of slot props on vitepress pag ([e1d8b99](https://mahmoud-nb.github.io/surge.ui/commit/e1d8b9950c01e3c28e5bbf7bd354926ef3dafb53))
+* **docs:** Update docs ([6d6fd00](https://mahmoud-nb.github.io/surge.ui/commit/6d6fd007afb224f9e8c5fa0188b8da2282067435))
+* **docs:** Update docs ([6147408](https://mahmoud-nb.github.io/surge.ui/commit/614740863bec1cf2de9ce625da9c0e17a762eeba))
+
+
+### ✨ Features
+
+* (Accordion) migrate to new design systeme ([8306c0c](https://mahmoud-nb.github.io/surge.ui/commit/8306c0c065df57bc5535f0a75675a349fc80c759))
+* (migrate) Avatar, accordion, AvatarGroup ([9ca3039](https://mahmoud-nb.github.io/surge.ui/commit/9ca3039e2b39b882fb86cc82ecb7a97a4fb35dc2))
+* add and configure environment variables ([044df7d](https://mahmoud-nb.github.io/surge.ui/commit/044df7dbbd42a25ab4d0820dc03ab9a6b0061f16))
+* add exemple + docs theme ([609c9ef](https://mahmoud-nb.github.io/surge.ui/commit/609c9efb2f656d78a96c6c04c9ee10517d5f9d98))
+* add focus states for primary and secondary colors in dark, forest, ocean, sunset themes ([4e93ae3](https://mahmoud-nb.github.io/surge.ui/commit/4e93ae3b463ba200ce5e9f14aabc614d43fa8504))
+* add Input component with full HTML type support, prefixes/suffixes, and accessibility features ([bceb065](https://mahmoud-nb.github.io/surge.ui/commit/bceb065d4d442845a8cf4211636075f7c8c053c6))
+* add Slider component with dual-range support, tooltips, and accessibility features ([446c778](https://mahmoud-nb.github.io/surge.ui/commit/446c7780954219df8988dc08daeab21df4916d62))
+* add SuTextarea component with advanced features and accessibility support ([93a404e](https://mahmoud-nb.github.io/surge.ui/commit/93a404e7b02a598f6e1cd8fd9bbd40d2b37fe327))
+* **docs:** update component documentation with new SelectBox, RadioGroup, and CheckboxGroup components ([be55f91](https://mahmoud-nb.github.io/surge.ui/commit/be55f91ffebedcb7783557b04ccf5268332b60ed))
+* enhance Icon component with dynamic loading and accessibility improvements ([40275be](https://mahmoud-nb.github.io/surge.ui/commit/40275bec7e0a6d41e5b4e297014cd2715e2123ca))
+* **FormField:** add slot support for label and message rendering ([818f941](https://mahmoud-nb.github.io/surge.ui/commit/818f941039355bab747f9a26e0259437396d28d0))
+* **formFieldGroup:** rename FormFields to FormFieldGroup and update documentation ([c169a50](https://mahmoud-nb.github.io/surge.ui/commit/c169a502b226cebb48a0c20a713a6877ff08ce10))
+* **Icons:** bind args to Icon component in InButton story for improved flexibility ([bbace28](https://mahmoud-nb.github.io/surge.ui/commit/bbace2844229b0c173578a339744c6afbd8d1034))
+* Implement comprehensive design system with themes and tokens ([032ac65](https://mahmoud-nb.github.io/surge.ui/commit/032ac65bc53a0f70b93265821f6395f5458d9c05))
+* implement global theme management with dynamic preview and theme selector components ([87f96c8](https://mahmoud-nb.github.io/surge.ui/commit/87f96c80dce9d27685d94d71a9ff125815ab8119))
+* **input:** add name attribute to Input component and update documentation examples ([cdb9282](https://mahmoud-nb.github.io/surge.ui/commit/cdb92828cdc67fd3c9c8a8582501258419aeca19))
+* **Link:** add external link handling and improve story examples ([8556fbb](https://mahmoud-nb.github.io/surge.ui/commit/8556fbb9d353ca7c56535926b6eb2428170b9f06))
+* **link:** update Link component to support 'top' icon display option and enhance documentation examples ([e5df58e](https://mahmoud-nb.github.io/surge.ui/commit/e5df58e67d443e80d185a675d66fbe568a91d975))
+* Refactor Heading and Panel components for improved structure and add shadow variables ([15889c3](https://mahmoud-nb.github.io/surge.ui/commit/15889c3e3f71b9fb358aaaa819bfb7118ed0cd84))
+* rename style folder ([3717ee5](https://mahmoud-nb.github.io/surge.ui/commit/3717ee5e32a9d3f38159534e188e4d53b8766559))
+* update .gitignore ([affc039](https://mahmoud-nb.github.io/surge.ui/commit/affc0396e76d4ce55295b588ef4ae6094996c835))
+* update components theme ([438069f](https://mahmoud-nb.github.io/surge.ui/commit/438069f2e6a90c92a60d71eae56fe29adba39c56))
+* update components to use new design tokens and improve styling consistency across Button, SliderField, Alert, Dialog, Tabs, Grid, and GridCell ([2782517](https://mahmoud-nb.github.io/surge.ui/commit/2782517b770080e2d52daddc38d24dbf500eb700))
+* update styles in ButtonGroup, Collapse, Dropdown, and FloatButton components to use new design tokens and improve responsiveness ([823ace4](https://mahmoud-nb.github.io/surge.ui/commit/823ace4bc2ad9f910219ca98e314df20ca88a4de))
+* update styles in FileUploadField, FormFieldGroup, LinkGroup, Password, and Popover components to use new design tokens and improve responsiveness ([ce9b909](https://mahmoud-nb.github.io/surge.ui/commit/ce9b90956fd8bec9929d3c8fbdc0df80ef42650d))
+* update styles to use new design tokens and improve responsiveness ([8d56de3](https://mahmoud-nb.github.io/surge.ui/commit/8d56de3ca7c0dac5d163a812e4dfb52f563b0ea7))
+
 ## [1.2.0](https://mahmoud-nb.github.io/surge.ui/compare/v1.0.5...v1.2.0) (2025-12-20)
 
 
