@@ -8,14 +8,6 @@ A modern **Vue.js 3** component library with Composition API, designed to create
 [![TypeScript](https://img.shields.io/badge/TypeScript-Ready-3178C6.svg)](https://www.typescriptlang.org/)
 
 
-> This release is intended entirely for testing and solution optimization.
-> The goal is to explore different technical approaches in order to identify the best way to build and structure the design system.
-> 
-> Therefore, this is not a stable release.
-> The first officially stable version will be 2.0.
-
-
-
 ## ✨ Features
 
 - 🎨 **Modern Design** - Polished and professional components
