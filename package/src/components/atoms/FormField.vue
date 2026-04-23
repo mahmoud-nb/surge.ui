@@ -7,7 +7,8 @@ const props = withDefaults(defineProps<FormFieldProps>(), {
   size: 'md',
   required: false,
   disabled: false,
-  message: ''
+  message: '',
+  requiredText: 'requis'
 })
 
 const attrs = useAttrs()
@@ -66,7 +67,7 @@ const labelClasses = computed(() => [
         <span
           v-if="required"
           class="su-indicator-required"
-          aria-label="requis"
+          :aria-label="requiredText"
         >*</span>
       </label>
     </slot>

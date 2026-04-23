@@ -59,9 +59,13 @@ const ariaAttributes = computed(() => {
     'aria-hidden': !isOpen.value
   }
   
-  if (props.ariaLabel) attrs['aria-label'] = props.ariaLabel
-  if (props.ariaLabelledBy) attrs['aria-labelledby'] = props.ariaLabelledBy
-  else if (titleId.value) attrs['aria-labelledby'] = titleId.value
+  if (props.ariaLabelledBy) {
+    attrs['aria-labelledby'] = props.ariaLabelledBy
+  } else if (props.ariaLabel) {
+    attrs['aria-label'] = props.ariaLabel
+  } else if (titleId.value) {
+    attrs['aria-labelledby'] = titleId.value
+  }
   
   if (props.ariaDescribedBy) attrs['aria-describedby'] = props.ariaDescribedBy
   else if (descriptionId.value) attrs['aria-describedby'] = descriptionId.value
