@@ -96,13 +96,31 @@ export function prefersHighContrast(): boolean {
   return window.matchMedia('(prefers-contrast: high)').matches
 }
 
+function linearizeChannel(c: number): number {
+  const s = c / 255
+  return s <= 0.03928 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4)
+}
+
+function relativeLuminance(hex: string): number {
+  const clean = hex.replace('#', '')
+  const full = clean.length === 3
+    ? clean.split('').map(c => c + c).join('')
+    : clean
+  const r = parseInt(full.slice(0, 2), 16)
+  const g = parseInt(full.slice(2, 4), 16)
+  const b = parseInt(full.slice(4, 6), 16)
+  return 0.2126 * linearizeChannel(r) + 0.7152 * linearizeChannel(g) + 0.0722 * linearizeChannel(b)
+}
+
 /**
- * Calcule le ratio de contraste entre deux couleurs
+ * Calcule le ratio de contraste WCAG 2.1 entre deux couleurs hex
  */
-export function getContrastRatio(_color1: string, _color2: string): number {
-  // Implémentation simplifiée - dans un vrai projet, utiliser une librairie comme chroma-js
-  // Cette fonction devrait calculer le vrai ratio de contraste WCAG
-  return 4.5 // Placeholder
+export function getContrastRatio(foreground: string, background: string): number {
+  const l1 = relativeLuminance(foreground)
+  const l2 = relativeLuminance(background)
+  const lighter = Math.max(l1, l2)
+  const darker = Math.min(l1, l2)
+  return (lighter + 0.05) / (darker + 0.05)
 }
 
 /**

@@ -156,6 +156,7 @@ export interface FormFieldProps {
   state?: State;
   required?: boolean;
   disabled?: boolean;
+  requiredText?: string;
 }
 
 // Heading.vue
