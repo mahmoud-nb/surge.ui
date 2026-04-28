@@ -12,7 +12,7 @@ import SliderField from '@/components/molecules/SliderField.vue'
 import Button from '@/components/atoms/Button.vue'
 
 const meta: Meta<typeof FormFieldGroup> = {
-  title: 'Molecules/FormFieldGroup',
+  title: 'Molecules/FormFields',
   component: FormFieldGroup,
   parameters: {
     layout: 'centered',

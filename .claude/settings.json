@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "thread-mind": {
+      "command": "npx",
+      "args": ["-y", "thread-mind-mcp"]
+    }
+  }
+}

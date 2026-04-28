@@ -18,7 +18,10 @@
       @focus="trigger === 'focus' && handleFocus()"
       @blur="trigger === 'focus' && handleBlur()"
     >
-      <slot name="trigger" :isOpen="isOpen" />
+      <slot
+        name="trigger"
+        :is-open="isOpen"
+      />
     </div>
 
     <!-- Popover Content (Positioned with CSS) -->
@@ -60,7 +63,10 @@
 
         <!-- Content Slot -->
         <div class="su-popover__body">
-          <slot :close="close" :isOpen="isOpen" />
+          <slot
+            :close="close"
+            :is-open="isOpen"
+          />
         </div>
       </div>
     </Transition>

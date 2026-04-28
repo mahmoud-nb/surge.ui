@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import Heading from '../atoms/Heading.vue'
 import Panel from '../atoms/Panel.vue'
 import Image from '../atoms/Image.vue'
@@ -12,18 +12,13 @@ import Dialog from '../organisms/Dialog.vue'
 import Alert from '../organisms/Alert.vue'
 import Tabs from '../organisms/Tabs.vue'
 import Accordion from '../organisms/Accordion.vue'
-import AccordionItem from '../molecules/AccordionItem.vue'
 import Button from '../atoms/Button.vue'
 import Grid from '../templates/Grid.vue'
 import GridCell from '../templates/GridCell.vue'
 import Preview from './Preview.vue'
 import GlobalPreview from './GlobalPreview.vue'
 import {
-  CheckIcon,
-  ExclamationTriangleIcon,
-  InformationCircleIcon,
-  XMarkIcon,
-  StarIcon
+  CheckIcon
 } from '@heroicons/vue/24/outline'
 
 // État pour les dialogs et interactions
@@ -96,9 +91,6 @@ const teamAvatars = ref([
     badge: '1'
   }
 ])
-
-const progressValue = ref(65)
-const spinnerTypes = ['classic', 'modern', 'dots', 'pulse', 'bars'] as const
 </script>
 
 <template>

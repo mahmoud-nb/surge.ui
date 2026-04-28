@@ -12,9 +12,7 @@ import FileUploadField from '../molecules/FileUploadField.vue'
 import Button from '../atoms/Button.vue'
 import {
   AtSymbolIcon,
-  PhoneIcon,
-  LockClosedIcon,
-  EnvelopeIcon
+  PhoneIcon
 } from '@heroicons/vue/24/outline'
 import Grid from '../templates/Grid.vue'
 import GridCell from '../templates/GridCell.vue'

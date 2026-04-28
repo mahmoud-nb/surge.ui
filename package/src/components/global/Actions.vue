@@ -10,21 +10,15 @@ import Heading from '../atoms/Heading.vue'
 import { 
   PlusIcon, 
   ArrowRightIcon, 
-  HeartIcon,
-  HomeIcon,
   UserIcon,
   CogIcon,
   TrashIcon,
   DocumentIcon,
-  ChatBubbleLeftIcon,
   PencilIcon,
-  CheckIcon,
-  XMarkIcon,
   EllipsisHorizontalIcon,
   ArrowDownTrayIcon,
   ShareIcon,
   PrinterIcon,
-  EnvelopeIcon,
   BellIcon
 } from '@heroicons/vue/24/outline'
 import Grid from '../templates/Grid.vue'
