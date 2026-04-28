@@ -9,6 +9,7 @@ const props = withDefaults(defineProps<ButtonProps>(), {
   radius: 'md',
   disabled: false,
   loading: false,
+  loadingLabel: 'Chargement en cours...',
   block: false,
   iconDisplay: 'left',
   tabIndex: 0
@@ -108,7 +109,7 @@ const ariaAttributes = computed(() => {
   >
     <Spinner
       v-if="loading"
-      :label="'Chargement en cours...'"
+      :label="loadingLabel"
     />
     
     <template v-if="!loading">

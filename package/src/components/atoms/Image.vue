@@ -10,7 +10,10 @@ const props = withDefaults(defineProps<ImageProps>(), {
   lazy: false,
   loading: 'lazy',
   placeholder: true,
-  placeholderColor: '#f3f4f6'
+  placeholderColor: '#f3f4f6',
+  loadingAriaLabel: '- Chargement en cours',
+  errorAriaLabel: '- Erreur de chargement',
+  errorText: 'Erreur de chargement'
 })
 
 const emit = defineEmits<{
@@ -136,7 +139,7 @@ onMounted(() => {
       v-if="placeholder && isLoading && !hasError"
       class="su-image-placeholder"
       :style="{ backgroundColor: placeholderColor }"
-      :aria-label="alt + ' - Chargement en cours'"
+      :aria-label="`${alt} ${loadingAriaLabel}`"
     >
       <svg 
         class="su-image-placeholder-icon" 
@@ -206,7 +209,7 @@ onMounted(() => {
     <div 
       v-if="hasError"
       class="su-image-error"
-      :aria-label="alt + ' - Erreur de chargement'"
+      :aria-label="`${alt} ${errorAriaLabel}`"
     >
       <svg 
         class="su-image-error-icon" 
@@ -217,7 +220,7 @@ onMounted(() => {
       >
         <path d="m21 21-6-6m0 0L9 9m6 6 6 6M9 9l-6-6m6 6V3m0 6H3" />
       </svg>
-      <span class="su-image-error-text">Erreur de chargement</span>
+      <span class="su-image-error-text">{{ errorText }}</span>
     </div>
   </div>
 </template>

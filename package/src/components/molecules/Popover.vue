@@ -79,27 +79,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted, onBeforeUnmount, nextTick } from 'vue'
+import { ref, computed, watch, onMounted, onBeforeUnmount, nextTick, useId } from 'vue'
 import { XMarkIcon } from '@heroicons/vue/24/outline'
-
-export interface PopoverProps {
-  modelValue?: boolean;
-  placement?: 'top' | 'top-start' | 'top-end' | 'bottom' | 'bottom-start' | 'bottom-end' | 'left' | 'left-start' | 'left-end' | 'right' | 'right-start' | 'right-end';
-  trigger?: 'click' | 'hover' | 'focus' | 'manual';
-  showArrow?: boolean;
-  closable?: boolean;
-  closeOnClickOutside?: boolean;
-  closeOnEscape?: boolean;
-  modal?: boolean;
-  closeOnBackdropClick?: boolean;
-  disabled?: boolean;
-  openDelay?: number;
-  closeDelay?: number;
-  ariaLabel?: string;
-  ariaLabelledby?: string;
-  ariaDescribedby?: string;
-  closeAriaLabel?: string;
-}
+import type { PopoverProps } from '@/types'
 
 const props = withDefaults(defineProps<PopoverProps>(), {
   modelValue: undefined,
@@ -131,7 +113,7 @@ const popoverRef = ref<HTMLElement>();
 
 // State
 const isOpen = ref(false);
-const popoverId = `popover-${Math.random().toString(36).substr(2, 9)}`;
+const popoverId = `popover-${useId()}`;
 const hoverTimeout = ref<number>();
 
 // Computed

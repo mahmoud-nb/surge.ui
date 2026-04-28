@@ -15,7 +15,8 @@ const meta: Meta<typeof Collapse> = {
         component: 'A simple Collapse component for displaying collapsible content sections.'
       }
     }
-  }
+  },
+  tags: ['autodocs'],
 }
 
 export default meta

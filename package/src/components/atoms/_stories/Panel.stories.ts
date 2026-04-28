@@ -37,6 +37,7 @@ export default {
       },
     },
   },
+  tags: ['autodocs'],
 } as Meta<typeof Panel>
 
 const Template: StoryFn<typeof Panel> = (args) => ({

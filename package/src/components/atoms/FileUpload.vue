@@ -17,6 +17,8 @@ const props = withDefaults(defineProps<BaseFileUploadProps>(), {
   placeholder: 'Sélectionnez des fichiers ou glissez-les ici',
   dragText: 'Relâchez pour déposer les fichiers',
   browseText: 'Parcourir',
+  loadingText: 'Chargement...',
+  loadingSubText: 'Veuillez patienter',
   allowPreview: true,
   showFileList: true,
   showProgress: false,
@@ -402,10 +404,10 @@ defineExpose({
       <!-- Texte principal -->
       <div class="su-file-upload-text">
         <p class="su-file-upload-primary-text">
-          {{ loading ? 'Chargement...' : (isDragging ? dragText : placeholder) }}
+          {{ loading ? loadingText : (isDragging ? dragText : placeholder) }}
         </p>
         <p class="su-file-upload-secondary-text">
-          {{ loading ? 'Veuillez patienter' : browseText }}
+          {{ loading ? loadingSubText : browseText }}
           <span v-if="accept || maxSize">
             <span v-if="accept"> • {{ accept }}</span>
             <span v-if="maxSize"> • Max {{ formatFileSize(maxSize) }}</span>

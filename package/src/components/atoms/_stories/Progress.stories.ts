@@ -14,6 +14,7 @@ const meta: Meta<typeof Progress> = {
     indeterminate: { control: 'boolean' },
     indeterminateLabel: { control: 'text' },
   },
+  tags: ['autodocs'],
 }
 
 export default meta

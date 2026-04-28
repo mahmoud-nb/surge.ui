@@ -1,46 +1,46 @@
 # Popover
 
-The Popover component displays contextual content in a floating window that appears above page content. It's ideal for displaying additional information, action menus, forms, or any other contextual interaction without leaving the current context.
+Le composant Popover affiche du contenu contextuel dans une fenêtre flottante qui apparaît au-dessus du contenu de la page. Il est idéal pour afficher des informations complémentaires, des menus d'actions, des formulaires ou toute autre interaction contextuelle sans quitter le contexte actuel.
 
-## Usage Examples
+## Exemples d'utilisation
 
-### Basic Usage
+### Utilisation de base
 
 ```vue
 <template>
   <SuPopover>
     <template #trigger>
-      <button>Click me</button>
+      <button>Cliquer ici</button>
     </template>
     <template #default>
       <div>
-        <h3>Popover Title</h3>
-        <p>Popover content.</p>
+        <h3>Titre du popover</h3>
+        <p>Contenu du popover.</p>
       </div>
     </template>
   </SuPopover>
 </template>
 ```
 
-### With Close Button
+### Avec bouton de fermeture
 
 ```vue
 <template>
   <SuPopover closable>
     <template #trigger>
-      <button>Open</button>
+      <button>Ouvrir</button>
     </template>
     <template #default>
       <div>
         <h3>Information</h3>
-        <p>This popover can be closed with the X button.</p>
+        <p>Ce popover peut être fermé avec le bouton X.</p>
       </div>
     </template>
   </SuPopover>
 </template>
 ```
 
-### Hover Trigger
+### Déclenchement au survol
 
 ```vue
 <template>
@@ -51,33 +51,33 @@ The Popover component displays contextual content in a floating window that appe
     :close-delay="100"
   >
     <template #trigger>
-      <span>Hover me</span>
+      <span>Survoler ici</span>
     </template>
     <template #default>
-      <p>This popover opens on hover.</p>
+      <p>Ce popover s'ouvre au survol.</p>
     </template>
   </SuPopover>
 </template>
 ```
 
-### Controlled Mode with v-model
+### Mode contrôlé avec v-model
 
 ```vue
 <template>
   <div>
     <button @click="isOpen = !isOpen">
-      {{ isOpen ? 'Close' : 'Open' }}
+      {{ isOpen ? 'Fermer' : 'Ouvrir' }}
     </button>
     
     <SuPopover v-model="isOpen" trigger="manual">
       <template #trigger>
-        <button>Target element</button>
+        <button>Élément cible</button>
       </template>
       <template #default="{ close }">
         <div>
-          <h3>Controlled Mode</h3>
-          <p>Controlled by v-model.</p>
-          <button @click="close">Close</button>
+          <h3>Mode contrôlé</h3>
+          <p>Contrôlé par v-model.</p>
+          <button @click="close">Fermer</button>
         </div>
       </template>
     </SuPopover>
@@ -91,7 +91,7 @@ const isOpen = ref(false);
 </script>
 ```
 
-### Modal Mode
+### Mode modal
 
 ```vue
 <template>
@@ -101,15 +101,15 @@ const isOpen = ref(false);
     :close-on-backdrop-click="true"
   >
     <template #trigger>
-      <button>Open as modal</button>
+      <button>Ouvrir en modal</button>
     </template>
     <template #default="{ close }">
       <div>
         <h3>Confirmation</h3>
-        <p>Are you sure you want to continue?</p>
+        <p>Êtes-vous sûr de vouloir continuer ?</p>
         <div class="actions">
-          <button @click="close">Cancel</button>
-          <button @click="close">Confirm</button>
+          <button @click="close">Annuler</button>
+          <button @click="close">Confirmer</button>
         </div>
       </div>
     </template>
@@ -117,7 +117,7 @@ const isOpen = ref(false);
 </template>
 ```
 
-### With Form
+### Avec formulaire
 
 ```vue
 <template>
@@ -127,23 +127,23 @@ const isOpen = ref(false);
     placement="bottom"
   >
     <template #trigger>
-      <button>Add comment</button>
+      <button>Ajouter un commentaire</button>
     </template>
     <template #default="{ close }">
       <div>
-        <h3>New Comment</h3>
+        <h3>Nouveau commentaire</h3>
         <form @submit.prevent="handleSubmit(close)">
           <div>
-            <label>Name</label>
+            <label>Nom</label>
             <input type="text" v-model="name" />
           </div>
           <div>
-            <label>Comment</label>
+            <label>Commentaire</label>
             <textarea v-model="comment" rows="3"></textarea>
           </div>
           <div class="actions">
-            <button type="button" @click="close">Cancel</button>
-            <button type="submit">Submit</button>
+            <button type="button" @click="close">Annuler</button>
+            <button type="submit">Envoyer</button>
           </div>
         </form>
       </div>
@@ -158,68 +158,68 @@ const name = ref('');
 const comment = ref('');
 
 const handleSubmit = (close: () => void) => {
-  // Submit logic
+  // Logique d'envoi
   close();
 };
 </script>
 ```
 
-### Different Placements
+### Différents positionnements
 
 ```vue
 <template>
   <div>
     <SuPopover placement="top">
       <template #trigger>
-        <button>Top</button>
+        <button>Haut</button>
       </template>
       <template #default>
-        <p>Placement: Top</p>
+        <p>Positionnement : haut</p>
       </template>
     </SuPopover>
 
     <SuPopover placement="bottom-start">
       <template #trigger>
-        <button>Bottom Start</button>
+        <button>Bas gauche</button>
       </template>
       <template #default>
-        <p>Placement: Bottom Start</p>
+        <p>Positionnement : bas gauche</p>
       </template>
     </SuPopover>
 
     <SuPopover placement="right-end">
       <template #trigger>
-        <button>Right End</button>
+        <button>Droite bas</button>
       </template>
       <template #default>
-        <p>Placement: Right End</p>
+        <p>Positionnement : droite bas</p>
       </template>
     </SuPopover>
   </div>
 </template>
 ```
 
-### Custom User Menu
+### Menu utilisateur personnalisé
 
 ```vue
 <template>
   <SuPopover placement="bottom-end">
     <template #trigger>
-      <button>Profile</button>
+      <button>Profil</button>
     </template>
     <template #default>
       <div class="user-menu">
         <div class="user-info">
           <div class="avatar"></div>
           <div>
-            <div class="name">John Doe</div>
-            <div class="email">john.doe@example.com</div>
+            <div class="name">Jean Dupont</div>
+            <div class="email">jean.dupont@exemple.fr</div>
           </div>
         </div>
         <div class="menu-items">
-          <button>📊 Dashboard</button>
-          <button>⚙️ Settings</button>
-          <button class="danger">🚪 Logout</button>
+          <button>📊 Tableau de bord</button>
+          <button>⚙️ Paramètres</button>
+          <button class="danger">🚪 Déconnexion</button>
         </div>
       </div>
     </template>
@@ -231,102 +231,102 @@ const handleSubmit = (close: () => void) => {
 
 ### Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `modelValue` | `boolean` | `undefined` | Controls the open state of the popover (v-model) |
-| `placement` | `'top' \| 'top-start' \| 'top-end' \| 'bottom' \| 'bottom-start' \| 'bottom-end' \| 'left' \| 'left-start' \| 'left-end' \| 'right' \| 'right-start' \| 'right-end'` | `'bottom'` | Position of the popover relative to the trigger |
-| `trigger` | `'click' \| 'hover' \| 'focus' \| 'manual'` | `'click'` | Method to trigger the popover |
-| `offset` | `number` | `8` | Distance in pixels between trigger and popover |
-| `showArrow` | `boolean` | `true` | Shows or hides the arrow pointing to the trigger |
-| `closable` | `boolean` | `false` | Displays a close button in the popover |
-| `closeOnClickOutside` | `boolean` | `true` | Closes the popover when clicking outside |
-| `closeOnEscape` | `boolean` | `true` | Closes the popover when pressing Escape key |
-| `modal` | `boolean` | `false` | Enables modal mode with dark backdrop |
-| `closeOnBackdropClick` | `boolean` | `true` | Closes the popover when clicking backdrop (modal mode) |
-| `disabled` | `boolean` | `false` | Disables the popover |
-| `openDelay` | `number` | `0` | Delay in milliseconds before opening (useful with trigger="hover") |
-| `closeDelay` | `number` | `0` | Delay in milliseconds before closing (useful with trigger="hover") |
-| `ariaLabel` | `string` | `undefined` | ARIA label for the popover content |
-| `ariaLabelledby` | `string` | `undefined` | ID of the element that labels the popover |
-| `ariaDescribedby` | `string` | `undefined` | ID of the element that describes the popover |
-| `closeAriaLabel` | `string` | `'Close'` | ARIA label for the close button |
-| `width` | `string \| number` | `'auto'` | Width of the popover |
-| `maxWidth` | `string \| number` | `'320px'` | Maximum width of the popover |
-| `maxHeight` | `string \| number` | `'none'` | Maximum height of the popover |
+| Prop | Type | Défaut | Description |
+|------|------|--------|-------------|
+| `modelValue` | `boolean` | `undefined` | Contrôle l'état ouvert du popover (v-model) |
+| `placement` | `'top' \| 'top-start' \| 'top-end' \| 'bottom' \| 'bottom-start' \| 'bottom-end' \| 'left' \| 'left-start' \| 'left-end' \| 'right' \| 'right-start' \| 'right-end'` | `'bottom'` | Position du popover par rapport au déclencheur |
+| `trigger` | `'click' \| 'hover' \| 'focus' \| 'manual'` | `'click'` | Mode de déclenchement du popover |
+| `offset` | `number` | `8` | Distance en pixels entre le déclencheur et le popover |
+| `showArrow` | `boolean` | `true` | Affiche ou masque la flèche pointant vers le déclencheur |
+| `closable` | `boolean` | `false` | Affiche un bouton de fermeture dans le popover |
+| `closeOnClickOutside` | `boolean` | `true` | Ferme le popover lors d'un clic en dehors |
+| `closeOnEscape` | `boolean` | `true` | Ferme le popover lors de l'appui sur la touche Échap |
+| `modal` | `boolean` | `false` | Active le mode modal avec un fond sombre |
+| `closeOnBackdropClick` | `boolean` | `true` | Ferme le popover lors d'un clic sur le fond (mode modal) |
+| `disabled` | `boolean` | `false` | Désactive le popover |
+| `openDelay` | `number` | `0` | Délai en millisecondes avant l'ouverture (utile avec trigger="hover") |
+| `closeDelay` | `number` | `0` | Délai en millisecondes avant la fermeture (utile avec trigger="hover") |
+| `ariaLabel` | `string` | `undefined` | Label ARIA du contenu du popover |
+| `ariaLabelledby` | `string` | `undefined` | ID de l'élément qui labélise le popover |
+| `ariaDescribedby` | `string` | `undefined` | ID de l'élément qui décrit le popover |
+| `closeAriaLabel` | `string` | `'Fermer'` | Label ARIA du bouton de fermeture |
+| `width` | `string \| number` | `'auto'` | Largeur du popover |
+| `maxWidth` | `string \| number` | `'320px'` | Largeur maximale du popover |
+| `maxHeight` | `string \| number` | `'none'` | Hauteur maximale du popover |
 
-### Accessibility Attributes
+### Attributs d'accessibilité
 
-| Attribute | Element | Description |
-|-----------|---------|-------------|
-| `aria-expanded` | Trigger | Indicates whether the popover is open or closed |
-| `aria-haspopup` | Trigger | Indicates that the element triggers a popover |
-| `aria-controls` | Trigger | References the ID of the popover content |
-| `role="dialog"` | Content | Identifies the popover as a dialog box |
-| `aria-modal` | Content | Indicates whether the popover is modal |
-| `aria-label` | Content | Provides an accessible label for the popover |
-| `aria-labelledby` | Content | References the element that labels the popover |
-| `aria-describedby` | Content | References the element that describes the popover |
-| `aria-label` | Close button | Provides an accessible label for the close button |
+| Attribut | Élément | Description |
+|----------|---------|-------------|
+| `aria-expanded` | Déclencheur | Indique si le popover est ouvert ou fermé |
+| `aria-haspopup` | Déclencheur | Indique que l'élément déclenche un popover |
+| `aria-controls` | Déclencheur | Référence l'ID du contenu du popover |
+| `role="dialog"` | Contenu | Identifie le popover comme une boîte de dialogue |
+| `aria-modal` | Contenu | Indique si le popover est modal |
+| `aria-label` | Contenu | Fournit un label accessible au popover |
+| `aria-labelledby` | Contenu | Référence l'élément qui labélise le popover |
+| `aria-describedby` | Contenu | Référence l'élément qui décrit le popover |
+| `aria-label` | Bouton fermeture | Fournit un label accessible au bouton de fermeture |
 
-### HTML Validation Attributes
+### Attributs HTML
 
-| Attribute | Element | Description |
-|-----------|---------|-------------|
-| `type="button"` | Close button | Specifies the button type |
-| `tabindex` | Focusable elements | Manages keyboard navigation order |
+| Attribut | Élément | Description |
+|----------|---------|-------------|
+| `type="button"` | Bouton fermeture | Précise le type du bouton |
+| `tabindex` | Éléments focusables | Gère l'ordre de navigation clavier |
 
-### Events
+### Événements
 
-| Event | Type | Description |
-|-------|------|-------------|
-| `update:modelValue` | `(value: boolean) => void` | Emitted when the open state changes |
-| `open` | `() => void` | Emitted when the popover opens |
-| `close` | `() => void` | Emitted when the popover closes |
-| `after-leave` | `() => void` | Emitted after the closing animation ends |
+| Événement | Type | Description |
+|-----------|------|-------------|
+| `update:modelValue` | `(value: boolean) => void` | Émis quand l'état ouvert change |
+| `open` | `() => void` | Émis quand le popover s'ouvre |
+| `close` | `() => void` | Émis quand le popover se ferme |
+| `after-leave` | `() => void` | Émis après la fin de l'animation de fermeture |
 
 ### Slots
 
 | Slot | Props | Description |
 |------|-------|-------------|
-| `trigger` | `{ isOpen: boolean }` | Content of the popover trigger |
-| `default` | `{ close: () => void, isOpen: boolean }` | Main content of the popover |
+| `trigger` | `{ isOpen: boolean }` | Contenu du déclencheur du popover |
+| `default` | `{ close: () => void, isOpen: boolean }` | Contenu principal du popover |
 
-### Exposed Methods
+### Méthodes exposées
 
-| Method | Type | Description |
-|--------|------|-------------|
-| `open` | `() => void` | Opens the popover |
-| `close` | `() => void` | Closes the popover |
-| `toggle` | `() => void` | Toggles the open state of the popover |
-| `updatePosition` | `() => void` | Recalculates the position of the popover |
+| Méthode | Type | Description |
+|---------|------|-------------|
+| `open` | `() => void` | Ouvre le popover |
+| `close` | `() => void` | Ferme le popover |
+| `toggle` | `() => void` | Bascule l'état ouvert/fermé du popover |
+| `updatePosition` | `() => void` | Recalcule la position du popover |
 
-## Accessibility
+## Accessibilité
 
-The Popover component complies with WCAG 2.1 Level AA standards and follows W3C best practices for dialog and popover components. It ensures an accessible user experience for everyone, including people using assistive technologies.
+Le composant Popover est conforme aux normes WCAG 2.1 niveau AA et suit les bonnes pratiques W3C pour les composants de type dialog et popover. Il garantit une expérience accessible à tous les utilisateurs, y compris ceux utilisant des technologies d'assistance.
 
-### Accessibility Features
+### Fonctionnalités d'accessibilité
 
-- **Complete keyboard navigation**: The popover can be opened with Enter or Space keys, and closed with the Escape key. Navigation inside the popover is done with the Tab key.
+- **Navigation clavier complète** : le popover peut être ouvert avec les touches Entrée ou Espace et fermé avec la touche Échap. La navigation à l'intérieur du popover se fait avec la touche Tab.
 
-- **Focus trapping in modal mode**: When modal mode is enabled, focus is trapped inside the popover, preventing the user from navigating to elements outside the popover until it's closed.
+- **Piégeage du focus en mode modal** : lorsque le mode modal est activé, le focus est piégé à l'intérieur du popover, empêchant l'utilisateur de naviguer vers les éléments extérieurs jusqu'à sa fermeture.
 
-- **Appropriate ARIA attributes**: The component uses `aria-expanded` on the trigger to indicate the open state, `aria-haspopup` to signal the presence of a popover, `aria-controls` to link the trigger to the content, and `role="dialog"` on the content for proper identification by screen readers.
+- **Attributs ARIA appropriés** : le composant utilise `aria-expanded` sur le déclencheur pour indiquer l'état d'ouverture, `aria-haspopup` pour signaler la présence d'un popover, `aria-controls` pour lier le déclencheur au contenu, et `role="dialog"` sur le contenu pour une identification correcte par les lecteurs d'écran.
 
-- **Accessible labels**: The `ariaLabel`, `ariaLabelledby`, and `ariaDescribedby` props allow providing contextual information to screen readers. The close button has a configurable ARIA label.
+- **Labels accessibles** : les props `ariaLabel`, `ariaLabelledby` et `ariaDescribedby` permettent de fournir des informations contextuelles aux lecteurs d'écran. Le bouton de fermeture dispose d'un label ARIA configurable.
 
-- **Visual focus indicators**: Focusable elements display a visible outline conforming to accessibility standards, with support for high contrast mode.
+- **Indicateurs de focus visibles** : les éléments focusables affichent un contour visible conforme aux normes d'accessibilité, avec support du mode contraste élevé.
 
-- **Delay management**: The `openDelay` and `closeDelay` props help avoid accidental openings/closings, particularly useful for users with motor difficulties.
+- **Gestion des délais** : les props `openDelay` et `closeDelay` permettent d'éviter les ouvertures/fermetures accidentelles, particulièrement utile pour les utilisateurs ayant des difficultés motrices.
 
-- **High contrast mode support**: The component automatically adapts its borders and contrasts in high contrast environments.
+- **Support du mode contraste élevé** : le composant adapte automatiquement ses bordures et contrastes dans les environnements à contraste élevé.
 
-- **Respect for reduced motion preference**: Animations are automatically disabled for users who have enabled the `prefers-reduced-motion` preference.
+- **Respect de la préférence de mouvement réduit** : les animations sont automatiquement désactivées pour les utilisateurs ayant activé la préférence `prefers-reduced-motion`.
 
-- **RTL support**: The component automatically adapts to right-to-left languages, reversing element placements and positions.
+- **Support RTL** : le composant s'adapte automatiquement aux langues qui se lisent de droite à gauche, en inversant les positionnements et les placements des éléments.
 
-## Advanced Usage Examples
+## Exemples avancés
 
-### Popover with Dynamic Content
+### Popover avec contenu dynamique
 
 ```vue
 <template>
@@ -335,16 +335,16 @@ The Popover component complies with WCAG 2.1 Level AA standards and follows W3C 
     @open="fetchUserData"
   >
     <template #trigger>
-      <button>View details</button>
+      <button>Voir les détails</button>
     </template>
     <template #default>
       <div v-if="loading">
-        <p>Loading...</p>
+        <p>Chargement...</p>
       </div>
       <div v-else-if="userData">
         <h3>{{ userData.name }}</h3>
         <p>{{ userData.email }}</p>
-        <p>Member since {{ userData.memberSince }}</p>
+        <p>Membre depuis {{ userData.memberSince }}</p>
       </div>
     </template>
   </SuPopover>
@@ -369,7 +369,7 @@ const fetchUserData = async () => {
 </script>
 ```
 
-### Popover with Custom Positioning and Recalculation
+### Popover avec positionnement dynamique
 
 ```vue
 <template>
@@ -379,16 +379,16 @@ const fetchUserData = async () => {
     :offset="20"
   >
     <template #trigger>
-      <button>Open</button>
+      <button>Ouvrir</button>
     </template>
     <template #default>
       <div>
-        <p>Content with dynamic positioning</p>
+        <p>Contenu avec positionnement dynamique</p>
         <select v-model="currentPlacement" @change="updatePosition">
-          <option value="top">Top</option>
-          <option value="bottom">Bottom</option>
-          <option value="left">Left</option>
-          <option value="right">Right</option>
+          <option value="top">Haut</option>
+          <option value="bottom">Bas</option>
+          <option value="left">Gauche</option>
+          <option value="right">Droite</option>
         </select>
       </div>
     </template>
@@ -407,13 +407,13 @@ const updatePosition = () => {
 </script>
 ```
 
-### Nested Popovers
+### Popovers imbriqués
 
 ```vue
 <template>
   <SuPopover placement="bottom">
     <template #trigger>
-      <button>Main menu</button>
+      <button>Menu principal</button>
     </template>
     <template #default>
       <div class="menu">
@@ -422,13 +422,13 @@ const updatePosition = () => {
         
         <SuPopover placement="right-start" trigger="hover">
           <template #trigger>
-            <button>More options →</button>
+            <button>Plus d'options →</button>
           </template>
           <template #default>
             <div class="submenu">
-              <button>Sub-option 1</button>
-              <button>Sub-option 2</button>
-              <button>Sub-option 3</button>
+              <button>Sous-option 1</button>
+              <button>Sous-option 2</button>
+              <button>Sous-option 3</button>
             </div>
           </template>
         </SuPopover>
@@ -438,7 +438,7 @@ const updatePosition = () => {
 </template>
 ```
 
-### Popover with Form Validation
+### Popover avec validation de formulaire
 
 ```vue
 <template>
@@ -447,11 +447,11 @@ const updatePosition = () => {
     @close="resetForm"
   >
     <template #trigger>
-      <button>Create account</button>
+      <button>Créer un compte</button>
     </template>
     <template #default="{ close }">
       <form @submit.prevent="handleSubmit(close)">
-        <h3>Sign up</h3>
+        <h3>Inscription</h3>
         
         <div>
           <label>Email</label>
@@ -471,7 +471,7 @@ const updatePosition = () => {
         </div>
         
         <div>
-          <label>Password</label>
+          <label>Mot de passe</label>
           <input 
             type="password" 
             v-model="form.password"
@@ -488,8 +488,8 @@ const updatePosition = () => {
         </div>
         
         <div class="actions">
-          <button type="button" @click="close">Cancel</button>
-          <button type="submit">Sign up</button>
+          <button type="button" @click="close">Annuler</button>
+          <button type="submit">S'inscrire</button>
         </div>
       </form>
     </template>
@@ -514,12 +514,12 @@ const validateForm = () => {
   errors.password = '';
   
   if (!form.email) {
-    errors.email = 'Email is required';
+    errors.email = 'L\'email est requis';
     return false;
   }
   
   if (form.password.length < 8) {
-    errors.password = 'Password must be at least 8 characters';
+    errors.password = 'Le mot de passe doit comporter au moins 8 caractères';
     return false;
   }
   
@@ -529,7 +529,7 @@ const validateForm = () => {
 const handleSubmit = async (close: () => void) => {
   if (!validateForm()) return;
   
-  // Sign up logic
+  // Logique d'inscription
   await registerUser(form);
   close();
 };
@@ -543,7 +543,7 @@ const resetForm = () => {
 </script>
 ```
 
-### Popover with Global State Management
+### Popover avec gestion d'état global
 
 ```vue
 <template>
@@ -584,7 +584,7 @@ const notificationStore = useNotificationStore();
 const notifications = computed(() => notificationStore.notifications);
 
 const formatDate = (date: Date) => {
-  return new Intl.DateTimeFormat('en-US', {
+  return new Intl.DateTimeFormat('fr-FR', {
     dateStyle: 'short',
     timeStyle: 'short',
   }).format(date);

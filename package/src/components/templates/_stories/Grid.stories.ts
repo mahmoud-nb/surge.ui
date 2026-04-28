@@ -41,6 +41,7 @@ const meta: Meta<typeof Grid> = {
       }
     },
   },
+  tags: ['autodocs'],
 }
 export default meta
 

@@ -18,14 +18,17 @@ const getNavItems = (section: string = 'display', lang: string = 'fr') => {
     display:[
       { text: 'Heading', link: `${langPrefix}/components/heading` },
       { text: 'Panel', link: `${langPrefix}/components/panel` },
+      { text: 'Icon', link: `${langPrefix}/components/icon` },
       { text: 'Image', link: `${langPrefix}/components/image` },
       { text: 'Avatar', link: `${langPrefix}/components/avatar` },
       { text: 'AvatarGroup', link: `${langPrefix}/components/avatargroup` },
       { text: 'Badge', link: `${langPrefix}/components/badge` },
       { text: 'Dialog', link: `${langPrefix}/components/dialog` },
+      { text: 'Popover', link: `${langPrefix}/components/popover` },
       { text: 'Alert', link: `${langPrefix}/components/alert`},
       { text: 'Tabs', link: `${langPrefix}/components/tabs` },
       { text: 'Accordion', link: `${langPrefix}/components/accordion` },
+      { text: 'Collapse', link: `${langPrefix}/components/collapse` },
       { text: 'Progress', link: `${langPrefix}/components/progress` },
       { text: 'Spinner', link: `${langPrefix}/components/spinner`}
     ],
@@ -33,7 +36,7 @@ const getNavItems = (section: string = 'display', lang: string = 'fr') => {
       { text: 'Button', link: `${langPrefix}/components/button` },
       { text: 'ButtonGroup', link: `${langPrefix}/components/buttongroup` },
       { text: 'Link', link: `${langPrefix}/components/link` },
-      { text: 'LinkGroup', link: `${langPrefix}/components/linkgroup` },           
+      { text: 'LinkGroup', link: `${langPrefix}/components/linkgroup` },
       { text: 'FloatButton', link: `${langPrefix}/components/floatbutton` },
       { text: 'Dropdown', link: `${langPrefix}/components/dropdown` }
     ],

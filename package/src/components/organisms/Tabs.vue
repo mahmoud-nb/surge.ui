@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref, watch, useId } from 'vue'
 import type { TabsProps } from '@/types'
 
 const props = withDefaults(defineProps<TabsProps>(), {
@@ -10,6 +10,7 @@ const props = withDefaults(defineProps<TabsProps>(), {
 const emit = defineEmits<{ (e: 'update:modelValue', value: number): void }>()
 
 const activeIndex = ref(props.modelValue)
+const tabsId = useId()
 
 watch(() => props.modelValue, v => (activeIndex.value = v))
 watch(activeIndex, v => emit('update:modelValue', v))
@@ -48,10 +49,10 @@ const tabClasses = (index: number) => [
     >
       <button
         v-for="(tab, index) in tabs"
-        :id="`tab-${index}`"
+        :id="`tab-${tabsId}-${index}`"
         :key="index"
         role="tab"
-        :aria-controls="`panel-${index}`"
+        :aria-controls="`panel-${tabsId}-${index}`"
         :aria-selected="index === activeIndex"
         :tabindex="index === activeIndex ? 0 : -1"
         :class="tabClasses(index)"
@@ -72,10 +73,10 @@ const tabClasses = (index: number) => [
     <div
       v-for="(tab, index) in tabs"
       v-show="index === activeIndex"
-      :id="`panel-${index}`"
+      :id="`panel-${tabsId}-${index}`"
       :key="index"
       role="tabpanel"
-      :aria-labelledby="`tab-${index}`"
+      :aria-labelledby="`tab-${tabsId}-${index}`"
       class="su-tab-panel"
     >
       <slot
