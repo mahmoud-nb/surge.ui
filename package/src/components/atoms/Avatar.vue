@@ -9,6 +9,7 @@ const props = withDefaults(defineProps<AvatarProps>(), {
   size: 'md',
   variant: 'circle',
   loading: false,
+  loadingLabel: 'Chargement en cours...',
   clickable: false
 })
 
@@ -133,7 +134,7 @@ defineExpose({
     <Spinner
       v-if="loading"
       class="su-avatar__loading"
-      :label="'Chargement en cours...'"
+      :label="loadingLabel"
       color="#3b82f6"
       size="16"
     />

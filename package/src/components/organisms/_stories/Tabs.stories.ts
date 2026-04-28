@@ -6,13 +6,14 @@ const meta: Meta<typeof Tabs> = {
   title: 'Organisms/Tabs',
   component: Tabs,
   parameters: {
-    layout: 'left-aligned',
+    layout: ‘left-aligned’,
     docs: {
       description: {
-        component: 'Composant d’onglets accessible et flexible, permettant un rendu par défaut ou personnalisé via slots.'
+        component: ‘Composant d’onglets accessible et flexible, permettant un rendu par défaut ou personnalisé via slots.’
       }
     }
-  }
+  },
+  tags: [‘autodocs’],
 }
 export default meta
 type Story = StoryObj<typeof meta>

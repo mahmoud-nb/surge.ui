@@ -12,6 +12,7 @@ const props = withDefaults(defineProps<DropdownProps>(), {
   variant: 'outline',
   disabled: false,
   loading: false,
+  loadingLabel: 'Chargement en cours...',
   iconDisplay: 'left',
   closeOnSelect: true,
   maxHeight: '300px'
@@ -325,7 +326,7 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !props.lab
             stroke-linecap="round"
           />
         </svg>
-        <span class="sr-only">Chargement en cours...</span>
+        <span class="sr-only">{{ loadingLabel }}</span>
       </span>
       
       <template v-else>

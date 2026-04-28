@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ref, computed, provide, watch, nextTick, onMounted, onUnmounted } from 'vue'
+import { ref, computed, provide, watch, onMounted, onUnmounted } from 'vue'
+import { useUniqueId } from '@/composables'
 import AccordionItem from '../molecules/AccordionItem.vue'
 import type { AccordionItemData, AccordionProps } from '@/types'
 
@@ -24,12 +25,17 @@ watch(() => props.modelValue, (newValue) => {
   openItems.value = new Set(newValue)
 })
 
-// Générer des IDs uniques pour les items sans ID
+// Cache stable des IDs générés pour les items sans ID fourni
+const itemIdCache = new Map<number, string>()
+
 const itemsWithIds = computed(() => {
-  return props.items.map(item => ({
-    ...item,
-    id: item.id || `accordion-item-${Math.random().toString(36).slice(2, 10)}`
-  }))
+  return props.items.map((item, index) => {
+    if (item.id) return { ...item }
+    if (!itemIdCache.has(index)) {
+      itemIdCache.set(index, useUniqueId('accordion-item'))
+    }
+    return { ...item, id: itemIdCache.get(index) }
+  })
 })
 
 // Vérifier si un item est ouvert
@@ -182,31 +188,9 @@ const handleGlobalKeydown = (event: KeyboardEvent) => {
   }
 }
 
-// Gestion des annonces pour lecteurs d'écran
-const announceToScreenReader = (message: string) => {
-  const announcer = document.getElementById('a11y-announcer') || createAnnouncer()
-  announcer.textContent = message
-}
-
-const createAnnouncer = (): HTMLElement => {
-  const announcer = document.createElement('div')
-  announcer.id = 'a11y-announcer'
-  announcer.setAttribute('aria-live', 'polite')
-  announcer.setAttribute('aria-atomic', 'true')
-  announcer.className = 'sr-only'
-  document.body.appendChild(announcer)
-  return announcer
-}
 
 onMounted(() => {
   document.addEventListener('keydown', handleGlobalKeydown)
-  // Annoncer le mode de l'accordéon
-  nextTick(() => {
-    announceToScreenReader(
-      `Accordéon ${props.multiple ? 'multiple' : 'simple'} avec ${itemsWithIds.value.length} sections. ` +
-      'Utilisez les flèches pour naviguer, Espace ou Entrée pour ouvrir/fermer.'
-    )
-  })
 })
 
 onUnmounted(() => {

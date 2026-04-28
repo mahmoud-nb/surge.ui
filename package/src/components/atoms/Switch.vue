@@ -26,6 +26,11 @@ const emit = defineEmits<{
 
 const attrs = useAttrs()
 const switchId = computed(() => attrs.id as string || undefined)
+// Transmet tous les attrs sauf id (id est appliqué sur l'élément interactif via switchId)
+const containerAttrs = computed(() => {
+  const { id: _id, ...rest } = attrs as Record<string, unknown>
+  return rest
+})
 const switchRef = ref<HTMLInputElement>()
 
 // Classes CSS - reste identique
@@ -94,7 +99,7 @@ defineExpose({
 })
 </script>
 <template>
-  <div :class="containerClasses">
+  <div :class="containerClasses" v-bind="containerAttrs">
     <!-- Label gauche -->
     <span 
       v-if="leftLabel" 

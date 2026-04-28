@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, inject, onMounted, onUnmounted } from 'vue'
+import { ref, computed, inject, onMounted, onUnmounted, useId } from 'vue'
 import { ChevronDownIcon } from '@heroicons/vue/24/outline'
 import type { AccordionContext, AccordionItemProps } from '@/types';
 
@@ -15,10 +15,9 @@ const emit = defineEmits<{
 
 const accordionContext = inject<AccordionContext>('accordion')
 
-// Génération d'un ID unique stable
-const uniqueId = computed(() => {
-  return props.id || `su-accordion-item-${Math.random().toString(36).slice(2, 10)}`
-})
+// ID stable généré une seule fois par instance de composant
+const _generatedId = `su-accordion-item-${useId()}`
+const uniqueId = computed(() => props.id || _generatedId)
 
 const headerId = computed(() => `accordion-header-${uniqueId.value}`)
 const panelId = computed(() => `panel-${uniqueId.value}`)

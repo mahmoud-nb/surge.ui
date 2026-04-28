@@ -51,6 +51,7 @@ export interface AvatarProps extends AccessibilityProps {
   badgeProps?: BadgeProps;
   badgeColor?: string;
   loading?: boolean;
+  loadingLabel?: string;
   clickable?: boolean;
 }
 
@@ -76,6 +77,7 @@ export interface ButtonProps extends AccessibilityProps {
   radius?: ButtonRadius;
   disabled?: boolean;
   loading?: boolean;
+  loadingLabel?: string;
   block?: boolean;
   icon?: Component;
   iconDisplay?: 'left' | 'right' | 'only';
@@ -139,6 +141,8 @@ export interface BaseFileUploadProps extends AccessibilityProps {
   placeholder?: string;
   dragText?: string;
   browseText?: string;
+  loadingText?: string;
+  loadingSubText?: string;
   allowPreview?: boolean;
   showFileList?: boolean;
   ariaInvalid?: boolean;
@@ -200,6 +204,9 @@ export interface ImageProps extends AccessibilityProps {
   height?: string | number;
   placeholder?: boolean;
   placeholderColor?: string;
+  loadingAriaLabel?: string;
+  errorAriaLabel?: string;
+  errorText?: string;
 }
 
 // Input.vue
@@ -464,6 +471,7 @@ export interface DropdownProps extends AccessibilityProps {
   variant?: ButtonVariant;
   disabled?: boolean;
   loading?: boolean;
+  loadingLabel?: string;
   icon?: Component;
   iconDisplay?: 'left' | 'right' | 'only';
   label?: string;
@@ -497,7 +505,29 @@ export interface FloatButtonProps extends AccessibilityProps {
   tooltipPosition?: 'top' | 'bottom' | 'left' | 'right';
 }
 
-// FileUploadField.vue
+// Popover.vue
+export type PopoverPlacement = 'top' | 'top-start' | 'top-end' | 'bottom' | 'bottom-start' | 'bottom-end' | 'left' | 'left-start' | 'left-end' | 'right' | 'right-start' | 'right-end';
+export type PopoverTrigger = 'click' | 'hover' | 'focus' | 'manual';
+export interface PopoverProps {
+  modelValue?: boolean;
+  placement?: PopoverPlacement;
+  trigger?: PopoverTrigger;
+  showArrow?: boolean;
+  closable?: boolean;
+  closeOnClickOutside?: boolean;
+  closeOnEscape?: boolean;
+  modal?: boolean;
+  closeOnBackdropClick?: boolean;
+  disabled?: boolean;
+  openDelay?: number;
+  closeDelay?: number;
+  ariaLabel?: string;
+  ariaLabelledby?: string;
+  ariaDescribedby?: string;
+  closeAriaLabel?: string;
+}
+
+// FileUploadField.vue — mirrors BaseFileUploadProps for the field wrapper variant
 export interface FileUploadFieldProps extends AccessibilityProps {
   value?: UploadedFile[];
   variant?: FileUploadVariant;
@@ -515,6 +545,8 @@ export interface FileUploadFieldProps extends AccessibilityProps {
   placeholder?: string;
   dragText?: string;
   browseText?: string;
+  loadingText?: string;
+  loadingSubText?: string;
   allowPreview?: boolean;
   showFileList?: boolean;
   ariaInvalid?: boolean;
