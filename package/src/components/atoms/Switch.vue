@@ -99,7 +99,10 @@ defineExpose({
 })
 </script>
 <template>
-  <div :class="containerClasses" v-bind="containerAttrs">
+  <div
+    :class="containerClasses"
+    v-bind="containerAttrs"
+  >
     <!-- Label gauche -->
     <span 
       v-if="leftLabel" 
