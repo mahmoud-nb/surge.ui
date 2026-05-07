@@ -198,7 +198,7 @@ defineExpose({
   transition: all var(--su-duration-fast) cubic-bezier(0.4, 0, 0.2, 1);
   
   &:focus-visible {
-    box-shadow: 0 0 0 3px rgb(var(--su-link-default-rgb) / 20%);
+    box-shadow: 0 0 0 3px rgb(var(--su-link-default-rgb) / 50%);
   }
   
   // Tailles

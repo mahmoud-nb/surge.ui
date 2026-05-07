@@ -146,11 +146,13 @@ defineExpose({ focus, select, inputRef })
       />
     
       <!-- Préfixe icône -->
-      <div 
-        v-if="prefixIcon" 
+      <div
+        v-if="prefixIcon"
         class="su-input__prefix__icon"
         :class="{ 'su-input__prefix--clickable': hasPrefixIconClickListener }"
         :tabindex="hasPrefixIconClickListener && !disabled && !readonly ? 0 : -1"
+        :role="hasPrefixIconClickListener ? 'button' : undefined"
+        :aria-label="hasPrefixIconClickListener ? prefixIconLabel : undefined"
         @click="handlePrefixIconClick"
         @keydown.enter.prevent="handlePrefixIconClick"
         @keydown.space.prevent="handlePrefixIconClick"
@@ -163,11 +165,13 @@ defineExpose({ focus, select, inputRef })
       </div>
       
       <!-- Préfixe texte -->
-      <div 
-        v-if="prefix" 
+      <div
+        v-if="prefix"
         class="su-input__prefix__text"
         :class="{ 'su-input__prefix--clickable': hasPrefixClickListener }"
         :tabindex="hasPrefixClickListener && !disabled && !readonly ? 0 : -1"
+        :role="hasPrefixClickListener ? 'button' : undefined"
+        :aria-label="hasPrefixClickListener ? prefixLabel : undefined"
         @click="handlePrefixClick"
         @keydown.enter.prevent="handlePrefixClick"
         @keydown.space.prevent="handlePrefixClick"
@@ -200,11 +204,13 @@ defineExpose({ focus, select, inputRef })
       class="su-input__suffix"
     >
       <!-- Suffixe texte -->
-      <div 
-        v-if="suffix" 
+      <div
+        v-if="suffix"
         class="su-input__suffix__text"
         :class="{ 'su-input__suffix--clickable': hasSuffixClickListener }"
         :tabindex="hasSuffixClickListener && !disabled && !readonly ? 0 : -1"
+        :role="hasSuffixClickListener ? 'button' : undefined"
+        :aria-label="hasSuffixClickListener ? suffixLabel : undefined"
         @click="handleSuffixClick"
         @keydown.enter.prevent="handleSuffixClick"
         @keydown.space.prevent="handleSuffixClick"
@@ -218,6 +224,8 @@ defineExpose({ focus, select, inputRef })
         class="su-input__suffix__icon"
         :class="{ 'su-input__suffix--clickable': hasSuffixIconClickListener }"
         :tabindex="hasSuffixIconClickListener && !disabled && !readonly ? 0 : -1"
+        :role="hasSuffixIconClickListener ? 'button' : undefined"
+        :aria-label="hasSuffixIconClickListener ? suffixIconLabel : undefined"
         @click="handleSuffixIconClick"
         @keydown.enter.prevent="handleSuffixIconClick"
         @keydown.space.prevent="handleSuffixIconClick"

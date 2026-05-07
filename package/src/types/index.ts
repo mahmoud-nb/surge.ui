@@ -224,6 +224,10 @@ export interface InputProps extends AccessibilityProps {
   suffix?: string;
   prefixIcon?: Component;
   suffixIcon?: Component;
+  prefixLabel?: string;
+  prefixIconLabel?: string;
+  suffixLabel?: string;
+  suffixIconLabel?: string;
   textAlign?: TextAlign;
   // HTML native attributes
   autocomplete?: string;
