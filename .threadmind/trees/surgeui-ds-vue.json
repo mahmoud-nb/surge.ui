@@ -2,6 +2,12 @@
   "nodes": {
     "main": {
       "parentId": null,
+      "children": [
+        "formulaires"
+      ]
+    },
+    "formulaires": {
+      "parentId": "main",
       "children": []
     }
   }
