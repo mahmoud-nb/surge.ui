@@ -751,9 +751,9 @@ defineExpose({
 
 .su-slider-track-active {
   position: absolute;
-  background-color: var(--su-state-primary);
+  background-color: var(--su-link-default);
   border-radius: inherit;
-  transition: all var(--su-duration-normal) var(--su-ease-in-out);
+  transition: all var(--su-duration-fast) cubic-bezier(0.4, 0, 0.2, 1);
   
   // Orientation
   .su-slider-track--horizontal & {
@@ -872,8 +872,8 @@ defineExpose({
 .su-slider-thumb-handle {
   width: 1.25rem;
   height: 1.25rem;
-  background-color: var(--su-bg-inverse);
-  border: 2px solid var(--su-state-primary);
+  background-color: white;
+  border: 2px solid var(--su-link-default);
   border-radius: 50%;
   box-shadow: var(--su-shadow-sm);
   transition: all var(--su-duration-normal) var(--su-ease-in-out);
