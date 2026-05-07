@@ -57,7 +57,7 @@ const select = () => inputRef.value?.select()
 defineExpose({
   focus,
   select,
-  inputRef: inputRef?.value?.inputRef
+  get inputRef() { return inputRef.value?.inputRef }
 })
 </script>
 
@@ -66,6 +66,7 @@ defineExpose({
     :label="label"
     :message="message"
     :state="state"
+    :size="size"
     :required="required"
     :disabled="disabled"
   >

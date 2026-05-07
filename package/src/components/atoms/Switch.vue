@@ -6,7 +6,6 @@ import type { SwitchProps } from '@/types'
 defineOptions({ inheritAttrs: false })
 
 const props = withDefaults(defineProps<SwitchProps>(), {
-  modelValue: false,
   size: 'md',
   state: 'default',
   disabled: false,

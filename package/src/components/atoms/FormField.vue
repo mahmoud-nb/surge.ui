@@ -187,9 +187,9 @@ const labelClasses = computed(() => [
 
 // TODO : Removed individual properties in favor of mixin
 @media (prefers-contrast: high) {
-  .su-form-field-container {
+  .su-form-field {
     border-width: 2px;
-    
+
     &:focus-within {
       border-width: 3px;
     }

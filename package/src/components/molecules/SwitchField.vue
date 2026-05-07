@@ -39,6 +39,7 @@ const switchProps = computed(() => {
     :label="label"
     :message="message"
     :state="state"
+    :size="size"
     :required="required"
     :disabled="disabled"
   >

@@ -343,6 +343,7 @@ defineExpose({
     :label="label"
     :message="message"
     :state="state"
+    :size="size"
     :required="required"
     :disabled="disabled"
   >

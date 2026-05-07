@@ -60,8 +60,8 @@ defineExpose({
   focus,
   open,
   close,
-  selectRef: selectBoxRef?.value?.selectRef,
-  inputRef: selectBoxRef?.value?.inputRef
+  get selectRef() { return selectBoxRef.value?.selectRef },
+  get inputRef() { return selectBoxRef.value?.inputRef }
 })
 </script>
 
@@ -71,6 +71,7 @@ defineExpose({
     :label="label"
     :message="message"
     :state="state"
+    :size="size"
     :required="required"
     :disabled="disabled"
   >

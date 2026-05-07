@@ -58,7 +58,7 @@ const select = () => textareaRef.value?.select()
 defineExpose({
   focus,
   select,
-  textareaRef: textareaRef?.value?.textareaRef
+  get textareaRef() { return textareaRef.value?.textareaRef }
 })
 </script>
 
@@ -68,6 +68,7 @@ defineExpose({
     :label="label"
     :message="message"
     :state="state"
+    :size="size"
     :required="required"
     :disabled="disabled"
   >

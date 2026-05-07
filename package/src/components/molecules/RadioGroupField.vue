@@ -61,6 +61,7 @@ const handleBlur = (event: FocusEvent) => {
     :label="label"
     :message="message"
     :state="state"
+    :size="size"
     :required="required"
     :disabled="disabled"
   >
