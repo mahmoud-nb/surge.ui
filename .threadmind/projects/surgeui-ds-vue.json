@@ -1,0 +1,7 @@
+{
+  "id": "surgeui-ds-vue",
+  "title": "SurgeUI DS Vue",
+  "systemContext": "Design system Vue 3 — monorepo npm workspaces. Package: @surgeui/ds-vue (composants, Storybook). Docs: VitePress bilingue (FR/EN). Architecture atomique: atoms → molecules → organisms → templates. Stack: Vue 3, TypeScript, SCSS, Vite.",
+  "mode": "solo",
+  "rootThreadId": "main"
+}

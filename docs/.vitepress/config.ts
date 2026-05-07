@@ -3,8 +3,13 @@ import pkg from '../../package.json'
 
 // Charger les variables d'environnement
 // Mode sera 'development' ou 'production'
-const mode = import.meta.env.DEV ? 'development' : 'production'
-const env = loadEnv(mode, import.meta.url, 'VITE_')
+
+const mode = typeof process !== 'undefined' && process.env?.NODE_ENV || 'development'
+const env = loadEnv(mode, process.cwd(), 'VITE_')
+
+// TODO : use import.meta.env
+// const mode = import.meta.env.DEV ? 'development' : 'production'
+// const env = loadEnv(mode, import.meta.url, 'VITE_')
 
 // Utiliser les variables d'environnement avec fallback
 const ROOT_URL = env.VITE_APP_ROOT_URL || pkg.config.rootUrl

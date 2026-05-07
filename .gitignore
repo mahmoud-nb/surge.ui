@@ -140,5 +140,8 @@ test-results/
 # Nx
 .nx/cache
 
-#Agents
+# Agents
 AGENTS.md
+
+# Claude
+.claude/settings.local.json
