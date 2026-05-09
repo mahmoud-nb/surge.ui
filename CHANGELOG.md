@@ -2,6 +2,34 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.1.0](https://mahmoud-nb.github.io/surge.ui/compare/v2.0.0...v2.1.0) (2026-05-09)
+
+
+### 📚 Documentation
+
+* add CLAUDE.md for Claude Code onboarding ([30c6da9](https://mahmoud-nb.github.io/surge.ui/commit/30c6da93e0f011e052559ae1794b1b0cb08ba582))
+
+
+### 🐛 Bug Fixes
+
+* **a11y:** implement WCAG contrast ratio, i18n required label, fix dialog aria conflict ([43130ef](https://mahmoud-nb.github.io/surge.ui/commit/43130ef322c608f3a3532c67bd2b0e33899a3659))
+* add formulaires metadata and update SliderField styles for improved UI consistency ([1f64dba](https://mahmoud-nb.github.io/surge.ui/commit/1f64dbae201d71c062d72c95e39c8a04ad18b6f7))
+* use import.meta.env for Vite compat, kebab-case slot props, formatting ([095b989](https://mahmoud-nb.github.io/surge.ui/commit/095b9898a4d50961321cf448e46f06d95b4d2618))
+
+
+### ✨ Features
+
+* add default, forest, ocean, and sunset themes with light and dark modes ([1087498](https://mahmoud-nb.github.io/surge.ui/commit/10874984156eaf7dc0d7ad0b0a6c800f5bece4c7))
+* add formulaires sub thread ([8c4c9c8](https://mahmoud-nb.github.io/surge.ui/commit/8c4c9c865b11479133b51f948bd5078c0036ac5c))
+* add settings for thread-mind MCP, update package version to 2.0.0, and refactor environment variable loading in config files ([9812635](https://mahmoud-nb.github.io/surge.ui/commit/98126352062b3f63d9d9e422b9090ae14a25f6a8))
+* add size prop to form fields and update inputRef accessors for better compatibility ([47c6e80](https://mahmoud-nb.github.io/surge.ui/commit/47c6e8003ba96d1af0dd9f330ac63bb87172e274))
+* add themes section to the thread structure and create themes metadata file ([430fd12](https://mahmoud-nb.github.io/surge.ui/commit/430fd1277a4dd7321616269dc7a742a9d7230c70))
+* enhance accessibility for input components by adding aria labels and roles for prefix/suffix elements ([d465483](https://mahmoud-nb.github.io/surge.ui/commit/d465483256f9e72344d70e95cb7ad23f8bf53def))
+* quality improvements — i18n props, stable IDs, a11y fixes, stories & docs ([c902a01](https://mahmoud-nb.github.io/surge.ui/commit/c902a01becd1313c40b36d5a659e7dadd80a2159))
+* update .gitignore, add Claude context management files, and refactor environment variable loading ([bd823df](https://mahmoud-nb.github.io/surge.ui/commit/bd823df2a47e05322fe712a777d663654da930d1))
+* update readme file ([edcc1dd](https://mahmoud-nb.github.io/surge.ui/commit/edcc1dd3df632dabf32c38ad18c6e5bbdefd06c6))
+* update theme mode options to include 'system' and remove 'auto' ([2545792](https://mahmoud-nb.github.io/surge.ui/commit/25457927130e94f239afc266f3151ed7610487e1))
+
 ## [2.0.0](https://mahmoud-nb.github.io/surge.ui/compare/v1.0.5...v2.0.0) (2026-03-07)
 
 
