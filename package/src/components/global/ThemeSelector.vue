@@ -31,9 +31,9 @@
         label="Mode"
         message="Choisir entre clair, sombre ou automatique (système)"
         :options="[
-          { value: 'auto', label: 'Automatique (système)' },
           { value: 'light', label: 'Clair' },
-          { value: 'dark', label: 'Sombre' }
+          { value: 'dark', label: 'Sombre' },
+          { value: 'system', label: 'Système' }
         ]"
         @update:model-value="setThemeMode($event as 'light' | 'dark' | 'auto')"
       />

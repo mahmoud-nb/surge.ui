@@ -9,6 +9,10 @@ import type {
   UseThemeOptions,
   DeprecatedThemeName,
 } from '@/types/theme';
+
+// Mode 'system' en localStorage peut être stocké comme 'auto' dans les configs
+// sauvegardées avant la migration — on gère les deux cas dans loadConfig.
+const LEGACY_AUTO = 'auto';
 import themeConfig from '@/theme.config';
 
 // ============================================================
@@ -111,18 +115,12 @@ export function useTheme(options: UseThemeOptions = {}) {
   // Résolution — thème effectif
   // ========================================
 
-  const effectiveTheme = computed<Exclude<ThemeName, 'auto'>>(() => {
-    if (themeName.value === 'auto') {
-      // En mode 'auto', le thème visuel suit l'identité par défaut
-      return 'default';
-    }
-
+  const effectiveTheme = computed<ThemeName>(() => {
     const isAvailable = availableThemes.value.some((t) => t.id === themeName.value);
     if (!isAvailable) {
       console.warn(`[SurgeUI] Theme '${themeName.value}' is not available. Falling back to 'default'.`);
       return 'default';
     }
-
     return themeName.value;
   });
 
@@ -131,7 +129,7 @@ export function useTheme(options: UseThemeOptions = {}) {
   // ========================================
 
   const effectiveThemeMode = computed<'light' | 'dark'>(() => {
-    if (themeMode.value === 'auto') {
+    if (themeMode.value === 'system') {
       return systemTheme.value;
     }
     return themeMode.value;
@@ -199,29 +197,36 @@ export function useTheme(options: UseThemeOptions = {}) {
     try {
       const stored = localStorage.getItem(opts.storageKey);
       if (stored) {
-        const config: UserThemeConfig = JSON.parse(stored);
-
-        // Valider le thème stocké
-        if (
-          config.theme === 'auto' ||
-          availableThemes.value.some((t) => t.id === config.theme)
-        ) {
-          themeName.value = config.theme;
-        }
+        const config = JSON.parse(stored) as Record<string, string>;
 
         // Rétrocompatibilité : anciens thèmes 'light' / 'dark' en localStorage
-        if ((config.theme as string) === 'light') {
+        if (config.theme === 'light') {
           themeName.value = 'default';
           themeMode.value = 'light';
-        } else if ((config.theme as string) === 'dark') {
+        } else if (config.theme === 'dark') {
           themeName.value = 'default';
           themeMode.value = 'dark';
-        } else if (config.themeMode) {
-          themeMode.value = config.themeMode;
+        } else {
+          // Valider le thème stocké
+          if (availableThemes.value.some((t) => t.id === config.theme)) {
+            themeName.value = config.theme as ThemeName;
+          }
+
+          // Migration 'auto' → 'system' pour les configs sauvegardées avant la v2
+          const storedMode = config.themeMode === LEGACY_AUTO ? 'system' : config.themeMode;
+          if (storedMode === 'light' || storedMode === 'dark' || storedMode === 'system') {
+            themeMode.value = storedMode;
+          }
         }
 
-        if (config.contrast) contrastMode.value = config.contrast;
-        if (config.motion) motionMode.value = config.motion;
+        const storedContrast = config.contrast;
+        if (storedContrast === 'normal' || storedContrast === 'high' || storedContrast === 'auto') {
+          contrastMode.value = storedContrast;
+        }
+        const storedMotion = config.motion;
+        if (storedMotion === 'normal' || storedMotion === 'reduce' || storedMotion === 'auto') {
+          motionMode.value = storedMotion;
+        }
       }
     } catch (error) {
       console.error('[SurgeUI] Erreur chargement thème:', error);
@@ -233,7 +238,7 @@ export function useTheme(options: UseThemeOptions = {}) {
 
     try {
       localStorage.removeItem(opts.storageKey);
-      themeName.value = opts.defaultTheme as ThemeName;
+      themeName.value = opts.defaultTheme;
       themeMode.value = opts.defaultThemeMode as ThemeMode;
       contrastMode.value = 'auto';
       motionMode.value = 'auto';
@@ -275,12 +280,10 @@ export function useTheme(options: UseThemeOptions = {}) {
     }
 
     // Vérifier la disponibilité
-    if (name !== 'auto') {
-      const isAvailable = availableThemes.value.some((t) => t.id === name);
-      if (!isAvailable) {
-        console.warn(`[SurgeUI] Theme '${name}' is not available in the current build.`);
-        return;
-      }
+    const isAvailable = availableThemes.value.some((t) => t.id === name);
+    if (!isAvailable) {
+      console.warn(`[SurgeUI] Theme '${name}' is not available in the current build.`);
+      return;
     }
 
     themeName.value = name as ThemeName;
@@ -289,7 +292,7 @@ export function useTheme(options: UseThemeOptions = {}) {
   };
 
   /**
-   * Définit le mode luminosité (light / dark / auto).
+   * Définit le mode luminosité (light / dark / system).
    */
   const setThemeMode = (mode: ThemeMode) => {
     themeMode.value = mode;
@@ -313,7 +316,8 @@ export function useTheme(options: UseThemeOptions = {}) {
    * Bascule entre light et dark (ou auto → dark si on ne sait pas).
    */
   const toggleMode = () => {
-    if (themeMode.value === 'auto') {
+    if (themeMode.value === 'system') {
+      // Quitter 'system' en fixant le mode opposé à celui actuellement appliqué
       themeMode.value = systemTheme.value === 'dark' ? 'light' : 'dark';
     } else {
       themeMode.value = isDarkMode.value ? 'light' : 'dark';

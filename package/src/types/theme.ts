@@ -2,8 +2,8 @@
 // TYPES POUR LE SYSTÈME DE THÈMES
 // ============================================================
 
-export type ThemeName = 'default' | 'ocean' | 'forest' | 'sunset' | 'auto';
-export type ThemeMode = 'light' | 'dark' | 'auto';
+export type ThemeName = 'default' | 'ocean' | 'forest' | 'sunset';
+export type ThemeMode = 'light' | 'dark' | 'system';
 export type ContrastMode = 'normal' | 'high' | 'auto';
 export type MotionMode = 'normal' | 'reduce' | 'auto';
 
@@ -21,7 +21,7 @@ export interface ThemeConfig {
    * Liste des thèmes à inclure dans le build
    * Plus de thèmes = bundle CSS plus volumineux
    */
-  themes: Exclude<ThemeName, 'auto'>[];
+  themes: ThemeName[];
 
   /**
    * Thème par défaut
@@ -59,7 +59,7 @@ export interface ThemeConfig {
  * Métadonnées d'un thème
  */
 export interface ThemeMetadata {
-  id: Exclude<ThemeName, 'auto'>;
+  id: ThemeName;
   name: string;
   description: string;
   category: 'system' | 'color';
@@ -91,7 +91,7 @@ export interface UseThemeOptions {
   /**
    * Thèmes disponibles (overrides la config globale)
    */
-  availableThemes?: Exclude<ThemeName, 'auto'>[];
+  availableThemes?: ThemeName[];
 
   /**
    * Thème par défaut
