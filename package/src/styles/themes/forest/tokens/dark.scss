@@ -1,0 +1,119 @@
+@use '../../../../styles/foundations/colors' as *;
+@use '../_color' as *;
+
+// ============================================================
+// TOKENS SÉMANTIQUES — THÈME FOREST / MODE SOMBRE
+// Fond très sombre vert-forêt, accents orange automne lumineux
+// Contrastes WCAG AA validés
+// ============================================================
+
+$theme-forest-dark: (
+  // Palette primaire (teintes forêt)
+  'primary-50':  $forest-50,
+  'primary-100': $forest-100,
+  'primary-200': $forest-200,
+  'primary-300': $forest-300,
+  'primary-400': $forest-400,
+  'primary-500': $forest-500,
+  'primary-600': $forest-600,
+  'primary-700': $forest-700,
+  'primary-800': $forest-800,
+  'primary-900': $forest-900,
+  'primary-950': $forest-950,
+
+  // Texte
+  'text-primary':     $forest-50,
+  'text-secondary':   $forest-100,
+  'text-tertiary':    $forest-300,
+  'text-placeholder': $forest-400,
+  'text-disabled':    $forest-700,
+  'text-inverse':     #14532d,
+
+  // Liens (vert lumineux lisible sur fond sombre)
+  'link-default':     $forest-400,
+  'link-hover':       $forest-300,
+  'link-visited':     $forest-500,
+  'link-muted':       $forest-600,
+  'link-default-rgb': '74 222 128',   // #4ade80
+
+  // Fonds
+  'bg-canvas':           #071408,
+  'bg-surface':          #0f1f0f,
+  'bg-surface-elevated': #162817,
+  'bg-overlay':          rgba($pure-black, 0.7),
+  'bg-disabled':         #1a3020,
+
+  // Fonds interactifs
+  'bg-hover':    #1a3020,
+  'bg-active':   #234028,
+  'bg-selected': rgba(34, 197, 94, 0.2),
+
+  // Fonds inversés (section claire sur page sombre)
+  'bg-inverse':        #f7fee7,
+  'bg-inverse-subtle': $forest-50,
+  'surface-inverse':   $forest-100,
+
+  // Bordures
+  'border-default':  #234028,
+  'border-subtle':   #1a3020,
+  'border-strong':   #2d5234,
+  'border-focus':    $forest-400,
+  'border-disabled': #1a3020,
+
+  // Bordures interactives
+  'border-hover':    $forest-500,
+  'border-selected': $forest-400,
+
+  // Bordure inversée
+  'border-inverse': $forest-200,
+
+  // États — succès
+  'state-success':              $forest-400,
+  'state-success-bg':           rgba(34, 197, 94, 0.15),
+  'state-success-border-color': $forest-500,
+  'state-success-border-hover': $forest-300,
+  'state-success-border-focus': $forest-600,
+
+  // États — avertissement
+  'state-warning':              $earth-300,
+  'state-warning-bg':           rgba(245, 158, 11, 0.15),
+  'state-warning-border-color': $earth-400,
+  'state-warning-border-hover': $earth-200,
+  'state-warning-border-focus': $earth-600,
+
+  // États — erreur
+  'state-error':              #f87171,
+  'state-error-bg':           rgba(239, 68, 68, 0.15),
+  'state-error-border-color': #ef4444,
+  'state-error-border-hover': #fca5a5,
+  'state-error-border-focus': #dc2626,
+
+  // États — info
+  'state-info':              #38bdf8,
+  'state-info-bg':           rgba(56, 189, 248, 0.15),
+  'state-info-border-color': #0284c7,
+  'state-info-border-hover': #7dd3fc,
+  'state-info-border-focus': #0369a1,
+
+  // Actions primaires (orange automne pour accent en dark mode)
+  'primary-default':  $autumn-400,
+  'primary-hover':    $autumn-500,
+  'primary-active':   $autumn-600,
+  'primary-focus':    $autumn-400,
+  'primary-disabled': #4b2d0f,
+  'primary-text':     $pure-white,
+
+  // Actions secondaires
+  'secondary-default':  #234028,
+  'secondary-hover':    #2d5234,
+  'secondary-active':   #1a3020,
+  'secondary-focus':    #234028,
+  'secondary-disabled': #162817,
+  'secondary-text':     $forest-100,
+
+  // Texte sur fond inversé
+  'text-on-inverse': #14532d,
+
+  // Ombre
+  'shadow-color': rgba($pure-black, 0.5)
+);

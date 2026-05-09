@@ -20,11 +20,25 @@
       <SelectBoxField
         v-model="themeName"
         label="Thème"
-        message="Choisir le thème de l'application"  
+        message="Choisir l'identité visuelle de l'application"
         :options="availableThemesOptions"
       />
     </div>
-    
+
+    <div class="theme-option">
+      <SelectBoxField
+        :model-value="themeMode"
+        label="Mode"
+        message="Choisir entre clair, sombre ou automatique (système)"
+        :options="[
+          { value: 'auto', label: 'Automatique (système)' },
+          { value: 'light', label: 'Clair' },
+          { value: 'dark', label: 'Sombre' }
+        ]"
+        @update:model-value="setThemeMode($event as 'light' | 'dark' | 'auto')"
+      />
+    </div>
+
     <!--
     <div class="theme-option">
       <SelectBoxField
@@ -150,12 +164,15 @@ import Button from '../atoms/Button.vue';
 import SelectBoxField from '../molecules/SelectBoxField.vue'
 import { ArrowPathIcon } from '@heroicons/vue/24/outline'
 
-const { 
+const {
   availableThemes,
-  themeName, 
-  contrastMode, 
-  motionMode,  
-  clearConfig } = useTheme()
+  themeName,
+  themeMode,
+  contrastMode,
+  motionMode,
+  setThemeMode,
+  clearConfig,
+} = useTheme()
 
 const { setCustomVariable, resetCustomTheme } = useCustomTheme()
 
@@ -204,14 +221,17 @@ const resetCustomColors = () => {
   showCustomColorSection.value = false
 }
 
-const availableThemesOptions = computed(() => 
-  availableThemes.value.map(t => ({ value: t.id, label: t.name }))
+const availableThemesOptions = computed(() =>
+  availableThemes.value.map((t) => ({ value: t.id, label: t.name }))
 )
 
 const hasChanges = computed(() => {
-  return themeName.value !== 'auto' || 
-         contrastMode.value !== 'auto' || 
-         motionMode.value !== 'auto';
+  return (
+    themeName.value !== 'auto' ||
+    themeMode.value !== 'auto' ||
+    contrastMode.value !== 'auto' ||
+    motionMode.value !== 'auto'
+  )
 })
 </script>
 

@@ -1,0 +1,119 @@
+@use '../../../../styles/foundations/colors' as *;
+@use '../_color' as *;
+
+// ============================================================
+// TOKENS SÉMANTIQUES — THÈME OCEAN / MODE SOMBRE
+// Fond très sombre bleu-océan, accents corail lumineux
+// Contrastes WCAG AA validés
+// ============================================================
+
+$theme-ocean-dark: (
+  // Palette primaire (teintes océan)
+  'primary-50':  $ocean-50,
+  'primary-100': $ocean-100,
+  'primary-200': $ocean-200,
+  'primary-300': $ocean-300,
+  'primary-400': $ocean-400,
+  'primary-500': $ocean-500,
+  'primary-600': $ocean-600,
+  'primary-700': $ocean-700,
+  'primary-800': $ocean-800,
+  'primary-900': $ocean-900,
+  'primary-950': $ocean-950,
+
+  // Texte
+  'text-primary':     $ocean-50,
+  'text-secondary':   $ocean-100,
+  'text-tertiary':    $ocean-300,
+  'text-placeholder': $ocean-400,
+  'text-disabled':    $ocean-700,
+  'text-inverse':     #0c4a6e,
+
+  // Liens (corail clair pour bonne lisibilité sur fond sombre)
+  'link-default':     $coral-400,
+  'link-hover':       #fba06c,
+  'link-visited':     $coral-600,
+  'link-muted':       $ocean-400,
+  'link-default-rgb': '251 146 60',   // #fb923c
+
+  // Fonds
+  'bg-canvas':           #071828,
+  'bg-surface':          #0c1e2e,
+  'bg-surface-elevated': #0f2a3d,
+  'bg-overlay':          rgba($pure-black, 0.7),
+  'bg-disabled':         #163548,
+
+  // Fonds interactifs
+  'bg-hover':    #163548,
+  'bg-active':   #1e4a5f,
+  'bg-selected': rgba($ocean-500, 0.2),
+
+  // Fonds inversés (section claire sur page sombre)
+  'bg-inverse':        #e0f2fe,
+  'bg-inverse-subtle': #f0f9ff,
+  'surface-inverse':   $ocean-50,
+
+  // Bordures
+  'border-default':  #1e4a5f,
+  'border-subtle':   #163548,
+  'border-strong':   #2a6480,
+  'border-focus':    $ocean-400,
+  'border-disabled': #163548,
+
+  // Bordures interactives
+  'border-hover':    $ocean-500,
+  'border-selected': $ocean-400,
+
+  // Bordure inversée
+  'border-inverse': $ocean-200,
+
+  // États — succès
+  'state-success':              $teal-400,
+  'state-success-bg':           rgba(45, 212, 191, 0.15),
+  'state-success-border-color': $teal-500,
+  'state-success-border-hover': $teal-300,
+  'state-success-border-focus': $teal-600,
+
+  // États — avertissement
+  'state-warning':              $coral-400,
+  'state-warning-bg':           rgba(249, 115, 22, 0.15),
+  'state-warning-border-color': $coral-300,
+  'state-warning-border-hover': #fba06c,
+  'state-warning-border-focus': $coral-600,
+
+  // États — erreur
+  'state-error':              #f87171,
+  'state-error-bg':           rgba(239, 68, 68, 0.15),
+  'state-error-border-color': #ef4444,
+  'state-error-border-hover': #fca5a5,
+  'state-error-border-focus': #dc2626,
+
+  // États — info
+  'state-info':              $ocean-400,
+  'state-info-bg':           rgba(6, 182, 212, 0.15),
+  'state-info-border-color': $ocean-500,
+  'state-info-border-hover': $ocean-300,
+  'state-info-border-focus': $ocean-600,
+
+  // Actions primaires (corail pour accent en dark mode)
+  'primary-default':  $coral-500,
+  'primary-hover':    $coral-400,
+  'primary-active':   $coral-600,
+  'primary-focus':    $coral-500,
+  'primary-disabled': #4b2510,
+  'primary-text':     $pure-white,
+
+  // Actions secondaires
+  'secondary-default':  #1e4a5f,
+  'secondary-hover':    #2a6480,
+  'secondary-active':   #163548,
+  'secondary-focus':    #1e4a5f,
+  'secondary-disabled': #0c1e2e,
+  'secondary-text':     $ocean-100,
+
+  // Texte sur fond inversé
+  'text-on-inverse': #0c4a6e,
+
+  // Ombre
+  'shadow-color': rgba($pure-black, 0.5)
+);

@@ -1,9 +1,17 @@
-// index.scss
 @use '../_registry' as registry;
-@use './_tokens' as *;
+@use './tokens/light' as *;
+@use './tokens/dark' as *;
 
-@include registry.register-theme('sunset', $theme-sunset);
+// ============================================================
+// THÈME SUNSET — MODE CLAIR + SOMBRE
+// ============================================================
 
-[data-theme='sunset'] {
-  @include registry.generate-theme-vars($theme-sunset);
+// --- Mode clair ---
+[data-theme='sunset'][data-theme-mode='light'] {
+  @include registry.generate-theme-vars($theme-sunset-light);
+}
+
+// --- Mode sombre ---
+[data-theme='sunset'][data-theme-mode='dark'] {
+  @include registry.generate-theme-vars($theme-sunset-dark);
 }

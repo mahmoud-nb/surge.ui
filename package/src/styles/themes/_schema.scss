@@ -1,0 +1,134 @@
+@use 'sass:map';
+
+// ============================================================
+// SCHÉMA DE RÉFÉRENCE — TOKENS REQUIS
+// Liste normative de tous les tokens que chaque thème DOIT définir
+// pour garantir la cohérence inter-thèmes.
+// ============================================================
+
+$theme-required-tokens: (
+  // Texte
+  'text-primary',
+  'text-secondary',
+  'text-tertiary',
+  'text-placeholder',
+  'text-disabled',
+  'text-inverse',
+
+  // Liens
+  'link-default',
+  'link-hover',
+  'link-visited',
+  'link-muted',
+  'link-default-rgb',       // valeur RGB espace-séparée pour transparences : ex. '37 99 235'
+
+  // Fonds
+  'bg-canvas',
+  'bg-surface',
+  'bg-surface-elevated',
+  'bg-overlay',
+  'bg-disabled',
+
+  // Fonds interactifs
+  'bg-hover',
+  'bg-active',
+  'bg-selected',
+
+  // Fonds inversés
+  'bg-inverse',
+  'bg-inverse-subtle',
+  'surface-inverse',
+
+  // Bordures
+  'border-default',
+  'border-subtle',
+  'border-strong',
+  'border-focus',
+  'border-disabled',
+
+  // Bordures interactives
+  'border-hover',
+  'border-selected',
+
+  // Bordure inversée
+  'border-inverse',
+
+  // États — succès
+  'state-success',
+  'state-success-bg',
+  'state-success-border-color',
+  'state-success-border-hover',
+  'state-success-border-focus',
+
+  // États — avertissement
+  'state-warning',
+  'state-warning-bg',
+  'state-warning-border-color',
+  'state-warning-border-hover',
+  'state-warning-border-focus',
+
+  // États — erreur
+  'state-error',
+  'state-error-bg',
+  'state-error-border-color',
+  'state-error-border-hover',
+  'state-error-border-focus',
+
+  // États — info
+  'state-info',
+  'state-info-bg',
+  'state-info-border-color',
+  'state-info-border-hover',
+  'state-info-border-focus',
+
+  // Actions primaires
+  'primary-default',
+  'primary-hover',
+  'primary-active',
+  'primary-focus',
+  'primary-disabled',
+  'primary-text',
+
+  // Actions secondaires
+  'secondary-default',
+  'secondary-hover',
+  'secondary-active',
+  'secondary-focus',
+  'secondary-disabled',
+  'secondary-text',
+
+  // Texte sur fond inversé
+  'text-on-inverse',
+
+  // Ombre
+  'shadow-color',
+
+  // Palette primaire (50–950) — requise pour les composants qui l'utilisent directement
+  'primary-50',
+  'primary-100',
+  'primary-200',
+  'primary-300',
+  'primary-400',
+  'primary-500',
+  'primary-600',
+  'primary-700',
+  'primary-800',
+  'primary-900',
+  'primary-950'
+) !default;
+
+/// Mixin de validation — appel optionnel en dev / CI
+/// Émet un @warn pour tout token manquant dans la map fournie.
+///
+/// @param {Map}    $theme-map   — map de tokens du thème à valider
+/// @param {String} $theme-name — identifiant lisible (pour le message d'erreur)
+///
+/// @example
+///   @include validate-theme($theme-default-light, 'default/light');
+@mixin validate-theme($theme-map, $theme-name) {
+  @each $token in $theme-required-tokens {
+    @if not map.has-key($theme-map, $token) {
+      @warn 'Theme "#{$theme-name}" is missing required token: --su-#{$token}';
+    }
+  }
+}

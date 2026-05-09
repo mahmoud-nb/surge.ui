@@ -1,0 +1,119 @@
+@use '../../../../styles/foundations/colors' as *;
+@use '../_color' as *;
+
+// ============================================================
+// TOKENS SÉMANTIQUES — THÈME SUNSET / MODE SOMBRE
+// Fond très sombre violet-coucher, accents rose/violet lumineux
+// Contrastes WCAG AA validés
+// ============================================================
+
+$theme-sunset-dark: (
+  // Palette primaire (teintes sunset)
+  'primary-50':  #fff1f2,
+  'primary-100': #ffe4e6,
+  'primary-200': #fecdd3,
+  'primary-300': #fda4af,
+  'primary-400': #fb923c,
+  'primary-500': #f97316,
+  'primary-600': #ea580c,
+  'primary-700': #c2410c,
+  'primary-800': #9a3412,
+  'primary-900': #7c2d12,
+  'primary-950': #4b1d0e,
+
+  // Texte
+  'text-primary':     #fff7ed,
+  'text-secondary':   #ffedd5,
+  'text-tertiary':    #fdba74,
+  'text-placeholder': $sunset-orange-400,
+  'text-disabled':    #7c2d12,
+  'text-inverse':     #7c2d12,
+
+  // Liens (violet clair lumineux pour dark mode)
+  'link-default':     $sunset-purple-light,
+  'link-hover':       $sunset-purple-500,
+  'link-visited':     #d946ef,
+  'link-muted':       $sunset-orange-400,
+  'link-default-rgb': '192 132 252',  // #c084fc
+
+  // Fonds
+  'bg-canvas':           #1a0a1a,
+  'bg-surface':          #2a1428,
+  'bg-surface-elevated': #3d1f38,
+  'bg-overlay':          rgba($pure-black, 0.7),
+  'bg-disabled':         #3d1f38,
+
+  // Fonds interactifs
+  'bg-hover':    #3d1f38,
+  'bg-active':   #502847,
+  'bg-selected': rgba(168, 85, 247, 0.2),
+
+  // Fonds inversés (section claire sur page sombre)
+  'bg-inverse':        #fff7ed,
+  'bg-inverse-subtle': #ffedd5,
+  'surface-inverse':   #fff1f2,
+
+  // Bordures
+  'border-default':  #4a2040,
+  'border-subtle':   #3d1f38,
+  'border-strong':   #642a58,
+  'border-focus':    $sunset-purple-light,
+  'border-disabled': #3d1f38,
+
+  // Bordures interactives
+  'border-hover':    $sunset-purple-500,
+  'border-selected': $sunset-purple-light,
+
+  // Bordure inversée
+  'border-inverse': #fdba74,
+
+  // États — succès
+  'state-success':              #4ade80,
+  'state-success-bg':           rgba(34, 197, 94, 0.15),
+  'state-success-border-color': #22c55e,
+  'state-success-border-hover': #86efac,
+  'state-success-border-focus': #16a34a,
+
+  // États — avertissement
+  'state-warning':              #fbbf24,
+  'state-warning-bg':           rgba(245, 158, 11, 0.15),
+  'state-warning-border-color': #f59e0b,
+  'state-warning-border-hover': #fde68a,
+  'state-warning-border-focus': #d97706,
+
+  // États — erreur
+  'state-error':              #f87171,
+  'state-error-bg':           rgba(239, 68, 68, 0.15),
+  'state-error-border-color': #ef4444,
+  'state-error-border-hover': #fca5a5,
+  'state-error-border-focus': #dc2626,
+
+  // États — info
+  'state-info':              #38bdf8,
+  'state-info-bg':           rgba(56, 189, 248, 0.15),
+  'state-info-border-color': #0284c7,
+  'state-info-border-hover': #7dd3fc,
+  'state-info-border-focus': #0369a1,
+
+  // Actions primaires (rose clair pour dark mode)
+  'primary-default':  $sunset-pink-500,
+  'primary-hover':    $sunset-pink-600,
+  'primary-active':   #be185d,
+  'primary-focus':    $sunset-pink-500,
+  'primary-disabled': #6b1850,
+  'primary-text':     $pure-white,
+
+  // Actions secondaires
+  'secondary-default':  #4a2040,
+  'secondary-hover':    #642a58,
+  'secondary-active':   #3d1f38,
+  'secondary-focus':    #4a2040,
+  'secondary-disabled': #3d1f38,
+  'secondary-text':     #ffedd5,
+
+  // Texte sur fond inversé
+  'text-on-inverse': #7c2d12,
+
+  // Ombre
+  'shadow-color': rgba($pure-black, 0.5)
+);

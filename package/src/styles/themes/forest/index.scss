@@ -1,9 +1,17 @@
-// index.scss
 @use '../_registry' as registry;
-@use './_tokens' as *;
+@use './tokens/light' as *;
+@use './tokens/dark' as *;
 
-@include registry.register-theme('forest', $theme-forest);
+// ============================================================
+// THÈME FOREST — MODE CLAIR + SOMBRE
+// ============================================================
 
-[data-theme='forest'] {
-  @include registry.generate-theme-vars($theme-forest);
+// --- Mode clair ---
+[data-theme='forest'][data-theme-mode='light'] {
+  @include registry.generate-theme-vars($theme-forest-light);
+}
+
+// --- Mode sombre ---
+[data-theme='forest'][data-theme-mode='dark'] {
+  @include registry.generate-theme-vars($theme-forest-dark);
 }

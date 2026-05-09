@@ -1,0 +1,118 @@
+@use '../../../../styles/foundations/colors' as *;
+@use '../_color' as *;
+
+// ============================================================
+// TOKENS SÉMANTIQUES — THÈME FOREST / MODE CLAIR
+// ============================================================
+
+$theme-forest-light: (
+  // Palette primaire (teintes forêt)
+  'primary-50':  $forest-50,
+  'primary-100': $forest-100,
+  'primary-200': $forest-200,
+  'primary-300': $forest-300,
+  'primary-400': $forest-400,
+  'primary-500': $forest-500,
+  'primary-600': $forest-600,
+  'primary-700': $forest-700,
+  'primary-800': $forest-800,
+  'primary-900': $forest-900,
+  'primary-950': $forest-950,
+
+  // Texte
+  'text-primary':     #14532d,
+  'text-secondary':   #166534,
+  'text-tertiary':    $forest-600,
+  'text-placeholder': $forest-600,
+  'text-disabled':    $forest-200,
+  'text-inverse':     $forest-50,
+
+  // Liens
+  'link-default':     $forest-700,
+  'link-hover':       $forest-800,
+  'link-visited':     $forest-900,
+  'link-muted':       $forest-400,
+  'link-default-rgb': '21 128 61',    // #15803d
+
+  // Fonds
+  'bg-canvas':           #f7fee7,
+  'bg-surface':          $pure-white,
+  'bg-surface-elevated': $forest-50,
+  'bg-overlay':          rgba($forest-900, 0.6),
+  'bg-disabled':         #ecfccb,
+  'bg-primary-canvas':   $forest-50,
+
+  // Fonds interactifs
+  'bg-hover':    $forest-50,
+  'bg-active':   $forest-100,
+  'bg-selected': $forest-100,
+
+  // Fonds inversés (section sombre sur page claire)
+  'bg-inverse':        #071408,
+  'bg-inverse-subtle': #0f1f0f,
+  'surface-inverse':   #030a04,
+
+  // Bordures
+  'border-default':  $forest-200,
+  'border-subtle':   $forest-100,
+  'border-strong':   $forest-300,
+  'border-focus':    $forest-600,
+  'border-disabled': $forest-100,
+
+  // Bordures interactives
+  'border-hover':    $forest-400,
+  'border-selected': $forest-300,
+
+  // Bordure inversée
+  'border-inverse': #234028,
+
+  // États — succès
+  'state-success':              $forest-600,
+  'state-success-bg':           $forest-50,
+  'state-success-border-color': $forest-300,
+  'state-success-border-hover': $forest-400,
+  'state-success-border-focus': $forest-500,
+
+  // États — avertissement
+  'state-warning':              $earth-600,
+  'state-warning-bg':           $earth-50,
+  'state-warning-border-color': $earth-300,
+  'state-warning-border-hover': $earth-400,
+  'state-warning-border-focus': $earth-500,
+
+  // États — erreur
+  'state-error':              #dc2626,
+  'state-error-bg':           #fef2f2,
+  'state-error-border-color': #fee2e2,
+  'state-error-border-hover': #fca5a5,
+  'state-error-border-focus': #f87171,
+
+  // États — info
+  'state-info':              #0284c7,
+  'state-info-bg':           #e0f2fe,
+  'state-info-border-color': #bfdbfe,
+  'state-info-border-hover': #7dd3fc,
+  'state-info-border-focus': #38bdf8,
+
+  // Actions primaires (orange automne pour contraste)
+  'primary-default':  $autumn-500,
+  'primary-hover':    $autumn-600,
+  'primary-active':   #c2410c,
+  'primary-focus':    $autumn-500,
+  'primary-disabled': $autumn-400,
+  'primary-text':     $pure-white,
+
+  // Actions secondaires
+  'secondary-default':  $forest-100,
+  'secondary-hover':    $forest-200,
+  'secondary-active':   $forest-300,
+  'secondary-focus':    $forest-200,
+  'secondary-disabled': $forest-50,
+  'secondary-text':     $forest-900,
+
+  // Texte sur fond inversé
+  'text-on-inverse': $forest-50,
+
+  // Ombre
+  'shadow-color': rgba($forest-900, 0.12)
+);

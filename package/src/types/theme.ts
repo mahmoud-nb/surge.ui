@@ -2,9 +2,16 @@
 // TYPES POUR LE SYSTÈME DE THÈMES
 // ============================================================
 
-export type ThemeName = 'light' | 'dark' | 'ocean' | 'forest' | 'sunset' | 'auto';
+export type ThemeName = 'default' | 'ocean' | 'forest' | 'sunset' | 'auto';
+export type ThemeMode = 'light' | 'dark' | 'auto';
 export type ContrastMode = 'normal' | 'high' | 'auto';
 export type MotionMode = 'normal' | 'reduce' | 'auto';
+
+/**
+ * Types dépréciés — rétrocompatibilité
+ * @deprecated Utiliser ThemeName + ThemeMode à la place
+ */
+export type DeprecatedThemeName = 'light' | 'dark';
 
 /**
  * Configuration du Design System
@@ -15,27 +22,33 @@ export interface ThemeConfig {
    * Plus de thèmes = bundle CSS plus volumineux
    */
   themes: Exclude<ThemeName, 'auto'>[];
-  
+
   /**
    * Thème par défaut
    */
   defaultTheme: ThemeName;
-  
+
+  /**
+   * Mode par défaut (light / dark / auto)
+   * @default 'auto'
+   */
+  defaultThemeMode?: ThemeMode;
+
   /**
    * Préfixe des CSS variables
    */
   prefix?: string;
-  
+
   /**
    * Support du contraste élevé
    */
   highContrast?: boolean;
-  
+
   /**
    * Support de reduced-motion
    */
   reducedMotion?: boolean;
-  
+
   /**
    * Clé localStorage
    */
@@ -62,10 +75,11 @@ export interface ThemeMetadata {
 }
 
 /**
- * Configuration personnalisée du thème
+ * Configuration personnalisée du thème (persistée en localStorage)
  */
 export interface UserThemeConfig {
   theme: ThemeName;
+  themeMode: ThemeMode;
   contrast: ContrastMode;
   motion: MotionMode;
 }
@@ -78,17 +92,22 @@ export interface UseThemeOptions {
    * Thèmes disponibles (overrides la config globale)
    */
   availableThemes?: Exclude<ThemeName, 'auto'>[];
-  
+
   /**
    * Thème par défaut
    */
   defaultTheme?: ThemeName;
-  
+
+  /**
+   * Mode par défaut
+   */
+  defaultThemeMode?: ThemeMode;
+
   /**
    * Clé de stockage localStorage
    */
   storageKey?: string;
-  
+
   /**
    * Activer la persistance
    */

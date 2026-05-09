@@ -8,7 +8,7 @@
   import { useTheme } from '@/composables/useTheme'
   import { useCustomTheme } from '@/composables/useCustomTheme'
 
-  const { themeName, contrastMode, motionMode } = useTheme()
+  const { themeName, themeMode, effectiveThemeMode, contrastMode, motionMode } = useTheme()
   const { applyCustomTheme, resetCustomTheme } = useCustomTheme()
   const textDirection = ref('ltr')
   const showCustomThemeExample = ref(false)
@@ -48,9 +48,10 @@
 </script>
 
 <template>
-  <div 
+  <div
     class="su-global-preview"
     :data-theme="themeName"
+    :data-theme-mode="effectiveThemeMode"
   >  
     <ThemeSelector />
     <Panel
@@ -69,6 +70,7 @@
 
       <ul>
         <li><strong>Thème :</strong> {{ themeName }}</li>
+        <li><strong>Mode :</strong> {{ themeMode }} <em>(effectif : {{ effectiveThemeMode }})</em></li>
         <!-- <li><strong>Direction :</strong> {{ textDirection === 'rtl' ? 'Droite à gauche' : 'Gauche à droite' }}</li> -->
         <li><strong>Contraste :</strong> {{ contrastMode === 'high' ? 'Élevé' : 'Normal' }}</li>
         <li><strong>Animations :</strong> {{ motionMode === 'reduce' ? 'Réduites' : 'Normal' }}</li>

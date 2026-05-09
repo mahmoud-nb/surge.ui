@@ -59,11 +59,21 @@ const preview: Preview = {
   globalTypes: {
     theme: {
       description: 'Global theme for components',
-      defaultValue: 'light',
+      defaultValue: 'default',
       toolbar: {
         title: 'Theme',
         icon: 'circlehollow',
-        items: ['light', 'dark', 'sunset', 'ocean', 'forest'], // Valeurs de thème personnalisées ('dawn', 'dusk', 'midnight', etc.)
+        items: ['default', 'sunset', 'ocean', 'forest'], // Valeurs de thème personnalisées ('dawn', 'dusk', 'midnight', etc.)
+        dynamicTitle: true
+      }
+    },
+    thememode: {
+      description: 'Global theme mode (light/dark)',
+      defaultValue: 'light',
+      toolbar: {
+        title: 'Theme Mode',
+        icon: 'contrast',
+        items: ['light', 'dark'],
         dynamicTitle: true
       }
     },
@@ -85,14 +95,15 @@ const preview: Preview = {
       return {
         components: { story },
         template: `
-          <div class="su-preview-wrapper" :data-theme="theme" :dir="dir">
+          <div class="su-preview-wrapper" :data-theme="theme" :data-theme-mode="themeMode" :dir="dir">
             <story />
           </div>
         `,
         setup() {
           const theme = computed(() => context.globals.theme)
+          const themeMode = computed(() => context.globals.thememode)
           const dir = computed(() => context.globals.direction)
-          return { theme, dir }
+          return { theme, themeMode, dir }
         },
       }
     },

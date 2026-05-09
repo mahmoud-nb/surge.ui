@@ -1,9 +1,17 @@
-// index.scss
 @use '../_registry' as registry;
-@use './_tokens' as *;
+@use './tokens/light' as *;
+@use './tokens/dark' as *;
 
-@include registry.register-theme('ocean', $theme-ocean);
+// ============================================================
+// THÈME OCEAN — MODE CLAIR + SOMBRE
+// ============================================================
 
-[data-theme='ocean'] {
-  @include registry.generate-theme-vars($theme-ocean);
+// --- Mode clair ---
+[data-theme='ocean'][data-theme-mode='light'] {
+  @include registry.generate-theme-vars($theme-ocean-light);
+}
+
+// --- Mode sombre ---
+[data-theme='ocean'][data-theme-mode='dark'] {
+  @include registry.generate-theme-vars($theme-ocean-dark);
 }

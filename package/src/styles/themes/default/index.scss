@@ -1,0 +1,36 @@
+@use '../_registry' as registry;
+@use './tokens/light' as *;
+@use './tokens/dark' as *;
+
+// ============================================================
+// THÈME DEFAULT — MODE CLAIR + SOMBRE
+// Sélecteur double attribut : data-theme + data-theme-mode
+// ============================================================
+
+// --- Mode clair ---
+[data-theme='default'][data-theme-mode='light'] {
+  @include registry.generate-theme-vars($theme-default-light);
+}
+
+// --- Mode sombre ---
+[data-theme='default'][data-theme-mode='dark'] {
+  @include registry.generate-theme-vars($theme-default-dark);
+}
+
+// --- Fallback par défaut : aucun attribut → default light ---
+// S'applique avant JS ou si data-theme n'est jamais posé.
+// Le mode sombre via prefers-color-scheme n'est pas activé
+// automatiquement ; l'utilisateur doit le choisir explicitement.
+:root:not([data-theme]) {
+  @include registry.generate-theme-vars($theme-default-light);
+}
+
+// --- Rétrocompatibilité : anciens sélecteurs data-theme='light' / 'dark' ---
+// Pour les consommateurs qui auraient défini ces attributs manuellement.
+[data-theme='light'] {
+  @include registry.generate-theme-vars($theme-default-light);
+}
+
+[data-theme='dark'] {
+  @include registry.generate-theme-vars($theme-default-dark);
+}

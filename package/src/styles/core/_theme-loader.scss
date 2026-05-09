@@ -3,11 +3,21 @@
 @use '../tokens/contrast' as contrast;
 @use '../themes/_registry' as registry;
 
-$available-themes: ('light', 'dark', 'ocean', 'forest', 'sunset') !default;
+// ============================================================
+// CHARGEUR DE THÈMES
+// Chaque thème supporte désormais deux modes (light + dark)
+// via la stratégie double attribut :
+//   data-theme="<name>"  +  data-theme-mode="light|dark"
+// ============================================================
 
+$available-themes: ('default', 'ocean', 'forest', 'sunset') !default;
+
+/**
+ * Charge les thèmes listés.
+ * @param {String...} $theme-names — noms des thèmes à charger
+ */
 @mixin load-themes($theme-names...) {
   @each $theme in $theme-names {
-    // Vérifier que le thème existe dans la liste des thèmes disponibles
     @if list.index($available-themes, $theme) {
       $path: '../themes/' + $theme;
       @include meta.load-css($path);
@@ -18,10 +28,7 @@ $available-themes: ('light', 'dark', 'ocean', 'forest', 'sunset') !default;
 }
 
 /**
- * Charge tous les thèmes disponibles
- * Utilise la liste $available-themes
- * @example
- *   @include load-all-themes();
+ * Charge tous les thèmes disponibles.
  */
 @mixin load-all-themes() {
   @each $theme in $available-themes {
@@ -31,17 +38,24 @@ $available-themes: ('light', 'dark', 'ocean', 'forest', 'sunset') !default;
 }
 
 /**
- * Charge uniquement les thèmes système (light et dark)
- * @example
- *   @include load-system-themes();
+ * Charge uniquement le thème par défaut (mode clair + sombre).
+ * Remplace l'ancien load-system-themes() qui chargeait light + dark séparément.
  */
-@mixin load-system-themes() {
-  @include meta.load-css('../themes/light');
-  @include meta.load-css('../themes/dark');
+@mixin load-default-theme() {
+  @include meta.load-css('../themes/default');
 }
 
 /**
- * Charge le contraste élevé si activé
+ * @deprecated Utiliser load-default-theme() à la place.
+ * Conservé pour rétrocompatibilité.
+ */
+@mixin load-system-themes() {
+  @include load-default-theme();
+}
+
+/**
+ * Charge le support du contraste élevé.
+ * Utilise data-theme-mode='dark' au lieu de data-theme='dark'.
  */
 @mixin load-contrast($enabled: true) {
   @if $enabled {
@@ -50,17 +64,17 @@ $available-themes: ('light', 'dark', 'ocean', 'forest', 'sunset') !default;
       :root:not([data-contrast]) {
         @include registry.generate-theme-vars(contrast.$contrast-overrides);
       }
-      
-      :root:not([data-contrast])[data-theme='dark'] {
+
+      :root:not([data-contrast])[data-theme-mode='dark'] {
         @include registry.generate-theme-vars(contrast.$contrast-dark-overrides);
       }
     }
-    
+
     // Activation manuelle du contraste élevé
     [data-contrast='high'] {
       @include registry.generate-theme-vars(contrast.$contrast-overrides);
-      
-      &[data-theme='dark'] {
+
+      &[data-theme-mode='dark'] {
         @include registry.generate-theme-vars(contrast.$contrast-dark-overrides);
       }
     }
