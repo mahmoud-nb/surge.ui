@@ -18,7 +18,7 @@ color: var(--su-text-primary);
 
 **Avantages** :
 - 🎯 **Intention claire** : "texte principal" vs "gris 900"
-- 🔄 **Adaptabilité** : Change automatiquement selon le thème
+- 🔄 **Adaptabilité** : Change automatiquement selon le thème **et** le mode
 - 🛠️ **Maintenance** : Un seul endroit à modifier
 - ♿ **Accessibilité** : Garanties de contraste intégrées
 
@@ -29,7 +29,7 @@ Foundations (Palettes brutes)
     ↓
 Tokens sémantiques (Signification)
     ↓
-Variables CSS (Application)
+Variables CSS (Application via data-theme + data-theme-mode)
     ↓
 Composants (Utilisation)
 ```
@@ -111,6 +111,21 @@ Texte sur fond sombre (ou inversé selon le thème).
 
 **Usage** : Texte sur boutons primaires, bannières colorées.
 
+#### `--su-text-on-inverse`
+
+Texte sur un fond inversé (`--su-bg-inverse`).
+
+```vue
+<style scoped lang="scss">
+.inverted-section {
+  background-color: var(--su-bg-inverse);
+  color: var(--su-text-on-inverse);
+}
+</style>
+```
+
+**Usage** : Texte dans les sections qui contrastent avec le fond principal (ex. hero sombre sur page claire).
+
 ### 2. Liens
 
 Tokens spécifiques pour les liens hypertexte.
@@ -163,6 +178,22 @@ Liens secondaires, moins proéminents.
 }
 </style>
 ```
+
+#### `--su-link-default-rgb`
+
+Valeur RGB espace-séparée du lien par défaut, pour les transparences.
+
+```vue
+<style scoped lang="scss">
+.link-overlay {
+  // Utilisation avec la syntaxe rgb() moderne
+  background-color: rgb(var(--su-link-default-rgb) / 15%);
+  border-color: rgb(var(--su-link-default-rgb) / 50%);
+}
+</style>
+```
+
+**Usage** : Fonds semi-transparents basés sur la couleur du lien, badges, indicateurs.
 
 ### 3. Backgrounds
 
@@ -281,6 +312,52 @@ Background désactivé.
 
 **Usage** : Boutons, champs désactivés.
 
+#### `--su-bg-inverse`
+
+Fond inversé — contraste avec le fond principal du thème.
+
+```vue
+<style scoped lang="scss">
+.hero-banner {
+  background-color: var(--su-bg-inverse);
+  color: var(--su-text-on-inverse);
+}
+</style>
+```
+
+**Usage** : Sections promotionnelles, bannières hero, zones de mise en avant qui doivent contraster avec le contexte sans forcer un thème entier.
+
+#### `--su-bg-inverse-subtle`
+
+Fond inversé secondaire, moins prononcé que `--su-bg-inverse`.
+
+```vue
+<style scoped lang="scss">
+.callout {
+  background-color: var(--su-bg-inverse-subtle);
+  color: var(--su-text-on-inverse);
+}
+</style>
+```
+
+**Usage** : Encadrés, callouts, zones d'information légèrement contrastées.
+
+#### `--su-surface-inverse`
+
+Surface posée sur un fond inversé (équivalent de `--su-bg-surface` dans un contexte inversé).
+
+```vue
+<style scoped lang="scss">
+.hero-card {
+  background-color: var(--su-bg-inverse);
+
+  .hero-card__panel {
+    background-color: var(--su-surface-inverse);
+  }
+}
+</style>
+```
+
 ### 4. Bordures
 
 Tokens pour toutes les bordures.
@@ -355,6 +432,21 @@ Bordure désactivée.
 ```
 
 **Usage** : Champs désactivés.
+
+#### `--su-border-inverse`
+
+Bordure dans un contexte de fond inversé.
+
+```vue
+<style scoped lang="scss">
+.inverted-card {
+  background-color: var(--su-bg-inverse);
+  border: 1px solid var(--su-border-inverse);
+}
+</style>
+```
+
+**Usage** : Séparateurs et contours sur fonds inversés.
 
 ### 5. États
 
@@ -486,15 +578,15 @@ Tokens pour les boutons secondaires.
 .button-secondary {
   background-color: var(--su-secondary-default);
   color: var(--su-secondary-text);
-  
+
   &:hover {
     background-color: var(--su-secondary-hover);
   }
-  
+
   &:active {
     background-color: var(--su-secondary-active);
   }
-  
+
   &:disabled {
     background-color: var(--su-secondary-disabled);
   }
@@ -643,7 +735,7 @@ Ces tokens ne changent pas selon le thème.
   border-radius: var(--su-radius-lg);
   padding: var(--su-spacing-6);
   box-shadow: var(--su-shadow-sm);
-  
+
   &:hover {
     border-color: var(--su-border-strong);
   }
@@ -669,11 +761,11 @@ Ces tokens ne changent pas selon le thème.
   border-radius: var(--su-radius-md);
   cursor: pointer;
   transition: background-color var(--su-duration-normal);
-  
+
   &:hover {
     background-color: var(--su-primary-hover);
   }
-  
+
   &:focus-visible {
     outline: var(--su-focus-ring-width) solid var(--su-border-focus);
     outline-offset: var(--su-focus-ring-offset);
@@ -702,25 +794,25 @@ Ces tokens ne changent pas selon le thème.
   padding: var(--su-spacing-4);
   border-radius: var(--su-radius-md);
   border-left: 3px solid;
-  
+
   &--success {
     color: var(--su-state-success);
     background-color: var(--su-state-success-bg);
     border-left-color: var(--su-state-success);
   }
-  
+
   &--warning {
     color: var(--su-state-warning);
     background-color: var(--su-state-warning-bg);
     border-left-color: var(--su-state-warning);
   }
-  
+
   &--error {
     color: var(--su-state-error);
     background-color: var(--su-state-error-bg);
     border-left-color: var(--su-state-error);
   }
-  
+
   &--info {
     color: var(--su-state-info);
     background-color: var(--su-state-info-bg);
@@ -747,7 +839,7 @@ Ces tokens ne changent pas selon le thème.
 <template>
   <div class="form-field">
     <label class="form-field__label" :for="id">{{ label }}</label>
-    <input 
+    <input
       :id="id"
       class="form-field__input"
       :disabled="disabled"
@@ -778,23 +870,23 @@ Ces tokens ne changent pas selon le thème.
   border: 2px solid var(--su-border-default);
   border-radius: var(--su-radius-md);
   transition: border-color var(--su-duration-normal);
-  
+
   &:hover:not(:disabled) {
     border-color: var(--su-border-strong);
   }
-  
+
   &:focus {
     border-color: var(--su-border-focus);
     outline: none;
   }
-  
+
   &:disabled {
     background-color: var(--su-bg-disabled);
     color: var(--su-text-disabled);
     border-color: var(--su-border-disabled);
     cursor: not-allowed;
   }
-  
+
   &--error {
     border-color: var(--su-state-error);
   }
@@ -814,8 +906,9 @@ Ces tokens ne changent pas selon le thème.
 1. **Toujours utiliser les tokens** plutôt que les valeurs brutes
 2. **Choisir le token le plus sémantique** pour le contexte
 3. **Respecter la hiérarchie** : primary > secondary > tertiary
-4. **Tester tous les thèmes** pour vérifier la cohérence
+4. **Tester tous les thèmes et les deux modes** pour vérifier la cohérence
 5. **Utiliser les mixins** pour les patterns répétitifs
+6. **Utiliser `--su-bg-inverse` + `--su-text-on-inverse`** pour les sections inversées (plutôt que de forcer un thème avec `data-theme-mode`)
 
 ### ❌ À éviter
 
@@ -832,12 +925,12 @@ Ces tokens ne changent pas selon le thème.
 Si vous avez besoin de tokens spécifiques à votre application :
 
 ```scss
-// Dans votre thème personnalisé
-$theme-custom: (
+// Dans votre thème personnalisé — tokens/light.scss
+$theme-custom-light: (
   // Tokens standard
   'text-primary': #1a202c,
   'bg-surface': #ffffff,
-  
+
   // Tokens personnalisés
   'brand-highlight': #ff6b6b,
   'accent-secondary': #4ecdc4,
@@ -900,10 +993,12 @@ onMounted(() => {
 | `--su-text-tertiary` | #6b7280 (4.7:1) | #9ca3af (4.5:1) | Texte tertiaire |
 | `--su-text-disabled` | #9ca3af | #6b7280 | Texte désactivé |
 | `--su-text-inverse` | #f9fafb | #111827 | Texte inversé |
+| `--su-text-on-inverse` | #f9fafb | #111827 | Texte sur fond inversé |
 | `--su-link-default` | #2563eb | #60a5fa | Lien par défaut |
 | `--su-link-hover` | #1d4ed8 | #93c5fd | Lien survol |
 | `--su-link-visited` | #1e40af | #a855f7 | Lien visité |
 | `--su-link-muted` | #6b7280 | #6b7280 | Lien secondaire |
+| `--su-link-default-rgb` | 37 99 235 | 96 165 250 | RGB lien pour transparences |
 | `--su-bg-canvas` | #f9fafb | #030712 | Fond global |
 | `--su-bg-surface` | #ffffff | #111827 | Surface/carte |
 | `--su-bg-surface-elevated` | #ffffff | #1f2937 | Surface surélevée |
@@ -912,11 +1007,15 @@ onMounted(() => {
 | `--su-bg-active` | #e5e7eb | #374151 | Fond actif |
 | `--su-bg-selected` | #eff6ff | rgba(59,130,246,0.2) | Fond sélectionné |
 | `--su-bg-disabled` | #f3f4f6 | #1f2937 | Fond désactivé |
+| `--su-bg-inverse` | #111827 | #f9fafb | Fond inversé |
+| `--su-bg-inverse-subtle` | #1f2937 | #f3f4f6 | Fond inversé secondaire |
+| `--su-surface-inverse` | #374151 | #e5e7eb | Surface sur fond inversé |
 | `--su-border-default` | #d1d5db | #4b5563 | Bordure standard |
 | `--su-border-subtle` | #e5e7eb | #374151 | Bordure subtile |
 | `--su-border-strong` | #9ca3af | #6b7280 | Bordure forte |
 | `--su-border-focus` | #3b82f6 | #60a5fa | Bordure focus |
 | `--su-border-disabled` | #e5e7eb | #374151 | Bordure désactivée |
+| `--su-border-inverse` | #4b5563 | #d1d5db | Bordure sur fond inversé |
 | `--su-state-success` | #059669 | #4ade80 | État succès |
 | `--su-state-success-bg` | #ecfdf5 | rgba(74,222,128,0.15) | Fond succès |
 | `--su-state-warning` | #d97706 | #facc15 | État warning |
@@ -941,7 +1040,7 @@ onMounted(() => {
 
 | Token | Valeur | Description |
 |-------|--------|-------------|
-| **Typographie** |
+| **Typographie** | | |
 | `--su-font-family-base` | System fonts | Police principale |
 | `--su-font-family-mono` | Monospace | Police code |
 | `--su-font-size-xs` | 0.75rem (12px) | Taille XS |
@@ -954,7 +1053,7 @@ onMounted(() => {
 | `--su-line-height-tight` | 1.25 | Interligne serré |
 | `--su-line-height-normal` | 1.5 | Interligne normal |
 | `--su-line-height-relaxed` | 1.75 | Interligne aéré |
-| **Espacement** |
+| **Espacement** | | |
 | `--su-spacing-1` | 0.25rem (4px) | Espacement XS |
 | `--su-spacing-2` | 0.5rem (8px) | Espacement S |
 | `--su-spacing-3` | 0.75rem (12px) | Espacement M |
@@ -962,24 +1061,24 @@ onMounted(() => {
 | `--su-spacing-6` | 1.5rem (24px) | Espacement L |
 | `--su-spacing-8` | 2rem (32px) | Espacement XL |
 | `--su-spacing-12` | 3rem (48px) | Espacement 2XL |
-| **Border Radius** |
+| **Border Radius** | | |
 | `--su-radius-sm` | 0.25rem (4px) | Rayon small |
 | `--su-radius-md` | 0.375rem (6px) | Rayon medium |
 | `--su-radius-lg` | 0.5rem (8px) | Rayon large |
 | `--su-radius-xl` | 0.75rem (12px) | Rayon XL |
 | `--su-radius-full` | 9999px | Rayon complet (cercle) |
-| **Ombres** |
+| **Ombres** | | |
 | `--su-shadow-xs` | 0 1px 2px rgba(...) | Ombre très légère |
 | `--su-shadow-sm` | 0 1px 3px rgba(...) | Ombre légère |
 | `--su-shadow-md` | 0 4px 6px rgba(...) | Ombre moyenne |
 | `--su-shadow-lg` | 0 10px 15px rgba(...) | Ombre forte |
-| **Animations** |
+| **Animations** | | |
 | `--su-duration-fast` | 150ms (ou 0ms) | Durée rapide |
 | `--su-duration-normal` | 200ms (ou 0ms) | Durée normale |
 | `--su-duration-slow` | 300ms (ou 0ms) | Durée lente |
 | `--su-ease-in-out` | cubic-bezier(...) | Easing par défaut |
 | `--su-animation-scale` | 1 (ou 0) | Multiplicateur animation |
-| **Focus** |
+| **Focus** | | |
 | `--su-focus-ring-width` | 2px | Épaisseur focus ring |
 | `--su-focus-ring-offset` | 2px | Décalage focus ring |
 
@@ -997,22 +1096,22 @@ onMounted(() => {
   align-items: center;
   gap: var(--su-spacing-3);
   padding: var(--su-spacing-4);
-  
+
   // Apparence
   background-color: var(--su-bg-surface);
   border: 2px solid var(--su-border-default);
   border-radius: var(--su-radius-lg);
   color: var(--su-text-primary);
-  
+
   // Typographie
   font-family: var(--su-font-family-base);
   font-size: var(--su-font-size-base);
   line-height: var(--su-line-height-normal);
-  
+
   // Comportement
   cursor: pointer;
   @include transition(background-color, border-color, transform, box-shadow);
-  
+
   // États
   &:hover:not(:disabled) {
     background-color: var(--su-bg-hover);
@@ -1020,16 +1119,16 @@ onMounted(() => {
     box-shadow: var(--su-shadow-md);
     transform: translateY(calc(-2px * var(--su-animation-scale)));
   }
-  
+
   &:active:not(:disabled) {
     background-color: var(--su-bg-active);
     transform: translateY(0);
   }
-  
+
   &:focus-visible {
     @include focus-ring;
   }
-  
+
   &:disabled {
     background-color: var(--su-bg-disabled);
     border-color: var(--su-border-disabled);
@@ -1041,7 +1140,39 @@ onMounted(() => {
 </style>
 ```
 
-### Pattern 2 : Système de notification
+### Pattern 2 : Section inversée
+
+```vue
+<style scoped lang="scss">
+.hero {
+  background-color: var(--su-bg-inverse);
+  color: var(--su-text-on-inverse);
+  border-bottom: 1px solid var(--su-border-inverse);
+  padding: var(--su-spacing-12) var(--su-spacing-8);
+
+  &__card {
+    background-color: var(--su-surface-inverse);
+    border: 1px solid var(--su-border-inverse);
+    border-radius: var(--su-radius-lg);
+    padding: var(--su-spacing-6);
+  }
+
+  // Lien avec transparence via --su-link-default-rgb
+  a {
+    color: var(--su-link-default);
+    background-color: rgb(var(--su-link-default-rgb) / 10%);
+    padding: 2px 6px;
+    border-radius: var(--su-radius-sm);
+
+    &:hover {
+      background-color: rgb(var(--su-link-default-rgb) / 20%);
+    }
+  }
+}
+</style>
+```
+
+### Pattern 3 : Système de notification
 
 ```vue
 <style scoped lang="scss">
@@ -1053,157 +1184,52 @@ onMounted(() => {
   border-radius: var(--su-radius-md);
   border-left: 4px solid;
   box-shadow: var(--su-shadow-sm);
-  
-  // Variants basés sur les tokens d'état
+
   &--success {
     background-color: var(--su-state-success-bg);
     border-left-color: var(--su-state-success);
-    
-    .notification__icon {
-      color: var(--su-state-success);
-    }
-    
+
+    .notification__icon,
     .notification__title {
       color: var(--su-state-success);
     }
   }
-  
+
   &--warning {
     background-color: var(--su-state-warning-bg);
     border-left-color: var(--su-state-warning);
-    
-    .notification__icon {
-      color: var(--su-state-warning);
-    }
-    
+
+    .notification__icon,
     .notification__title {
       color: var(--su-state-warning);
     }
   }
-  
+
   &--error {
     background-color: var(--su-state-error-bg);
     border-left-color: var(--su-state-error);
-    
-    .notification__icon {
-      color: var(--su-state-error);
-    }
-    
+
+    .notification__icon,
     .notification__title {
       color: var(--su-state-error);
     }
   }
-  
+
   &--info {
     background-color: var(--su-state-info-bg);
     border-left-color: var(--su-state-info);
-    
-    .notification__icon {
-      color: var(--su-state-info);
-    }
-    
+
+    .notification__icon,
     .notification__title {
       color: var(--su-state-info);
     }
   }
-}
-
-.notification__icon {
-  flex-shrink: 0;
-  width: 24px;
-  height: 24px;
-}
-
-.notification__content {
-  flex: 1;
-}
-
-.notification__title {
-  margin: 0 0 var(--su-spacing-1);
-  font-size: var(--su-font-size-base);
-  font-weight: 600;
 }
 
 .notification__message {
   margin: 0;
   font-size: var(--su-font-size-sm);
   color: var(--su-text-secondary);
-}
-</style>
-```
-
-### Pattern 3 : Hierarchie typographique
-
-```vue
-<style scoped lang="scss">
-.content {
-  color: var(--su-text-primary);
-  font-family: var(--su-font-family-base);
-  line-height: var(--su-line-height-normal);
-  
-  h1 {
-    margin: 0 0 var(--su-spacing-4);
-    font-size: var(--su-font-size-3xl);
-    line-height: var(--su-line-height-tight);
-    font-weight: 700;
-  }
-  
-  h2 {
-    margin: var(--su-spacing-8) 0 var(--su-spacing-3);
-    font-size: var(--su-font-size-2xl);
-    line-height: var(--su-line-height-tight);
-    font-weight: 700;
-  }
-  
-  h3 {
-    margin: var(--su-spacing-6) 0 var(--su-spacing-2);
-    font-size: var(--su-font-size-xl);
-    line-height: var(--su-line-height-tight);
-    font-weight: 600;
-  }
-  
-  p {
-    margin: 0 0 var(--su-spacing-4);
-    font-size: var(--su-font-size-base);
-    
-    &:last-child {
-      margin-bottom: 0;
-    }
-  }
-  
-  .lead {
-    font-size: var(--su-font-size-lg);
-    color: var(--su-text-secondary);
-    line-height: var(--su-line-height-relaxed);
-  }
-  
-  .caption {
-    font-size: var(--su-font-size-sm);
-    color: var(--su-text-tertiary);
-  }
-  
-  a {
-    color: var(--su-link-default);
-    text-decoration: underline;
-    @include transition(color);
-    
-    &:hover {
-      color: var(--su-link-hover);
-    }
-    
-    &:visited {
-      color: var(--su-link-visited);
-    }
-  }
-  
-  code {
-    padding: 2px 6px;
-    font-family: var(--su-font-family-mono);
-    font-size: var(--su-font-size-sm);
-    background-color: var(--su-bg-canvas);
-    border: 1px solid var(--su-border-default);
-    border-radius: var(--su-radius-sm);
-  }
 }
 </style>
 ```
@@ -1266,7 +1292,7 @@ onMounted(() => {
 ## Ressources
 
 - [Guide des couleurs](./colors.md)
-- [Système de thèmes](./themes.md)
+- [Système de thèmes](./index.md)
 - [Accessibilité](./accessibility.md)
 - [Exemples complets](./examples.md)
-- [CSS Custom Properties (MDN)](https://developer.mozilla.org/fr/docs/Web/CSS/--*)
+- [CSS Custom Properties (MDN)](https://developer.mozilla.org/fr/docs/Web/CSS/--)

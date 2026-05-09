@@ -4,22 +4,54 @@ The Design System provides a comprehensive and performant theme system with supp
 
 ## Overview
 
-### Available Themes
+### Themes × Modes Architecture
 
-The system provides **5 themes** organized in two categories:
+The system is built on two orthogonal dimensions:
 
-#### System Themes
-- **Light** - Classic light theme, ideal for daytime use
-- **Dark** - Dark theme optimized for low-light environments
+| Dimension | Values | Role |
+|-----------|--------|------|
+| **Theme** (`data-theme`) | `default` \| `ocean` \| `forest` \| `sunset` | Visual identity / color palette |
+| **Mode** (`data-theme-mode`) | `light` \| `dark` \| `system` | Brightness / contrast |
 
-#### Color Themes
+Each theme is available in both light **and** dark mode.
+
+#### Available Themes
+
+- **Default** - Classic neutral palette, suitable for any context
 - **Ocean** - Maritime palette with ocean blue and coral accents
 - **Forest** - Natural inspiration with forest greens and autumn orange
 - **Sunset** - Warm ambiance with pink, violet, and orange
 
-::: tip Auto Mode
-The `auto` mode automatically detects the user's system preferences (`prefers-color-scheme`) and applies the corresponding theme.
+#### Available Modes
+
+- **light** - Light mode (default)
+- **dark** - Dark mode optimized for low-light environments
+- **system** - Follows system preference automatically (`prefers-color-scheme`)
+
+::: tip Default Behavior
+Without any HTML attributes, the `default` theme in `light` mode is applied via a CSS fallback on `html:not([data-theme])`. The `system` mode is **not** enabled by default — the user must explicitly choose it.
 :::
+
+::: warning Deprecated Names
+The theme names `light` and `dark` (formerly standalone themes) are **deprecated**. They continue working in CSS and JS for backward compatibility but emit a console warning. Use `default` + `themeMode` instead.
+:::
+
+### CSS Strategy — Dual HTML Attributes
+
+The theme and mode are two separate HTML attributes on `<html>`:
+
+```html
+<!-- Default theme in light mode -->
+<html data-theme="default" data-theme-mode="light">
+
+<!-- Ocean theme in dark mode -->
+<html data-theme="ocean" data-theme-mode="dark">
+
+<!-- Forest theme following system preference -->
+<html data-theme="forest" data-theme-mode="system">
+```
+
+Backward compatibility is ensured: `[data-theme='light']` and `[data-theme='dark']` still work in CSS (aliases defined in `default/index.scss`).
 
 ## Installation and Configuration
 
@@ -32,8 +64,9 @@ To optimize CSS bundle size, you can choose which themes to include during build
 ```typescript
 // theme.config.ts
 export const themeConfig = {
-  themes: ['light', 'dark'], // Only essential themes
-  defaultTheme: 'auto',
+  themes: ['default', 'ocean', 'forest', 'sunset'],
+  defaultTheme: 'default',
+  defaultThemeMode: 'light',
   prefix: 'su',
   highContrast: true,
   reducedMotion: true,
@@ -41,27 +74,28 @@ export const themeConfig = {
 };
 ```
 
-**Bundle size**: ~8-10 KB CSS
+**Bundle size**: ~425 KB total (lib + styles)
 
-#### All Themes
+#### Minimal Configuration
 
 ```typescript
 // theme.config.ts
 export const themeConfig = {
-  themes: ['light', 'dark', 'ocean', 'forest', 'sunset'],
-  defaultTheme: 'auto',
+  themes: ['default'],           // Default theme only
+  defaultTheme: 'default',
+  defaultThemeMode: 'light',
+  storageKey: 'my-company-theme',
 };
 ```
-
-**Bundle size**: ~25-30 KB CSS
 
 #### Custom Configuration
 
 ```typescript
 // theme.config.ts
 export const themeConfig = {
-  themes: ['light', 'dark', 'ocean'], // Only the themes you need
-  defaultTheme: 'light',
+  themes: ['default', 'ocean'], // Only the themes you need
+  defaultTheme: 'default',
+  defaultThemeMode: 'light',
   storageKey: 'my-company-theme',
 };
 ```
@@ -73,13 +107,27 @@ export const themeConfig = {
 @use './core/theme-loader' as loader;
 
 // Option 1: Specific themes
-@include loader.load-themes('light', 'dark');
+@include loader.load-themes('default', 'ocean');
 
 // Option 2: All themes
 @include loader.load-all-themes();
+```
 
-// Option 3: Custom selection
-@include loader.load-themes('light', 'dark', 'ocean');
+## TypeScript Types
+
+```typescript
+// Theme (visual identity)
+type ThemeName = 'default' | 'ocean' | 'forest' | 'sunset'
+
+// Mode (brightness)
+type ThemeMode = 'light' | 'dark' | 'system'
+
+// Contrast and motion (unchanged)
+type ContrastMode = 'normal' | 'high' | 'auto'
+type MotionMode   = 'normal' | 'reduce' | 'auto'
+
+// Deprecated — backward compatibility only
+type DeprecatedThemeName = 'light' | 'dark'
 ```
 
 ## Usage
@@ -90,15 +138,26 @@ The `useTheme` composable is the main entry point for managing themes.
 
 ```vue
 <script setup lang="ts">
-import { useTheme } from '@/composables/useTheme';
+import { useTheme } from '@surgeui/ds-vue';
 
-const { 
-  themeName,           // Selected theme ('auto' | 'light' | 'dark' | 'ocean' | 'forest' | 'sunset')
-  effectiveTheme,      // Effective theme applied
-  setTheme,            // Change theme
-  toggleTheme,         // Toggle light/dark
-  availableThemes,     // List of available themes
-  isDarkMode           // Boolean to know if in dark mode
+const {
+  // Reactive state
+  themeName,            // Ref<ThemeName> — active visual identity
+  themeMode,            // Ref<ThemeMode> — 'light' | 'dark' | 'system'
+  contrastMode,         // Ref<ContrastMode>
+  motionMode,           // Ref<MotionMode>
+
+  // Computed
+  effectiveTheme,       // ComputedRef<ThemeName> — resolved theme (never 'system')
+  effectiveThemeMode,   // ComputedRef<'light' | 'dark'> — resolved mode
+  isDarkMode,           // ComputedRef<boolean>
+
+  // Actions
+  setTheme,             // (theme: ThemeName) => void
+  setThemeMode,         // (mode: ThemeMode) => void
+  toggleMode,           // () => void — toggle between light and dark
+  cycleTheme,           // () => void — cycle through available themes
+  clearConfig,          // () => void — reset to defaultTheme + defaultThemeMode
 } = useTheme();
 </script>
 ```
@@ -108,50 +167,69 @@ const {
 ```typescript
 useTheme({
   // Override available themes
-  availableThemes: ['light', 'dark', 'ocean'],
-  
+  availableThemes: ['default', 'ocean'],
+
   // Default theme
-  defaultTheme: 'auto',
-  
+  defaultTheme: 'default',
+
+  // Default mode (NEW)
+  defaultThemeMode: 'light',
+
   // Custom localStorage key
   storageKey: 'my-app-theme',
-  
+
   // Disable persistence
   persist: false
 });
 ```
 
-### Change Theme
+### Changing the Theme
 
-#### Direct Method
+#### Change Visual Identity
 
 ```vue
 <template>
-  <button @click="setTheme('dark')">Dark Mode</button>
   <button @click="setTheme('ocean')">Ocean Theme</button>
-  <button @click="setTheme('auto')">Automatic</button>
+  <button @click="setTheme('forest')">Forest Theme</button>
+  <button @click="setTheme('default')">Default Theme</button>
 </template>
 
 <script setup lang="ts">
-import { useTheme } from '@/composables/useTheme';
+import { useTheme } from '@surgeui/ds-vue';
 
 const { setTheme } = useTheme();
 </script>
 ```
 
-#### Simple Toggle
+#### Change Brightness Mode
 
 ```vue
 <template>
-  <button @click="toggleTheme">
+  <button @click="setThemeMode('dark')">Dark Mode</button>
+  <button @click="setThemeMode('light')">Light Mode</button>
+  <button @click="setThemeMode('system')">Follow System</button>
+</template>
+
+<script setup lang="ts">
+import { useTheme } from '@surgeui/ds-vue';
+
+const { setThemeMode } = useTheme();
+</script>
+```
+
+#### Toggle Light / Dark
+
+```vue
+<template>
+  <button @click="toggleMode">
     {{ isDarkMode ? '☀️ Light' : '🌙 Dark' }}
   </button>
 </template>
 
 <script setup lang="ts">
-import { useTheme } from '@/composables/useTheme';
+import { useTheme } from '@surgeui/ds-vue';
 
-const { toggleTheme, isDarkMode } = useTheme();
+const { toggleMode, isDarkMode } = useTheme();
 </script>
 ```
 
@@ -160,14 +238,14 @@ const { toggleTheme, isDarkMode } = useTheme();
 ```vue
 <template>
   <button @click="cycleTheme">
-    Next theme: {{ currentThemeMetadata.name }}
+    Next theme: {{ effectiveTheme }}
   </button>
 </template>
 
 <script setup lang="ts">
-import { useTheme } from '@/composables/useTheme';
+import { useTheme } from '@surgeui/ds-vue';
 
-const { cycleTheme, currentThemeMetadata } = useTheme();
+const { cycleTheme, effectiveTheme } = useTheme();
 </script>
 ```
 
@@ -189,6 +267,7 @@ import ThemeSelector from '@/components/ThemeSelector.vue';
 
 **Features**:
 - Visual preview of each theme
+- Mode selection (light / dark / system)
 - Contrast selection (normal / high)
 - Animation configuration (normal / reduced)
 - Detected system preferences display
@@ -196,7 +275,7 @@ import ThemeSelector from '@/components/ThemeSelector.vue';
 
 ### ThemeToggle
 
-Compact button to quickly toggle between themes.
+Compact button to quickly toggle between modes.
 
 ```vue
 <template>
@@ -209,8 +288,8 @@ import ThemeToggle from '@/components/ThemeToggle.vue';
 ```
 
 **Features**:
-- Dynamic icon based on active theme
-- Theme label (hidden on mobile)
+- Dynamic icon based on active mode
+- Mode label (hidden on mobile)
 - Transition animation
 - Cycle through all available themes
 
@@ -224,7 +303,7 @@ The system automatically supports high contrast mode, essential for accessibilit
 
 ```vue
 <script setup lang="ts">
-import { useTheme } from '@/composables/useTheme';
+import { useTheme } from '@surgeui/ds-vue';
 
 const { effectiveContrast, systemContrast } = useTheme();
 // effectiveContrast: 'normal' | 'high'
@@ -244,7 +323,7 @@ const { effectiveContrast, systemContrast } = useTheme();
 </template>
 
 <script setup lang="ts">
-import { useTheme } from '@/composables/useTheme';
+import { useTheme } from '@surgeui/ds-vue';
 
 const { contrastMode, setContrast } = useTheme();
 </script>
@@ -263,7 +342,7 @@ Respects `prefers-reduced-motion` for users sensitive to movement.
 
 ```vue
 <script setup lang="ts">
-import { useTheme } from '@/composables/useTheme';
+import { useTheme } from '@surgeui/ds-vue';
 
 const { motionMode, setMotion } = useTheme();
 </script>
@@ -293,26 +372,33 @@ Use automatically generated CSS variables:
 .my-component {
   // Text
   color: var(--su-text-primary);
-  
+
   // Background
   background-color: var(--su-bg-surface);
-  
+
   // Border
   border: 1px solid var(--su-border-default);
-  
+
   // Primary color
   background-color: var(--su-primary-default);
-  
+
+  // Inverted section (dark bg on light page, or the reverse)
+  &--inverted {
+    background-color: var(--su-bg-inverse);
+    color: var(--su-text-on-inverse);
+    border-color: var(--su-border-inverse);
+  }
+
   // States
   &--success {
     color: var(--su-state-success);
     background-color: var(--su-state-success-bg);
   }
-  
+
   &:hover {
     background-color: var(--su-bg-hover);
   }
-  
+
   &:focus-visible {
     border-color: var(--su-border-focus);
   }
@@ -329,15 +415,15 @@ Use automatically generated CSS variables:
 .my-button {
   // Automatic transitions with reduced-motion support
   @include transition(background-color, transform);
-  
+
   // Accessible focus ring
   &:focus-visible {
     @include focus-ring;
   }
-  
+
   // Complete interactive states
   @include interactive-states;
-  
+
   // Elevated surface
   @include surface($elevated: true);
 }
@@ -371,7 +457,7 @@ The `useCustomTheme` composable manages custom CSS variables reactively.
 <script setup lang="ts">
 import { useCustomTheme } from '@surgeui/ds-vue'
 
-const { 
+const {
   applyCustomTheme,    // Apply entire custom theme
   setCustomVariable,   // Set individual variable
   getCustomTheme,      // Get current custom theme
@@ -432,108 +518,29 @@ const handleColorChange = (color: string) => {
 </script>
 
 <template>
-  <input 
-    type="color" 
+  <input
+    type="color"
     @input="(e) => handleColorChange((e.target as HTMLInputElement).value)"
     placeholder="Select primary color"
   >
 </template>
 ```
 
-#### 3. Interactive Color Picker
-
-```vue
-<script setup lang="ts">
-import { useCustomTheme } from '@surgeui/ds-vue'
-import { ref } from 'vue'
-
-const { setCustomVariable, resetCustomTheme } = useCustomTheme()
-
-const colors = ref({
-  primary: '#3b82f6',
-  secondary: '#6b7280',
-  success: '#10b981',
-  error: '#ef4444'
-})
-
-const applyColor = (name: string, value: string) => {
-  colors.value[name as keyof typeof colors.value] = value
-  
-  // Map to theme properties
-  const propertyMap: Record<string, string> = {
-    primary: 'primaryDefault',
-    secondary: 'secondaryDefault',
-    success: 'stateSuccess',
-    error: 'stateError'
-  }
-  
-  setCustomVariable(propertyMap[name], value)
-}
-
-const reset = () => {
-  colors.value = {
-    primary: '#3b82f6',
-    secondary: '#6b7280',
-    success: '#10b981',
-    error: '#ef4444'
-  }
-  resetCustomTheme()
-}
-</script>
-
-<template>
-  <div class="color-picker">
-    <div v-for="(color, name) in colors" :key="name" class="color-item">
-      <label>{{ name }}</label>
-      <input 
-        type="color" 
-        :value="color"
-        @input="(e) => applyColor(name, (e.target as HTMLInputElement).value)"
-      >
-      <code>{{ color }}</code>
-    </div>
-    <button @click="reset">Reset</button>
-  </div>
-</template>
-
-<style scoped lang="scss">
-.color-picker {
-  display: flex;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
-.color-item {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  align-items: center;
-  
-  input[type="color"] {
-    width: 44px;
-    height: 44px;
-    border: 2px solid var(--su-border-default);
-    border-radius: 6px;
-    cursor: pointer;
-  }
-}
-</style>
-```
-
-#### 4. Combine with `useTheme()`
+#### 3. Combine Theme, Mode, and Brand Colors
 
 ```vue
 <script setup lang="ts">
 import { useTheme } from '@surgeui/ds-vue'
 import { useCustomTheme } from '@surgeui/ds-vue'
 
-const { setTheme } = useTheme()
+const { setTheme, setThemeMode } = useTheme()
 const { setCustomVariable } = useCustomTheme()
 
 const applyDarkWithBrand = () => {
-  // Change theme
-  setTheme('dark')
-  
+  // Switch to default theme in dark mode
+  setTheme('default')
+  setThemeMode('dark')
+
   // Override with brand colors
   setCustomVariable('primaryDefault', '#db2777')
   setCustomVariable('primaryHover', '#be185d')
@@ -542,7 +549,7 @@ const applyDarkWithBrand = () => {
 
 <template>
   <button @click="applyDarkWithBrand">
-    Dark Theme + Brand
+    Dark Mode + Brand
   </button>
 </template>
 ```
@@ -566,6 +573,8 @@ You can customize any theme token using the `--su-custom-<token-name>` format:
 - `--su-custom-bg-active`
 - `--su-custom-bg-selected`
 - `--su-custom-bg-disabled`
+- `--su-custom-bg-inverse`
+- `--su-custom-bg-inverse-subtle`
 
 **Borders**:
 - `--su-custom-border-default`
@@ -573,6 +582,7 @@ You can customize any theme token using the `--su-custom-<token-name>` format:
 - `--su-custom-border-strong`
 - `--su-custom-border-focus`
 - `--su-custom-border-disabled`
+- `--su-custom-border-inverse`
 
 **Actions**:
 - `--su-custom-primary-default`
@@ -598,147 +608,100 @@ You can customize any theme token using the `--su-custom-<token-name>` format:
 
 ### Benefits of This Approach
 
-✅ **Dynamic** - Instant changes without page reload  
-✅ **Flexible** - Customize partially or completely  
-✅ **Performant** - No SCSS recompilation, CSS only  
-✅ **Compatible** - Works with all themes (light, dark, ocean, etc.)  
-✅ **Persistent** - Compatible with localStorage for user preferences  
-
-## Available Tokens
-
-### Text
-
-| Token | Description |
-|-------|-------------|
-| `--su-text-primary` | Primary text (maximum contrast) |
-| `--su-text-secondary` | Secondary text |
-| `--su-text-tertiary` | Tertiary text (less important) |
-| `--su-text-disabled` | Disabled text |
-| `--su-text-inverse` | Text on dark background |
-
-### Links
-
-| Token | Description |
-|-------|-------------|
-| `--su-link-default` | Default link color |
-| `--su-link-hover` | Hover color |
-| `--su-link-visited` | Visited links |
-| `--su-link-muted` | Secondary links |
-
-### Backgrounds
-
-| Token | Description |
-|-------|-------------|
-| `--su-bg-canvas` | Global app background |
-| `--su-bg-surface` | Background for cards, modals |
-| `--su-bg-surface-elevated` | Elevated surface (with shadows) |
-| `--su-bg-hover` | Hover background |
-| `--su-bg-active` | Active state background |
-| `--su-bg-selected` | Selected background |
-| `--su-bg-disabled` | Disabled background |
-
-### Borders
-
-| Token | Description |
-|-------|-------------|
-| `--su-border-default` | Default border |
-| `--su-border-subtle` | Subtle border |
-| `--su-border-strong` | Reinforced border |
-| `--su-border-focus` | Focus border (accessibility) |
-| `--su-border-disabled` | Disabled border |
-
-### States
-
-| Token | Description |
-|-------|-------------|
-| `--su-state-success` | Success color |
-| `--su-state-success-bg` | Success background |
-| `--su-state-warning` | Warning color |
-| `--su-state-warning-bg` | Warning background |
-| `--su-state-error` | Error color |
-| `--su-state-error-bg` | Error background |
-| `--su-state-info` | Info color |
-| `--su-state-info-bg` | Info background |
-
-### Primary Actions
-
-| Token | Description |
-|-------|-------------|
-| `--su-primary-default` | Primary color |
-| `--su-primary-hover` | Primary on hover |
-| `--su-primary-active` | Primary on active state |
-| `--su-primary-disabled` | Primary disabled |
-| `--su-primary-text` | Text on primary |
-
-### Secondary Actions
-
-| Token | Description |
-|-------|-------------|
-| `--su-secondary-default` | Secondary color |
-| `--su-secondary-hover` | Secondary on hover |
-| `--su-secondary-active` | Secondary on active state |
-| `--su-secondary-disabled` | Secondary disabled |
-| `--su-secondary-text` | Text on secondary |
+✅ **Dynamic** - Instant changes without page reload
+✅ **Flexible** - Customize partially or completely
+✅ **Performant** - No SCSS recompilation, CSS only
+✅ **Compatible** - Works with all themes and all modes
+✅ **Persistent** - Compatible with localStorage for user preferences
 
 ## Create a Custom Theme
 
-### 1. Create Structure
+### 1. New File Structure (separate light + dark tokens)
 
 ```
-styles/
-└── themes/
-    └── custom/
-        ├── _tokens.scss
-        └── index.scss
+styles/themes/
+├── _registry.scss
+├── _schema.scss          ← Required token validation
+├── default/
+│   ├── _color.scss
+│   ├── index.scss
+│   └── tokens/
+│       ├── light.scss
+│       └── dark.scss
+├── ocean/    (same structure)
+├── forest/   (same structure)
+├── sunset/   (same structure)
+└── custom/   ← Your theme
+    ├── index.scss
+    └── tokens/
+        ├── light.scss
+        └── dark.scss
 ```
 
-### 2. Define Tokens
+### 2. Define Light Tokens
 
 ```scss
-// themes/custom/_tokens.scss
-@use '../../foundations/colors' as *;
-
-$theme-custom: (
+// themes/custom/tokens/light.scss
+$theme-custom-light: (
   'text-primary': #1a202c,
   'text-secondary': #2d3748,
   'text-tertiary': #4a5568,
-  
+
   'bg-canvas': #f7fafc,
   'bg-surface': #ffffff,
-  
+
   'border-default': #cbd5e0,
   'border-focus': #4299e1,
-  
+
   'primary-default': #4299e1,
   'primary-hover': #3182ce,
   'primary-text': #ffffff,
-  
+
   // ... other tokens
 );
 ```
 
-### 3. Register Theme
+### 3. Define Dark Tokens
+
+```scss
+// themes/custom/tokens/dark.scss
+$theme-custom-dark: (
+  'text-primary': #f7fafc,
+  'text-secondary': #e2e8f0,
+  'text-tertiary': #a0aec0,
+
+  'bg-canvas': #1a202c,
+  'bg-surface': #2d3748,
+
+  'border-default': #4a5568,
+  'border-focus': #63b3ed,
+
+  'primary-default': #63b3ed,
+  'primary-hover': #4299e1,
+  'primary-text': #1a202c,
+
+  // ... other tokens
+);
+```
+
+### 4. Register Theme with Both Modes
 
 ```scss
 // themes/custom/index.scss
 @use '../_registry' as registry;
-@use './_tokens' as *;
+@use './tokens/light' as *;
+@use './tokens/dark' as *;
 
-@include registry.register-theme('custom', $theme-custom);
+[data-theme='custom'][data-theme-mode='light'] {
+  @include registry.generate-theme-vars($theme-custom-light);
+}
 
-[data-theme='custom'] {
-  @include registry.generate-theme-vars($theme-custom);
+[data-theme='custom'][data-theme-mode='dark'] {
+  @include registry.generate-theme-vars($theme-custom-dark);
 }
 ```
 
-### 4. Load Theme
-
-```scss
-// main.scss
-@include loader.load-themes('light', 'dark', 'custom');
-```
-
-### 5. Add Metadata
+### 5. Add TypeScript Metadata
 
 ```typescript
 // composables/useTheme.ts
@@ -749,10 +712,10 @@ const ALL_THEMES: ThemeMetadata[] = [
     name: 'Custom',
     description: 'My custom theme',
     category: 'color',
-    preview: { 
-      primary: '#4299e1', 
-      background: '#f7fafc', 
-      surface: '#ffffff' 
+    preview: {
+      primary: '#4299e1',
+      background: '#f7fafc',
+      surface: '#ffffff'
     },
     available: themeConfig.themes.includes('custom')
   }
@@ -769,6 +732,7 @@ const ALL_THEMES: ThemeMetadata[] = [
 interface UseThemeOptions {
   availableThemes?: ThemeName[];
   defaultTheme?: ThemeName;
+  defaultThemeMode?: ThemeMode;  // NEW
   storageKey?: string;
   persist?: boolean;
 }
@@ -780,33 +744,36 @@ interface UseThemeOptions {
 {
   // Reactive state
   themeName: Ref<ThemeName>;
+  themeMode: Ref<ThemeMode>;             // NEW
   contrastMode: Ref<ContrastMode>;
   motionMode: Ref<MotionMode>;
-  
+
   // Computed
-  effectiveTheme: ComputedRef<Exclude<ThemeName, 'auto'>>;
+  effectiveTheme: ComputedRef<ThemeName>;
+  effectiveThemeMode: ComputedRef<'light' | 'dark'>;  // NEW
   effectiveContrast: ComputedRef<'normal' | 'high'>;
   effectiveMotion: ComputedRef<'normal' | 'reduce'>;
-  systemTheme: ComputedRef<'light' | 'dark'>;
   systemContrast: ComputedRef<'normal' | 'high'>;
   systemMotion: ComputedRef<'normal' | 'reduce'>;
-  currentThemeMetadata: ComputedRef<ThemeMetadata>;
   isDarkMode: ComputedRef<boolean>;
-  
+
   // Data
   availableThemes: ComputedRef<ThemeMetadata[]>;
-  systemThemes: ComputedRef<ThemeMetadata[]>;
-  colorThemes: ComputedRef<ThemeMetadata[]>;
-  
+
   // Actions
   setTheme: (theme: ThemeName) => void;
+  setThemeMode: (mode: ThemeMode) => void;   // NEW
+  toggleMode: () => void;                    // NEW — replaces toggleTheme
+  cycleTheme: () => void;
   setContrast: (contrast: ContrastMode) => void;
   setMotion: (motion: MotionMode) => void;
-  toggleTheme: () => void;
-  cycleTheme: () => void;
   clearConfig: () => void;
 }
 ```
+
+::: warning toggleTheme deprecated
+`toggleTheme()` is kept for backward compatibility but emits a console warning. Use `toggleMode()` instead.
+:::
 
 ## Practical Examples
 
@@ -819,11 +786,11 @@ interface UseThemeOptions {
       <h1>My Dashboard</h1>
       <ThemeToggle />
     </header>
-    
+
     <aside class="dashboard-sidebar">
       <ThemeSelector />
     </aside>
-    
+
     <main class="dashboard-content">
       <!-- Content -->
     </main>
@@ -831,7 +798,7 @@ interface UseThemeOptions {
 </template>
 
 <script setup lang="ts">
-import { useTheme } from '@/composables/useTheme';
+import { useTheme } from '@surgeui/ds-vue';
 import ThemeToggle from '@/components/ThemeToggle.vue';
 import ThemeSelector from '@/components/ThemeSelector.vue';
 
@@ -860,18 +827,19 @@ useTheme();
 ```vue
 <script setup lang="ts">
 import { watch } from 'vue';
-import { useTheme } from '@/composables/useTheme';
+import { useTheme } from '@surgeui/ds-vue';
 
-const { themeName, effectiveTheme } = useTheme({
-  defaultTheme: 'auto',
+const { themeName, themeMode, effectiveThemeMode } = useTheme({
+  defaultTheme: 'default',
+  defaultThemeMode: 'system',
   storageKey: 'user-preferences-theme',
   persist: true
 });
 
-// Analytic tracking of theme change
-watch(effectiveTheme, (newTheme) => {
-  console.log('Theme changed to:', newTheme);
-  // analytics.track('theme_changed', { theme: newTheme });
+// Analytics tracking on mode change
+watch(effectiveThemeMode, (newMode) => {
+  console.log('Mode changed to:', newMode);
+  // analytics.track('theme_mode_changed', { mode: newMode });
 });
 </script>
 ```
@@ -880,8 +848,8 @@ watch(effectiveTheme, (newTheme) => {
 
 ```vue
 <template>
-  <!-- Force dark theme for this section -->
-  <div data-theme="dark" class="promo-section">
+  <!-- Force default theme in dark mode for this section -->
+  <div data-theme="default" data-theme-mode="dark" class="promo-section">
     <h2>Section with Forced Theme</h2>
     <p>This section stays dark even if the app is in light mode</p>
   </div>
@@ -896,28 +864,53 @@ watch(effectiveTheme, (newTheme) => {
 </style>
 ```
 
+### Inverted Section with Inversion Tokens
+
+```vue
+<template>
+  <!-- Section that contrasts with context without forcing a full theme -->
+  <div class="hero-section">
+    <h1>Compelling Title</h1>
+    <p>Featured description</p>
+  </div>
+</template>
+
+<style scoped lang="scss">
+.hero-section {
+  background-color: var(--su-bg-inverse);
+  color: var(--su-text-on-inverse);
+  border: 1px solid var(--su-border-inverse);
+
+  // Secondary surface on inverted background
+  .hero-section__card {
+    background-color: var(--su-surface-inverse);
+  }
+}
+</style>
+```
+
 ## Performance
 
 ### Built-in Optimizations
 
 - **CSS Variables**: Instant theme change without reload
-- **Lazy Loading**: Only configured themes are included in bundle
+- **Dual attributes**: CSS selectors targeted by `[data-theme][data-theme-mode]`
+- **Lazy loading**: Only configured themes are included in bundle
 - **Tree-shaking**: Unused themes = 0 bytes
-- **Media Queries**: Native system preference detection
 - **localStorage**: Persistence without network overhead
 
 ### Size Comparison
 
-| Configuration | CSS Size | Themes Included |
-|--------------|----------|-----------------|
-| Minimal | ~8 KB | Light + Dark |
-| Standard | ~15 KB | Light + Dark + 1 color |
-| Complete | ~30 KB | All themes |
+| Configuration | Total Bundle Size | Themes Included |
+|--------------|-------------------|-----------------|
+| Minimal | ~200 KB | Default only |
+| Standard | ~300 KB | Default + 1 color theme |
+| Complete | ~425 KB | All themes |
 
 ### Recommendations
 
 ::: tip Corporate Applications
-Use only `light` and `dark` to minimize bundle size.
+Use only `default` to minimize bundle size.
 :::
 
 ::: tip Creative Applications
@@ -936,6 +929,7 @@ Check that:
 1. Theme is included in `theme.config.ts`
 2. Theme is loaded in `main.scss`
 3. `useTheme()` is called in `App.vue` or a parent
+4. Both `data-theme` **and** `data-theme-mode` attributes are present on `<html>`
 
 ### Colors Not Changing
 
@@ -955,6 +949,17 @@ Check that the theme is in the `themes` list of `theme.config.ts` and imported i
 ### Preferences Not Saved
 
 Check that `persist: true` is configured and localStorage is accessible (not in private navigation).
+
+### Console Warning on `setTheme('dark')`
+
+`setTheme('dark')` and `setTheme('light')` are deprecated. Replace with:
+```typescript
+// Before (deprecated)
+setTheme('dark')
+
+// After
+setThemeMode('dark')
+```
 
 ## Resources
 
