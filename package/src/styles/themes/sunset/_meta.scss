@@ -11,8 +11,8 @@ $theme-sunset-meta: (
   'accent':      'pink',
 
   // Contraintes connues
-  'dark-notes':  'liens utilisent violet clair ($sunset-purple-light #c084fc) pour lisibilité sur fond sombre violet',
-  'light-notes': 'liens utilisent violet moyen ($sunset-purple-600 #9333ea) pour contraste sur fond crème',
+  'dark-notes':  'primary-text = #1a0a1a sur pink-500 (#ec4899) — ratio 5.40:1 ✅ | liens = violet clair (#c084fc) sur fond sombre',
+  'light-notes': 'primary-text = #ffffff sur pink-600 (#db2777) — ratio 4.60:1 ✅ | liens = violet moyen (#9333ea) sur fond crème',
 
   // Couleurs de prévisualisation (utilisées dans ThemeSelector)
   'preview-primary':    '#db2777',   // sunset-pink-600

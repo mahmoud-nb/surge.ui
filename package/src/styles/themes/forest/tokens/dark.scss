@@ -96,12 +96,13 @@ $theme-forest-dark: (
   'state-info-border-focus': #0369a1,
 
   // Actions primaires (orange automne pour accent en dark mode)
+  // primary-text: sombre sur autumn-400 (#fb923c) — blanc = 2.26:1 FAIL, sombre = 8.34:1 ✅
   'primary-default':  $autumn-400,
   'primary-hover':    $autumn-500,
   'primary-active':   $autumn-600,
   'primary-focus':    $autumn-400,
   'primary-disabled': #4b2d0f,
-  'primary-text':     $pure-white,
+  'primary-text':     $forest-950,
 
   // Actions secondaires
   'secondary-default':  #234028,

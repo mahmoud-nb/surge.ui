@@ -11,8 +11,8 @@ $theme-forest-meta: (
   'accent':      'autumn',
 
   // Contraintes connues
-  'dark-notes':  'primary-text doit être clair sur fond autumn-orange — vérifier ratio WCAG avant modification',
-  'palette-note': '$earth-400 et $earth-500 ont la même valeur #f59e0b — à corriger',
+  'dark-notes':  'primary-text = $forest-950 sur autumn-orange — ratio 8.34:1 ✅ WCAG AA',
+  'palette-note': '$earth-500 corrigé en #d97706 (amber-600) — était un doublon de $earth-400',
 
   // Couleurs de prévisualisation (utilisées dans ThemeSelector)
   'preview-primary':    '#22c55e',   // forest-500

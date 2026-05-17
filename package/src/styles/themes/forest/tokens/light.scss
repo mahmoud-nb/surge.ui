@@ -95,12 +95,13 @@ $theme-forest-light: (
   'state-info-border-focus': #38bdf8,
 
   // Actions primaires (orange automne pour contraste)
+  // primary-text: sombre sur autumn-500 (#f97316) — blanc = 2.80:1 FAIL, sombre = 8.34:1 ✅
   'primary-default':  $autumn-500,
   'primary-hover':    $autumn-600,
   'primary-active':   #c2410c,
   'primary-focus':    $autumn-500,
   'primary-disabled': $autumn-400,
-  'primary-text':     $pure-white,
+  'primary-text':     $forest-950,
 
   // Actions secondaires
   'secondary-default':  $forest-100,

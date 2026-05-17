@@ -96,12 +96,13 @@ $theme-sunset-dark: (
   'state-info-border-focus': #0369a1,
 
   // Actions primaires (rose clair pour dark mode)
+  // primary-text: sombre sur pink-500 (#ec4899) — blanc = 3.53:1 FAIL, sombre = 5.40:1 ✅
   'primary-default':  $sunset-pink-500,
   'primary-hover':    $sunset-pink-600,
   'primary-active':   #be185d,
   'primary-focus':    $sunset-pink-500,
   'primary-disabled': #6b1850,
-  'primary-text':     $pure-white,
+  'primary-text':     #1a0a1a,
 
   // Actions secondaires
   'secondary-default':  #4a2040,

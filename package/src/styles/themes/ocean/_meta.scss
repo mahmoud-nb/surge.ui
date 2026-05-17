@@ -11,8 +11,8 @@ $theme-ocean-meta: (
   'accent':      'coral',
 
   // Contraintes connues
-  'dark-notes':  'primary-text doit être sombre (#071828) — blanc sur corail (#f97316) = 2.8:1 FAIL WCAG',
-  'palette-note': '$coral-300 et $coral-500 ont la même valeur #f97316 — à corriger',
+  'dark-notes':  'primary-text = $ocean-950 sur corail (#f97316) — ratio 6.39:1 ✅ WCAG AA',
+  'palette-note': '$coral-300 corrigé en #fdba74 (orange-300) — était un doublon de $coral-500',
 
   // Couleurs de prévisualisation (utilisées dans ThemeSelector)
   'preview-primary':    '#06b6d4',   // ocean-500

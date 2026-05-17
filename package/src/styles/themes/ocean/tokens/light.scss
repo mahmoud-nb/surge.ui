@@ -95,12 +95,13 @@ $theme-ocean-light: (
   'state-info-border-focus': $ocean-500,
 
   // Actions primaires (corail pour le contraste)
+  // primary-text: sombre sur corail (#f97316) — blanc = 2.80:1 FAIL, sombre = 6.39:1 ✅
   'primary-default':  $coral-500,
   'primary-hover':    $coral-600,
   'primary-active':   #c2410c,
   'primary-focus':    $coral-500,
   'primary-disabled': $coral-400,
-  'primary-text':     $pure-white,
+  'primary-text':     $ocean-950,
 
   // Actions secondaires
   'secondary-default':  $ocean-100,

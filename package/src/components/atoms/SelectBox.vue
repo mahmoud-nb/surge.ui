@@ -679,7 +679,7 @@ watch(modelValue, () => {
     justify-content: space-between;
     gap: 0.5rem;
     width: 100%;
-    background-color: white;
+    background-color: transparent;
     border: 1px solid var(--su-border-default);
     border-radius: var(--su-radius-md);
     cursor: pointer;

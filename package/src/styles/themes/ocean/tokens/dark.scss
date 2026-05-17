@@ -96,12 +96,13 @@ $theme-ocean-dark: (
   'state-info-border-focus': $ocean-600,
 
   // Actions primaires (corail pour accent en dark mode)
+  // primary-text: sombre sur corail (#f97316) — blanc = 2.80:1 FAIL, sombre = 6.39:1 ✅
   'primary-default':  $coral-500,
   'primary-hover':    $coral-400,
   'primary-active':   $coral-600,
   'primary-focus':    $coral-500,
   'primary-disabled': #4b2510,
-  'primary-text':     $pure-white,
+  'primary-text':     $ocean-950,
 
   // Actions secondaires
   'secondary-default':  #1e4a5f,
