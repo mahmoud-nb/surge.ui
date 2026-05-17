@@ -1,0 +1,21 @@
+// ============================================================
+// MÉTADONNÉES — THÈME SUNSET
+// Utilisé par les agents (theme-auditor) et le composable useTheme
+// ============================================================
+
+$theme-sunset-meta: (
+  'id':          'sunset',
+  'name':        'Coucher de soleil',
+  'description': 'Interface émotionnelle et créative. Dégradé orange-rose-violet, accent rose pour les CTAs.',
+  'category':    'color',
+  'accent':      'pink',
+
+  // Contraintes connues
+  'dark-notes':  'liens utilisent violet clair ($sunset-purple-light #c084fc) pour lisibilité sur fond sombre violet',
+  'light-notes': 'liens utilisent violet moyen ($sunset-purple-600 #9333ea) pour contraste sur fond crème',
+
+  // Couleurs de prévisualisation (utilisées dans ThemeSelector)
+  'preview-primary':    '#db2777',   // sunset-pink-600
+  'preview-background': '#1a0a1a',   // bg-canvas dark
+  'preview-surface':    '#fff7ed',   // bg-canvas light
+) !default;

@@ -1,0 +1,23 @@
+// ============================================================
+// MÉTADONNÉES — THÈME DEFAULT
+// Utilisé par les agents (theme-auditor) et le composable useTheme
+// ============================================================
+
+$theme-default-meta: (
+  'id':          'default',
+  'name':        'Défaut',
+  'description': 'Thème système neutre. Blues primaires + grays, compatible tous contextes. Remplace les anciens thèmes "light" et "dark".',
+  'category':    'system',
+  'accent':      'blue',
+
+  // Rétrocompatibilité
+  'deprecated-aliases': 'light (→ default+light), dark (→ default+dark)',
+
+  // Palette source
+  'palette-source': 'styles/foundations/_colors.scss — primary blues + grays',
+
+  // Couleurs de prévisualisation (utilisées dans ThemeSelector)
+  'preview-primary':    '#2563eb',   // blue-600
+  'preview-background': '#f8fafc',   // gray-50 (light)
+  'preview-surface':    '#ffffff',   // white
+) !default;

@@ -1,0 +1,21 @@
+// ============================================================
+// MÉTADONNÉES — THÈME OCEAN
+// Utilisé par les agents (theme-auditor) et le composable useTheme
+// ============================================================
+
+$theme-ocean-meta: (
+  'id':          'ocean',
+  'name':        'Océan',
+  'description': 'Interface analytique et data-driven. Tons marins profonds, accent corail pour les CTAs.',
+  'category':    'color',
+  'accent':      'coral',
+
+  // Contraintes connues
+  'dark-notes':  'primary-text doit être sombre (#071828) — blanc sur corail (#f97316) = 2.8:1 FAIL WCAG',
+  'palette-note': '$coral-300 et $coral-500 ont la même valeur #f97316 — à corriger',
+
+  // Couleurs de prévisualisation (utilisées dans ThemeSelector)
+  'preview-primary':    '#06b6d4',   // ocean-500
+  'preview-background': '#071828',   // bg-canvas dark
+  'preview-surface':    '#ecfeff',   // ocean-50 (light)
+) !default;

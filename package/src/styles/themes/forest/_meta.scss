@@ -1,0 +1,21 @@
+// ============================================================
+// MÉTADONNÉES — THÈME FOREST
+// Utilisé par les agents (theme-auditor) et le composable useTheme
+// ============================================================
+
+$theme-forest-meta: (
+  'id':          'forest',
+  'name':        'Forêt',
+  'description': 'Interface organique et naturelle. Verts profonds, accents orange automne pour les CTAs.',
+  'category':    'color',
+  'accent':      'autumn',
+
+  // Contraintes connues
+  'dark-notes':  'primary-text doit être clair sur fond autumn-orange — vérifier ratio WCAG avant modification',
+  'palette-note': '$earth-400 et $earth-500 ont la même valeur #f59e0b — à corriger',
+
+  // Couleurs de prévisualisation (utilisées dans ThemeSelector)
+  'preview-primary':    '#22c55e',   // forest-500
+  'preview-background': '#071408',   // bg-canvas dark
+  'preview-surface':    '#f0fdf4',   // forest-50 (light)
+) !default;
