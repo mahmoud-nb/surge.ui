@@ -1,8 +1,10 @@
 {
   "mcpServers": {
     "thread-mind": {
-      "command": "npx",
-      "args": ["-y", "thread-mind-mcp"]
+      "type": "stdio",
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "thread-mind-mcp"],
+      "env": {}
     }
   }
 }
