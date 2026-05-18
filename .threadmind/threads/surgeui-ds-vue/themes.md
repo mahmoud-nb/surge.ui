@@ -4,7 +4,7 @@ title: themes
 parentId: main
 author: mahmoud-b73a
 createdAt: 2026-05-07T17:53:01.691Z
-updatedAt: 2026-05-13T10:00:39.984Z
+updatedAt: 2026-05-18T09:19:30.966Z
 ---
 
 # Refonte du système de thèmes SurgeUI — État final
@@ -19,51 +19,74 @@ updatedAt: 2026-05-13T10:00:39.984Z
 
 ### Types TypeScript
 ```typescript
-type ThemeName    = 'default' | 'ocean' | 'forest' | 'sunset'  // plus d''auto'
-type ThemeMode    = 'light' | 'dark' | 'system'                 // 'auto' → 'system'
-type ContrastMode = 'normal' | 'high' | 'auto'                  // inchangé
-type MotionMode   = 'normal' | 'reduce' | 'auto'                // inchangé
+type ThemeName    = 'default' | 'ocean' | 'forest' | 'sunset'
+type ThemeMode    = 'light' | 'dark' | 'system'   // 'auto' → 'system'
+type ContrastMode = 'normal' | 'high' | 'auto'
+type MotionMode   = 'normal' | 'reduce' | 'auto'
 type DeprecatedThemeName = 'light' | 'dark'
 ```
 
 ### Comportement par défaut
 - Sans attribut HTML → `default/light` via fallback CSS `html:not([data-theme])`
-- `defaultThemeMode: 'light'` (pas `'system'`) — l'utilisateur choisit explicitement
+- `defaultThemeMode: 'light'` — l'utilisateur choisit explicitement
 - Mode `system` suit `prefers-color-scheme` uniquement si choisi
 
-## Fichiers modifiés / créés
+## Fichiers SCSS — structure finale
 
-### SCSS (nouveaux)
-- `styles/themes/_schema.scss` — schéma normatif des ~50 tokens requis + mixin `validate-theme()`
-- `styles/themes/default/` — remplace `light/` + `dark/`, structure `tokens/light.scss` + `tokens/dark.scss`
-- `styles/themes/ocean/tokens/{light,dark}.scss` + `_color.scss`
-- `styles/themes/forest/tokens/{light,dark}.scss` + `_color.scss`
-- `styles/themes/sunset/tokens/{light,dark}.scss` + `_color.scss`
+```
+styles/themes/
+├── _registry.scss
+├── _schema.scss          — schéma normatif ~118 tokens requis + mixin validate-theme()
+├── default/
+│   ├── index.scss        — sélecteurs data-theme + fallbacks rétrocompat
+│   ├── _color.scss
+│   ├── _meta.scss        — métadonnées (id, description, preview colors, notes)
+│   └── tokens/light.scss + dark.scss
+├── ocean/   (même structure + _meta.scss)
+├── forest/  (même structure + _meta.scss)
+└── sunset/  (même structure + _meta.scss)
+```
 
-### SCSS (modifiés)
-- `styles/themes/{ocean,forest,sunset}/index.scss` — sélecteurs `[data-theme='x'][data-theme-mode='y']`
-- `styles/core/_theme-loader.scss` — `$available-themes: ('default','ocean','forest','sunset')`, `load-contrast` cible `data-theme-mode='dark'`
+**Supprimés** : `themes/light/`, `themes/dark/`, `ocean/_tokens.scss`, `forest/_tokens.scss`, `sunset/_tokens.scss`
 
-### TypeScript
-- `src/types/theme.ts` — nouveaux types, `Exclude<ThemeName,'auto'>` supprimé
-- `src/theme.config.ts` — `themes: ['default','ocean','forest','sunset']`, `defaultThemeMode: 'light'`
-- `src/composables/useTheme.ts` — `themeMode` state, `setThemeMode()`, `effectiveThemeMode`, `toggleMode()`, migration localStorage `'auto'→'system'`
+## Audit WCAG AA — résultats et corrections
 
-### Composants
-- `GlobalPreview.vue` — `:data-theme-mode="effectiveThemeMode"` ajouté
-- `ThemeSelector.vue` — sélecteur Mode (light/dark/system) via `setThemeMode()`
+### Corrections de palette
+- `ocean/_color.scss` : `$coral-300` #f97316 → **#fdba74** (était doublon de $coral-500, ordre inversé)
+- `forest/_color.scss` : `$earth-500` #f59e0b → **#d97706** (était doublon de $earth-400)
 
-### Documentation
-- `docs/theme/index.md` + `docs/en/theme/index.md` — réécriture complète
-- `docs/theme/tokens.md` + `docs/en/theme/tokens.md` — nouveaux tokens d'inversion documentés
+### Corrections primary-text (4 thèmes/modes)
+Blanc sur fond orange/rose → insuffisant WCAG. Remplacé par couleur de canvas sombre :
 
-## Nouveaux tokens CSS (tous thèmes)
-- `--su-bg-inverse`, `--su-bg-inverse-subtle`, `--su-surface-inverse`
-- `--su-border-inverse`, `--su-text-on-inverse`
-- `--su-link-default-rgb` — valeur RGB espace-séparée pour `rgb(var(...) / 50%)`
+| Thème/Mode | primary-default | Avant | Après |
+|-----------|----------------|-------|-------|
+| ocean light/dark | #f97316 | blanc 2.80:1 ❌ | `$ocean-950` 6.39:1 ✅ |
+| forest light | #f97316 | blanc 2.80:1 ❌ | `$forest-950` 8.34:1 ✅ |
+| forest dark | #fb923c | blanc 2.26:1 ❌ | `$forest-950` 8.34:1 ✅ |
+| sunset dark | #ec4899 | blanc 3.53:1 ❌ | `#1a0a1a` 5.40:1 ✅ |
+
+Thèmes sans correction nécessaire : default (5.17:1 ✅), sunset light (4.60:1 ✅)
+
+## Agents & Skills Claude Code créés
+
+```
+.claude/
+├── agents/
+│   ├── component-reviewer.md   — audit 27 critères BEM/a11y/tokens/Vue3
+│   └── theme-auditor.md        — audit croisé tokens vs schéma
+└── commands/
+    ├── check-wcag.md            — calcul ratios WCAG 2.1
+    ├── new-component.md         — scaffold 6 fichiers d'un composant
+    ├── new-story.md             — génère stories depuis les props
+    └── sync-docs.md             — synchronise docs FR ↔ EN
+```
 
 ## État
-✅ Build propre (`npm run build:lib` exit 0)  
-✅ Lint propre (exit 0, erreurs préexistantes non liées)  
-✅ Documentation FR + EN mise à jour  
-⏳ Dark tokens Ocean/Forest/Sunset — contrastes WCAG AA à valider avec un outil dédié
+✅ Build propre (`npm run build:lib`, CSS 425.86 kB)
+✅ Lint propre
+✅ Documentation FR + EN mise à jour
+✅ Audit WCAG AA complet — toutes paires corrigées
+✅ Dossiers dépréciés supprimés (light/, dark/, _tokens.scss orphelins)
+
+## Point ouvert
+- Token `bg-primary-canvas` présent dans 3 thèmes light mais absent du `_schema.scss` → à décider : ajouter au schéma ou retirer des maps
