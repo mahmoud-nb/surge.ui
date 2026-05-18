@@ -367,6 +367,18 @@ export interface SpinnerProps {
   speed?: number;
 }
 
+// Toggle.vue
+export type ToggleVariant = 'default' | 'outline' | 'ghost'
+export interface ToggleProps extends AccessibilityProps {
+  label?: string
+  icon?: Component
+  activeIcon?: Component
+  size?: Size
+  variant?: ToggleVariant
+  radius?: Radius
+  disabled?: boolean
+}
+
 // Switch.vue
 export interface SwitchProps extends AccessibilityProps {
   leftLabel?: string;
@@ -441,6 +453,26 @@ export interface ButtonGroupProps extends AccessibilityProps {
   gap?: 'sm' | 'md' | 'lg' | 'none';
   size?: ButtonSize;
   variant?: ButtonVariant;
+}
+
+// ToggleGroup.vue
+export type ToggleGroupMode = 'exclusive' | 'multi'
+export interface ToggleGroupItem {
+  value: string | number
+  label?: string
+  icon?: Component
+  activeIcon?: Component
+  disabled?: boolean
+}
+export interface ToggleGroupProps extends AccessibilityProps {
+  items: ToggleGroupItem[]
+  mode?: ToggleGroupMode
+  size?: Size
+  variant?: ToggleVariant
+  radius?: Radius
+  gap?: Gap
+  orientation?: Orientation
+  disabled?: boolean
 }
 
 // AvatarGroup.vue

@@ -21,7 +21,9 @@ import Button from './components/atoms/Button.vue'
 import Dropdown from './components/molecules/Dropdown.vue'
 import LinkGroup from './components/molecules/LinkGroup.vue'
 import ButtonGroup from './components/molecules/ButtonGroup.vue'
+import Toggle from './components/atoms/Toggle.vue'
 import FloatButton from './components/molecules/FloatButton.vue'
+import ToggleGroup from './components/molecules/ToggleGroup.vue'
 
 // ## Form Components ..................................................
 import Input from './components/atoms/Input.vue'
@@ -54,7 +56,7 @@ import { SurgeuiTheme, ThemeSymbol, flattenThemeToCSS } from './plugin/theme'
 // Export des composants et de la fonction d'installation
 export { Icon, Heading, Panel, Image, Avatar, AvatarGroup, Badge, Dialog, Progress, Spinner }
 export { Tabs, Accordion, AccordionItem, Alert }
-export { Link, LinkGroup, Button, ButtonGroup, FloatButton, Dropdown }
+export { Link, LinkGroup, Button, ButtonGroup, Toggle, ToggleGroup, FloatButton, Dropdown }
 export { Input, Textarea, SelectBox, RadioGroup, CheckboxGroup, FileUpload, Switch, Slider, Password }
 export { InputField, SelectBoxField, RadioGroupField, CheckboxGroupField, PasswordField, SwitchField, FileUploadField, TextareaField, SliderField }
 export { FormField, FormFieldGroup }
@@ -106,6 +108,8 @@ export default {
     app.component(`${prefix}Link`, Link)
     app.component(`${prefix}LinkGroup`, LinkGroup)
     app.component(`${prefix}FloatButton`, FloatButton)
+    app.component(`${prefix}Toggle`, Toggle)
+    app.component(`${prefix}ToggleGroup`, ToggleGroup)
     app.component(`${prefix}Dropdown`, Dropdown)
 
     // ## Form Components ...... Base fields
