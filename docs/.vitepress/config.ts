@@ -103,6 +103,7 @@ export default defineConfig({
       themeConfig: {
         nav: [
           { text: 'Accueil', link: '/' },
+          { text: 'Démarrage', link: '/guide/get-started' },
           { text: 'Composants', link: '/components/' },
           { text: 'Storybook', link: `${ROOT_URL}storybook/`, target: '_blank' }
         ],
@@ -110,7 +111,7 @@ export default defineConfig({
           {
             text: 'Guide',
             items: [
-              { text: 'Introduction', link: '/' },
+              { text: 'Démarrage rapide', link: '/guide/get-started' },
               { text: 'Installation', link: '/guide/installation' }
             ]
           },
@@ -152,6 +153,7 @@ export default defineConfig({
       themeConfig: {
         nav: [
           { text: 'Home', link: '/en/' },
+          { text: 'Get Started', link: '/en/guide/get-started' },
           { text: 'Components', link: '/en/components/' },
           { text: 'Storybook', link: `${ROOT_URL}storybook/`, target: '_blank' }
         ],
@@ -159,7 +161,7 @@ export default defineConfig({
           {
             text: 'Guide',
             items: [
-              { text: 'Introduction', link: '/en/' },
+              { text: 'Getting Started', link: '/en/guide/get-started' },
               { text: 'Installation', link: '/en/guide/installation' }
             ]
           },

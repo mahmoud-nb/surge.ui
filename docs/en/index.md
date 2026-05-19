@@ -1,40 +1,45 @@
-# SurgeUI Design System
+---
+layout: home
 
-Modern Vue.js 3 component library with Composition API, designed to create modern and consistent interfaces.
+hero:
+  name: SurgeUI
+  text: Vue 3 Design System
+  tagline: Accessible, themeable and performant components for modern interfaces.
+  actions:
+    - theme: brand
+      text: Get Started
+      link: /en/guide/get-started
+    - theme: alt
+      text: Components
+      link: /en/components/
+    - theme: alt
+      text: Storybook
+      link: https://surgeui.com/storybook
 
-## 📖 Documentation and examples
+features:
+  - icon: ♿
+    title: WCAG AA Accessibility
+    details: Keyboard navigation, ARIA roles, screen readers, 4.5:1 contrast ratios, 44px touch targets and high contrast mode support.
+  - icon: 🎨
+    title: 5 Built-in Themes
+    details: Light, Dark, Ocean, Forest and Sunset. Semantic CSS tokens (--su-*) for automatic theme adaptation.
+  - icon: 🔧
+    title: Native TypeScript
+    details: Typed props, explicit interfaces, auto-completion and type safety throughout the entire library.
+  - icon: ⚡
+    title: Composition API
+    details: Built on Vue 3 with script setup, defineModel, defineEmits and reusable composables.
+  - icon: 📱
+    title: Responsive & RTL
+    details: Components adapted to all screen sizes with native support for left-to-right and right-to-left directions.
+  - icon: 🧩
+    title: 34+ Components
+    details: From atoms (Button, Input, Badge) to organisms (Dialog, Tabs, Accordion), organized using Atomic Design.
+---
 
-- **Complete Documentation** - Usage guide and component API
-- **[Storybook](https://surgeui.com/storybook)** - Interactive examples and component testing
-- **[npm Package](https://www.npmjs.com/package/@surgeui/ds-vue)**
+<div class="home-content">
 
-## ✨ Features
-
-- 🎨 **Modern Design** - Components with polished and professional design
-- 🔧 **TypeScript** - Full TypeScript support for better developer experience
-- 🎯 **Composition API** - Uses Vue 3 Composition API
-- 📱 **Responsive** - Components adapted to all screen sizes
-- 🌙 **Dark Mode** - Native dark mode support
-- 🔄 **RTL & LTR** – Native support for both right-to-left and left-to-right text directions 
-- ♿ **Accessibility** – Accessibility-friendly and built with best practices in mind
-- ⚡ **Performance** - Optimized for best performance
-- ♿ **Accessible** - WCAG 2.1 AA compliant with complete accessibility support
-- 🎨 **Customizable** - Global configuration and theming support
-
-## ♿ Accessibility
-
-All components follow WCAG 2.1 AA standards:
-
-- **Focus Management** - Clear focus indicators and logical tab order
-- **Keyboard Navigation** - Full keyboard support
-- **Screen Readers** - Proper ARIA attributes and announcements
-- **Color Contrast** - WCAG AA compliant contrast ratios (4.5:1 minimum)
-- **Touch Targets** - Minimum 44px touch targets
-- **Reduced Motion** - Respects `prefers-reduced-motion`
-- **High Contrast** - Supports `prefers-contrast: high`
-- **RTL Support** - Right-to-left language support
-
-## 🚀 Quick Installation
+## Installation
 
 ```bash
 npm install @surgeui/ds-vue
@@ -47,79 +52,91 @@ import '@surgeui/ds-vue/style.css'
 </script>
 
 <template>
-  <SuButton variant="primary">
-    My first button
-  </SuButton>
+  <SuButton variant="primary">My first button</SuButton>
 </template>
 ```
 
-## 📚 Available Components
+<div class="home-categories">
 
-<div class="component-grid">
-  <div class="component-card">
-    <h3>Button</h3>
-    <p><b>Button</b> component with multiple variants and sizes</p>
-    <a href="/en/components/button">View documentation →</a>
-  </div>
-  
-  <div class="component-card">
-    <h3>InputField</h3>
-    <p><b>InputField</b> component with prefixes, suffixes and validation</p>
-    <a href="/en/components/inputfield">View documentation →</a>
-  </div>
-  
-  <div class="component-card">
-    <h3>SelectBox</h3>
-    <p><b>SelectField</b> component with search and multiple selection</p>
-    <a href="/en/components/selectboxfield">View documentation →</a>
-  </div>
-  
-  <div class="component-card">
-    <h3>Accordion</h3>
-    <p><b>Accordion</b> component for multiple collapsible content sections</p>
-    <a href="/en/components/accordion">View documentation →</a>
-  </div>
+### Browse components
+
+<div class="category-grid">
+  <a href="/en/components/display" class="category-card">
+    <span class="category-icon">🖼️</span>
+    <span class="category-title">Display</span>
+    <span class="category-count">15 components</span>
+  </a>
+  <a href="/en/components/actions" class="category-card">
+    <span class="category-icon">🖱️</span>
+    <span class="category-title">Actions</span>
+    <span class="category-count">8 components</span>
+  </a>
+  <a href="/en/components/form" class="category-card">
+    <span class="category-icon">📝</span>
+    <span class="category-title">Forms</span>
+    <span class="category-count">11 components</span>
+  </a>
+</div>
+
+</div>
+
 </div>
 
 <style scoped>
-.component-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 1rem;
-  margin: 2rem 0;
+.home-content {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
 }
 
-.component-card {
-  padding: 1.5rem;
+.home-categories {
+  margin-top: 3rem;
+}
+
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.category-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1.5rem 1rem;
   border: 1px solid var(--vp-c-divider);
-  border-radius: 8px;
+  border-radius: 12px;
   background-color: var(--vp-c-bg-soft);
+  text-decoration: none;
   transition: all 0.2s ease;
 }
 
-.component-card:hover {
+.category-card:hover {
   border-color: var(--vp-c-brand-1);
   transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
-.component-card h3 {
-  margin: 0 0 0.5rem 0;
+.category-icon {
+  font-size: 2rem;
+}
+
+.category-title {
+  font-size: 1.1rem;
+  font-weight: 600;
   color: var(--vp-c-text-1);
 }
 
-.component-card p {
-  margin: 0 0 1rem 0;
+.category-count {
+  font-size: 0.85rem;
   color: var(--vp-c-text-2);
-  font-size: 0.9rem;
 }
 
-.component-card a {
-  color: var(--vp-c-brand-1);
-  text-decoration: none;
-  font-weight: 500;
-}
-
-.component-card a:hover {
-  text-decoration: underline;
+@media (max-width: 640px) {
+  .category-grid {
+    grid-template-columns: 1fr;
+  }
 }
 </style>
