@@ -42,6 +42,8 @@ const getNavItems = (section: string = 'display', lang: string = 'fr') => {
       { text: 'ButtonGroup', link: `${langPrefix}/components/buttongroup` },
       { text: 'Link', link: `${langPrefix}/components/link` },
       { text: 'LinkGroup', link: `${langPrefix}/components/linkgroup` },
+      { text: 'Toggle', link: `${langPrefix}/components/toggle` },
+      { text: 'ToggleGroup', link: `${langPrefix}/components/togglegroup` },
       { text: 'FloatButton', link: `${langPrefix}/components/floatbutton` },
       { text: 'Dropdown', link: `${langPrefix}/components/dropdown` }
     ],

@@ -2,6 +2,8 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+> **Docs workspace-spécifiques :** voir `package/CLAUDE.md` (bibliothèque de composants) et `docs/CLAUDE.md` (site de documentation).
+
 ## Commands
 
 ```bash

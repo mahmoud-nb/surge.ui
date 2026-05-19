@@ -1,38 +1,27 @@
 # Components
 
-This section contains the documentation for all components available in the SurgeUp Design System.
+The SurgeUI Design System provides a Vue 3 component library organized using **Atomic Design** principles. Every component is accessible, themeable, and designed to work with all 5 built-in themes (light, dark, ocean, forest, sunset).
 
-## Display
+## Principles
 
-- [Image](/en/components/image) - Image component with ratios, multiple sources and lazy loading
-- [Avatar](/en/components/avatar) - Avatar component with initials, status and badges
-- [AvatarGroup](/en/components/avatargroup) - Avatar group with overflow management
-- [Badge](/en/components/badge) - Modern badge component with variants and icons
-- [Dialog](/en/components/dialog) - Versatile modal/drawer component
-- [Tabs](/en/components/tabs) - tabs component
-- [Progress](/en/components/progress) - Composant Progress
+- **Accessibility** — ARIA roles, keyboard navigation, screen reader support and WCAG AA contrast
+- **Theming** — Semantic CSS tokens (`--su-*`) for automatic adaptation to each theme
+- **Composition** — From atoms to organisms, components combine to build rich interfaces
+- **TypeScript** — Typed props with explicit interfaces and auto-completion
 
-## Forms
+## Browse by category
 
-- [Input](/en/components/input) - InputField component with multiple variants
-- [Textarea](/en/components/textarea) - Textarea field component with counter and auto-resize
-- [SelectBox](/en/components/selectbox) - SelectBox component with multiple selection support
-- [RadioGroup](/en/components/radio-group) - Radio Group component for single selection with different display modes
-- [CheckboxGroup](/en/components/checkbox-group) - Checkbox Group component for multiple selection with different display modes
-- [Switch](/en/components/switch) - Switch component for toggle actions
-- [FileUpload](/en/components/fileupload) - File upload component with drag & drop
-- [Slider](/en/components/slider) - Slider component for numeric values
-- [Password](/en/components/password) - Password component with validation and progress bar
+### Display — 15 components
 
-## Actions
+Headings, images, avatars, badges, modals, tabs, accordions, progress indicators.
+[See all display components &rarr;](/en/components/display)
 
-- [Button](/en/components/button) - Button component with multiple variants
-- [ButtonGroup](/en/components/buttongroup) - Button group with controlled spacing
-- [Link](/en/components/link) - Link component with icon support and variants
-- [LinkGroup](/en/components/linkgroup) - Link group with controlled spacing
-- [Dropdown](/en/components/dropdown) - Dropdown component with options and links
+### Actions — 8 components
 
-## Organization
+Buttons, links, toggles, dropdown menus, floating button.
+[See all action components &rarr;](/en/components/actions)
 
-- [FormFieldGroup](/en/components/formfieldGroup) - Form field group with controlled spacing
-- [FloatButton](/en/components/floatbutton) - Floating button positioned in screen corners
+### Forms — 11 components
+
+Input fields, selectors, switches, file uploads, validation.
+[See all form components &rarr;](/en/components/form)
