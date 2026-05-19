@@ -29,14 +29,14 @@ Each theme is available in both light **and** dark mode.
 - **system** - Follows system preference automatically (`prefers-color-scheme`)
 
 ::: tip Default Behavior
-Without any HTML attributes, the `default` theme in `light` mode is applied via a CSS fallback on `html:not([data-theme])`. The `system` mode is **not** enabled by default — the user must explicitly choose it.
+Without any HTML attributes, the `default` theme in `light` mode is applied via a CSS fallback on `html:not([data-theme])`. The `system` mode is **not** enabled by default -  the user must explicitly choose it.
 :::
 
 ::: warning Deprecated Names
 The theme names `light` and `dark` (formerly standalone themes) are **deprecated**. They continue working in CSS and JS for backward compatibility but emit a console warning. Use `default` + `themeMode` instead.
 :::
 
-### CSS Strategy — Dual HTML Attributes
+### CSS Strategy -  Dual HTML Attributes
 
 The theme and mode are two separate HTML attributes on `<html>`:
 
@@ -126,7 +126,7 @@ type ThemeMode = 'light' | 'dark' | 'system'
 type ContrastMode = 'normal' | 'high' | 'auto'
 type MotionMode   = 'normal' | 'reduce' | 'auto'
 
-// Deprecated — backward compatibility only
+// Deprecated -  backward compatibility only
 type DeprecatedThemeName = 'light' | 'dark'
 ```
 
@@ -142,22 +142,22 @@ import { useTheme } from '@surgeui/ds-vue';
 
 const {
   // Reactive state
-  themeName,            // Ref<ThemeName> — active visual identity
-  themeMode,            // Ref<ThemeMode> — 'light' | 'dark' | 'system'
+  themeName,            // Ref<ThemeName> -  active visual identity
+  themeMode,            // Ref<ThemeMode> -  'light' | 'dark' | 'system'
   contrastMode,         // Ref<ContrastMode>
   motionMode,           // Ref<MotionMode>
 
   // Computed
-  effectiveTheme,       // ComputedRef<ThemeName> — resolved theme (never 'system')
-  effectiveThemeMode,   // ComputedRef<'light' | 'dark'> — resolved mode
+  effectiveTheme,       // ComputedRef<ThemeName> -  resolved theme (never 'system')
+  effectiveThemeMode,   // ComputedRef<'light' | 'dark'> -  resolved mode
   isDarkMode,           // ComputedRef<boolean>
 
   // Actions
   setTheme,             // (theme: ThemeName) => void
   setThemeMode,         // (mode: ThemeMode) => void
-  toggleMode,           // () => void — toggle between light and dark
-  cycleTheme,           // () => void — cycle through available themes
-  clearConfig,          // () => void — reset to defaultTheme + defaultThemeMode
+  toggleMode,           // () => void -  toggle between light and dark
+  cycleTheme,           // () => void -  cycle through available themes
+  clearConfig,          // () => void -  reset to defaultTheme + defaultThemeMode
 } = useTheme();
 </script>
 ```
@@ -763,7 +763,7 @@ interface UseThemeOptions {
   // Actions
   setTheme: (theme: ThemeName) => void;
   setThemeMode: (mode: ThemeMode) => void;   // NEW
-  toggleMode: () => void;                    // NEW — replaces toggleTheme
+  toggleMode: () => void;                    // NEW -  replaces toggleTheme
   cycleTheme: () => void;
   setContrast: (contrast: ContrastMode) => void;
   setMotion: (motion: MotionMode) => void;

@@ -69,7 +69,7 @@ const items = [
 
 ### Custom Header with Slot
 
-The `#header` slot allows you to customise the content of each header — icons, badges, advanced formatting.
+The `#header` slot allows you to customise the content of each header -  icons, badges, advanced formatting.
 
 ```vue
 <template>
@@ -153,8 +153,8 @@ interface CollapseItem {
   id?: string       // Unique identifier (auto-generated if absent)
   title: string     // Title displayed in the header
   content: string   // Default text content (used without #panel slot)
-  icon?: Component  // Icon component (e.g. HeroIcon) — use via the #header slot
-  badge?: number    // Badge value — use via the #header slot
+  icon?: Component  // Icon component (e.g. HeroIcon) -  use via the #header slot
+  badge?: number    // Badge value -  use via the #header slot
   disabled?: boolean // If true, the section is non-interactive
 }
 ```
@@ -165,7 +165,7 @@ interface CollapseItem {
 |------|---------------|-------------|
 | `#header` | `{ item: CollapseItem, index: number }` | Replaces the header content of each section |
 | `#panel` | `{ item: CollapseItem, index: number }` | Replaces the panel content of each section |
-| `default` | — | Displayed when `items` is empty or not provided |
+| `default` | -  | Displayed when `items` is empty or not provided |
 
 ### Keyboard Navigation
 

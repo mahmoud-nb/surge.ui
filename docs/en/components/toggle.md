@@ -62,9 +62,9 @@ const italic = ref(false)
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `modelValue` | `boolean` | `false` | Toggle state (v-model) |
-| `label` | `string` | — | Text displayed in the toggle |
-| `icon` | `Component` | — | Icon displayed (inactive state) |
-| `activeIcon` | `Component` | — | Icon displayed when active (replaces `icon`) |
+| `label` | `string` | -  | Text displayed in the toggle |
+| `icon` | `Component` | -  | Icon displayed (inactive state) |
+| `activeIcon` | `Component` | -  | Icon displayed when active (replaces `icon`) |
 | `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Size |
 | `variant` | `'default' \| 'outline' \| 'ghost'` | `'default'` | Visual variant |
 | `radius` | `Radius` | `'md'` | Border radius |

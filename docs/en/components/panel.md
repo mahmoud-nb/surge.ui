@@ -53,7 +53,7 @@ It can be rendered as either a `<section>` or a `<div>`, and includes dedicated 
 | `as`       | `string`  | `'section'` | Defines the HTML tag used for the main container (`section` or `div`). |
 | `outlined` | `boolean` | `false`     | Adds a border around the panel.                                        |
 | `elevated` | `boolean` | `false`     | Adds a shadow for a raised visual effect.                              |
-| `class`    | `string`  | —           | Additional CSS classes to apply.                                       |
+| `class`    | `string`  | -            | Additional CSS classes to apply.                                       |
 
 
 ### Slots

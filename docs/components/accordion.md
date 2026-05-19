@@ -112,9 +112,9 @@ Il est idéal pour présenter des informations hiérarchisées sans surcharger l
 
 | Prop    | Type      | Par défaut | Description                                                           |
 | ------- | --------- | ---------- | --------------------------------------------------------------------- |
-| `title` | `string`  | —          | Titre affiché dans le bouton. Peut être remplacé via le slot `title`. |
+| `title` | `string`  | -           | Titre affiché dans le bouton. Peut être remplacé via le slot `title`. |
 | `open`  | `boolean` | `false`    | Définit l’état initial (ouvert/fermé).                                |
-| `id`    | `string`  | —          | Identifiant unique facultatif pour l’item.                            |
+| `id`    | `string`  | -           | Identifiant unique facultatif pour l’item.                            |
 
 ### Slots
 

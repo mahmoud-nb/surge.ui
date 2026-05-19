@@ -1,33 +1,27 @@
 # Installation
 
-## 📚 Resources
-
-- **Documentation**: Complete guide with examples
-- **[Storybook](/storybook/)**: Interactive examples and component playground
-- **[npm Package](https://www.npmjs.com/package/@surgeui/ds-vue)**
-
 ## Prerequisites
 
 - Vue.js 3.3+
 - Node.js 16+
 
-## Installation via npm
+## Installation
 
-```bash
+::: code-group
+
+```bash [npm]
 npm install @surgeui/ds-vue
 ```
 
-## Installation via yarn
-
-```bash
+```bash [yarn]
 yarn add @surgeui/ds-vue
 ```
 
-## Installation via pnpm
-
-```bash
+```bash [pnpm]
 pnpm add @surgeui/ds-vue
 ```
+
+:::
 
 ## Configuration
 

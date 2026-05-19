@@ -53,7 +53,7 @@ Il peut être rendu sous forme de `<section>` ou de `<div>` selon le contexte, e
 | `as`       | `string`  | `'section'` | Définit la balise HTML utilisée pour le conteneur principal (`section` ou `div`). |
 | `outlined` | `boolean` | `false`     | Ajoute un contour au panneau.                                                     |
 | `elevated` | `boolean` | `false`     | Ajoute une ombre pour un effet de profondeur.                                     |
-| `class`    | `string`  | —           | Classes CSS supplémentaires.                                                      |
+| `class`    | `string`  | -            | Classes CSS supplémentaires.                                                      |
 
 ### Slots
 

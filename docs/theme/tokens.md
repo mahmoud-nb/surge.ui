@@ -314,7 +314,7 @@ Background désactivé.
 
 #### `--su-bg-inverse`
 
-Fond inversé — contraste avec le fond principal du thème.
+Fond inversé -  contraste avec le fond principal du thème.
 
 ```vue
 <style scoped lang="scss">
@@ -925,7 +925,7 @@ Ces tokens ne changent pas selon le thème.
 Si vous avez besoin de tokens spécifiques à votre application :
 
 ```scss
-// Dans votre thème personnalisé — tokens/light.scss
+// Dans votre thème personnalisé -  tokens/light.scss
 $theme-custom-light: (
   // Tokens standard
   'text-primary': #1a202c,

@@ -103,9 +103,9 @@ const italic = ref(false)
 | Prop | Type | Défaut | Description |
 |------|------|--------|-------------|
 | `modelValue` | `boolean` | `false` | État du toggle (v-model) |
-| `label` | `string` | — | Texte affiché dans le toggle |
-| `icon` | `Component` | — | Icône affichée (état inactif) |
-| `activeIcon` | `Component` | — | Icône affichée quand actif (remplace `icon`) |
+| `label` | `string` | -  | Texte affiché dans le toggle |
+| `icon` | `Component` | -  | Icône affichée (état inactif) |
+| `activeIcon` | `Component` | -  | Icône affichée quand actif (remplace `icon`) |
 | `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Taille |
 | `variant` | `'default' \| 'outline' \| 'ghost'` | `'default'` | Variante visuelle |
 | `radius` | `Radius` | `'md'` | Rayon de bordure |

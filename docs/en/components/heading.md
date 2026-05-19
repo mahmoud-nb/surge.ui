@@ -30,8 +30,8 @@ It supports different heading levels (`h1`–`h6`) or custom tags, while maintai
 | Prop    | Type   | Default | Description         |
 | ------- | ------ | ------- | -------------------------------------- |
 | `level` | `1 \| 2 \| 3 \| 4 \| 5 \| 6` | `1`     | Defines the visual and semantic level of the heading.                                                          |
-| `as`    | `string`                     | —       | Optional HTML tag to render instead of the default (`h1`–`h6`). Useful for styling without breaking semantics. |
-| `class` | `string`                     | —       | Additional custom classes.                                                                                     |
+| `as`    | `string`                     | -        | Optional HTML tag to render instead of the default (`h1`–`h6`). Useful for styling without breaking semantics. |
+| `class` | `string`                     | -        | Additional custom classes.                                                                                     |
 
 
 ### Styling

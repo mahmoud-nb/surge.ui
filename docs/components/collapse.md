@@ -69,7 +69,7 @@ const items = [
 
 ### En-tête personnalisé avec slot
 
-Le slot `#header` permet de personnaliser le contenu de chaque en-tête — icônes, badges, mise en forme avancée.
+Le slot `#header` permet de personnaliser le contenu de chaque en-tête -  icônes, badges, mise en forme avancée.
 
 ```vue
 <template>
@@ -153,8 +153,8 @@ interface CollapseItem {
   id?: string       // Identifiant unique (généré automatiquement si absent)
   title: string     // Titre affiché dans l'en-tête
   content: string   // Contenu textuel par défaut (utilisé sans slot #panel)
-  icon?: Component  // Composant icône (ex. HeroIcon) — à utiliser via le slot #header
-  badge?: number    // Valeur de badge — à utiliser via le slot #header
+  icon?: Component  // Composant icône (ex. HeroIcon) -  à utiliser via le slot #header
+  badge?: number    // Valeur de badge -  à utiliser via le slot #header
   disabled?: boolean // Si true, la section est non interactive
 }
 ```
@@ -165,7 +165,7 @@ interface CollapseItem {
 |------|---------------|-------------|
 | `#header` | `{ item: CollapseItem, index: number }` | Remplace le contenu de l'en-tête de chaque section |
 | `#panel` | `{ item: CollapseItem, index: number }` | Remplace le contenu du panneau de chaque section |
-| `default` | — | Affiché si `items` est vide ou non fourni |
+| `default` | -  | Affiché si `items` est vide ou non fourni |
 
 ### Navigation clavier
 

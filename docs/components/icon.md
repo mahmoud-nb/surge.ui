@@ -110,7 +110,7 @@ Utilisez `decorative` pour les icônes purement visuelles qui n'apportent pas d'
 
 ```vue
 <template>
-  <!-- Icône à côté d'un texte lisible — la masquer pour les lecteurs d'écran -->
+  <!-- Icône à côté d'un texte lisible -  la masquer pour les lecteurs d'écran -->
   <button>
     <SuIcon name="Download" decorative />
     Télécharger
@@ -124,7 +124,7 @@ Pour les icônes qui véhiculent une information (bouton icon-only, statut visue
 
 ```vue
 <template>
-  <!-- Bouton icon-only — l'icône doit avoir un label ARIA -->
+  <!-- Bouton icon-only -  l'icône doit avoir un label ARIA -->
   <button aria-label="Supprimer l'élément">
     <SuIcon name="Trash" aria-label="Supprimer" />
   </button>
@@ -152,13 +152,13 @@ HeroIcons exporte ses composants avec le suffixe `Icon`. Les deux formes sont ac
 
 | Prop | Type | Défaut | Description |
 |------|------|--------|-------------|
-| `name` | `string` | — **(requis)** | Nom de l'icône HeroIcons (ex. `'Home'`, `'ArrowRight'`, `'Cog6Tooth'`) |
-| `variant` | `'outline' \| 'solid'` | `'outline'` | Style de l'icône — `outline` pour des traits fins, `solid` pour des formes pleines |
+| `name` | `string` | -  **(requis)** | Nom de l'icône HeroIcons (ex. `'Home'`, `'ArrowRight'`, `'Cog6Tooth'`) |
+| `variant` | `'outline' \| 'solid'` | `'outline'` | Style de l'icône -  `outline` pour des traits fins, `solid` pour des formes pleines |
 | `size` | `number \| string` | `24` | Taille de l'icône. Un nombre est interprété en pixels ; une chaîne est utilisée comme valeur CSS brute |
-| `color` | `string` | — | Couleur de l'icône. Accepte une couleur CSS (`#hex`, `rgb(...)`) ou une classe Tailwind `text-*` |
-| `ariaLabel` | `string` | — | Label ARIA pour les icônes sémantiques. Injecte `role="img"` automatiquement |
+| `color` | `string` | -  | Couleur de l'icône. Accepte une couleur CSS (`#hex`, `rgb(...)`) ou une classe Tailwind `text-*` |
+| `ariaLabel` | `string` | -  | Label ARIA pour les icônes sémantiques. Injecte `role="img"` automatiquement |
 | `decorative` | `boolean` | `false` | Si `true`, l'icône est masquée aux technologies d'assistance (`aria-hidden="true"`, `role="presentation"`) |
-| `class` | `string` | — | Classes CSS supplémentaires appliquées à l'élément SVG |
+| `class` | `string` | -  | Classes CSS supplémentaires appliquées à l'élément SVG |
 
 ### Comportement d'accessibilité automatique
 
@@ -166,19 +166,19 @@ HeroIcons exporte ses composants avec le suffixe `Icon`. Les deux formes sont ac
 |----------|-----------------|-------------------|
 | Icône décorative | `decorative: true` | `aria-hidden="true"` + `role="presentation"` |
 | Icône sémantique | `ariaLabel: "..."` | `aria-label="..."` + `role="img"` |
-| Aucune des deux | — | Aucun attribut ARIA — à éviter |
+| Aucune des deux | -  | Aucun attribut ARIA -  à éviter |
 
 ## Accessibilité
 
 - **Icônes décoratives** : utilisez toujours `decorative` lorsque l'icône accompagne un texte lisible. Cela évite la répétition d'information pour les utilisateurs de lecteurs d'écran.
 - **Icônes sémantiques** : fournissez toujours un `ariaLabel` clair et descriptif pour les icônes porteuses de sens (boutons icon-only, indicateurs de statut sans texte).
 - **Contraste** : assurez-vous que la couleur choisie offre un contraste suffisant (minimum 3:1 pour les éléments graphiques non textuels selon WCAG 2.1).
-- **Taille minimale** : les icônes interactives doivent avoir une zone cliquable d'au moins 44×44 px (standard WCAG 2.5.5) — gérez cela via le composant parent (bouton, lien).
+- **Taille minimale** : les icônes interactives doivent avoir une zone cliquable d'au moins 44×44 px (standard WCAG 2.5.5) -  gérez cela via le composant parent (bouton, lien).
 
 ## Remarques techniques
 
-- Le chargement de l'icône est **asynchrone** via `defineAsyncComponent` — un bref instant peut s'écouler avant l'affichage lors du premier rendu.
+- Le chargement de l'icône est **asynchrone** via `defineAsyncComponent` -  un bref instant peut s'écouler avant l'affichage lors du premier rendu.
 - Si le nom de l'icône est incorrect ou n'existe pas dans HeroIcons, un avertissement est émis en console et rien n'est rendu.
 - La prop `color` supporte deux formes :
   - **Valeur CSS** (`#3b82f6`, `rgb(59,130,246)`) : injectée en `style.color`
-  - **Classe Tailwind** (`text-blue-500`) : ajoutée à la liste de classes — dans ce cas, `style.color` n'est **pas** injecté
+  - **Classe Tailwind** (`text-blue-500`) : ajoutée à la liste de classes -  dans ce cas, `style.color` n'est **pas** injecté
