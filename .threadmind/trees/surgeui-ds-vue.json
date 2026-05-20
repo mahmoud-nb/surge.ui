@@ -5,7 +5,8 @@
       "children": [
         "formulaires",
         "themes",
-        "components"
+        "components",
+        "composables"
       ]
     },
     "formulaires": {
@@ -17,6 +18,10 @@
       "children": []
     },
     "components": {
+      "parentId": "main",
+      "children": []
+    },
+    "composables": {
       "parentId": "main",
       "children": []
     }
