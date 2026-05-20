@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.2.0](https://mahmoud-nb.github.io/surge.ui/compare/v2.1.0...v2.2.0) (2026-05-20)
+
+
+### 🐛 Bug Fixes
+
+* fix mcp windows settings ([0f5b4a2](https://mahmoud-nb.github.io/surge.ui/commit/0f5b4a2f17af3181dded6e193a687a7554923686))
+* mcp settings ([c2667fc](https://mahmoud-nb.github.io/surge.ui/commit/c2667fc1fe1ec80b81f75df505680cf37d911fd3))
+* reset deprecated themes ([9359cb1](https://mahmoud-nb.github.io/surge.ui/commit/9359cb1795fb4012bf25a8de24e09e40765ffa08))
+* standardize default values in documentation across components ([c866271](https://mahmoud-nb.github.io/surge.ui/commit/c866271128ff16a32aedb972baedcfa2c7e06d22))
+
+
+### ✨ Features
+
+* add 'Getting Started' and 'Démarrage rapide' guides with navigation updates ([321129c](https://mahmoud-nb.github.io/surge.ui/commit/321129c4d090f94c84a37f120fd5c4dc2296abee))
+* add commands for generating component stories and synchronizing documentation ([f878fa3](https://mahmoud-nb.github.io/surge.ui/commit/f878fa36fc067e13bf71c0286ecf9bccd1b942f1))
+* add component thrad ([844f695](https://mahmoud-nb.github.io/surge.ui/commit/844f6959463bed3a28bffd4e5a905876fecca261))
+* add metadata for new themes (default, forest, ocean, sunset) and update theme system documentation ([2c22ef5](https://mahmoud-nb.github.io/surge.ui/commit/2c22ef52f1d8f55076ac84f6aa9c907d01afeacf))
+* add new AI agents and skills ([0b9f4c9](https://mahmoud-nb.github.io/surge.ui/commit/0b9f4c911a57d33f66e6af9328c8b2cf9bcd439a))
+* add publish script to package.json for public access ([5459311](https://mahmoud-nb.github.io/surge.ui/commit/54593111f9bda794631b0bca284d007555d337dc))
+* add Toggle and ToggleGroup components with documentation and stories ([337e143](https://mahmoud-nb.github.io/surge.ui/commit/337e143c76a6fbc1d4e90691f746abdb4ae98410))
+* add useBreakpoint composable for responsive design and update project structure ([b0142a7](https://mahmoud-nb.github.io/surge.ui/commit/b0142a776168c0c32105217de13d96601a8c0969))
+* enhance documentation with new components and structure updates ([b3c9d93](https://mahmoud-nb.github.io/surge.ui/commit/b3c9d932be18dce8865d9dd8d12ea2ba9a35b271))
+* update theme statistics and documentation; increment update counts and adjust content lengths ([4f3e097](https://mahmoud-nb.github.io/surge.ui/commit/4f3e097c3fbde5343cd700b3898f21a1f61da1a3))
+* update theme styles and tokens for forest, ocean, and sunset themes; remove dark and light theme files ([648d191](https://mahmoud-nb.github.io/surge.ui/commit/648d191abcc5354e8ed91b61459721ce222e22ec))
+
 ## [2.1.0](https://mahmoud-nb.github.io/surge.ui/compare/v2.0.0...v2.1.0) (2026-05-09)
 
 
