@@ -15,6 +15,7 @@ import Progress from './components/atoms/Progress.vue'
 import Spinner from './components/atoms/Spinner.vue'
 import Price from './components/atoms/Price.vue'
 import Alert from './components/organisms/Alert.vue'
+import Card from './components/organisms/Card.vue'
 
 // ## Action Components .................................................
 import Link from './components/atoms/Link.vue'
@@ -56,7 +57,7 @@ import { SurgeuiTheme, ThemeSymbol, flattenThemeToCSS } from './plugin/theme'
 
 // Export des composants et de la fonction d'installation
 export { Icon, Heading, Panel, Image, Avatar, AvatarGroup, Badge, Dialog, Progress, Spinner, Price }
-export { Tabs, Accordion, AccordionItem, Alert }
+export { Tabs, Accordion, AccordionItem, Alert, Card }
 export { Link, LinkGroup, Button, ButtonGroup, Toggle, ToggleGroup, FloatButton, Dropdown }
 export { Input, Textarea, SelectBox, RadioGroup, CheckboxGroup, FileUpload, Switch, Slider, Password }
 export { InputField, SelectBoxField, RadioGroupField, CheckboxGroupField, PasswordField, SwitchField, FileUploadField, TextareaField, SliderField }
@@ -103,6 +104,7 @@ export default {
     app.component(`${prefix}Spinner`, Spinner)
     app.component(`${prefix}Price`, Price)
     app.component(`${prefix}Alert`, Alert)
+    app.component(`${prefix}Card`, Card)
 
     // ## Action Components
     app.component(`${prefix}Button`, Button)

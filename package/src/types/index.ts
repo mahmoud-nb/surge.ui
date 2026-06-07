@@ -796,6 +796,50 @@ export interface TabsProps {
   variant?: 'underline' | 'contained' | 'pills';
 }
 
+// Card.vue
+export type CardVariant = 'default' | 'outlined' | 'elevated' | 'filled'
+export type CardSize = 'sm' | 'md' | 'lg'
+export type CardDirection = 'vertical' | 'horizontal'
+
+export interface CardProps extends AccessibilityProps {
+  /** Variante visuelle */
+  variant?: CardVariant
+  /** Taille (padding, espacement, typographie) */
+  size?: CardSize
+  /** Direction du layout (vertical = image en haut, horizontal = image à gauche) */
+  direction?: CardDirection
+  /** Rayon des coins */
+  radius?: Radius
+  /** La carte est cliquable (hover/focus states, cursor pointer) */
+  clickable?: boolean
+  /** Lien href — rend la carte navigable en tant que <a> */
+  href?: string
+  /** Attribut target pour les liens */
+  target?: LinkTarget
+  /** URL de l'image d'en-tête */
+  image?: string
+  /** Alt text de l'image */
+  imageAlt?: string
+  /** Ratio de l'image ('16/9', '4/3', '1/1', '21/9') */
+  imageRatio?: '16/9' | '4/3' | '1/1' | '21/9' | 'auto'
+  /** Ajustement de l'image dans son conteneur */
+  imageFit?: 'cover' | 'contain' | 'fill'
+  /** Position de l'image dans son conteneur */
+  imagePosition?: 'top' | 'bottom'
+  /** Titre de la carte */
+  title?: string
+  /** Sous-titre ou description courte */
+  subtitle?: string
+  /** Niveau de heading pour le titre (1-6) */
+  titleLevel?: 1 | 2 | 3 | 4 | 5 | 6
+  /** Désactivée */
+  disabled?: boolean
+  /** Pleine largeur */
+  fullWidth?: boolean
+  /** Largeur max personnalisée */
+  maxWidth?: string
+}
+
 // --- TEMPLATES ---
 
 interface GridBreakpoints {

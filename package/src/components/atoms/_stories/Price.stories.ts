@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
-import { h } from 'vue'
 import Price from '../Price.vue'
 import Badge from '../Badge.vue'
 

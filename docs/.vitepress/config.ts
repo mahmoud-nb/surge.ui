@@ -38,7 +38,8 @@ const getNavItems = (section: string = 'display', lang: string = 'fr') => {
       { text: 'Collapse', link: `${langPrefix}/components/collapse` },
       { text: 'Progress', link: `${langPrefix}/components/progress` },
       { text: 'Spinner', link: `${langPrefix}/components/spinner`},
-      { text: 'Price', link: `${langPrefix}/components/price`, badge: NEW_BADGE }
+      { text: 'Price', link: `${langPrefix}/components/price`, badge: NEW_BADGE },
+      { text: 'Card', link: `${langPrefix}/components/card`, badge: NEW_BADGE }
     ],
     actions:[
       { text: 'Button', link: `${langPrefix}/components/button` },
