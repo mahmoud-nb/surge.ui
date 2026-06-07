@@ -19,6 +19,8 @@ const getNavItems = (section: string = 'display', lang: string = 'fr') => {
 
   const langPrefix = lang === 'fr' ? '' : '/en'
 
+  const NEW_BADGE = { text: 'New', type: 'tip' as const }
+
   const componentsItems = {
     display:[
       { text: 'Heading', link: `${langPrefix}/components/heading` },
@@ -35,15 +37,16 @@ const getNavItems = (section: string = 'display', lang: string = 'fr') => {
       { text: 'Accordion', link: `${langPrefix}/components/accordion` },
       { text: 'Collapse', link: `${langPrefix}/components/collapse` },
       { text: 'Progress', link: `${langPrefix}/components/progress` },
-      { text: 'Spinner', link: `${langPrefix}/components/spinner`}
+      { text: 'Spinner', link: `${langPrefix}/components/spinner`},
+      { text: 'Price', link: `${langPrefix}/components/price`, badge: NEW_BADGE }
     ],
     actions:[
       { text: 'Button', link: `${langPrefix}/components/button` },
       { text: 'ButtonGroup', link: `${langPrefix}/components/buttongroup` },
       { text: 'Link', link: `${langPrefix}/components/link` },
       { text: 'LinkGroup', link: `${langPrefix}/components/linkgroup` },
-      { text: 'Toggle', link: `${langPrefix}/components/toggle` },
-      { text: 'ToggleGroup', link: `${langPrefix}/components/togglegroup` },
+      { text: 'Toggle', link: `${langPrefix}/components/toggle`, badge: NEW_BADGE },
+      { text: 'ToggleGroup', link: `${langPrefix}/components/togglegroup`, badge: NEW_BADGE },
       { text: 'FloatButton', link: `${langPrefix}/components/floatbutton` },
       { text: 'Dropdown', link: `${langPrefix}/components/dropdown` }
     ],
@@ -67,6 +70,12 @@ const getNavItems = (section: string = 'display', lang: string = 'fr') => {
       { text: 'Password', link: `${langPrefix}/components/password` },
       { text: 'FormField', link: `${langPrefix}/components/formfield` },
       { text: 'FormFieldGroup', link: `${langPrefix}/components/formfieldgroup` },
+    ],
+    composables:[
+      { text: 'useTheme', link: `${langPrefix}/composables/usetheme` },
+      { text: 'useCustomTheme', link: `${langPrefix}/composables/usecustomtheme` },
+      { text: 'useBreakpoint', link: `${langPrefix}/composables/usebreakpoint`, badge: NEW_BADGE },
+      { text: 'usePrice', link: `${langPrefix}/composables/useprice`, badge: NEW_BADGE },
     ]
   }
 
@@ -105,6 +114,7 @@ export default defineConfig({
           { text: 'Accueil', link: '/' },
           { text: 'Démarrage', link: '/guide/get-started' },
           { text: 'Composants', link: '/components/' },
+          { text: 'Composables', link: '/composables/usetheme' },
           { text: 'Storybook', link: `${ROOT_URL}storybook/`, target: '_blank' }
         ],
         sidebar: [
@@ -137,10 +147,14 @@ export default defineConfig({
                 items: getNavItems('actions', 'fr')
               },
               {
-                text: '# Formulaires', 
+                text: '# Formulaires',
                 items: getNavItems('forms', 'fr')
               }
             ]
+          },
+          {
+            text: 'Composables',
+            items: getNavItems('composables', 'fr')
           }
         ]
       }
@@ -155,6 +169,7 @@ export default defineConfig({
           { text: 'Home', link: '/en/' },
           { text: 'Get Started', link: '/en/guide/get-started' },
           { text: 'Components', link: '/en/components/' },
+          { text: 'Composables', link: '/en/composables/usetheme' },
           { text: 'Storybook', link: `${ROOT_URL}storybook/`, target: '_blank' }
         ],
         sidebar: [
@@ -187,10 +202,14 @@ export default defineConfig({
                 items: getNavItems('actions', 'en')
               },
               {
-                text: '# Forms', 
+                text: '# Forms',
                 items: getNavItems('forms', 'en')
               }
             ]
+          },
+          {
+            text: 'Composables',
+            items: getNavItems('composables', 'en')
           }
         ]
       }
