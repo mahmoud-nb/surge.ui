@@ -367,6 +367,39 @@ export interface SpinnerProps {
   speed?: number;
 }
 
+// Price.vue
+export type PriceVariant = 'default' | 'highlight' | 'muted'
+export type PriceSize = 'sm' | 'md' | 'lg'
+export type CurrencyDisplay = 'symbol' | 'narrowSymbol' | 'code' | 'name'
+export type CurrencyPosition = 'prefix' | 'suffix' | 'auto'
+
+export interface PriceProps extends AccessibilityProps {
+  /** Montant numérique à afficher */
+  amount: number
+  /** Montant original pour affichage barré (promotion) */
+  originalAmount?: number
+  /** Code devise ISO 4217 (ex: 'EUR', 'USD', 'GBP') */
+  currency?: string
+  /** Locale BCP 47 (ex: 'fr-FR', 'en-US') */
+  locale?: string
+  /** Variante visuelle */
+  variant?: PriceVariant
+  /** Taille */
+  size?: PriceSize
+  /** Afficher uniquement la partie entière */
+  integerOnly?: boolean
+  /** Afficher le prix original barré (nécessite originalAmount) */
+  showOriginal?: boolean
+  /** Format d'affichage de la devise */
+  currencyDisplay?: CurrencyDisplay
+  /** Position du symbole de devise */
+  currencyPosition?: CurrencyPosition
+  /** Formatter personnalisé (pattern Progress/Slider) */
+  formatValue?: (amount: number) => string
+  /** Décimales en exposant (style e-commerce) */
+  superscriptDecimals?: boolean
+}
+
 // Toggle.vue
 export type ToggleVariant = 'default' | 'outline' | 'ghost'
 export interface ToggleProps extends AccessibilityProps {

@@ -13,6 +13,7 @@ import Accordion from './components/organisms/Accordion.vue'
 import AccordionItem from './components/molecules/AccordionItem.vue'
 import Progress from './components/atoms/Progress.vue' 
 import Spinner from './components/atoms/Spinner.vue'
+import Price from './components/atoms/Price.vue'
 import Alert from './components/organisms/Alert.vue'
 
 // ## Action Components .................................................
@@ -54,7 +55,7 @@ import * as accessibility from './utils/accessibility'
 import { SurgeuiTheme, ThemeSymbol, flattenThemeToCSS } from './plugin/theme'
 
 // Export des composants et de la fonction d'installation
-export { Icon, Heading, Panel, Image, Avatar, AvatarGroup, Badge, Dialog, Progress, Spinner }
+export { Icon, Heading, Panel, Image, Avatar, AvatarGroup, Badge, Dialog, Progress, Spinner, Price }
 export { Tabs, Accordion, AccordionItem, Alert }
 export { Link, LinkGroup, Button, ButtonGroup, Toggle, ToggleGroup, FloatButton, Dropdown }
 export { Input, Textarea, SelectBox, RadioGroup, CheckboxGroup, FileUpload, Switch, Slider, Password }
@@ -100,7 +101,8 @@ export default {
     app.component(`${prefix}AccordionItem`, AccordionItem)
     app.component(`${prefix}Progress`, Progress)
     app.component(`${prefix}Spinner`, Spinner)
-    app.component(`${prefix}Spinner`, Alert)
+    app.component(`${prefix}Price`, Price)
+    app.component(`${prefix}Alert`, Alert)
 
     // ## Action Components
     app.component(`${prefix}Button`, Button)
