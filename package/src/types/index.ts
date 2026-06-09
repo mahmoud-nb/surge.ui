@@ -671,6 +671,48 @@ export interface PasswordProps extends Omit<InputProps, 'type' | 'suffixIcon'> {
   showToggle?: boolean;
 }
 
+// OtpInput.vue
+export type OtpInputType = 'numeric' | 'alphanumeric' | 'alphabetic'
+export type OtpVariant = 'boxes' | 'underline' | 'seamless'
+
+export interface OtpInputProps extends AccessibilityProps {
+  /** Nombre de caractères du code OTP */
+  length?: number
+  /** Variante visuelle */
+  variant?: OtpVariant
+  /** Type de caractères acceptés */
+  inputType?: OtpInputType
+  /** Pattern regex personnalisé (surcharge inputType) */
+  pattern?: string
+  /** Fonction de validation par caractère (char, index) => boolean */
+  validate?: (char: string, index: number) => boolean
+  /** Taille */
+  size?: Size
+  /** État de validation */
+  state?: State
+  /** Désactivé */
+  disabled?: boolean
+  /** Lecture seule */
+  readonly?: boolean
+  /** Requis */
+  required?: boolean
+  /** Masquer les caractères (mode password) */
+  masked?: boolean
+  /** Schéma de groupement [3, 3] pour 6 digits en 2 groupes */
+  grouping?: number[]
+  /** Caractère séparateur entre groupes */
+  separator?: string
+  /** Soumettre automatiquement quand tous les champs sont remplis */
+  autoSubmit?: boolean
+  /** Caractère placeholder par champ */
+  placeholder?: string
+  /** Auto-focus sur le premier champ au montage */
+  autoFocus?: boolean
+}
+
+// OtpInputField.vue
+export type OtpInputFieldProps = FormFieldProps & OtpInputProps
+
 // RangeField.vue
 export interface BaseRangeProps extends AccessibilityProps {
   min?: number;

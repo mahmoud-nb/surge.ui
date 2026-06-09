@@ -37,6 +37,7 @@ import FileUpload from './components/atoms/FileUpload.vue'
 import Switch from './components/atoms/Switch.vue'
 import Slider from './components/atoms/Slider.vue'
 import Password from './components/molecules/Password.vue'
+import OtpInput from './components/molecules/OtpInput.vue'
 
 import FormField from './components/atoms/FormField.vue'
 
@@ -49,6 +50,7 @@ import PasswordField from './components/molecules/PasswordField.vue'
 import SwitchField from './components/molecules/SwitchField.vue'
 import SliderField from './components/molecules/SliderField.vue'
 import FileUploadField from './components/molecules/FileUploadField.vue'
+import OtpInputField from './components/molecules/OtpInputField.vue'
 
 import FormFieldGroup from './components/molecules/FormFieldGroup.vue'
 
@@ -59,8 +61,8 @@ import { SurgeuiTheme, ThemeSymbol, flattenThemeToCSS } from './plugin/theme'
 export { Icon, Heading, Panel, Image, Avatar, AvatarGroup, Badge, Dialog, Progress, Spinner, Price }
 export { Tabs, Accordion, AccordionItem, Alert, Card }
 export { Link, LinkGroup, Button, ButtonGroup, Toggle, ToggleGroup, FloatButton, Dropdown }
-export { Input, Textarea, SelectBox, RadioGroup, CheckboxGroup, FileUpload, Switch, Slider, Password }
-export { InputField, SelectBoxField, RadioGroupField, CheckboxGroupField, PasswordField, SwitchField, FileUploadField, TextareaField, SliderField }
+export { Input, Textarea, SelectBox, RadioGroup, CheckboxGroup, FileUpload, Switch, Slider, Password, OtpInput }
+export { InputField, SelectBoxField, RadioGroupField, CheckboxGroupField, PasswordField, SwitchField, FileUploadField, TextareaField, SliderField, OtpInputField }
 export { FormField, FormFieldGroup }
 export { accessibility }
 
@@ -128,6 +130,7 @@ export default {
     
     // ...... Advanced fields
     app.component(`${prefix}Password`, Password)
+    app.component(`${prefix}OtpInput`, OtpInput)
 
     // ...... With FormField wrapper
     app.component(`${prefix}FormField`, FormField)
@@ -140,7 +143,8 @@ export default {
     app.component(`${prefix}SwitchField`, SwitchField)
     app.component(`${prefix}SliderField`, SliderField)
     app.component(`${prefix}FileUploadField`, FileUploadField)
-    
+    app.component(`${prefix}OtpInputField`, OtpInputField)
+
     // ...... FormFieldGroup container
     app.component(`${prefix}FormFieldGroup`, FormFieldGroup)
   }

@@ -69,6 +69,7 @@ const getNavItems = (section: string = 'display', lang: string = 'fr') => {
       //{ text: 'SliderField', link: `${langPrefix}/components/sliderfield` },
       //{ text: 'SwitchField', link: `${langPrefix}/components/switchfield` },
       { text: 'Password', link: `${langPrefix}/components/password` },
+      { text: 'OtpInput', link: `${langPrefix}/components/otpinput`, badge: NEW_BADGE },
       { text: 'FormField', link: `${langPrefix}/components/formfield` },
       { text: 'FormFieldGroup', link: `${langPrefix}/components/formfieldgroup` },
     ],
