@@ -3,14 +3,13 @@
     "main": {
       "parentId": null,
       "children": [
-        "formulaires",
         "themes",
         "components",
         "composables"
       ]
     },
     "formulaires": {
-      "parentId": "main",
+      "parentId": "components",
       "children": []
     },
     "themes": {
@@ -19,7 +18,9 @@
     },
     "components": {
       "parentId": "main",
-      "children": []
+      "children": [
+        "formulaires"
+      ]
     },
     "composables": {
       "parentId": "main",
