@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.3.0](https://mahmoud-nb.github.io/surge.ui/compare/v2.2.0...v2.3.0) (2026-06-09)
+
+
+### ✨ Features
+
+* add Card component with various features and documentation ([d9bd6c6](https://mahmoud-nb.github.io/surge.ui/commit/d9bd6c6741d50c12ae42c4395cb7812e5fc28b7e))
+* add documentation for useBreakpoint, useCustomTheme, and useTheme composables in both French and English ([f110915](https://mahmoud-nb.github.io/surge.ui/commit/f110915b9475f0061629d9ef5a5eabf31ff48af7))
+* add launch configuration for Storybook and update parentId for formulaires ([2f02b9c](https://mahmoud-nb.github.io/surge.ui/commit/2f02b9c0bcc0e643a0353474905d73c974a56ac7))
+* add OtpInput and OtpInputField components with customizable features ([59104e8](https://mahmoud-nb.github.io/surge.ui/commit/59104e81991355aa734cfdb7b81be3103c7f2c71))
+* add usePrice composable and Price component for reactive price formatting ([4d93bed](https://mahmoud-nb.github.io/surge.ui/commit/4d93bed5c82d9517db8135ec4de913b4314b596b))
+* update components documentation for Card component with detailed architecture, props, and accessibility features ([d841cc5](https://mahmoud-nb.github.io/surge.ui/commit/d841cc54d3809851933b4128d1004d0f959306f1))
+* update composables documentation and add Price component details ([8ad4d5a](https://mahmoud-nb.github.io/surge.ui/commit/8ad4d5ac774c681eedff9cbcdffaae072e9b1afe))
+
 ## [2.2.0](https://mahmoud-nb.github.io/surge.ui/compare/v2.1.0...v2.2.0) (2026-05-20)
 
 
