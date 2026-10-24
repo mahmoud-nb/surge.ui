@@ -107,167 +107,140 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !slots.def
 <style lang="scss">
 @use '../../styles/abstracts' as *;
 
+// ============================================================
+// BADGE — étiquette compacte
+//   default   : contour neutre
+//   primary   : plein primaire
+//   secondary : fond doux neutre
+//   success / warning / error : fond teinté à 8 %, texte foncé
+// ============================================================
+
 .su-badge {
+  position: relative;
   display: inline-flex;
+  flex-shrink: 0;
   align-items: center;
   justify-content: center;
   gap: 0.25rem;
+  box-sizing: border-box;
+  height: var(--_su-badge-h);
+  min-width: var(--_su-badge-h);
+  padding-inline: var(--_su-badge-px);
+  border: 1px solid transparent;
+  border-radius: var(--su-radius-sm);
   font-family: inherit;
-  font-weight: 500;
+  font-size: var(--_su-badge-fs);
+  font-weight: var(--su-font-weight-medium);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
   white-space: nowrap;
   user-select: none;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 
-  .su-badge__icon {
-    flex-shrink: 0;
+  // ### Tailles (plus hautes sur mobile, compactes dès `sm`)
+
+  &--sm {
+    --_su-badge-h: 1.25rem;
+    --_su-badge-px: 0.25rem;
+    --_su-badge-fs: var(--su-font-size-xs);
+    --_su-badge-icon: 0.75rem;
+
+    @include up('sm') {
+      --_su-badge-h: 1rem;
+      --_su-badge-fs: 0.625rem;
+    }
   }
 
-  .su-badge__content {
+  &--md {
+    --_su-badge-h: 1.375rem;
+    --_su-badge-px: 0.3125rem;
+    --_su-badge-fs: var(--su-font-size-sm);
+    --_su-badge-icon: 0.875rem;
+
+    @include up('sm') {
+      --_su-badge-h: 1.125rem;
+      --_su-badge-fs: var(--su-font-size-xs);
+      --_su-badge-icon: 0.75rem;
+    }
+  }
+
+  &--lg {
+    --_su-badge-h: 1.625rem;
+    --_su-badge-px: 0.4375rem;
+    --_su-badge-fs: var(--su-font-size-base);
+    --_su-badge-icon: 1rem;
+
+    @include up('sm') {
+      --_su-badge-h: 1.375rem;
+      --_su-badge-fs: var(--su-font-size-sm);
+      --_su-badge-icon: 0.875rem;
+    }
+  }
+
+  // Radius explicites (prop `radius`)
+  @include use-border-radius;
+
+  // ### Variantes
+
+  &--default {
+    border-color: var(--su-border-input);
+    background-color: var(--su-bg-control);
+    color: var(--su-text-primary);
+  }
+
+  &--primary {
+    background-color: var(--su-primary-default);
+    color: var(--su-primary-text);
+  }
+
+  &--secondary {
+    background-color: var(--su-secondary-default);
+    color: var(--su-secondary-text);
+  }
+
+  @each $state in ('success', 'warning', 'error') {
+    &--#{$state} {
+      background-color: with-alpha(state-#{$state}, 8%);
+      color: var(--su-state-#{$state}-fg);
+
+      @include dark-mode {
+        background-color: with-alpha(state-#{$state}, 16%);
+      }
+    }
+  }
+
+  // Couleurs personnalisées (props color / backgroundColor)
+  &--has-custom-color {
+    border-color: transparent;
+  }
+
+  // ### Icône
+
+  &__icon {
+    width: var(--_su-badge-icon);
+    height: var(--_su-badge-icon);
+    flex-shrink: 0;
+    opacity: 0.8;
+  }
+
+  &__content {
     min-width: 0;
   }
-  
-  // Tailles
-  &--sm {
-    padding: 0.125rem 0.375rem;
-    font-size: 0.75rem;
-    line-height: 0.75rem;
-    min-height: 0.75rem;
-    
-    .su-badge__icon {
-      @include squareSize(0.75rem);
-    }
-  }
-  
-  &--md {
-    padding: 0.125rem 0.5rem;
-    font-size: 0.875rem;
-    line-height: 1rem;
-    min-height: 1rem;
-    
-    .su-badge__icon {
-      @include squareSize(1rem);
-    }
-  }
-  
-  &--lg {
-    padding: 0.25rem 0.75rem;
-    font-size: 1rem;
-    line-height: 1.25rem;
-    min-height: 1.25rem;
-    
-    .su-badge__icon {
-      @include squareSize(1.25rem);
-    }
-  }
-  
-  // Radius
-  @include use-border-radius;
-  
-  // Variantes
-  &--default {
-    background-color: $gray-100;
-    color: $gray-800;
-    border: 1px solid $gray-200;
-  }
-  
-  &--primary {
-    background-color: $primary-100;
-    color: $primary-800;
-    border: 1px solid $primary-200;
-  }
-  
-  &--secondary {
-    background-color: $gray-100;
-    color: $gray-700;
-    border: 1px solid $gray-300;
-  }
-  
-  &--success {
-    background-color: $success-100;
-    color: $success-800;
-    border: 1px solid $success-200;
-  }
-  
-  &--warning {
-    background-color: $warning-100;
-    color: $warning-800;
-    border: 1px solid $warning-200;
-  }
-  
-  &--error {
-    background-color: $error-100;
-    color: $error-800;
-    border: 1px solid $error-200;
-  }
-  
-  // Direction de l'icône
+
   &--icon-right {
     flex-direction: row-reverse;
   }
-  
-  // Icône seule
+
   &--icon-only {
     gap: 0;
-    
+    padding-inline: 0;
+
     .su-badge__icon {
-      @include squareSize(1rem);
+      opacity: 1;
     }
   }
-}
 
-// Mode sombre
-@media (prefers-color-scheme: dark) {
-  .su-badge {
-    &--default {
-      background-color: $gray-700;
-      color: $gray-200;
-      border-color: $gray-600;
-    }
-    
-    &--primary {
-      background-color: rgba($primary-400, 0.2);
-      color: $primary-300;
-      border-color: $primary-400;
-    }
-    
-    &--secondary {
-      background-color: $gray-700;
-      color: $gray-300;
-      border-color: $gray-600;
-    }
-    
-    &--success {
-      background-color: rgba($success-400, 0.2);
-      color: $success-300;
-      border-color: $success-400;
-    }
-    
-    &--warning {
-      background-color: rgba($warning-400, 0.2);
-      color: $warning-300;
-      border-color: $warning-400;
-    }
-    
-    &--error {
-      background-color: rgba($error-400, 0.2);
-      color: $error-300;
-      border-color: $error-400;
-    }
-  }
-}
-
-// Mode de contraste élevé
-@media (prefers-contrast: more) {
-  .su-badge {
-    border-width: 2px;
-    font-weight: 600;
-  }
-}
-
-// Support de la réduction des animations
-@media (prefers-reduced-motion: reduce) {
-  .su-badge {
-    transition: none;
+  @include high-contrast {
+    border-color: currentcolor;
   }
 }
 </style>

@@ -76,14 +76,13 @@ defineExpose({
 </script>
 
 <template>
-  <!-- Le template reste identique -->
   <div
     :class="alertClasses"
     role="alert"
     :aria-live="ariaLive"
     :aria-atomic="ariaAtomic"
-    :aria-labelledby="titleId"
-    :aria-describedby="descriptionId"
+    :aria-labelledby="hasTitle ? titleId : undefined"
+    :aria-describedby="hasDescription ? descriptionId : undefined"
   >
     <div class="su-alert__icon-wrapper">
       <component
@@ -137,251 +136,158 @@ defineExpose({
 <style lang="scss">
 @use '../../styles/abstracts' as *;
 
+// ============================================================
+// ALERT — encadré teinté : fond à 4 %, bordure à 32 %, icône
+// colorée, titre medium et description discrète
+// ============================================================
+
 .su-alert {
+  position: relative;
   display: flex;
   align-items: flex-start;
-  gap: var(--su-spacing-3);
-  padding: var(--su-spacing-3);
-  border: 1px solid var(--su-border-default);
-  border-radius: var(--su-radius-lg);
-  background-color: var(--su-bg-canvas);
+  gap: 0.625rem;
+  box-sizing: border-box;
+  padding: 0.75rem 0.875rem;
+  border: 1px solid var(--su-border-alpha);
+  border-radius: var(--su-radius-xl);
+  background-clip: padding-box;
   color: var(--su-text-primary);
-  position: relative;
+  font-size: var(--su-font-size-base);
+  line-height: 1.4;
 
-  &__icon-wrapper {
-    display: flex;
-    align-items: flex-start;
-    flex-shrink: 0;
-    margin-top: 2px; // Alignement visuel avec le texte
+  @include up('sm') {
+    font-size: var(--su-font-size-sm);
   }
 
-  &__icon {
-    width: 20px;
-    height: 20px;
-  }
+  // ### Types
 
-  &__content {
-    flex: 1;
-    min-width: 0; // Prevent overflow
-    display: flex;
-    flex-direction: column;
-    gap: var(--su-spacing-2);
-  }
+  @each $type in ('success', 'warning', 'error', 'info') {
+    &--#{$type} {
+      border-color: with-alpha(state-#{$type}, 32%);
+      background-color: with-alpha(state-#{$type}, 4%);
 
-  &__title {
-    font-size: var(--su-font-size-base);
-    font-weight: var(--su-font-weight-semibold);
-    line-height: var(--su-line-height-tight);
-  }
+      @include dark-mode {
+        background-color: with-alpha(state-#{$type}, 8%);
+      }
 
-  &__description {
-    font-size: var(--su-font-size-base);
-    line-height: var(--su-line-height-normal);
-    color: var(--su-text-secondary);
-  }
-
-  // Types
-  &--success {
-    border-color: var(--su-state-success-border-color);
-    background-color: var(--su-state-success-bg);
-    color: var(--su-state-success);
-    
-    .su-alert__icon {
-      color: var(--su-state-success);
-    }
-  }
-
-  &--warning {
-    border-color: var(--su-state-warning-border-color);
-    background-color: var(--su-state-warning-bg);
-    color: var(--su-state-warning);
-    
-    .su-alert__icon {
-      color: var(--su-state-warning);
-    }
-  }
-
-  &--error {
-    border-color: var(--su-state-error-border-color);
-    background-color: var(--su-state-error-bg);
-    color: var(--su-state-error);
-    
-    .su-alert__icon {
-      color: var(--su-state-error);
-    }
-  }
-
-  &--info {
-    border-color: var(--su-state-info-border-color);
-    background-color: var(--su-state-info-bg);
-    color: var(--su-state-info);
-    
-    .su-alert__icon {
-      color: var(--su-state-info);
+      .su-alert__icon {
+        color: var(--su-state-#{$type});
+      }
     }
   }
 
   &--neutral {
-    border-color: var(--su-border-subtle);
-    background-color: var(--su-bg-canvas);
-    color: var(--su-text-primary);
-    
+    background-color: var(--su-bg-surface);
+    box-shadow: var(--su-shadow-control);
+
     .su-alert__icon {
       color: var(--su-text-tertiary);
     }
   }
 
-  // Sizes
+  // ### Tailles
+
   &--sm {
-    padding: var(--su-spacing-2);
-    gap: var(--su-spacing-2);
-    
-    .su-alert__icon {
-      width: 16px;
-      height: 16px;
-    }
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    font-size: var(--su-font-size-sm);
 
-    .su-alert__content {
-      gap: var(--su-spacing-1);
+    @include up('sm') {
+      font-size: var(--su-font-size-xs);
     }
-    
-    .su-alert__title {
-      font-size: var(--su-font-size-sm);
-    }
-    
-    .su-alert__description {
-      font-size: var(--su-font-size-sm);
-    }
-  }
-
-  &--md {
-    // Valeurs par défaut
   }
 
   &--lg {
-    padding: var(--su-spacing-4);
-    gap: var(--su-spacing-4);
-    
-    .su-alert__icon {
-      width: 24px;
-      height: 24px;
-    }
+    gap: 0.75rem;
+    padding: 1rem 1.25rem;
+    font-size: var(--su-font-size-base);
+  }
 
-    .su-alert__content {
-      gap: var(--su-spacing-2);
-    }
-    
-    .su-alert__title {
-      font-size: var(--su-font-size-lg);
-    }
-    
-    .su-alert__description {
-      font-size: var(--su-font-size-base);
-    }
+  // Place réservée au bouton de fermeture
+  &--dismissible {
+    padding-inline-end: 2.75rem;
+  }
+
+  // ### Contenu
+
+  // L'icône est centrée sur la première ligne du texte
+  &__icon-wrapper {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    height: 1.4em;
+  }
+
+  &__icon {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  &--lg &__icon {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  &__content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 0.125rem;
+    min-width: 0;
+  }
+
+  &__title {
+    font-weight: var(--su-font-weight-medium);
+  }
+
+  &__description {
+    color: var(--su-text-secondary);
   }
 
   &__actions {
-    margin-top: var(--su-spacing-3);
     display: flex;
-    gap: var(--su-spacing-2);
     flex-wrap: wrap;
-    
-    [dir="rtl"] & {
-      gap: var(--su-spacing-2);
-    }
+    gap: 0.5rem;
+    margin-top: 0.5rem;
   }
 
-  .su-alert--dismissible {
-    padding-right: calc(44px + var(--su-spacing-2));
-    
-    [dir="rtl"] & {
-      padding-right: var(--su-spacing-4);
-      padding-left: calc(44px + var(--su-spacing-2));
-    }
-  }
+  // ### Bouton de fermeture
 
   &__dismiss-button {
     position: absolute;
-    top: var(--su-spacing-3);
-    right: var(--su-spacing-3);
+    top: 0.5rem;
+    inset-inline-end: 0.5rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 44px;
-    height: 44px;
-    border: none;
+    width: 1.75rem;
+    height: 1.75rem;
+    padding: 0;
+    border: 0;
     border-radius: var(--su-radius-md);
     background: transparent;
-    color: inherit;
+    color: var(--su-text-tertiary);
     cursor: pointer;
-    transition: all var(--su-duration-normal) var(--su-ease-in-out);
-    
-    [dir="rtl"] & {
-      right: auto;
-      left: var(--su-spacing-3);
-    }
-    
+    @include transition(background-color, color);
+    @include touch-target-overlay;
+
     &:hover {
-      background-color: var(--su-bg-hover);
-    }
-    
-    &:focus-visible {
-      outline: var(--su-focus-ring-width) solid var(--su-border-focus);
-      outline-offset: var(--su-focus-ring-offset);
-      
-      // High contrast
-      @media (prefers-contrast: more) {
-        outline-width: 3px;
-      }
-    }
-    
-    &:active {
-      transform: scale(0.95);
-    }
-    
-    // High contrast
-    @media (prefers-contrast: more) {
-      border: 1px solid currentcolor;
+      background-color: var(--su-bg-accent);
+      color: var(--su-text-primary);
     }
 
-    &--success {
-      color: var(--su-state-success);
-    }
-    
-    &--warning {
-      color: var(--su-state-warning);
-    }
-    
-    &--error {
-      color: var(--su-state-error);
-    }
-    
-    &--info {
-      color: var(--su-state-info);
-    }
-    
-    &--neutral {
-      color: var(--su-text-tertiary);
+    &:focus-visible {
+      @include focus-ring($offset: 0);
     }
   }
 
   &__dismiss-icon {
-    width: 16px;
-    height: 16px;
+    width: 1rem;
+    height: 1rem;
   }
 
-  // High contrast support
-  @media (prefers-contrast: more) {
+  @include high-contrast {
     border-width: 2px;
-  }
-  
-  // Reduced motion support
-  @media (prefers-reduced-motion: reduce) {
-    transition: none !important;
-    
-    .su-alert__dismiss-button {
-      transition: none !important;
-    }
   }
 }
 </style>
