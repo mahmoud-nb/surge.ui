@@ -202,206 +202,164 @@ defineExpose({
 </template>
 
 <style lang="scss">
+@use 'sass:list';
 @use '../../styles/abstracts' as *;
 
-$avatar-forme: (
-  circle: 'full',
-  rounded: 'lg',
-  square: 'sm'
+// ============================================================
+// AVATAR — fond doux neutre pour les initiales, liseré interne
+// discret, pastille de statut détachée par la couleur du fond
+// ============================================================
+
+$su-avatar-shapes: (
+  'circle': 'full',
+  'rounded': 'lg',
+  'square': 'sm'
 );
 
-@mixin use-avatar-forme {
-  @each $key, $value in $avatar-forme {
-    &--#{$key} {
-      border-radius: var(--su-radius-#{$value});
-
-      .su-image-container {
-        border-radius: var(--su-radius-#{$value});
-      }
-    }
-  }
-}
+$su-avatar-sizes: (
+  'xs': (1.5rem, 0.625rem, 0.375rem),
+  'sm': (2rem, 0.75rem, 0.5rem),
+  'md': (2.5rem, 0.875rem, 0.625rem),
+  'lg': (3rem, 1rem, 0.75rem),
+  'xl': (4rem, 1.25rem, 0.875rem),
+  '2xl': (5rem, 1.5rem, 1rem)
+);
 
 .su-avatar {
   position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--su-bg-canvas);
-  color: var(--su-text-secondary);
-  font-weight: 600;
   flex-shrink: 0;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  
-  // Variantes de forme
-  @include use-avatar-forme;
-  
-  // Sizes
-  &--xs {
-    font-size: 0.625rem;
+  box-sizing: border-box;
+  width: var(--_su-avatar-size);
+  height: var(--_su-avatar-size);
+  background-color: var(--su-bg-muted);
+  color: var(--su-text-secondary);
+  font-size: var(--_su-avatar-font);
+  font-weight: var(--su-font-weight-medium);
+  @include transition(box-shadow, opacity);
 
-    @include squareSize(1.5rem);
+  // Liseré interne au-dessus de l'image (détache l'avatar du fond)
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: inset 0 0 0 1px var(--su-border-alpha);
+    pointer-events: none;
   }
-  
-  &--sm {
-    font-size: 0.75rem;
 
-    @include squareSize(2rem);
-  }
-  
-  &--md {
-    font-size: 0.875rem;
+  // ### Formes
 
-    @include squareSize(2.5rem);
-  }
-  
-  &--lg {
-    font-size: 1rem;
+  @each $shape, $radius in $su-avatar-shapes {
+    &--#{$shape} {
+      border-radius: var(--su-radius-#{$radius});
 
-    @include squareSize(3rem);
+      .su-image-container,
+      .su-avatar__image,
+      .su-avatar__placeholder {
+        border-radius: var(--su-radius-#{$radius});
+      }
+    }
   }
-  
-  &--xl {
-    font-size: 1.25rem;
 
-    @include squareSize(4rem);
-  }
-  
-  &--2xl {
-    font-size: 1.5rem;
+  // ### Tailles (taille, police, pastille de statut)
 
-    @include squareSize(5rem);
+  @each $name, $values in $su-avatar-sizes {
+    &--#{$name} {
+      --_su-avatar-size: #{list.nth($values, 1)};
+      --_su-avatar-font: #{list.nth($values, 2)};
+      --_su-avatar-status: #{list.nth($values, 3)};
+    }
   }
-  
-  // États
+
+  // ### États
+
   &--clickable {
     cursor: pointer;
-    
+    outline: none;
+
     &:hover {
-      transform: scale(1.05);
-      box-shadow: 0 4px 12px rgb(0 0 0 / 15%);
+      opacity: 0.9;
     }
-    
-    &:focus {
-      outline: none;
-      box-shadow: 0 0 0 3px color-mix(in srgb, var(--su-primary-500) 20%, transparent);
+
+    &:focus-visible {
+      @include focus-ring;
     }
-    
-    &:active {
-      transform: scale(0.95);
-    }
-  }
-  
-  // Couleurs d'arrière-plan pour les initiales
-  &--initials {
-    background: linear-gradient(135deg, var(--su-primary-500), var(--su-primary-600));
-    color: white;
   }
 
   &--loading {
-    background: var(--su-bg-disabled);
+    background-color: var(--su-bg-muted);
   }
 }
 
 .su-avatar__image {
-  @include squareSize(100%);
-
+  width: 100%;
+  height: 100%;
   object-fit: cover;
 }
 
 .su-avatar__initials {
-  font-weight: 600;
+  line-height: 1;
   text-transform: uppercase;
-  letter-spacing: 0.025em;
+  letter-spacing: 0.02em;
 }
 
 .su-avatar__placeholder {
- @include squareSize(100%);
-
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--su-bg-canvas);
-  color: var(--su-text-placeholder);
-  
+  width: 100%;
+  height: 100%;
+  color: var(--su-text-tertiary);
+
   &-icon {
-    @include squareSize(60%);
+    width: 60%;
+    height: 60%;
   }
 }
 
 .su-avatar__loading {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--su-bg-disabled);
+  color: var(--su-text-tertiary);
 }
+
+// ### Pastille de statut
 
 .su-avatar-status {
   position: absolute;
-  border: 2px solid white;
-  border-radius: 50%;
-  
-  // Tailles du statut
-  &--xs {
-    width: 0.375rem;
-    height: 0.375rem;
-    bottom: 0;
-    right: 0;
+  right: 0;
+  bottom: 0;
+  box-sizing: content-box;
+  width: var(--_su-avatar-status);
+  height: var(--_su-avatar-status);
+  border-radius: var(--su-radius-full);
+  // Anneau de la couleur du fond pour détacher la pastille
+  box-shadow: 0 0 0 2px var(--su-bg-canvas);
+
+  @each $name, $values in $su-avatar-sizes {
+    &--#{$name} {
+      --_su-avatar-status: #{list.nth($values, 3)};
+    }
   }
-  
-  &--sm {
-    width: 0.5rem;
-    height: 0.5rem;
-    bottom: 0;
-    right: 0;
-  }
-  
-  &--md {
-    width: 0.625rem;
-    height: 0.625rem;
-    bottom: 0.125rem;
-    right: 0.125rem;
-  }
-  
-  &--lg {
-    width: 0.75rem;
-    height: 0.75rem;
-    bottom: 0.125rem;
-    right: 0.125rem;
-  }
-  
-  &--xl {
-    width: 1rem;
-    height: 1rem;
-    bottom: 0.25rem;
-    right: 0.25rem;
-  }
-  
-  &--2xl {
-    width: 1.25rem;
-    height: 1.25rem;
-    bottom: 0.25rem;
-    right: 0.25rem;
-  }
-  
-  // Couleurs de statut
+
   &--online {
     background-color: var(--su-state-success);
   }
-  
+
   &--offline {
-    background-color: var(--su-gray-400);
+    background-color: var(--su-border-strong);
   }
-  
+
   &--away {
     background-color: var(--su-state-warning);
   }
-  
+
   &--busy {
     background-color: var(--su-state-error);
   }
@@ -411,48 +369,6 @@ $avatar-forme: (
   position: absolute;
   top: -0.25rem;
   right: -0.25rem;
-}
-
-// Mode sombre
-@media (prefers-color-scheme: dark) {
-  .su-avatar {
-    &--initials {
-      background: linear-gradient(135deg, var(--su-primary-400), var(--su-primary-500));
-    }
-  }
-
-  /*
-  .su-avatar__placeholder {
-    background-color: $gray-700;
-    color: $gray-500;
-  }
-  
-  .su-avatar__loading {
-    background-color: $gray-800;
-  }
-  
-  .su-avatar-status {
-    border-color: $gray-800;
-  }
-  
-  .su-avatar__badge {
-    border-color: $gray-800;
-  }
-  */
-}
-
-// Support de la réduction des animations
-@media (prefers-reduced-motion: reduce) {
-  .su-avatar {
-    transition: none;
-    
-    &--clickable:hover {
-      transform: none;
-    }
-    
-    &--clickable:active {
-      transform: none;
-    }
-  }
+  z-index: 1;
 }
 </style>

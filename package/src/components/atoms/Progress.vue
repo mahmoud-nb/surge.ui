@@ -7,8 +7,10 @@ import type { ProgressProps } from '@/types'
  * Props:
  *  - modelValue: current value (determinate mode)
  *  - indeterminate: if true, show indeterminate animated bar (value unknown)
- *  - indeterminateLabel: accessible/visual label when indeterminate (defaults to 'In progress…')
+ *  - indeterminateLabel: accessible/visual label when indeterminate
  *  - formatValue: (value) => string formatter for label and aria-valuetext
+ *  - color / backgroundColor : surcharges ponctuelles ; par défaut, les
+ *    couleurs viennent du thème (primaire et fond doux)
  */
 
 const props = withDefaults(defineProps<ProgressProps>(), {
@@ -16,13 +18,11 @@ const props = withDefaults(defineProps<ProgressProps>(), {
   min: 0,
   max: 100,
   size: 'md',
-  color: '#000',
-  backgroundColor: '#e0e0e0',
   state: 'default',
   showLabel: false,
   formatValue: (value: number) => `${value}%`,
   indeterminate: false,
-  indeterminateLabel: 'In progress…',
+  indeterminateLabel: 'En cours…',
 })
 
 /* clamp determinate value between min and max */
@@ -38,31 +38,12 @@ const percentage = computed(() =>
 
 const formattedValue = computed(() => props.formatValue!(clampedValue.value))
 
-const stateColors: Record<string, string> = {
-  error: '#e53935',
-  success: '#43a047',
-  warning: '#fdd835',
-}
-
-const barStyle = computed(() => {
-  if (props.indeterminate) {
-    // In indeterminate mode we keep the bar color only (width handled by CSS animation)
-    return {
-      backgroundColor:
-        props.state === 'default'
-          ? props.color
-          : stateColors[props.state] ?? props.color,
-    }
-  }
-
-  return {
-    width: `${percentage.value}%`,
-    backgroundColor:
-      props.state === 'default'
-        ? props.color
-        : stateColors[props.state] ?? props.color,
-  }
-})
+// Une couleur personnalisée ne s'applique qu'à l'état par défaut :
+// les états (erreur, succès…) gardent leur couleur sémantique
+const barStyle = computed(() => ({
+  width: props.indeterminate ? undefined : `${percentage.value}%`,
+  backgroundColor: props.state === 'default' ? props.color : undefined,
+}))
 
 const trackStyle = computed(() => ({
   backgroundColor: props.backgroundColor,
@@ -81,9 +62,8 @@ const trackStyle = computed(() => ({
     :aria-valuemin="!indeterminate ? min : undefined"
     :aria-valuemax="!indeterminate ? max : undefined"
     :aria-valuenow="!indeterminate ? clampedValue : undefined"
-    :aria-valuetext="!indeterminate ? formattedValue : undefined"
+    :aria-valuetext="!indeterminate ? formattedValue : indeterminateLabel"
     :aria-busy="indeterminate ? 'true' : undefined"
-    tabindex="0"
   >
     <div
       class="su-progress__track"
@@ -122,34 +102,42 @@ const trackStyle = computed(() => ({
 <style lang="scss" scoped>
 @use '../../styles/abstracts' as *;
 
-/* Sizes */
-$su-progress-size-sm: 0.25rem;
-$su-progress-size-md: 0.5rem;
-$su-progress-size-lg: 1rem;
+// ============================================================
+// PROGRESS — piste douce, barre primaire arrondie, libellé en
+// chiffres tabulaires ; mode indéterminé animé
+// ============================================================
 
-/* Base */
 .su-progress {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.75rem;
   width: 100%;
-  outline: none;
+
+  &--sm { --_su-progress-h: 0.25rem; }
+  &--md { --_su-progress-h: 0.375rem; }
+  &--lg { --_su-progress-h: 0.625rem; }
 
   &__track {
-    flex: 1;
-    border-radius: 999px;
-    overflow: hidden;
     position: relative;
-    min-height: $su-progress-size-sm;
-    background-clip: padding-box;
+    flex: 1;
+    height: var(--_su-progress-h);
+    overflow: hidden;
+    border-radius: var(--su-radius-full);
+    background-color: var(--su-bg-muted);
+    // Liseré pour garder la piste visible sur fond clair
+    box-shadow: inset 0 0 0 1px var(--su-border-alpha);
   }
 
   &__bar {
     height: 100%;
-    transition: width var(--su-duration-normal) ease;
-    will-change: width, transform, left;
-    position: relative;
+    border-radius: inherit;
+    background-color: var(--su-primary-default);
+    @include transition(width, background-color);
   }
+
+  &--error .su-progress__bar { background-color: var(--su-state-error); }
+  &--success .su-progress__bar { background-color: var(--su-state-success); }
+  &--warning .su-progress__bar { background-color: var(--su-state-warning); }
 
   &__overlay {
     position: absolute;
@@ -157,74 +145,42 @@ $su-progress-size-lg: 1rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    pointer-events: none; /* overlay should not block focus */
+    pointer-events: none;
   }
 
   &__label {
-    font-size: var(--su-font-size-sm);
-    color: var(--su-text-secondary);
     min-width: 2.5rem;
-    text-align: right;
+    font-size: var(--su-font-size-sm);
+    font-weight: var(--su-font-weight-medium);
+    font-variant-numeric: tabular-nums;
+    text-align: end;
+    color: var(--su-text-secondary);
   }
 
-  /* Sizes */
-  &--sm .su-progress__track { height: $su-progress-size-sm; }
-  &--md .su-progress__track { height: $su-progress-size-md; }
-  &--lg .su-progress__track { height: $su-progress-size-lg; }
+  // ### Indéterminé : un segment glisse d'un bord à l'autre
 
-  /* States (fallback — inline styles take precedence) */
-  &--error .su-progress__bar { background-color: var(--su-state-error); }
-  &--success .su-progress__bar { background-color: var(--su-state-success); }
-  &--warning .su-progress__bar { background-color: var(--su-state-warning); }
+  &--indeterminate .su-progress__bar {
+    position: absolute;
+    inset-block: 0;
+    left: 0;
+    width: 40%;
+    animation: su-progress-slide 1.4s var(--su-ease-in-out) infinite;
 
-  &:focus-visible {
-    outline: 2px solid var(--su-link-default);
-    outline-offset: 2px;
-  }
-
-  /* Indeterminate variations */
-  &--indeterminate {
-    .su-progress__bar {
-      width: 30%; /* visual width of the animated block */
-      position: absolute;
-      left: -40%;
-    }
-
-    .su-progress__bar--indeterminate {
-      /* sliding animation */
-      animation: su-progress-slide 1.6s infinite linear;
-    }
-
-    /* reduce motion respect */
-    @media (prefers-reduced-motion: reduce) {
-      .su-progress__bar--indeterminate {
-        animation: none;
-        left: 0;
-      }
-    }
-  }
-
-  // Mode sombre
-  @media (prefers-color-scheme: dark) {
-    .su-progress__label {
-      color: var(--su-text-tertiary);
-    }
-
-    .su-progress__bar {
-      /* adjust default background for dark mode */
-      // background-color: lighten($gray-700, 20%);
+    @include motion-reduce {
+      width: 100%;
+      opacity: 0.6;
+      animation: none;
     }
   }
 }
 
-/* Keyframes: slide the block from left to right in the track */
 @keyframes su-progress-slide {
-  0% {
-    transform: translateX(0);
+  from {
+    translate: -100% 0;
   }
 
-  100% {
-    transform: translateX(300%);
+  to {
+    translate: 250% 0;
   }
 }
 </style>

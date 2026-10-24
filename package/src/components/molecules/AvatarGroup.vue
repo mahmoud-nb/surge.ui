@@ -138,33 +138,24 @@ const handleMoreClick = (event: MouseEvent) => {
 <style lang="scss" scoped>
 @use '../../styles/abstracts' as *;
 
+// ============================================================
+// AVATAR GROUP — avatars espacés ou empilés (spacing none) :
+// chevauchement d'un quart et anneau de la couleur du fond
+// ============================================================
+
 .su-avatars-group {
   display: flex;
   align-items: center;
   gap: $spacing-2;
-  
+
   &-list {
     display: flex;
     align-items: center;
   }
-  
-  &--spacing-sm {
-    .su-avatars-group-list {
-      gap: $spacing-1;
-    }
-  }
-  
-  &--spacing-md {
-    .su-avatars-group-list {
-      gap: $spacing-2;
-    }
-  }
-  
-  &--spacing-lg {
-    .su-avatars-group-list {
-      gap: $spacing-3;
-    }
-  }
+
+  &--spacing-sm .su-avatars-group-list { gap: $spacing-1; }
+  &--spacing-md .su-avatars-group-list { gap: $spacing-2; }
+  &--spacing-lg .su-avatars-group-list { gap: $spacing-3; }
 }
 
 .su-avatars-group-before,
@@ -173,82 +164,46 @@ const handleMoreClick = (event: MouseEvent) => {
   align-items: center;
 }
 
-.su-avatars-group-avatar {
+.su-avatars-group-avatar,
+.su-avatars-group-more {
   position: relative;
   z-index: 0;
 
-  @include transition(all);
-  
   &:hover {
     z-index: 1;
   }
 }
 
+// Compteur « +N »
 .su-avatars-group-more {
-  background-color: var(--su-gray-300);
-  color: var(--su-text-secondary);
-  font-weight: 600;
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
-  z-index: 0;
+  background-color: var(--su-bg-muted);
+  color: var(--su-text-secondary);
+  font-weight: var(--su-font-weight-medium);
+  font-variant-numeric: tabular-nums;
+  @include transition(background-color, color);
 
-  @include transition(all);
-  
   &:hover {
-    background-color: var(--su-gray-400);
+    background-color: var(--su-bg-accent);
     color: var(--su-text-primary);
-    z-index: 1;
   }
-  
+
   &-text {
-    font-size: 0.75em;
-  }
-  
-  @media (prefers-color-scheme: dark) {
-    background-color: var(--su-gray-600);
-    color: var(--su-text-secondary);
-    
-    &:hover {
-      background-color: var(--su-gray-500);
-      color: var(--su-text-primary);
-    }
-  }
-
-  [data-theme='dark'] & {
-    background-color: var(--su-gray-600);
-    color: var(--su-text-secondary);
-    
-    &:hover {
-      background-color: var(--su-gray-500);
-      color: var(--su-text-primary);
-    }
+    font-size: 0.8em;
   }
 }
 
-.su-avatars-group--spacing-none .su-avatars-group-avatar {
-  margin-left: -$spacing-1;
-  border: 2px solid var(--su-bg-surface);
-  
-  &:first-child {
-    margin-left: 0;
-  }
-}
-
-.su-avatars-group--spacing-none .su-avatars-group-more {
-  margin-left: -$spacing-1;
-  border: 2px solid var(--su-bg-surface);
-  
-  @media (prefers-color-scheme: dark) {
-    border-color: var(--su-bg-surface);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
+// Avatars empilés
+.su-avatars-group--spacing-none {
   .su-avatars-group-avatar,
   .su-avatars-group-more {
-    @include transition(none);
+    box-shadow: 0 0 0 2px var(--su-bg-canvas);
+
+    &:not(:first-child) {
+      margin-inline-start: calc(var(--_su-avatar-size, 2.5rem) * -0.25);
+    }
   }
 }
 </style>
