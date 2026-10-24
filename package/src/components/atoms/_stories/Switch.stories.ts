@@ -16,6 +16,10 @@ const meta: Meta<typeof Switch> = {
   },
   tags: ['autodocs'],
   argTypes: {
+    padded: {
+      control: 'boolean',
+      description: 'Marge entre la pastille et le bord de la piste (false : pastille au ras de la piste)'
+    },
     modelValue: {
       control: 'boolean',
       description: 'État du switch (true = activé)'
@@ -132,6 +136,31 @@ export const Sizes: Story = {
           label="Large"
           rightLabel="Grand"
         />
+      </div>
+    `
+  })
+}
+
+export const Padding: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Avec `padded` (par défaut), une marge sépare la pastille du bord de la piste. Avec `:padded="false"`, la pastille affleure le bord.'
+      }
+    }
+  },
+  render: () => ({
+    components: { Switch },
+    template: `
+      <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+        <div style="display: flex; gap: 1.5rem;">
+          <Switch right-label="Avec marge" />
+          <Switch :model-value="true" right-label="Avec marge" />
+        </div>
+        <div style="display: flex; gap: 1.5rem;">
+          <Switch :padded="false" right-label="Sans marge" />
+          <Switch :padded="false" :model-value="true" right-label="Sans marge" />
+        </div>
       </div>
     `
   })

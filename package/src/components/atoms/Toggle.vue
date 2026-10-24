@@ -5,7 +5,6 @@ import type { ToggleProps } from '@/types'
 const props = withDefaults(defineProps<ToggleProps>(), {
   size: 'md',
   variant: 'default',
-  radius: 'md',
   disabled: false
 })
 
@@ -19,7 +18,8 @@ const classes = computed(() => [
   'su-toggle',
   `su-toggle--${props.size}`,
   `su-toggle--${props.variant}`,
-  `su-toggle--radius-${props.radius}`,
+  // Sans `radius`, le rayon des contrôles s'applique
+  props.radius && `su-toggle--radius-${props.radius}`,
   {
     'su-toggle--active': modelValue.value,
     'su-toggle--disabled': props.disabled,
@@ -74,138 +74,81 @@ const ariaAttributes = computed(() => {
 <style lang="scss" scoped>
 @use '../../styles/abstracts' as *;
 
+// ============================================================
+// TOGGLE — bouton bascule sur la base de bouton partagée
+//   default : transparent, voile neutre une fois activé
+//   outline : surface de contrôle, voile neutre une fois activé
+//   ghost   : transparent, teinte primaire une fois activé
+// ============================================================
+
 .su-toggle {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.375rem;
-  cursor: pointer;
-  border: 1px solid var(--su-border-default);
-  background-color: var(--su-bg-surface);
+  @include button-base;
+
   color: var(--su-text-secondary);
-  font-family: inherit;
-  font-weight: 500;
-  line-height: 1;
-  user-select: none;
-  white-space: nowrap;
-  @include transition(background-color, color, border-color, box-shadow);
+
+  &--sm { @include control-size('sm'); }
+  &--md { @include control-size('md'); }
+  &--lg { @include control-size('lg'); }
+
+  &--icon-only {
+    padding-inline: 0;
+    aspect-ratio: 1;
+  }
+
+  // Rayons explicites (prop `radius`)
+  @include use-border-radius;
 
   &:hover:not(:disabled) {
-    background-color: var(--su-bg-hover);
     color: var(--su-text-primary);
   }
 
-  &:focus-visible {
-    @include focus-ring;
-  }
+  // ### Variantes
 
-  // Sizes
-  &--sm {
-    padding: 0.375rem 0.625rem;
-    font-size: 0.75rem;
+  &--default,
+  &--ghost {
+    background-color: transparent;
 
-    .su-toggle__icon {
-      width: 0.875rem;
-      height: 0.875rem;
+    &:hover:not(:disabled) {
+      background-color: var(--su-bg-accent);
     }
   }
 
-  &--md {
-    padding: 0.5rem 0.875rem;
-    font-size: 0.875rem;
-
-    .su-toggle__icon {
-      width: 1rem;
-      height: 1rem;
-    }
-  }
-
-  &--lg {
-    padding: 0.625rem 1.125rem;
-    font-size: 1rem;
-
-    .su-toggle__icon {
-      width: 1.25rem;
-      height: 1.25rem;
-    }
-  }
-
-  // Icon-only sizing
-  &--icon-only {
-    &.su-toggle--sm { padding: 0.375rem; }
-    &.su-toggle--md { padding: 0.5rem; }
-    &.su-toggle--lg { padding: 0.625rem; }
-  }
-
-  // Radius
-  &--radius-none { border-radius: 0; }
-  &--radius-sm { border-radius: 0.25rem; }
-  &--radius-md { border-radius: 0.5rem; }
-  &--radius-lg { border-radius: 0.75rem; }
-  &--radius-xl { border-radius: 1rem; }
-  &--radius-full { border-radius: 9999px; }
-
-  // Variants
-  &--default {
-    &.su-toggle--active {
-      background-color: var(--su-link-default);
-      border-color: var(--su-link-default);
-      color: var(--su-primary-text);
-
-      &:hover:not(:disabled) {
-        background-color: var(--su-link-hover);
-        border-color: var(--su-link-hover);
-      }
-    }
+  &--default.su-toggle--active {
+    background-color: with-alpha(text-primary, 8%);
+    color: var(--su-text-primary);
   }
 
   &--outline {
-    background-color: transparent;
+    @include button-variant('outline');
+
+    color: var(--su-text-secondary);
 
     &.su-toggle--active {
-      border-color: var(--su-link-default);
-      color: var(--su-link-default);
-      background-color: transparent;
-
-      &:hover:not(:disabled) {
-        background-color: color-mix(in srgb, var(--su-link-default) 8%, transparent);
-      }
+      background-image: linear-gradient(with-alpha(text-primary, 6%), with-alpha(text-primary, 6%));
+      color: var(--su-text-primary);
     }
   }
 
-  &--ghost {
-    background-color: transparent;
-    border-color: transparent;
-
-    &.su-toggle--active {
-      background-color: color-mix(in srgb, var(--su-link-default) 12%, transparent);
-      color: var(--su-link-default);
-      border-color: transparent;
-
-      &:hover:not(:disabled) {
-        background-color: color-mix(in srgb, var(--su-link-default) 18%, transparent);
-      }
-    }
+  &--ghost.su-toggle--active {
+    background-color: with-alpha(primary-default, 10%);
+    color: var(--su-primary-default);
 
     &:hover:not(:disabled) {
-      background-color: var(--su-bg-hover);
+      background-color: with-alpha(primary-default, 14%);
     }
   }
 
-  // Disabled
   &--disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-
-  // Reduced motion
-  @media (prefers-reduced-motion: reduce) {
-    transition: none;
+    @include button-disabled;
   }
 }
 
 .su-toggle__icon {
-  flex-shrink: 0;
+  @include button-icon;
+}
+
+.su-toggle--active .su-toggle__icon {
+  opacity: 1;
 }
 
 .su-toggle__label {

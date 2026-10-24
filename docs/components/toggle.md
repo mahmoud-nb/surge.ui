@@ -107,8 +107,8 @@ const italic = ref(false)
 | `icon` | `Component` | -  | Icône affichée (état inactif) |
 | `activeIcon` | `Component` | -  | Icône affichée quand actif (remplace `icon`) |
 | `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Taille |
-| `variant` | `'default' \| 'outline' \| 'ghost'` | `'default'` | Variante visuelle |
-| `radius` | `Radius` | `'md'` | Rayon de bordure |
+| `variant` | `'default' \| 'outline' \| 'ghost'` | `'default'` | Variante visuelle : transparent avec voile neutre une fois activé, surface de contrôle, ou teinte primaire une fois activé |
+| `radius` | `Radius` | `undefined` | Rayon de bordure. Par défaut, rayon des contrôles (10px) |
 | `disabled` | `boolean` | `false` | Désactive le toggle |
 
 ### Événements

@@ -423,6 +423,8 @@ export interface SwitchProps extends AccessibilityProps {
   rightLabel?: string;
   leftIcon?: Component;
   rightIcon?: Component;
+  /** Marge entre la pastille et le bord de la piste (true par défaut). `false` : pastille au ras de la piste */
+  padded?: boolean;
   size?: Size;
   state?: State;
   disabled?: boolean;

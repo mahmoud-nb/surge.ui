@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed, useAttrs, ref } from 'vue'
-import { CheckIcon, XMarkIcon } from '@heroicons/vue/24/outline'
 import type { SwitchProps } from '@/types'
 
 defineOptions({ inheritAttrs: false })
@@ -8,6 +7,7 @@ defineOptions({ inheritAttrs: false })
 const props = withDefaults(defineProps<SwitchProps>(), {
   size: 'md',
   state: 'default',
+  padded: true,
   disabled: false,
   readonly: false,
   required: false
@@ -51,6 +51,7 @@ const switchClasses = computed(() => [
   `su-switch--${props.state}`,
   {
     'su-switch--checked': modelValue.value,
+    'su-switch--flush': !props.padded,
     'su-switch--disabled': props.disabled,
     'su-switch--readonly': props.readonly
   }
@@ -129,9 +130,13 @@ defineExpose({
         <!-- Thumb -->
         <span class="su-switch-thumb">
           <!-- Indicateur visuel optionnel -->
-          <span class="su-switch-indicator">
+          <!-- Icône seulement si elle est fournie (leftIcon / rightIcon) -->
+          <span
+            v-if="modelValue ? rightIcon : leftIcon"
+            class="su-switch-indicator"
+          >
             <component
-              :is="modelValue ? (rightIcon || CheckIcon) : (leftIcon || XMarkIcon)"
+              :is="modelValue ? rightIcon : leftIcon"
               :class="['su-switch-icon', `su-switch-icon--${modelValue ? 'check' : 'cross'}`]"
               aria-hidden="true"
             />
@@ -157,33 +162,38 @@ defineExpose({
 <style lang="scss">
 @use '../../styles/abstracts' as *;
 
+// ============================================================
+// SWITCH — piste fine, pastille qui s'étire à l'appui.
+// La taille de la pastille (--_su-thumb) pilote tout le reste.
+// ============================================================
+
 .su-switch-container {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 0.75rem;
-  
+  gap: 0.625rem;
+
   &--centered {
     justify-content: center;
-  }
-  
-  &--has-labels:not(&--centered) {
-    justify-content: flex-start;
   }
 }
 
 .su-switch-side-label {
-  font-size: var(--su-font-size-sm);
-  font-weight: 500;
-  color: var(--su-text-secondary);
-  transition: color var(--su-duration-fast) cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: var(--su-font-size-base);
+  font-weight: var(--su-font-weight-medium);
+  color: var(--su-text-tertiary);
   user-select: none;
-  
+  @include transition(color);
+
+  @include up('sm') {
+    font-size: var(--su-font-size-sm);
+  }
+
   &--active {
     color: var(--su-text-primary);
   }
-  
+
   &--disabled {
-    color: var(--su-text-tertiary);
+    opacity: var(--su-opacity-disabled);
     cursor: not-allowed;
   }
 }
@@ -191,148 +201,122 @@ defineExpose({
 .su-switch {
   // Réinitialisation du <button> natif
   appearance: none;
-  display: inline-block;
+  position: relative;
+  display: inline-flex;
   flex-shrink: 0;
+  box-sizing: border-box;
+  // --_su-switch-pad : marge entre la pastille et le bord de la piste
+  --_su-switch-pad: 2px;
+
+  width: calc(var(--_su-thumb) * 2 - 4px + 2 * var(--_su-switch-pad));
+  height: calc(var(--_su-thumb) + 2 * var(--_su-switch-pad));
+  margin: 0;
   padding: 0;
   border: 0;
+  border-radius: var(--su-radius-full);
   background: none;
   font: inherit;
   color: inherit;
-  position: relative;
   cursor: pointer;
   outline: none;
-  border-radius: 9999px;
-  @include transition(box-shadow, opacity);
-  
-  &:focus-visible {
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--su-link-default) 50%, transparent);
-  }
-  
-  // Tailles
+  @include touch-target-overlay;
+
+  // Tailles : 20px sur mobile puis 16px dès `sm` (md)
   &--sm {
-    width: 2.75rem;
-    height: 1.5rem;
-    
-    .su-switch-thumb {
-      width: 1.25rem;
-      height: 1.25rem;
-      margin: 0.125rem;
-    }
-    
-    .su-switch-icon {
-      width: 0.75rem;
-      height: 0.75rem;
-    }
-    
-    &.su-switch--checked .su-switch-thumb {
-      transform: translateX(1.25rem);
-    }
+    --_su-thumb: 0.875rem;
   }
-  
+
   &--md {
-    width: 3.5rem;
-    height: 2rem;
-    
-    .su-switch-thumb {
-      width: 1.75rem;
-      height: 1.75rem;
-      margin: 0.125rem;
-    }
-    
-    .su-switch-icon {
-      width: 1rem;
-      height: 1rem;
-    }
-    
-    &.su-switch--checked .su-switch-thumb {
-      transform: translateX(1.5rem);
+    --_su-thumb: 1.25rem;
+
+    @include up('sm') {
+      --_su-thumb: 1rem;
     }
   }
-  
+
   &--lg {
-    width: 4rem;
-    height: 2.25rem;
-    
-    .su-switch-thumb {
-      width: 2rem;
-      height: 2rem;
-      margin: 0.125rem;
-    }
-    
-    .su-switch-icon {
-      width: 1.25rem;
-      height: 1.25rem;
-    }
-    
-    &.su-switch--checked .su-switch-thumb {
-      transform: translateX(1.75rem);
+    --_su-thumb: 1.5rem;
+
+    @include up('sm') {
+      --_su-thumb: 1.25rem;
     }
   }
-  
-  // États
-  &--checked {
-    .su-switch-track {
-      background-color: var(--su-link-default);
-    }
-    
-    .su-switch-thumb {
-      background-color: var(--su-bg-surface);
+
+  // Sans marge : la pastille affleure le bord de la piste
+  &--flush {
+    --_su-switch-pad: 0px;
+  }
+
+  &:focus-visible {
+    @include focus-ring;
+  }
+
+  // États de validation : couleur de la piste cochée
+  @each $state in ('error', 'success', 'warning') {
+    &--#{$state} {
+      --_su-switch-on: var(--su-state-#{$state});
     }
   }
-  
-  &--error {
-    &.su-switch--checked .su-switch-track {
-      background-color: var(--su-state-error);
-    }
-  }
-  
-  &--success {
-    &.su-switch--checked .su-switch-track {
-      background-color: var(--su-state-success);
-    }
-  }
-  
-  &--warning {
-    &.su-switch--checked .su-switch-track {
-      background-color: var(--su-state-warning);
-    }
-  }
-  
+
   &--disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    
-    &:focus-visible {
-      box-shadow: none;
-    }
+    @include disabled-state;
   }
-  
+
   &--readonly {
     cursor: default;
   }
 }
 
 .su-switch-track {
+  position: relative;
   display: block;
   width: 100%;
   height: 100%;
-  background-color: var(--su-border-default);
-  border-radius: 9999px;
-  transition: background-color var(--su-duration-fast) cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
+  border-radius: inherit;
+  // Piste décochée assez marquée pour rester lisible sur tous les fonds
+  background-color: var(--su-border-strong);
+  @include transition(background-color);
+
+  .su-switch--checked & {
+    background-color: var(--_su-switch-on, var(--su-primary-default));
+  }
 }
 
 .su-switch-thumb {
-  background-color: var(--su-bg-surface);
-  border-radius: 9999px;
-  box-shadow: 0 2px 4px rgb(0 0 0 / 20%);
-  transition: transform var(--su-duration-fast) cubic-bezier(0.4, 0, 0.2, 1);
+  position: absolute;
+  top: var(--_su-switch-pad);
+  left: var(--_su-switch-pad);
   display: flex;
   align-items: center;
   justify-content: center;
-  position: absolute;
-  top: 0;
-  left: 0;
+  width: var(--_su-thumb);
+  height: var(--_su-thumb);
+  border-radius: var(--_su-thumb);
+  background-color: var(--su-bg-surface);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 10%), 0 0 0 0.5px rgb(0 0 0 / 4%);
+  transform-origin: left center;
+  @include transition(translate, scale, transform-origin);
+
+  .su-switch--checked & {
+    translate: calc(var(--_su-thumb) - 4px) 0;
+    transform-origin: right center;
+  }
+
+  // À l'appui, la pastille s'étire légèrement
+  .su-switch:active:not(.su-switch--disabled, .su-switch--readonly) & {
+    scale: 1.1 1;
+  }
+
+  [dir='rtl'] & {
+    left: auto;
+    right: var(--_su-switch-pad);
+    transform-origin: right center;
+  }
+
+  [dir='rtl'] .su-switch--checked & {
+    translate: calc((var(--_su-thumb) - 4px) * -1) 0;
+    transform-origin: left center;
+  }
 }
 
 .su-switch-indicator {
@@ -342,18 +326,12 @@ defineExpose({
 }
 
 .su-switch-icon {
-  color: var(--su-text-secondary);
-  
+  width: 70%;
+  height: 70%;
+  color: var(--su-text-tertiary);
+
   &--check {
-    color: var(--su-link-default);
-  }
-  
-  &--cross {
-    color: var(--su-text-tertiary);
-  }
-  
-  &--custom {
-    color: currentcolor;
+    color: var(--_su-switch-on, var(--su-primary-default));
   }
 }
 </style>

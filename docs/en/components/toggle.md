@@ -66,8 +66,8 @@ const italic = ref(false)
 | `icon` | `Component` | -  | Icon displayed (inactive state) |
 | `activeIcon` | `Component` | -  | Icon displayed when active (replaces `icon`) |
 | `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Size |
-| `variant` | `'default' \| 'outline' \| 'ghost'` | `'default'` | Visual variant |
-| `radius` | `Radius` | `'md'` | Border radius |
+| `variant` | `'default' \| 'outline' \| 'ghost'` | `'default'` | Visual variant: transparent with a neutral tint when on, control surface, or primary tint when on |
+| `radius` | `Radius` | `undefined` | Border radius. Defaults to the control radius (10px) |
 | `disabled` | `boolean` | `false` | Disables the toggle |
 
 ### Events

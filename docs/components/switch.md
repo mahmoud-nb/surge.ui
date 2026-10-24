@@ -593,8 +593,9 @@ const settings = ref({
 | `required` | `boolean` | `false` | Champ requis |
 | `leftLabel` | `string` | `undefined` | Label affiché à gauche |
 | `rightLabel` | `string` | `undefined` | Label affiché à droite |
-| `leftIcon` | `Component` | `undefined` | Icône à gauche (Heroicons) |
-| `rightIcon` | `Component` | `undefined` | Icône à droite (Heroicons) |
+| `leftIcon` | `Component` | `undefined` | Icône affichée dans la pastille quand le switch est désactivé (aucune par défaut) |
+| `rightIcon` | `Component` | `undefined` | Icône affichée dans la pastille quand le switch est activé (aucune par défaut) |
+| `padded` | `boolean` | `true` | Marge entre la pastille et le bord de la piste. `false` : la pastille affleure le bord |
 | `labelPosition` | `'outside' \| 'inside'` | `'outside'` | Position des labels |
 
 ### Props d'accessibilité (héritées de SuFormField)
