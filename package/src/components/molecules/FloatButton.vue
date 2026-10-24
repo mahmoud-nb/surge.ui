@@ -230,15 +230,13 @@ defineExpose({
 </template>
 
 <style lang="scss" scoped>
-@use '../../styles/core/mixins' as *;
-@use '../../styles/foundations/spacing' as space;
-@use '../../styles/foundations/typography' as typo;
+@use '../../styles/abstracts' as *;
 
 .su-float-button-container {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: space.$spacing-4;
+  gap: $spacing-4;
 
   @include transition(all);
   
@@ -258,15 +256,15 @@ defineExpose({
   
   // Tailles
   &--sm {
-    gap: space.$spacing-3;
+    gap: $spacing-3;
   }
   
   &--md {
-    gap: space.$spacing-4;
+    gap: $spacing-4;
   }
   
   &--lg {
-    gap: space.$spacing-5;
+    gap: $spacing-5;
   }
 }
 
@@ -278,7 +276,7 @@ defineExpose({
   border: 1px solid var(--su-gray-200);
   border-radius: var(--su-radius-lg);
   box-shadow: 0 10px 25px rgb(0 0 0 / 15%);
-  padding: space.$spacing-1;
+  padding: $spacing-1;
   
   // Animation d'apparition
   animation: slide-up 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -355,9 +353,9 @@ defineExpose({
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--su-error-500);
+  background-color: var(--su-state-error);
   color: white;
-  font-size: typo.$font-size-xs;
+  font-size: $font-size-xs;
   font-weight: 600;
   border-radius: 9999px;
   padding: 0 0.375rem;
@@ -374,10 +372,10 @@ defineExpose({
 
 .su-float-button-tooltip {
   position: absolute;
-  padding: space.$spacing-1 0.75rem;
+  padding: $spacing-1 0.75rem;
   background-color: var(--su-gray-900);
   color: white;
-  font-size: typo.$font-size-sm;
+  font-size: $font-size-sm;
   font-weight: 500;
   border-radius: var(--su-radius-md);
   white-space: nowrap;
@@ -495,7 +493,7 @@ defineExpose({
   }
 }
 
-@media (prefers-contrast: high) {
+@media (prefers-contrast: more) {
   .su-float-button {
     border: 3px solid currentcolor;
   }
@@ -552,7 +550,7 @@ defineExpose({
   
   .su-float-button-tooltip {
     max-width: 150px;
-    font-size: typo.$font-size-xs;
+    font-size: $font-size-xs;
   }
 }
 

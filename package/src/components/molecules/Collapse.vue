@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, nextTick } from 'vue'
+import { ref, onMounted, nextTick, useId } from 'vue'
 import { ChevronDownIcon } from '@heroicons/vue/24/outline'
 
 export interface CollapseItem {
@@ -15,6 +15,9 @@ const props = defineProps<{
   items?: CollapseItem[]
   multiple?: boolean
 }>()
+
+// Préfixe d'ID propre à l'instance (évite les doublons entre plusieurs Collapse)
+const baseId = useId()
 
 const openItems = ref<string[]>([])
 const headers = ref<HTMLButtonElement[]>([])
@@ -65,8 +68,6 @@ onMounted(() => nextTick(() => (headers.value = Array.from(document.querySelecto
 <template>
   <div
     class="su-accordion"
-    role="region"
-    aria-label="Accordion"
   >
     <template v-if="items?.length">
       <div
@@ -76,12 +77,12 @@ onMounted(() => nextTick(() => (headers.value = Array.from(document.querySelecto
       >
         <h3 class="su-accordion__heading">
           <button
-            :id="`accordion-header-${index}`"
+            :id="`${baseId}-header-${index}`"
             ref="headers"
             class="su-accordion__header"
             type="button"
             :aria-expanded="isOpen(item.id || index.toString())"
-            :aria-controls="`panel-${index}`"
+            :aria-controls="`${baseId}-panel-${index}`"
             :disabled="item.disabled"
             @click="toggleItem(item.id || index.toString())"
             @keydown="handleKeydown($event, index)"
@@ -103,10 +104,10 @@ onMounted(() => nextTick(() => (headers.value = Array.from(document.querySelecto
 
         <div
           v-show="isOpen(item.id || index.toString())"
-          :id="`panel-${index}`"
+          :id="`${baseId}-panel-${index}`"
           class="su-accordion__panel"
           role="region"
-          :aria-labelledby="`accordion-header-${index}`"
+          :aria-labelledby="`${baseId}-header-${index}`"
         >
           <slot
             name="panel"
@@ -124,9 +125,7 @@ onMounted(() => nextTick(() => (headers.value = Array.from(document.querySelecto
 </template>
 
 <style lang="scss" scoped>
-@use '../../styles/core/mixins' as *;
-@use '../../styles/foundations/spacing' as space;
-@use '../../styles/foundations/typography' as typo;
+@use '../../styles/abstracts' as *;
 
 .su-accordion {
   border: 1px solid var(--su-gray-200);
@@ -145,10 +144,10 @@ onMounted(() => nextTick(() => (headers.value = Array.from(document.querySelecto
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: space.$spacing-4 space.$spacing-6;
+    padding: $spacing-4 $spacing-6;
     background: white;
     color: var(--su-text-primary);
-    font-size: typo.$font-size-base;
+    font-size: $font-size-base;
     text-align: left;
     cursor: pointer;
     border: none;
@@ -188,10 +187,10 @@ onMounted(() => nextTick(() => (headers.value = Array.from(document.querySelecto
   }
 
   &__panel {
-    padding: space.$spacing-4 space.$spacing-6;
+    padding: $spacing-4 $spacing-6;
     background: var(--su-gray-50);
     color: var(--su-text-secondary);
-    font-size: typo.$font-size-base;
+    font-size: $font-size-base;
     line-height: var(--su-line-height-normal);
   }
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, h, Fragment, Comment, Text } from 'vue'
+import { computed, h, Fragment, Comment, Text, type VNode } from 'vue'
 import Link from '../atoms/Link.vue'
 import type { LinkGroupProps } from '@/types'
 
@@ -39,7 +39,7 @@ const processedLinks = computed(() => {
   if (!slots?.default) return []
 
   const children = (slots?.['default']?.() ?? [])
-  const processedChildren = []
+  const processedChildren: VNode[] = []
 
   for (const vnode of children) {
     // Vérifie si le VNode est une instance du composant Link
@@ -131,8 +131,7 @@ const ariaAttributes = computed(() => {
 </template>
 
 <style lang="scss">
-@use '../../styles/core/mixins' as *;
-@use '../../styles/foundations/spacing' as space;
+@use '../../styles/abstracts' as *;
 
 // Base styles - must come FIRST before modifier-specific styles
 .su-links-group-separator {
@@ -145,18 +144,18 @@ const ariaAttributes = computed(() => {
 .su-links-group {
   display: inline-flex;
   align-items: center;
-  gap: space.$spacing-2;
+  gap: $spacing-2;
   
   &--gap-sm {
-    gap: space.$spacing-1;
+    gap: $spacing-1;
   }
   
   &--gap-md {
-    gap: space.$spacing-2;
+    gap: $spacing-2;
   }
   
   &--gap-lg {
-    gap: space.$spacing-3;
+    gap: $spacing-3;
   }
   
   &--gap-none {
@@ -269,7 +268,7 @@ const ariaAttributes = computed(() => {
     
     &:hover {
       border-color: var(--su-primary-400);
-      background-color: rgb(var(--su-primary-400-rgb) / 10%);
+      background-color: color-mix(in srgb, var(--su-primary-400) 10%, transparent);
     }
     
     &:focus-visible {
@@ -277,7 +276,7 @@ const ariaAttributes = computed(() => {
     }
     
     &:active {
-      background-color: rgb(var(--su-primary-400-rgb) / 20%);
+      background-color: color-mix(in srgb, var(--su-primary-400) 20%, transparent);
     }
   }
   

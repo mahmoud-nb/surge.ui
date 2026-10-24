@@ -5,64 +5,67 @@ Le fichier racine `../CLAUDE.md` fournit l'architecture globale, les commandes e
 
 ## Styles SCSS
 
-### Imports dans les composants
+### Architecture
 
-Deux patterns coexistent — ne pas les mélanger :
+```
+styles/
+├─ abstracts/      ← importé par les composants, n'émet AUCUN CSS
+│  ├─ _functions   token(), with-alpha(), mix-colors(), radius(), inner-radius(), rem()
+│  ├─ _mixins      transition, focus-ring, control-surface, inner-highlight…
+│  └─ _breakpoints up(), down(), pointer-coarse, motion-safe/reduce, high-contrast, dark-mode
+├─ foundations/    palette brute, espacements, typo, animations (variables Sass)
+├─ tokens/         _static (invariants), _semantic (tokens communs par mode), _contrast
+├─ themes/         default, ocean, forest, sunset (light + dark) + _registry, _schema
+├─ base/           utilitaires globaux (.sr-only)
+└─ index.scss      SEUL point d'émission CSS — importé une fois par src/index.ts
+```
 
-**Pattern 1 — Majorité des composants** (Button, Input, Switch, Toggle, Badge, Avatar, Link, Image, etc.) :
+### Import dans un composant — un seul pattern
 
 ```scss
-@use '../../styles/main' as *;
+<style lang="scss">
+@use '../../styles/abstracts' as *;
 
 .su-button {
-  gap: 0.5rem;                        // rem direct, PAS space.$spacing-2
+  gap: $spacing-2;                       // variables des fondations, sans namespace
   @include transition(background-color, color);
   &:focus-visible { @include focus-ring; }
+  &:hover { background: with-alpha(primary-default, 90%); }
 }
+</style>
 ```
 
-`main` forward les mixins uniquement. Les espacements utilisent des **valeurs rem directes** : `0.25rem`, `0.5rem`, `0.75rem`, `1rem`, etc.
-
-**Pattern 2 — Composants avec spacing SCSS** (Accordion, ButtonGroup, Dropdown, LinkGroup, FormFieldGroup, FloatButton) :
-
-```scss
-@use '../../styles/core/mixins' as *;
-@use '../../styles/foundations/spacing' as space;
-
-.su-accordion {
-  gap: space.$spacing-2;             // variable SCSS
-}
-```
-
-> **Piège connu :** `space.$spacing-*` provoque `There is no module with the namespace "space"` si on utilise `@use '../../styles/main' as *` seul.
+> **Interdit :** importer `styles/index.scss` (ou tout fichier qui émet du CSS) dans un composant : le CSS serait recopié dans chaque composant.
 
 ### BEM et classes CSS
 
 - Base : `.su-<component>` — ex: `.su-button`, `.su-toggle`
 - Modifier : `.su-<component>--<modifier>` — ex: `.su-button--primary`, `.su-toggle--active`
 - Element : `.su-<component>__<element>` — ex: `.su-button__icon`, `.su-toggle__label`
-- Tokens CSS : `var(--su-*)` pour toutes les couleurs, tailles, ombres
+- Tokens CSS : `var(--su-*)` pour toutes les couleurs, tailles, ombres. Jamais de palette brute (`$gray-500`) pour une couleur visible : elle ne suit pas le thème.
+- Transparence : `with-alpha(state-error, 16%)` (→ `color-mix`). Plus de tokens `-rgb` ni de `rgba(var(--x), a)`.
 
-### Mixins disponibles
+### Fonctions et mixins
 
-Source : `styles/core/_mixins.scss`
+Source : `styles/abstracts/`
 
-| Mixin | Usage |
+| Mixin / fonction | Usage |
 |-------|-------|
-| `transition($props...)` | Transition avec support `prefers-reduced-motion` |
-| `focus-ring($color?)` | Outline accessible (`--su-border-focus`) |
-| `interactive-states` | hover/active/focus-visible/disabled combinés |
-| `surface($elevated?)` | Container surface + bordure + ombre optionnelle |
-| `truncate($lines?)` | Texte tronqué (1 ligne ou multi-lignes) |
-| `scrollable-container` | Scroll avec scrollbar stylée |
-| `touch-target($size?)` | Taille min tactile WCAG (44px) |
-| `use-border-radius($base, $keys)` | Toutes les classes `--radius-*` |
-| `su-border-radius($size, $shape)` | Radius unitaire avec shape optionnel |
-| `squareSize($size)` | Width = height |
-| `su-text($size, $color?, $weight?, $line-height?)` | Texte avec tokens typographiques |
-| `su-text-ellipsis` | Overflow ellipsis (1 ligne) |
-| `su-form-field-container` | Container d'input avec états (error/success/warning/disabled/readonly) |
-| `su-formfield-box($self)` | Reset d'input dans un FormField wrapper |
+| `token($name, $fallback?)` | `var(--su-<name>)` |
+| `with-alpha($color, $pct)` | Couleur ou token avec transparence (`color-mix`) |
+| `transition($props...)` | Transition tokenisée (annulée par reduced-motion) |
+| `focus-ring($color?, $offset?)` | Outline accessible (`--su-ring`) |
+| `focus-ring-field($color?)` | Bordure + halo 3px des champs |
+| `disabled-state` | Opacité `--su-opacity-disabled` (.64) + curseur |
+| `control-size($size)` | Hauteur 36/32px, padding, typo base→sm dès `sm` |
+| `control-surface($radius?)` | Surface de champ : bordure alpha, ombre, reflet, focus, invalide, disabled |
+| `inner-highlight($radius?)` | Reflet interne d'1px (élément en `position: relative`) |
+| `soft-variant($state)` | Fond 8 % / bordure 32 % / texte `-fg` (badges, alertes) |
+| `touch-target-overlay` | Zone tactile 44px sur `pointer: coarse` sans changer la taille visuelle |
+| `sr-only` | Masquage accessible |
+| `up($bp)` / `down($bp)` | Media queries (sm 640, md 768, lg 1024, xl 1280, 2xl 1536) |
+| `motion-reduce` / `high-contrast` / `dark-mode` | Préférences et mode du thème |
+| `interactive-states`, `surface`, `truncate`, `scrollable-container`, `touch-target`, `use-border-radius`, `su-border-radius`, `squareSize`, `su-text`, `su-text-ellipsis`, `su-form-field-container`, `su-formfield-box` | Mixins historiques, conservés |
 
 ## Tokens de design
 
@@ -81,11 +84,16 @@ Définis dans `styles/themes/_schema.scss`. Chaque thème DOIT implémenter tous
 - **États :** `state-{success|warning|error|info}` + `-bg`, `-border-color`, `-border-hover`, `-border-focus`
 - **Palette primaire :** `primary-50` ... `primary-950` (11 niveaux)
 - **Ombre :** `shadow-color`
+- **Communs** (fournis par `tokens/_semantic.scss`, surchargeables par thème) : `ring`, `border-input`, `border-alpha`, `bg-accent`, `bg-muted`, `bg-control`, `inner-highlight`, `shadow-control`, `shadow-popover`, `overlay-backdrop`, `state-{success|warning|error|info}-fg` (texte d'état ≈ nuance 700 en clair / 400 en sombre)
+
+### Tokens statiques (`:root`)
+
+Typo (`font-size-xs…4xl`), espacements, rayons (`radius-none…2xl`, `radius-control` 10px, `radius-container` 16px), ombres (`shadow-xs…xl`), focus, hauteurs de contrôle (`control-height-{sm|md|lg}` + `-compact`), `opacity-disabled`, `touch-target-min`, `z-*`, durées et easings.
 
 ### Système de thèmes
 
-- 5 thèmes : `light`, `dark`, `ocean`, `forest`, `sunset`
-- Structure : `styles/themes/<name>/` avec `tokens/light.scss`, `tokens/dark.scss`, `_meta.scss`
+- 4 thèmes × 2 modes : `default`, `ocean`, `forest`, `sunset` (light + dark)
+- Structure : `styles/themes/<name>/` avec `tokens/light.scss`, `tokens/dark.scss`, `_meta.scss` ; `index.scss` utilise `registry.generate-mode-vars($map, 'light' | 'dark')` qui fusionne les tokens communs
 - Schéma de référence : `styles/themes/_schema.scss` (liste normative + mixin `validate-theme`)
 - Runtime : attributs `data-theme` + `data-theme-mode` sur l'élément parent
 

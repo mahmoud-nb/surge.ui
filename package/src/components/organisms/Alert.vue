@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, useSlots } from 'vue'
+import { computed, useId, useSlots } from 'vue'
 import {
   CheckCircleIcon,
   ExclamationTriangleIcon,
@@ -7,7 +7,6 @@ import {
   InformationCircleIcon,
   XMarkIcon
 } from '@heroicons/vue/24/outline'
-import { useUniqueId } from '@/composables/useUniqueId'
 import type { AlertProps } from '@/types'
 
 const props = withDefaults(defineProps<AlertProps>(), {
@@ -28,8 +27,9 @@ const emit = defineEmits<{
 const slots = useSlots()
 
 // Computed
-const titleId = `su-alert-title-${useUniqueId('su-alert-title')}`
-const descriptionId = `su-alert-description-${useUniqueId('su-alert-desc')}`
+const alertId = useId()
+const titleId = `su-alert-title-${alertId}`
+const descriptionId = `su-alert-description-${alertId}`
 
 const hasTitle = computed(() => !!(props.title || slots.title))
 const hasDescription = computed(() => !!(props.description || slots.description))
@@ -135,9 +135,7 @@ defineExpose({
 </template>
 
 <style lang="scss">
-@use '../../styles/main' as *;
-@use '../../styles/foundations/colors' as *;
-@use '../../styles/foundations/spacing' as *;
+@use '../../styles/abstracts' as *;
 
 .su-alert {
   display: flex;
@@ -332,7 +330,7 @@ defineExpose({
       outline-offset: var(--su-focus-ring-offset);
       
       // High contrast
-      @media (prefers-contrast: high) {
+      @media (prefers-contrast: more) {
         outline-width: 3px;
       }
     }
@@ -342,7 +340,7 @@ defineExpose({
     }
     
     // High contrast
-    @media (prefers-contrast: high) {
+    @media (prefers-contrast: more) {
       border: 1px solid currentcolor;
     }
 
@@ -373,7 +371,7 @@ defineExpose({
   }
 
   // High contrast support
-  @media (prefers-contrast: high) {
+  @media (prefers-contrast: more) {
     border-width: 2px;
   }
   

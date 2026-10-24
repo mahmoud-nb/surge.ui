@@ -93,7 +93,7 @@ export function prefersReducedMotion(): boolean {
  * Vérifie si le mode de contraste élevé est activé
  */
 export function prefersHighContrast(): boolean {
-  return window.matchMedia('(prefers-contrast: high)').matches
+  return window.matchMedia('(prefers-contrast: more)').matches
 }
 
 function linearizeChannel(c: number): number {

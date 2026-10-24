@@ -163,14 +163,11 @@ onUnmounted(() => {
 <!-- Le style reste identique à la version précédente -->
 
 <style lang="scss" scoped>
-@use '../../styles/core/mixins' as *;
-@use '../../styles/foundations/colors' as colors;
-@use '../../styles/foundations/spacing' as space;
-@use '../../styles/foundations/typography' as typo;
+@use '../../styles/abstracts' as *;
 
 .su-accordion-item {
   border: 1px solid var(--su-gray-200);
-  border-radius: space.$radius-md;
+  border-radius: $radius-md;
   background: var(--su-bg-surface);
   overflow: hidden;
   color: var(--su-text-primary);
@@ -179,7 +176,7 @@ onUnmounted(() => {
 
   &:focus-within {
     border-color: var(--su-primary-500);
-    box-shadow: 0 0 0 3px rgb(var(--su-primary-500-rgb), 0.1);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--su-primary-500) 10%, transparent);
   }
 
   &.is-open {
@@ -201,11 +198,11 @@ onUnmounted(() => {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: space.$spacing-4 space.$spacing-6;
+    padding: $spacing-4 $spacing-6;
     background: var(--su-bg-surface);
     color: var(--su-text-primary);
-    font-size: typo.$font-size-base;
-    font-weight: typo.$font-weight-semibold;
+    font-size: $font-size-base;
+    font-weight: $font-weight-semibold;
     text-align: left;
     cursor: pointer;
     border: none;
@@ -245,7 +242,7 @@ onUnmounted(() => {
 
   &__label {
     flex: 1;
-    padding-right: space.$spacing-4;
+    padding-right: $spacing-4;
   }
 
   &__icon {
@@ -281,10 +278,10 @@ onUnmounted(() => {
   }
 
   &__panel-content {
-    padding: space.$spacing-4 space.$spacing-6;
+    padding: $spacing-4 $spacing-6;
     color: var(--su-text-secondary);
-    font-size: typo.$font-size-base;
-    line-height: typo.$line-height-relaxed;
+    font-size: $font-size-base;
+    line-height: $line-height-relaxed;
     animation: slide-down 0.3s ease-out;
     
     > *:first-child {
@@ -319,7 +316,7 @@ onUnmounted(() => {
 
     &:focus-within {
       border-color: var(--su-primary-400);
-      box-shadow: 0 0 0 3px rgb(var(--su-primary-400-rgb), 0.2);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--su-primary-400) 20%, transparent);
     }
 
     &.is-open {
@@ -394,7 +391,7 @@ onUnmounted(() => {
 }
 
 /* Amélioration de la visibilité du focus pour le contraste élevé */
-@media (prefers-contrast: high) {
+@media (prefers-contrast: more) {
   .su-accordion-item {
     &__header:focus-visible {
       outline: 3px solid CanvasText;

@@ -190,7 +190,7 @@ const priceClasses = computed(() => [
 </template>
 
 <style lang="scss" scoped>
-@use '../../styles/main' as *;
+@use '../../styles/abstracts' as *;
 
 .su-price {
   display: inline-flex;
@@ -343,7 +343,7 @@ const priceClasses = computed(() => [
 // Contraste élevé
 // ========================================
 
-@media (prefers-contrast: high) {
+@media (prefers-contrast: more) {
   .su-price {
     &__original {
       text-decoration-thickness: 2px;

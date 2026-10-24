@@ -37,7 +37,8 @@ const textareaId = computed(() => attrs.id as string || fieldId)
 
 const textareaProps = computed(() => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { label, message, value, ...rest } = props
+  // modelValue (déclaré par defineModel) passe par v-model : il ne doit pas écraser la liaison
+  const { label, message, value, modelValue: _modelValue, ...rest } = props as typeof props & { modelValue?: unknown }
   return rest
 })
 
@@ -76,10 +77,9 @@ defineExpose({
       <Textarea
         :id="textareaId"
         ref="textareaRef"
-        :value="modelValue"
-        :aria-describedby="messageId"
+        v-model="modelValue"
         v-bind="{ ...textareaProps }"
-
+        :aria-described-by="[ariaDescribedBy, messageId].filter(Boolean).join(' ') || undefined"
         @input="handleInput"
         @change="handleChange"
         @focus="handleFocus"

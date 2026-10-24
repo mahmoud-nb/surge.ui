@@ -552,7 +552,7 @@ defineExpose({
 </template>
 
 <style lang="scss">
-@use '../../styles/main' as *;
+@use '../../styles/abstracts' as *;
 
 .su-slider {
   $self: &;
@@ -684,7 +684,7 @@ defineExpose({
 
 .su-slider-track {
   position: absolute;
-  background-color: var(--su-bg-secondary);
+  background-color: var(--su-bg-canvas);
   border-radius: 9999px;
   transition: all var(--su-duration-normal) var(--su-ease-in-out);
   
@@ -737,15 +737,15 @@ defineExpose({
   
   // États
   &--error {
-    background-color: var(--su-state-error-50);
+    background-color: var(--su-state-error-bg);
   }
   
   &--success {
-    background-color: var(--su-state-success-50);
+    background-color: var(--su-state-success-bg);
   }
   
   &--warning {
-    background-color: var(--su-state-warning-50);
+    background-color: var(--su-state-warning-bg);
   }
 }
 
@@ -1054,7 +1054,7 @@ defineExpose({
 // No dark mode overrides needed
 
 // Mode de contraste élevé
-@media (prefers-contrast: high) {
+@media (prefers-contrast: more) {
   .su-slider-thumb-handle {
     border-width: 3px;
   }

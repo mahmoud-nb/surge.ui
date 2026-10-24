@@ -1,5 +1,6 @@
 @use 'sass:map';
 @use 'sass:list';
+@use '../tokens/semantic';
 
 // ============================================================
 // REGISTRE DES THÈMES
@@ -55,4 +56,18 @@ $_registered-themes: () !default;
   @each $key, $value in $theme-map {
     --#{$prefix}-#{$key}: var(--#{$prefix}-custom-#{$key}, #{$value});
   }
+}
+
+/**
+ * Génère les CSS variables d'un thème pour un mode donné,
+ * complétées par les tokens sémantiques communs (tokens/_semantic.scss).
+ * Les tokens du thème sont prioritaires sur les tokens communs.
+ *
+ * @param {Map}    $theme-map — tokens du thème
+ * @param {String} $mode      — 'light' ou 'dark'
+ */
+@mixin generate-mode-vars($theme-map, $mode, $prefix: 'su') {
+  $base: if($mode == 'dark', semantic.$semantic-dark, semantic.$semantic-light);
+
+  @include generate-theme-vars(map.merge($base, $theme-map), $prefix);
 }

@@ -30,7 +30,7 @@ const containerAttrs = computed(() => {
   const { id: _id, ...rest } = attrs as Record<string, unknown>
   return rest
 })
-const switchRef = ref<HTMLInputElement>()
+const switchRef = ref<HTMLButtonElement>()
 
 // Classes CSS - reste identique
 const containerClasses = computed(() => [
@@ -64,6 +64,9 @@ const ariaAttributes = computed(() => {
   }
   
   if (props.ariaLabel) attrs['aria-label'] = props.ariaLabel
+  if (props.ariaLabelledBy) attrs['aria-labelledby'] = props.ariaLabelledBy
+  if (props.ariaDescribedBy) attrs['aria-describedby'] = props.ariaDescribedBy
+  if (props.readonly) attrs['aria-readonly'] = 'true'
   if (props.ariaInvalid !== undefined) attrs['aria-invalid'] = props.ariaInvalid
   if (props.ariaRequired !== undefined) attrs['aria-required'] = props.ariaRequired
   if (props.required) attrs['aria-required'] = 'true'
@@ -81,13 +84,8 @@ const handleToggle = () => {
   emit('change', newValue)
 }
 
-const handleKeydown = (event: KeyboardEvent) => {
-  if (['Enter', ' '].includes(event.key)) {
-    event.preventDefault()
-    handleToggle()
-  }
-  emit('keydown', event)
-}
+// Entrée et Espace déclenchent nativement le clic du <button>
+const handleKeydown = (event: KeyboardEvent) => emit('keydown', event)
 
 const handleFocus = (event: FocusEvent) => emit('focus', event)
 const handleBlur = (event: FocusEvent) => emit('blur', event)
@@ -113,12 +111,13 @@ defineExpose({
     >
       {{ leftLabel }}
     </span>
-    <!-- Switch -->
-    <div
+    <!-- Switch : un <button> est « labelable », <label for> lui donne donc son nom -->
+    <button
       :id="switchId"
       ref="switchRef"
+      type="button"
       :class="switchClasses"
-      :tabindex="disabled ? -1 : 0"
+      :disabled="disabled"
       v-bind="ariaAttributes"
       @click="handleToggle"
       @keydown="handleKeydown"
@@ -126,20 +125,20 @@ defineExpose({
       @blur="handleBlur"
     >
       <!-- Track -->
-      <div class="su-switch-track">
+      <span class="su-switch-track">
         <!-- Thumb -->
-        <div class="su-switch-thumb">
+        <span class="su-switch-thumb">
           <!-- Indicateur visuel optionnel -->
-          <div class="su-switch-indicator">
-            <component 
+          <span class="su-switch-indicator">
+            <component
               :is="modelValue ? (rightIcon || CheckIcon) : (leftIcon || XMarkIcon)"
               :class="['su-switch-icon', `su-switch-icon--${modelValue ? 'check' : 'cross'}`]"
               aria-hidden="true"
             />
-          </div>
-        </div>
-      </div>
-    </div>
+          </span>
+        </span>
+      </span>
+    </button>
 
     <!-- Label droite -->
     <span 
@@ -156,8 +155,7 @@ defineExpose({
 </template>
 
 <style lang="scss">
-@use '../../styles/main' as *;
-@use '../../styles/foundations/colors' as *;
+@use '../../styles/abstracts' as *;
 
 .su-switch-container {
   display: flex;
@@ -191,14 +189,23 @@ defineExpose({
 }
 
 .su-switch {
+  // Réinitialisation du <button> natif
+  appearance: none;
+  display: inline-block;
+  flex-shrink: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
   position: relative;
   cursor: pointer;
   outline: none;
   border-radius: 9999px;
-  transition: all var(--su-duration-fast) cubic-bezier(0.4, 0, 0.2, 1);
+  @include transition(box-shadow, opacity);
   
   &:focus-visible {
-    box-shadow: 0 0 0 3px rgb(var(--su-link-default-rgb) / 50%);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--su-link-default) 50%, transparent);
   }
   
   // Tailles
@@ -306,6 +313,7 @@ defineExpose({
 }
 
 .su-switch-track {
+  display: block;
   width: 100%;
   height: 100%;
   background-color: var(--su-border-default);

@@ -71,7 +71,9 @@ $available-themes: ('default', 'ocean', 'forest', 'sunset') !default;
     }
 
     // Activation manuelle du contraste élevé
-    [data-contrast='high'] {
+    // :is(:root, [data-theme]) aligne la spécificité sur celle des thèmes
+    // ([data-theme][data-theme-mode]) pour que la surcouche l'emporte.
+    [data-contrast='high']:is(:root, [data-theme]) {
       @include registry.generate-theme-vars(contrast.$contrast-overrides);
 
       &[data-theme-mode='dark'] {

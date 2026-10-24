@@ -9,12 +9,12 @@
 
 // --- Mode clair ---
 [data-theme='default'][data-theme-mode='light'] {
-  @include registry.generate-theme-vars($theme-default-light);
+  @include registry.generate-mode-vars($theme-default-light, 'light');
 }
 
 // --- Mode sombre ---
 [data-theme='default'][data-theme-mode='dark'] {
-  @include registry.generate-theme-vars($theme-default-dark);
+  @include registry.generate-mode-vars($theme-default-dark, 'dark');
 }
 
 // --- Fallback par défaut : aucun attribut → default light ---
@@ -22,15 +22,15 @@
 // Le mode sombre via prefers-color-scheme n'est pas activé
 // automatiquement ; l'utilisateur doit le choisir explicitement.
 :root:not([data-theme]) {
-  @include registry.generate-theme-vars($theme-default-light);
+  @include registry.generate-mode-vars($theme-default-light, 'light');
 }
 
 // --- Rétrocompatibilité : anciens sélecteurs data-theme='light' / 'dark' ---
 // Pour les consommateurs qui auraient défini ces attributs manuellement.
 [data-theme='light'] {
-  @include registry.generate-theme-vars($theme-default-light);
+  @include registry.generate-mode-vars($theme-default-light, 'light');
 }
 
 [data-theme='dark'] {
-  @include registry.generate-theme-vars($theme-default-dark);
+  @include registry.generate-mode-vars($theme-default-dark, 'dark');
 }

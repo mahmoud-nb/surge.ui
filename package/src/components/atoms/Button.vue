@@ -4,6 +4,7 @@ import type { ButtonProps } from '@/types'
 import Spinner from './Spinner.vue'
 
 const props = withDefaults(defineProps<ButtonProps>(), {
+  type: 'button',
   variant: 'primary',
   size: 'md',
   radius: 'md',
@@ -48,16 +49,9 @@ const handleClick = (event: MouseEvent) => {
   emit('click', event)
 }
 
-const handleKeydown = (event: KeyboardEvent) => {
-  // Support des touches Entrée et Espace pour l'accessibilité
-  if (event.key === 'Enter' || event.key === ' ') {
-    event.preventDefault()
-    if (!props.disabled && !props.loading) {
-      emit('click', event as any)
-    }
-  }
-  emit('keydown', event)
-}
+// Entrée et Espace déclenchent nativement le clic (et la soumission d'un
+// formulaire pour type="submit") : aucune émulation clavier n'est nécessaire.
+const handleKeydown = (event: KeyboardEvent) => emit('keydown', event)
 
 const handleFocus = (event: FocusEvent) => {
   emit('focus', event)
@@ -80,24 +74,24 @@ const ariaAttributes = computed(() => {
   // États automatiques
   if (props.loading) {
     attrs['aria-busy'] = 'true'
-    attrs['aria-live'] = 'polite'
   }
-  
+
   if (props.disabled) {
     attrs['aria-disabled'] = 'true'
   }
-  
-  // Pour les boutons avec icône seule, s'assurer qu'il y a un label
-  if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel) {
-    console.warn('Button with icon and iconDisplay="only" should have an ariaLabel for accessibility')
-  }
-  
+
   return attrs
 })
+
+// Un bouton icône seule doit avoir un nom accessible (vérifié une seule fois)
+if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !props.ariaLabelledBy) {
+  console.warn('[SuButton] Un bouton avec iconDisplay="only" doit recevoir ariaLabel pour être accessible.')
+}
 </script>
 
 <template>
   <button
+    :type="type"
     :class="classes"
     :disabled="disabled || loading"
     :tabindex="disabled ? -1 : tabIndex"
@@ -133,7 +127,7 @@ const ariaAttributes = computed(() => {
 </template>
 
 <style lang="scss">
-@use '../../styles/main' as *;
+@use '../../styles/abstracts' as *;
 
 .su-button {
   display: inline-flex;
@@ -321,7 +315,7 @@ const ariaAttributes = computed(() => {
   }
 
     // Support du mode de contraste élevé
-  @media (prefers-contrast: high) {
+  @media (prefers-contrast: more) {
     border-width: 2px;
     
     &:focus-visible {

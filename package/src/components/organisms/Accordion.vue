@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref, computed, provide, watch, onMounted, onUnmounted } from 'vue'
-import { useUniqueId } from '@/composables'
+import { ref, computed, provide, watch, onMounted, onUnmounted, useId } from 'vue'
+
 import AccordionItem from '../molecules/AccordionItem.vue'
 import type { AccordionItemData, AccordionProps } from '@/types'
 
@@ -25,16 +25,13 @@ watch(() => props.modelValue, (newValue) => {
   openItems.value = new Set(newValue)
 })
 
-// Cache stable des IDs générés pour les items sans ID fourni
-const itemIdCache = new Map<number, string>()
+// IDs stables (identiques côté serveur et client) pour les items sans ID fourni
+const baseId = useId()
 
 const itemsWithIds = computed(() => {
   return props.items.map((item, index) => {
     if (item.id) return { ...item }
-    if (!itemIdCache.has(index)) {
-      itemIdCache.set(index, useUniqueId('accordion-item'))
-    }
-    return { ...item, id: itemIdCache.get(index) }
+    return { ...item, id: `accordion-item-${baseId}-${index}` }
   })
 })
 
@@ -203,9 +200,8 @@ onUnmounted(() => {
     ref="accordionRef"
     class="su-accordion"
     :class="`su-accordion--gap-${gap}`"
-    role="region"
-    :aria-multiselectable="multiple"
-    :aria-label="ariaLabel || 'Accordion'"
+    :role="ariaLabel ? 'region' : undefined"
+    :aria-label="ariaLabel"
     @keydown="handleKeydown"
   >
     <!-- Rendu via prop items -->
@@ -231,25 +227,24 @@ onUnmounted(() => {
 </template>
 
 <style lang="scss" scoped>
-@use '../../styles/core/mixins' as *;
-@use '../../styles/foundations/spacing' as space;
+@use '../../styles/abstracts' as *;
 
 .su-accordion {
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: space.$spacing-2;
+  gap: $spacing-2;
 
   &--gap-sm {
-    gap: space.$spacing-1;
+    gap: $spacing-1;
   }
 
   &--gap-md {
-    gap: space.$spacing-2;
+    gap: $spacing-2;
   }
 
   &--gap-lg {
-    gap: space.$spacing-3;
+    gap: $spacing-3;
   }
 
   &--gap-none {

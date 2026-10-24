@@ -4,6 +4,9 @@ import FormField from '../atoms/FormField.vue'
 import Input from '../atoms/Input.vue'
 import type { InputFieldProps } from '@/types'
 
+// class/style décorent le conteneur FormField, le reste va sur l'input
+defineOptions({ inheritAttrs: false })
+
 const props = withDefaults(defineProps<InputFieldProps>(), {
   type: 'text',
   size: 'md',
@@ -36,7 +39,13 @@ const inputId = computed(() => attrs.id as string || fieldId)
 
 const inputProps = computed(() => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { label, message, ...rest } = props
+  // modelValue (déclaré par defineModel) passe par v-model : il ne doit pas écraser la liaison
+  const { label, message, modelValue: _modelValue, ...rest } = props as typeof props & { modelValue?: unknown }
+  return rest
+})
+
+const inputAttrs = computed(() => {
+  const { class: _class, style: _style, id: _id, ...rest } = attrs
   return rest
 })
 
@@ -63,6 +72,9 @@ defineExpose({
 
 <template>
   <FormField
+    :field-id="inputId"
+    :class="$attrs.class"
+    :style="$attrs.style"
     :label="label"
     :message="message"
     :state="state"
@@ -71,12 +83,12 @@ defineExpose({
     :disabled="disabled"
   >
     <template #default="{ messageId }">
-      <Input 
+      <Input
         :id="inputId"
         ref="inputRef"
-        :value="modelValue"
-        :aria-describedby="messageId"
-        v-bind="{ ...inputProps }"
+        v-model="modelValue"
+        v-bind="{ ...inputAttrs, ...inputProps }"
+        :aria-described-by="[ariaDescribedBy, messageId].filter(Boolean).join(' ') || undefined"
         @input="handleInput"
         @change="handleChange"
         @focus="handleFocus"

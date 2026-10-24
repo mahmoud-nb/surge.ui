@@ -223,7 +223,7 @@ const handleKeydown = (event: KeyboardEvent) => {
 </template>
 
 <style lang="scss" scoped>
-@use '../../styles/main' as *;
+@use '../../styles/abstracts' as *;
 
 // ========================================
 // Base
@@ -547,7 +547,7 @@ const handleKeydown = (event: KeyboardEvent) => {
 // High contrast
 // ========================================
 
-@media (prefers-contrast: high) {
+@media (prefers-contrast: more) {
   .su-card {
     border-width: 2px;
 

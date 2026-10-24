@@ -410,7 +410,7 @@ defineExpose({
           :disabled="disabled"
           :readonly="readonly"
           :aria-label="`Caractère ${group.startIndex + fieldIndex + 1} sur ${length}`"
-          autocomplete="one-time-code"
+          :autocomplete="group.startIndex + fieldIndex === 0 ? 'one-time-code' : 'off'"
           maxlength="1"
           @input="handleInput($event, group.startIndex + fieldIndex)"
           @keydown="handleKeydown($event, group.startIndex + fieldIndex)"
@@ -433,7 +433,7 @@ defineExpose({
 </template>
 
 <style lang="scss" scoped>
-@use '../../styles/main' as *;
+@use '../../styles/abstracts' as *;
 
 // ========================================
 // Base
@@ -723,7 +723,7 @@ defineExpose({
 // High contrast
 // ========================================
 
-@media (prefers-contrast: high) {
+@media (prefers-contrast: more) {
   .su-otp-input {
     &__field {
       border-width: 2px;

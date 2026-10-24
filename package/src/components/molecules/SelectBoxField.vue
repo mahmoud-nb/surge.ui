@@ -45,7 +45,8 @@ const selectId = computed(() => attrs.id as string || fieldId)
 
 const selectBoxProps = computed(() => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { label, message, ...rest } = props
+  // modelValue (déclaré par defineModel) passe par v-model : il ne doit pas écraser la liaison
+  const { label, message, modelValue: _modelValue, ...rest } = props as typeof props & { modelValue?: unknown }
   return rest
 })
 
@@ -80,8 +81,8 @@ defineExpose({
         :id="id"
         ref="selectBoxRef"
         v-model="modelValue"
-        :aria-describedby="messageId"
         v-bind="{ ...selectBoxProps }"
+        :aria-described-by="[ariaDescribedBy, messageId].filter(Boolean).join(' ') || undefined"
         @change="emit('change', $event)"
         @open="emit('open')"
         @close="emit('close')"

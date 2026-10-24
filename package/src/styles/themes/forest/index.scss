@@ -8,10 +8,10 @@
 
 // --- Mode clair ---
 [data-theme='forest'][data-theme-mode='light'] {
-  @include registry.generate-theme-vars($theme-forest-light);
+  @include registry.generate-mode-vars($theme-forest-light, 'light');
 }
 
 // --- Mode sombre ---
 [data-theme='forest'][data-theme-mode='dark'] {
-  @include registry.generate-theme-vars($theme-forest-dark);
+  @include registry.generate-mode-vars($theme-forest-dark, 'dark');
 }

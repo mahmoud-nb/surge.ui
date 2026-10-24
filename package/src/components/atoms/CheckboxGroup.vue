@@ -73,6 +73,7 @@ const ariaAttributes = computed(() => {
   }
   
   if (props.ariaLabel) attrs['aria-label'] = props.ariaLabel
+  if (props.ariaLabelledBy) attrs['aria-labelledby'] = props.ariaLabelledBy
   if (props.ariaDescribedBy) {
     const describedBy = [props.ariaDescribedBy].filter(Boolean).join(' ')
     attrs['aria-describedby'] = describedBy
@@ -153,6 +154,7 @@ const isDisabled = (option: any) => {
         <input
           :id="`${checkboxGroupId}-${option.value}`"
           type="checkbox"
+          :name="name"
           :value="option.value"
           :checked="isChecked(option.value)"
           :disabled="isDisabled(option)"
@@ -207,8 +209,7 @@ const isDisabled = (option: any) => {
 </template>
 
 <style lang="scss">
-@use '../../styles/main' as *;
-@use '../../styles/foundations/colors' as *;
+@use '../../styles/abstracts' as *;
 
 @mixin su-checkbox-state($stateColor50, $stateColor300, $stateColor500) {
   &.su-checkbox__option--inline-card,
@@ -244,7 +245,7 @@ const isDisabled = (option: any) => {
     
     &--required {
       .su-checkbox-group-required {
-        color: var(--su-error-500);
+        color: var(--su-state-error-fg);
         margin-inline-start: 0.125rem;
       }
     }
@@ -636,7 +637,7 @@ const isDisabled = (option: any) => {
 }
 
 // Mode de contraste élevé
-@media (prefers-contrast: high) {
+@media (prefers-contrast: more) {
   .su-checkbox__indicator {
     border-width: 3px;
   }

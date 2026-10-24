@@ -1,0 +1,10 @@
+@use '../abstracts' as *;
+
+// ============================================================
+// UTILITAIRES D'ACCESSIBILITÉ GLOBAUX
+// ============================================================
+
+/* Contenu réservé aux lecteurs d'écran (annonces, libellés cachés) */
+.sr-only {
+  @include sr-only;
+}

@@ -1,0 +1,64 @@
+@use 'sass:math';
+@use 'sass:meta';
+@use 'sass:string';
+
+// ============================================================
+// FONCTIONS UTILITAIRES
+// ============================================================
+
+/// Référence un token CSS `--su-*`
+/// @param {String} $name - nom du token sans préfixe (ex. 'bg-surface')
+/// @param {*} $fallback - valeur de repli optionnelle
+/// @example token(bg-surface) → var(--su-bg-surface)
+@function token($name, $fallback: null) {
+  @if $fallback != null {
+    @return var(--su-#{$name}, #{$fallback});
+  }
+
+  @return var(--su-#{$name});
+}
+
+/// Résout une couleur : nom de token, var() ou couleur littérale
+@function _resolve-color($color) {
+  @if meta.type-of($color) == 'color' {
+    @return $color;
+  }
+
+  $value: '#{$color}';
+
+  @if string.index($value, 'var(') == 1 or string.index($value, 'color-mix(') == 1 or $value == 'currentcolor' or $value == 'transparent' {
+    @return $color;
+  }
+
+  @return token($color);
+}
+
+/// Applique une transparence à une couleur ou à un token.
+/// Remplace les anciens tokens `-rgb` et les `rgba(var(--x), a)` invalides.
+/// @example with-alpha(state-error, 16%) → color-mix(in srgb, var(--su-state-error) 16%, transparent)
+@function with-alpha($color, $amount) {
+  @return color-mix(in srgb, _resolve-color($color) $amount, transparent);
+}
+
+/// Mélange deux couleurs (ou tokens)
+/// @example mix-colors(primary-default, black, 90%)
+@function mix-colors($color-a, $color-b, $amount: 50%) {
+  @return color-mix(in srgb, _resolve-color($color-a) $amount, _resolve-color($color-b));
+}
+
+/// Rayon d'angle depuis l'échelle de tokens
+/// @example radius(lg) → var(--su-radius-lg)
+@function radius($size: 'md') {
+  @return var(--su-radius-#{$size});
+}
+
+/// Rayon intérieur : épouse un conteneur bordé (pseudo-éléments de reflet)
+@function inner-radius($radius, $offset: 1px) {
+  @return calc(#{$radius} - #{$offset});
+}
+
+/// Conversion px → rem (base 16px)
+/// @example rem(14px) → 0.875rem
+@function rem($px) {
+  @return math.div($px, 16px) * 1rem;
+}

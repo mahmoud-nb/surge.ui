@@ -444,9 +444,7 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !props.lab
 </template>
 
 <style lang="scss" scoped>
-@use '../../styles/core/mixins' as *;
-@use '../../styles/foundations/spacing' as space;
-@use '../../styles/foundations/typography' as typo;
+@use '../../styles/abstracts' as *;
 
 .su-dropdown-container {
   position: relative;
@@ -472,7 +470,7 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !props.lab
   white-space: nowrap;
   user-select: none;
   position: relative;
-  gap: space.$spacing-2;
+  gap: $spacing-2;
   border-radius: var(--su-radius-md);
   
   @include transition(all);
@@ -484,20 +482,20 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !props.lab
 
   // Tailles
   &--sm {
-    padding: space.$spacing-1 space.$spacing-2;
-    font-size: typo.$font-size-sm;
+    padding: $spacing-1 $spacing-2;
+    font-size: $font-size-sm;
     line-height: 1.25rem;
     min-height: 2rem;
     
     &.su-dropdown-trigger--icon-only {
-      padding: space.$spacing-1;
+      padding: $spacing-1;
       width: 2rem;
     }
   }
 
   &--md {
-    padding: 0.625rem space.$spacing-3;
-    font-size: typo.$font-size-sm;
+    padding: 0.625rem $spacing-3;
+    font-size: $font-size-sm;
     line-height: 1.25rem;
     min-height: 2.5rem;
     
@@ -508,13 +506,13 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !props.lab
   }
 
   &--lg {
-    padding: space.$spacing-2 1.5rem;
-    font-size: typo.$font-size-base;
+    padding: $spacing-2 1.5rem;
+    font-size: $font-size-base;
     line-height: 1.5rem;
     min-height: 3rem;
     
     &.su-dropdown-trigger--icon-only {
-      padding: space.$spacing-2;
+      padding: $spacing-2;
       width: 3rem;
     }
   }
@@ -528,12 +526,12 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !props.lab
     &:hover:not(#{$self}--disabled):not(#{$self}--loading) {
       background-color: var(--su-primary-700);
       transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgb(var(--su-primary-600-rgb) / 40%);
+      box-shadow: 0 4px 12px color-mix(in srgb, var(--su-primary-600) 40%, transparent);
     }
 
     &:active:not(#{$self}--disabled):not(#{$self}--loading) {
       transform: translateY(0);
-      box-shadow: 0 2px 4px rgb(var(--su-primary-600-rgb) / 40%);
+      box-shadow: 0 2px 4px color-mix(in srgb, var(--su-primary-600) 40%, transparent);
     }
   }
 
@@ -726,10 +724,10 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !props.lab
 
   display: flex;
   align-items: center;
-  gap: space.$spacing-3;
+  gap: $spacing-3;
   box-sizing: border-box;
   width: 100%;
-  padding: space.$spacing-2 space.$spacing-3;
+  padding: $spacing-2 $spacing-3;
   text-align: left;
   background: none;
   border: none;
@@ -775,7 +773,7 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !props.lab
   }
   
   &-description {
-    font-size: typo.$font-size-sm;
+    font-size: $font-size-sm;
     color: var(--su-text-secondary);
     margin-top: 0.125rem;
     white-space: nowrap;
@@ -839,7 +837,7 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !props.lab
       border-color: var(--su-primary-400);
 
       &:hover:not(&--disabled, &--loading) {
-        background-color: rgb(var(--su-primary-400-rgb) / 10%);
+        background-color: color-mix(in srgb, var(--su-primary-400) 10%, transparent);
         border-color: var(--su-primary-300);
       }
     }
@@ -848,7 +846,7 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !props.lab
       color: var(--su-primary-400);
 
       &:hover:not(&--disabled, &--loading) {
-        background-color: rgb(var(--su-primary-400-rgb) / 10%);
+        background-color: color-mix(in srgb, var(--su-primary-400) 10%, transparent);
       }
     }
   }
@@ -866,7 +864,7 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !props.lab
     }
     
     &--focused:not(&--disabled) {
-      background-color: rgb(var(--su-primary-400-rgb) / 20%);
+      background-color: color-mix(in srgb, var(--su-primary-400) 20%, transparent);
       color: var(--su-primary-200);
     }
     
@@ -888,7 +886,7 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !props.lab
   }
 }
 
-@media (prefers-contrast: high) {
+@media (prefers-contrast: more) {
   .su-dropdown-trigger {
     border-width: 2px;
     

@@ -2,6 +2,10 @@
 import { computed, useAttrs, useId } from 'vue'
 import type { FormFieldProps } from '@/types'
 
+// L'id du consommateur identifie le contrôle, pas le conteneur : on ne le rend
+// pas sur la racine pour éviter les ID dupliqués.
+defineOptions({ inheritAttrs: false })
+
 const props = withDefaults(defineProps<FormFieldProps>(), {
   state: 'default',
   size: 'md',
@@ -13,21 +17,29 @@ const props = withDefaults(defineProps<FormFieldProps>(), {
 
 const attrs = useAttrs()
 const uniqueId = 'su-form-field-' + useId()
-const formFieldId = computed(() => (attrs.id as string) || props.fieldId || uniqueId)
+const formFieldId = computed(() => props.fieldId || (attrs.id as string) || uniqueId)
+const labelId = computed(() => `${formFieldId.value}-label`)
+
+const rootAttrs = computed(() => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { id, ...rest } = attrs
+  return rest
+})
 
 // Génération de l'ID du message si nécessaire
 const messageId = computed(() => props.message ? `${formFieldId.value}-message` : undefined)
 
-// Attributs ARIA pour le message
+// Une erreur est annoncée dès son apparition ; les autres messages sont lus
+// via aria-describedby lorsque le champ reçoit le focus.
 const messageAriaAttributes = computed(() => {
-  const attrs: Record<string, any> = {}
-  
+  const attrs: Record<string, string> = {}
+
   if (props.state === 'error') {
-    attrs['aria-live'] = 'assertive'
+    attrs.role = 'alert'
   } else if (props.state === 'success' || props.state === 'warning') {
     attrs['aria-live'] = 'polite'
   }
-  
+
   return attrs
 })
 
@@ -47,34 +59,42 @@ const labelClasses = computed(() => [
 </script>
 
 <template>
-  <div :class="['su-form-field', `su-form-field--${props.size}`]">
+  <div
+    :class="['su-form-field', `su-form-field--${props.size}`]"
+    v-bind="rootAttrs"
+  >
     <!-- Label -->
-    <slot 
+    <slot
       name="label"
       :label="label"
       :field-id="formFieldId"
+      :label-id="labelId"
       :state="state"
       :size="size"
       :required="required"
       :disabled="disabled"
     >
-      <label 
-        v-if="label" 
-        :for="formFieldId" 
+      <label
+        v-if="label"
+        :id="labelId"
+        :for="formFieldId"
         :class="labelClasses"
       >
         {{ label }}
+        <!-- L'état requis est annoncé par aria-required sur le contrôle -->
         <span
           v-if="required"
           class="su-indicator-required"
-          :aria-label="requiredText"
+          aria-hidden="true"
+          :title="requiredText"
         >*</span>
       </label>
     </slot>
 
     <!-- Slot pour l'élément de formulaire -->
-    <slot 
+    <slot
       :field-id="formFieldId"
+      :label-id="label ? labelId : undefined"
       :message-id="messageId"
       :state="state"
       :size="size"
@@ -103,7 +123,7 @@ const labelClasses = computed(() => [
 </template>
 
 <style lang="scss">
-@use '../../styles/main' as *;
+@use '../../styles/abstracts' as *;
 
 .su-form-field {
   $self: &;
@@ -145,15 +165,15 @@ const labelClasses = computed(() => [
     }
     
     &--error {
-      color: var(--su-error-600);
+      color: var(--su-state-error-fg);
     }
     
     &--success {
-      color: var(--su-success-600);
+      color: var(--su-state-success-fg);
     }
     
     &--warning {
-      color: var(--su-warning-600);
+      color: var(--su-state-warning-fg);
     }
   }
 
@@ -182,17 +202,6 @@ const labelClasses = computed(() => [
     #{$self}__message {
       font-size: var(--su-font-size-lg);
     } 
-  }
-}
-
-// TODO : Removed individual properties in favor of mixin
-@media (prefers-contrast: high) {
-  .su-form-field {
-    border-width: 2px;
-
-    &:focus-within {
-      border-width: 3px;
-    }
   }
 }
 </style>

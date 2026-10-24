@@ -26,7 +26,6 @@ const isRouterLink = computed(() => {
 })
 
 const isExternalLink = computed(() => {
-  console.log('isExternalLink:', props.external, props.href, props.target)
   return props.external || (props.href && (props.href.startsWith('http') || props.href.startsWith('//') || props.target === '_blank'))
 })
 
@@ -147,8 +146,7 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel) {
 </template>
 
 <style lang="scss">
-@use '../../styles/main' as *;
-@use '../../styles/foundations/colors' as *;
+@use '../../styles/abstracts' as *;
 
 .su-link {
   $self: &;
@@ -171,7 +169,7 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel) {
   }
 
   // Support du mode de contraste élevé
-  @media (prefers-contrast: high) {
+  @media (prefers-contrast: more) {
     &:focus-visible {
       outline-width: 3px;
     }
@@ -275,7 +273,7 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel) {
     }
 
     &:active:not(&--disabled) {
-      color: var(--su-link-active);
+      color: var(--su-link-hover);
     }
   }
 

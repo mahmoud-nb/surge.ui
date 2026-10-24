@@ -1,0 +1,17 @@
+// ============================================================
+// ABSTRACTS — point d'import unique des composants :
+//   @use '../../styles/abstracts' as *;
+//
+// Ce module n'émet AUCUN CSS : uniquement des variables Sass,
+// des fonctions et des mixins. Les tokens CSS (--su-*) et les
+// thèmes sont émis une seule fois par styles/index.scss.
+// ============================================================
+
+@forward '../foundations/colors';
+@forward '../foundations/spacing';
+@forward '../foundations/typography';
+@forward '../foundations/animations';
+@forward '../tokens/static';
+@forward 'breakpoints';
+@forward 'functions';
+@forward 'mixins';

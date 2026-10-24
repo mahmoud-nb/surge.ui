@@ -202,8 +202,7 @@ defineExpose({
 </template>
 
 <style lang="scss">
-@use '../../styles/main' as *;
-@use '../../styles/foundations/colors' as *;
+@use '../../styles/abstracts' as *;
 
 $avatar-forme: (
   circle: 'full',
@@ -285,7 +284,7 @@ $avatar-forme: (
     
     &:focus {
       outline: none;
-      box-shadow: 0 0 0 3px rgb(var(--su-primary-500-rgb) / 20%);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--su-primary-500) 20%, transparent);
     }
     
     &:active {
@@ -392,7 +391,7 @@ $avatar-forme: (
   
   // Couleurs de statut
   &--online {
-    background-color: var(--su-success-500);
+    background-color: var(--su-state-success);
   }
   
   &--offline {
@@ -400,11 +399,11 @@ $avatar-forme: (
   }
   
   &--away {
-    background-color: var(--su-warning-500);
+    background-color: var(--su-state-warning);
   }
   
   &--busy {
-    background-color: var(--su-error-500);
+    background-color: var(--su-state-error);
   }
 }
 

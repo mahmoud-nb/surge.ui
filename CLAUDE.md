@@ -63,8 +63,9 @@ No test runner is configured yet (`vitest.setup.ts` exists but no tests). Valida
 
 **Styles** (`styles/`):
 - SCSS with `api: 'modern-compiler'`
-- CSS Custom Properties with `--su-` prefix (defined in `styles/tokens/`)
-- 5 built-in themes (light, dark, ocean, forest, sunset) in `styles/themes/`
+- CSS Custom Properties with `--su-` prefix (defined in `styles/tokens/` and `styles/core/_variables.scss`)
+- 4 built-in themes × light/dark (default, ocean, forest, sunset) in `styles/themes/`
+- `styles/index.scss` is the only file that emits global CSS (imported once by `src/index.ts`); components import `styles/abstracts` (functions/mixins only, no CSS output)
 - BEM naming: `.su-button`, `.su-button--primary`, `.su-button__icon`
 - Theme config in `src/theme.config.ts`
 - Build produces a single CSS bundle (`cssCodeSplit: false`)
@@ -73,7 +74,7 @@ No test runner is configured yet (`vitest.setup.ts` exists but no tests). Valida
 
 ### Storybook (`package/.storybook/`)
 
-Storybook 8 with `@storybook/vue3-vite`. Stories live in `components/<layer>/_stories/<Component>.stories.ts` using CSF3 format. All stories should have `tags: ['autodocs']`. The `@storybook/addon-a11y` is enabled for accessibility auditing.
+Storybook 8 with `@storybook/vue3-vite`. Stories live in `components/<layer>/_stories/<Component>.stories.ts` using CSF3 format. All stories should have `tags: ['autodocs']`. `@storybook/addon-a11y` is declared in `.storybook/main.ts` but not installed yet (Storybook skips it).
 
 Note: `reactDocgen: false` in Storybook config means argTypes must be defined manually in stories (not auto-generated from TypeScript types).
 
@@ -95,7 +96,7 @@ The docs site imports components from `@surgeui/ds-vue` (symlinked via `file:../
 - **IDs:** Use Vue's `useId()` or `useUniqueId()` for accessible DOM IDs. Never `Math.random()`.
 - **i18n:** User-facing strings in components should be props with French defaults (e.g., `loadingLabel: 'Chargement en cours...'`), overridable by consumers.
 - **Path alias:** `@/` maps to `package/src/` in both Vite and TypeScript configs.
-- **CSS:** Scoped SCSS in components. Use existing design tokens (`--su-*`), spacing (`space.$spacing-*`), and typography (`typo.$font-size-*`) from `styles/`. Use mixins from `styles/core/_mixins.scss` (`@include transition(...)`, `@include focus-ring`).
+- **CSS:** SCSS in components with a single import: `@use '../../styles/abstracts' as *;`. Use design tokens (`--su-*`), spacing (`$spacing-*`) and the functions/mixins from `styles/abstracts/` (`token()`, `with-alpha()`, `@include transition(...)`, `@include focus-ring`, `@include control-surface`). See `package/CLAUDE.md`.
 
 <!-- threadmind:start -->
 ## ThreadMind — Context Management

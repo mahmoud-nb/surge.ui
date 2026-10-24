@@ -543,8 +543,7 @@ defineExpose({
 </template>
 
 <style lang="scss">
-@use '../../styles/main' as *;
-@use '../../styles/foundations/colors' as *;
+@use '../../styles/abstracts' as *;
 
 .su-slider-container {
   display: flex;
@@ -712,15 +711,15 @@ defineExpose({
   }
   
   &--error {
-    background-color: var(--su-state-error-light);
+    background-color: var(--su-state-error-bg);
   }
   
   &--success {
-    background-color: var(--su-state-success-light);
+    background-color: var(--su-state-success-bg);
   }
   
   &--warning {
-    background-color: var(--su-state-warning-light);
+    background-color: var(--su-state-warning-bg);
   }
 }
 
@@ -853,7 +852,7 @@ defineExpose({
     z-index: 2;
     
     .su-slider-thumb-handle {
-      box-shadow: 0 0 0 3px rgb(var(--su-link-default-rgb) / 30%);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--su-link-default) 30%, transparent);
     }
   }
   
@@ -905,7 +904,7 @@ defineExpose({
     cursor: not-allowed;
     
     .su-slider-thumb-handle {
-      background-color: var(--su-bg-subtle);
+      background-color: var(--su-bg-muted);
       border-color: var(--su-text-tertiary);
     }
   }
@@ -920,7 +919,7 @@ defineExpose({
     }
     
     &:focus .su-slider-thumb-handle {
-      box-shadow: 0 0 0 3px rgb(var(--su-state-error-rgb) / 30%);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--su-state-error) 30%, transparent);
     }
   }
   
@@ -930,7 +929,7 @@ defineExpose({
     }
     
     &:focus .su-slider-thumb-handle {
-      box-shadow: 0 0 0 3px rgb(var(--su-state-success-rgb) / 30%);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--su-state-success) 30%, transparent);
     }
   }
   
@@ -940,7 +939,7 @@ defineExpose({
     }
     
     &:focus .su-slider-thumb-handle {
-      box-shadow: 0 0 0 3px rgb(var(--su-state-warning-rgb) / 30%);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--su-state-warning) 30%, transparent);
     }
   }
 }
@@ -1020,20 +1019,20 @@ defineExpose({
     background-color: var(--su-link-hover);
     
     .su-slider-track--error & {
-      background-color: var(--su-state-error-light);
+      background-color: var(--su-state-error-bg);
     }
     
     .su-slider-track--success & {
-      background-color: var(--su-state-success-light);
+      background-color: var(--su-state-success-bg);
     }
     
     .su-slider-track--warning & {
-      background-color: var(--su-state-warning-light);
+      background-color: var(--su-state-warning-bg);
     }
   }
   
   .su-slider-thumb-handle {
-    background-color: var(--su-bg-subtle);
+    background-color: var(--su-bg-muted);
     border-color: var(--su-link-hover);
   }
   
@@ -1067,7 +1066,7 @@ defineExpose({
 }
 
 // Mode de contraste élevé
-@media (prefers-contrast: high) {
+@media (prefers-contrast: more) {
   .su-slider-thumb-handle {
     border-width: 3px;
   }

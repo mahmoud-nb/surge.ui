@@ -39,12 +39,6 @@ const handleToggle = () => {
   emit('change', newValue)
 }
 
-const handleKeydown = (event: KeyboardEvent) => {
-  if (['Enter', ' '].includes(event.key)) {
-    event.preventDefault()
-    handleToggle()
-  }
-}
 
 const ariaAttributes = computed(() => {
   const attrs: Record<string, unknown> = {
@@ -64,10 +58,8 @@ const ariaAttributes = computed(() => {
     type="button"
     :class="classes"
     :disabled="disabled"
-    :tabindex="disabled ? -1 : 0"
     v-bind="ariaAttributes"
     @click="handleToggle"
-    @keydown="handleKeydown"
   >
     <component
       v-if="currentIcon"
@@ -80,7 +72,7 @@ const ariaAttributes = computed(() => {
 </template>
 
 <style lang="scss" scoped>
-@use '../../styles/main' as *;
+@use '../../styles/abstracts' as *;
 
 .su-toggle {
   display: inline-flex;
@@ -99,7 +91,7 @@ const ariaAttributes = computed(() => {
   @include transition(background-color, color, border-color, box-shadow);
 
   &:hover:not(:disabled) {
-    background-color: var(--su-bg-surface-hover);
+    background-color: var(--su-bg-hover);
     color: var(--su-text-primary);
   }
 
@@ -176,7 +168,7 @@ const ariaAttributes = computed(() => {
       background-color: transparent;
 
       &:hover:not(:disabled) {
-        background-color: rgb(var(--su-link-default-rgb) / 8%);
+        background-color: color-mix(in srgb, var(--su-link-default) 8%, transparent);
       }
     }
   }
@@ -186,17 +178,17 @@ const ariaAttributes = computed(() => {
     border-color: transparent;
 
     &.su-toggle--active {
-      background-color: rgb(var(--su-link-default-rgb) / 12%);
+      background-color: color-mix(in srgb, var(--su-link-default) 12%, transparent);
       color: var(--su-link-default);
       border-color: transparent;
 
       &:hover:not(:disabled) {
-        background-color: rgb(var(--su-link-default-rgb) / 18%);
+        background-color: color-mix(in srgb, var(--su-link-default) 18%, transparent);
       }
     }
 
     &:hover:not(:disabled) {
-      background-color: var(--su-bg-surface-hover);
+      background-color: var(--su-bg-hover);
     }
   }
 

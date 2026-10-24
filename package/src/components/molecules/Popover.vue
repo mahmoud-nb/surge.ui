@@ -329,7 +329,7 @@ defineExpose({
 </script>
 
 <style lang="scss">
-@use '../../styles/core/mixins' as *;
+@use '../../styles/abstracts' as *;
 
 .su-popover {
   position: relative;
@@ -345,7 +345,7 @@ defineExpose({
     display: inline-block;
     
     &:focus-visible {
-      outline: 2px solid var(--su-color-primary, #3b82f6);
+      outline: 2px solid var(--su-ring);
       outline-offset: 2px;
       border-radius: 4px;
     }
@@ -363,7 +363,7 @@ defineExpose({
     max-width: 320px;
 
     &:focus-visible {
-      outline: 2px solid var(--su-color-primary, #3b82f6);
+      outline: 2px solid var(--su-ring);
       outline-offset: 2px;
     }
 
@@ -446,7 +446,7 @@ defineExpose({
     }
 
     // High contrast mode
-    @media (prefers-contrast: high) {
+    @media (prefers-contrast: more) {
       border-width: 2px;
       border-color: var(--su-popover-border-contrast, #000);
     }
@@ -499,7 +499,7 @@ defineExpose({
     }
 
     &:focus-visible {
-      outline: 2px solid var(--su-color-primary, #3b82f6);
+      outline: 2px solid var(--su-ring);
       outline-offset: 2px;
     }
 

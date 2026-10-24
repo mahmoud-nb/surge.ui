@@ -136,8 +136,7 @@ const handleMoreClick = (event: MouseEvent) => {
 </template>
 
 <style lang="scss" scoped>
-@use '../../styles/core/mixins' as *;
-@use '../../styles/foundations/spacing' as *;
+@use '../../styles/abstracts' as *;
 
 .su-avatars-group {
   display: flex;

@@ -689,7 +689,7 @@ watch(modelValue, () => {
     &:focus {
       outline: none;
       border-color: var(--su-link-default);
-      box-shadow: 0 0 0 3px rgb(var(--su-link-default-rgb) / 10%);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--su-link-default) 10%, transparent);
     }
     
     // États
@@ -698,7 +698,7 @@ watch(modelValue, () => {
       
       &:focus {
         border-color: var(--su-state-error);
-        box-shadow: 0 0 0 3px rgb(var(--su-state-error-rgb) / 10%);
+        box-shadow: 0 0 0 3px color-mix(in srgb, var(--su-state-error) 10%, transparent);
       }
     }
     
@@ -707,7 +707,7 @@ watch(modelValue, () => {
       
       &:focus {
         border-color: var(--su-state-success);
-        box-shadow: 0 0 0 3px rgb(var(--su-state-success-rgb) / 10%);
+        box-shadow: 0 0 0 3px color-mix(in srgb, var(--su-state-success) 10%, transparent);
       }
     }
     
@@ -716,7 +716,7 @@ watch(modelValue, () => {
       
       &:focus {
         border-color: var(--su-state-warning);
-        box-shadow: 0 0 0 3px rgb(var(--su-state-warning-rgb) / 10%);
+        box-shadow: 0 0 0 3px color-mix(in srgb, var(--su-state-warning) 10%, transparent);
       }
     }
     
@@ -738,7 +738,7 @@ watch(modelValue, () => {
     
     &--open {
       border-color: var(--su-link-default);
-      box-shadow: 0 0 0 3px rgb(var(--su-link-default-rgb) / 10%);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--su-link-default) 10%, transparent);
     }
     
     // Alignement
@@ -969,7 +969,7 @@ watch(modelValue, () => {
     &:focus {
       outline: none;
       border-color: var(--su-link-default);
-      box-shadow: 0 0 0 2px rgb(var(--su-link-default-rgb) / 10%);
+      box-shadow: 0 0 0 2px color-mix(in srgb, var(--su-link-default) 10%, transparent);
     }
   }
 }
@@ -1142,7 +1142,7 @@ watch(modelValue, () => {
   }
   
   .su-select__trigger {
-    background-color: var(--su-bg-default);
+    background-color: var(--su-bg-surface);
     border-color: var(--su-border-default);
     
     &--disabled {
@@ -1160,7 +1160,7 @@ watch(modelValue, () => {
   }
   
   .su-select-dropdown {
-    background-color: var(--su-bg-default);
+    background-color: var(--su-bg-surface);
     border-color: var(--su-border-default);
   }
   
@@ -1207,7 +1207,7 @@ watch(modelValue, () => {
 }
 
 // Mode de contraste élevé
-@media (prefers-contrast: high) {
+@media (prefers-contrast: more) {
   .su-select__trigger {
     border-width: 2px;
     

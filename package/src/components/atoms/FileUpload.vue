@@ -541,8 +541,7 @@ defineExpose({
 </template>
 
 <style lang="scss">
-@use '../../styles/main' as *;
-@use '../../styles/foundations/colors' as *;
+@use '../../styles/abstracts' as *;
 
 .su-file-upload-container {
   display: flex;
@@ -989,7 +988,7 @@ defineExpose({
 }
 
 // Mode de contraste élevé
-@media (prefers-contrast: high) {
+@media (prefers-contrast: more) {
   .su-file-upload-dropzone {
     border-width: 3px;
   }

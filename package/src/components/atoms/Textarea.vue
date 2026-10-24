@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watch, nextTick, useAttrs } from 'vue'
+import { computed, ref, watch, nextTick, useAttrs, type HTMLAttributes, type StyleValue } from 'vue'
 import type { TextareaProps } from '@/types'
 
 defineOptions({ inheritAttrs: false }) // name: 'Textarea'
@@ -34,6 +34,17 @@ const attrs = useAttrs()
 
 const textareaRef = ref<HTMLTextAreaElement>()
 const textareaId = computed(() => attrs.id as string || undefined)
+
+// class et style décorent le conteneur ; tous les autres attributs
+// (id, name, data-*, écouteurs non déclarés…) vont sur le textarea.
+const containerAttrs = computed(() => ({
+  class: attrs.class as HTMLAttributes['class'],
+  style: attrs.style as StyleValue
+}))
+const passthroughAttrs = computed(() => {
+  const { class: _class, style: _style, ...rest } = attrs
+  return rest
+})
 
 // Valeur normalisée
 const currentValue = computed(() => modelValue.value || '')
@@ -93,11 +104,19 @@ const ariaAttributes = computed(() => {
   const attrs: Record<string, any> = {}
   
   if (props.ariaLabel) attrs['aria-label'] = props.ariaLabel
+  if (props.ariaLabelledBy) attrs['aria-labelledby'] = props.ariaLabelledBy
   if (props.ariaInvalid !== undefined) attrs['aria-invalid'] = props.ariaInvalid
   if (props.ariaRequired !== undefined) attrs['aria-required'] = props.ariaRequired
   if (props.required) attrs['aria-required'] = 'true'
   if (props.state === 'error' || isOverLimit.value) attrs['aria-invalid'] = 'true'
-  
+
+  // Message du champ + compteur de caractères
+  const describedBy = [
+    props.ariaDescribedBy,
+    props.showCounter && props.maxLength && textareaId.value ? `${textareaId.value}-counter` : undefined
+  ].filter(Boolean).join(' ')
+  if (describedBy) attrs['aria-describedby'] = describedBy
+
   return attrs
 })
 
@@ -190,10 +209,12 @@ watch(() => props.autoResize, (newValue) => {
 </script>
 
 <template>
-  <div>
+  <div
+    :class="containerAttrs.class"
+    :style="containerAttrs.style"
+  >
     <div :class="containerClasses">
       <textarea
-        :id="textareaId"
         ref="textareaRef"
         :class="textareaClasses"
         :value="modelValue"
@@ -202,7 +223,7 @@ watch(() => props.autoResize, (newValue) => {
         :readonly="readonly"
         :required="required"
         :rows="autoResize ? minRows : rows"
-        v-bind="{ ...nativeAttributes, ...ariaAttributes }"
+        v-bind="{ ...passthroughAttrs, ...nativeAttributes, ...ariaAttributes }"
         @input="handleInput"
         @change="handleChange"
         @focus="handleFocus"
@@ -233,8 +254,7 @@ watch(() => props.autoResize, (newValue) => {
 </template>
 
 <style lang="scss">
-@use '../../styles/main' as *;
-@use '../../styles/foundations/colors' as *;
+@use '../../styles/abstracts' as *;
 
 .su-textarea {
   $self: &;
@@ -297,7 +317,7 @@ watch(() => props.autoResize, (newValue) => {
     
     &:focus-within {
       border-color: var(--su-state-error);
-      box-shadow: 0 0 0 3px rgb(var(--su-state-error-rgb) / 10%);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--su-state-error) 10%, transparent);
     }
   }
 }

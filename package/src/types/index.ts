@@ -71,7 +71,10 @@ export interface BadgeProps extends AccessibilityProps {
 export type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'custom';
 export type ButtonSize = 'sm' | 'md' | 'lg';
 export type ButtonRadius = 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'full';
+export type ButtonType = 'button' | 'submit' | 'reset';
 export interface ButtonProps extends AccessibilityProps {
+  /** Type natif du bouton. Par défaut 'button' pour ne pas soumettre un formulaire involontairement */
+  type?: ButtonType;
   variant?: ButtonVariant;
   size?: ButtonSize;
   radius?: ButtonRadius;
@@ -95,6 +98,8 @@ export interface CheckboxOption {
   icon?: Component;
 }
 export interface CheckboxGroupProps extends AccessibilityProps {
+  /** Nom des cases, pour la soumission native du formulaire */
+  name?: string;
   options: CheckboxOption[];
   value?: (string | number)[];
   size?: Size;
@@ -820,6 +825,8 @@ export interface DialogProps extends AccessibilityProps {
   height?: string;
   zIndex?: number;
   disableScroll?: boolean;
+  /** Nom accessible du bouton de fermeture */
+  closeLabel?: string;
 }
 
 // Tabs.vue

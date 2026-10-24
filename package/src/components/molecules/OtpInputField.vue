@@ -35,7 +35,8 @@ const otpId = computed(() => (attrs.id as string) || fieldId)
 
 const otpInputProps = computed(() => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { label, message, fieldId: _fieldId, requiredText, ...rest } = props
+  // modelValue (déclaré par defineModel) passe par v-model : il ne doit pas écraser la liaison
+  const { label, message, fieldId: _fieldId, requiredText, modelValue: _modelValue, ...rest } = props as typeof props & { modelValue?: unknown }
   return rest
 })
 
@@ -66,8 +67,8 @@ defineExpose({
       <OtpInput
         ref="otpInputRef"
         v-model="modelValue"
-        :aria-describedby="messageId"
         v-bind="otpInputProps"
+        :aria-described-by="[ariaDescribedBy, messageId].filter(Boolean).join(' ') || undefined"
         @complete="emit('complete', $event)"
         @change="emit('change', $event)"
         @focus="(e: FocusEvent, i: number) => emit('focus', e, i)"

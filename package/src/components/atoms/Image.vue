@@ -226,8 +226,7 @@ onMounted(() => {
 </template>
 
 <style lang="scss">
-@use '../../styles/main' as *;
-@use '../../styles/foundations/colors' as *;
+@use '../../styles/abstracts' as *;
 
 .su-image {
   width: 100%;

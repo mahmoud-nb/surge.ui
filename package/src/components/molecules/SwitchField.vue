@@ -28,7 +28,8 @@ const switchId = computed(() => attrs.id as string || fieldId)
 
 const switchProps = computed(() => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { label, message, ...rest } = props
+  // modelValue (déclaré par defineModel) passe par v-model : il ne doit pas écraser la liaison
+  const { label, message, modelValue: _modelValue, ...rest } = props as typeof props & { modelValue?: unknown }
   return rest
 })
 </script>
@@ -47,8 +48,8 @@ const switchProps = computed(() => {
       <Switch
         :id="id"
         v-model="modelValue"
-        :aria-describedby="messageId"
         v-bind="{ ...switchProps }"
+        :aria-described-by="[ariaDescribedBy, messageId].filter(Boolean).join(' ') || undefined"
         @change="(value) => emit('change', value)"
         @focus="(event) => emit('focus', event)"
         @blur="(event) => emit('blur', event)"

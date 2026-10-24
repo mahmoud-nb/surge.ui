@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch, useId } from 'vue'
+import { nextTick, ref, watch, useId } from 'vue'
 import type { TabsProps } from '@/types'
 
 const props = withDefaults(defineProps<TabsProps>(), {
@@ -15,20 +15,33 @@ const tabsId = useId()
 watch(() => props.modelValue, v => (activeIndex.value = v))
 watch(activeIndex, v => emit('update:modelValue', v))
 
+// Boutons d'onglet, pour déplacer le focus avec l'onglet actif
+const tabRefs = ref<HTMLButtonElement[]>([])
+const setTabRef = (el: unknown, index: number) => {
+  if (el) tabRefs.value[index] = el as HTMLButtonElement
+}
+
+const selectTab = (index: number) => {
+  activeIndex.value = index
+  // Le focus suit l'onglet activé (pattern WAI-ARIA « activation automatique »)
+  nextTick(() => tabRefs.value[index]?.focus())
+}
+
 // Gestion du clavier
 const handleKeydown = (event: KeyboardEvent) => {
   const total = props.tabs?.length ?? 0
   if (!total) return
 
-  if (event.key === 'ArrowRight') {
-    activeIndex.value = (activeIndex.value + 1) % total
-  } else if (event.key === 'ArrowLeft') {
-    activeIndex.value = (activeIndex.value - 1 + total) % total
-  } else if (event.key === 'Home') {
-    activeIndex.value = 0
-  } else if (event.key === 'End') {
-    activeIndex.value = total - 1
+  const targets: Record<string, number> = {
+    ArrowRight: (activeIndex.value + 1) % total,
+    ArrowLeft: (activeIndex.value - 1 + total) % total,
+    Home: 0,
+    End: total - 1
   }
+  if (!(event.key in targets)) return
+
+  event.preventDefault()
+  selectTab(targets[event.key])
 }
 
 // Classes
@@ -51,6 +64,8 @@ const tabClasses = (index: number) => [
         v-for="(tab, index) in tabs"
         :id="`tab-${tabsId}-${index}`"
         :key="index"
+        :ref="(el) => setTabRef(el, index)"
+        type="button"
         role="tab"
         :aria-controls="`panel-${tabsId}-${index}`"
         :aria-selected="index === activeIndex"
@@ -76,6 +91,7 @@ const tabClasses = (index: number) => [
       :id="`panel-${tabsId}-${index}`"
       :key="index"
       role="tabpanel"
+      tabindex="0"
       :aria-labelledby="`tab-${tabsId}-${index}`"
       class="su-tab-panel"
     >
@@ -91,7 +107,7 @@ const tabClasses = (index: number) => [
 </template>
 
 <style scoped lang="scss">
-@use '../../styles/main' as *;
+@use '../../styles/abstracts' as *;
 
 .su-tabs {
   display: flex;

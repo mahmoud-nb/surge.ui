@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, useAttrs } from 'vue'
+import { computed, getCurrentInstance, ref, useAttrs, type HTMLAttributes, type StyleValue } from 'vue'
 import type { InputProps } from '@/types'
 
 defineOptions({ inheritAttrs: false })
@@ -30,13 +30,26 @@ const emit = defineEmits<{
 const modelValue = defineModel<string | number>({ default: '' })
 
 const attrs = useAttrs()
-const inputId = computed(() => (attrs.id as string) || undefined)
 
-// Détection des écouteurs d'événements pour l'accessibilité conditionnelle
-const hasPrefixClickListener = computed(() => typeof attrs.onPrefixClick === 'function')
-const hasPrefixIconClickListener = computed(() => typeof attrs.onPrefixIconClick === 'function')
-const hasSuffixClickListener = computed(() => typeof attrs.onSuffixClick === 'function')
-const hasSuffixIconClickListener = computed(() => typeof attrs.onSuffixIconClick === 'function')
+// Les écouteurs d'événements déclarés dans defineEmits ne figurent pas dans
+// attrs : on les lit sur les props du vnode.
+const vnodeProps = getCurrentInstance()?.vnode.props ?? {}
+const hasListener = (name: string) => typeof vnodeProps[name] === 'function'
+const hasPrefixClickListener = computed(() => hasListener('onPrefixClick'))
+const hasPrefixIconClickListener = computed(() => hasListener('onPrefixIconClick'))
+const hasSuffixClickListener = computed(() => hasListener('onSuffixClick'))
+const hasSuffixIconClickListener = computed(() => hasListener('onSuffixIconClick'))
+
+// class et style décorent le conteneur ; tous les autres attributs
+// (id, inputmode, enterkeyhint, data-*, écouteurs non déclarés…) vont sur l'input.
+const containerAttrs = computed(() => ({
+  class: attrs.class as HTMLAttributes['class'],
+  style: attrs.style as StyleValue
+}))
+const passthroughAttrs = computed(() => {
+  const { class: _class, style: _style, ...rest } = attrs
+  return rest
+})
 
 // Classes CSS
 const containerClasses = computed(() => [
@@ -57,10 +70,12 @@ const ariaAttributes = computed(() => {
   const attrs: Record<string, any> = {}
   
   if (props.ariaLabel) attrs['aria-label'] = props.ariaLabel
+  if (props.ariaLabelledBy) attrs['aria-labelledby'] = props.ariaLabelledBy
+  if (props.ariaDescribedBy) attrs['aria-describedby'] = props.ariaDescribedBy
   if (props.ariaInvalid !== undefined) attrs['aria-invalid'] = props.ariaInvalid
   if (props.required || props.ariaRequired) attrs['aria-required'] = 'true'
   if (props.state === 'error') attrs['aria-invalid'] = 'true'
-  
+
   return attrs
 })
 
@@ -68,9 +83,7 @@ const ariaAttributes = computed(() => {
 const nativeAttributes = computed(() => {
   const inputAttrs: Record<string, any> = {}
 
-  const { name } = attrs as Record<string, any>
-
-  if (name) inputAttrs.name = name
+  if (props.name) inputAttrs.name = props.name
   if (props.autocomplete) inputAttrs.autocomplete = props.autocomplete
   if (props.min !== undefined) inputAttrs.min = props.min
   if (props.max !== undefined) inputAttrs.max = props.max
@@ -83,16 +96,13 @@ const nativeAttributes = computed(() => {
   return inputAttrs
 })
 
-const dataAttributes = computed(() =>
-  Object.fromEntries(
-    Object.entries(attrs).filter(([key]) => key.startsWith('data-'))
-  )
-)
-
 // Gestionnaires d’événements
 const handleInput = (event: Event) => {
   const target = event.target as HTMLInputElement
-  modelValue.value = props.type === 'number' ? Number(target.value) : target.value
+  // Un champ numérique vidé reste vide (et non 0)
+  modelValue.value = props.type === 'number' && target.value !== ''
+    ? target.valueAsNumber
+    : target.value
   emit('input', event)
 }
 
@@ -132,7 +142,10 @@ defineExpose({ focus, select, inputRef })
 </script>
 
 <template>
-  <div :class="containerClasses">
+  <div
+    :class="[containerClasses, containerAttrs.class]"
+    :style="containerAttrs.style"
+  >
     <!-- Préfixe -->
     <div
       v-if="prefix || prefixIcon || $slots.prefix"
@@ -181,7 +194,6 @@ defineExpose({ focus, select, inputRef })
     </div>
 
     <input
-      :id="inputId"
       ref="inputRef"
       class="su-input__element"
       :type="type"
@@ -189,7 +201,7 @@ defineExpose({ focus, select, inputRef })
       :disabled="disabled"
       :readonly="readonly"
       :required="required"
-      v-bind="{ ...nativeAttributes, ...ariaAttributes, ...dataAttributes }"
+      v-bind="{ ...passthroughAttrs, ...nativeAttributes, ...ariaAttributes }"
       @input="handleInput"
       @change="handleChange"
       @focus="handleFocus"
@@ -248,7 +260,7 @@ defineExpose({ focus, select, inputRef })
 </template>
 
 <style lang="scss">
-@use '../../styles/main' as *;
+@use '../../styles/abstracts' as *;
 
 @mixin su-input--size($self, $name, $fontSize, $padding, $minHeight) {
   &--#{$name} {

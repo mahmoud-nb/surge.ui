@@ -1,21 +1,33 @@
-@use '../foundations/spacing' as *;
-@use '../foundations/animations' as *;
-
 // ============================================================
 // TOKENS STATIQUES (Invariants selon le thème)
 // ============================================================
 
 // Shadows
-$shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-$shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-$shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-$shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-$shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+$shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 5%);
+$shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 10%), 0 1px 2px -1px rgb(0 0 0 / 10%);
+$shadow-md: 0 4px 6px -1px rgb(0 0 0 / 10%), 0 2px 4px -2px rgb(0 0 0 / 10%);
+$shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 10%), 0 4px 6px -4px rgb(0 0 0 / 10%);
+$shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 10%), 0 8px 10px -6px rgb(0 0 0 / 10%);
 $shadow-none: none;
 
 // Focus ring
 $focus-ring-width: 2px;
 $focus-ring-offset: 2px;
+
+// Rayons : contrôles (boutons, champs) et conteneurs (cartes, dialogs)
+$radius-control: 0.625rem;   // 10px
+$radius-container: 1rem;     // 16px
+
+// Hauteurs de contrôle — mobile puis compactes dès le point de rupture sm
+$control-height-sm: 2rem;            // 32px
+$control-height-sm-compact: 1.75rem; // 28px
+$control-height-md: 2.25rem;         // 36px
+$control-height-md-compact: 2rem;    // 32px
+$control-height-lg: 2.5rem;          // 40px
+$control-height-lg-compact: 2.25rem; // 36px
+
+// États
+$opacity-disabled: 0.64;
 
 // Touch targets (WCAG)
 $touch-target-min: 44px;

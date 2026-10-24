@@ -62,6 +62,7 @@ const ariaAttributes = computed(() => {
   }
   
   if (props.ariaLabel) attrs['aria-label'] = props.ariaLabel
+  if (props.ariaLabelledBy) attrs['aria-labelledby'] = props.ariaLabelledBy
   if (props.ariaDescribedBy) {
     const describedBy = [props.ariaDescribedBy].filter(Boolean).join(' ')
     attrs['aria-describedby'] = describedBy
@@ -168,8 +169,7 @@ const handleBlur = (event: FocusEvent) => {
 </template>
 
 <style lang="scss">
-@use '../../styles/main' as *;
-@use '../../styles/foundations/colors' as *;
+@use '../../styles/abstracts' as *;
 
 .su-radio-group-wrapper {
   display: flex;
@@ -467,7 +467,7 @@ const handleBlur = (event: FocusEvent) => {
   height: 0;
   
   &:focus + .su-radio-indicator {
-    box-shadow: 0 0 0 3px rgb(var(--su-link-default-rgb) / 20%);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--su-link-default) 20%, transparent);
   }
   
   &:checked + .su-radio-indicator {
@@ -551,7 +551,7 @@ const handleBlur = (event: FocusEvent) => {
   
   &:focus {
     outline: none;
-    box-shadow: 0 0 0 3px rgb(var(--su-link-default-rgb) / 20%);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--su-link-default) 20%, transparent);
   }
 }
 
@@ -653,7 +653,7 @@ const handleBlur = (event: FocusEvent) => {
 }
 
 // Mode de contraste élevé
-@media (prefers-contrast: high) {
+@media (prefers-contrast: more) {
   .su-radio-indicator {
     border-width: 3px;
   }

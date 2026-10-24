@@ -105,8 +105,7 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !slots.def
 </template>
 
 <style lang="scss">
-@use '../../styles/main' as *;
-@use '../../styles/foundations/colors' as *;
+@use '../../styles/abstracts' as *;
 
 .su-badge {
   display: inline-flex;
@@ -258,7 +257,7 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !slots.def
 }
 
 // Mode de contraste élevé
-@media (prefers-contrast: high) {
+@media (prefers-contrast: more) {
   .su-badge {
     border-width: 2px;
     font-weight: 600;

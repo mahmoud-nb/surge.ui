@@ -1,3 +1,11 @@
+<script lang="ts">
+// État partagé entre toutes les instances : pile des dialogs ouverts
+// et verrou de défilement du body (gère les dialogs imbriqués)
+const openDialogs: string[] = []
+let scrollLocks = 0
+let previousBodyOverflow = ''
+</script>
+
 <script setup lang="ts">
 import { computed, ref, watch, onMounted, onUnmounted, nextTick, useAttrs, useId } from 'vue'
 import Button from '../atoms/Button.vue'
@@ -11,7 +19,8 @@ const props = withDefaults(defineProps<DialogProps>(), {
   closeOnOverlayClick: true,
   closeOnEscape: true,
   zIndex: 1000,
-  disableScroll: true
+  disableScroll: true,
+  closeLabel: 'Fermer'
 })
 
 const emit = defineEmits<{
@@ -31,8 +40,11 @@ const dialogId = computed(() => attrs.id as string || fieldId)
 const titleId = computed(() => props.title ? dialogId.value + '-title' : undefined)
 const descriptionId = computed(() => props.description ? dialogId.value + '-description' : undefined)
 
-// État d'ouverture interne
-const isOpen = ref(props.modelValue)
+// État d'ouverture interne (l'ouverture initiale passe par openDialog au montage)
+const isOpen = ref(false)
+
+// Élément qui avait le focus avant l'ouverture, pour le lui rendre à la fermeture
+let previouslyFocused: HTMLElement | null = null
 
 // Classes CSS
 const overlayClasses = computed(() => [
@@ -55,8 +67,7 @@ const dialogClasses = computed(() => [
 const ariaAttributes = computed(() => {
   const attrs: Record<string, any> = {
     role: 'dialog',
-    'aria-modal': 'true',
-    'aria-hidden': !isOpen.value
+    'aria-modal': 'true'
   }
   
   if (props.ariaLabelledBy) {
@@ -73,20 +84,53 @@ const ariaAttributes = computed(() => {
   return attrs
 })
 
+// Pile des dialogs ouverts : Échap et le verrou de défilement ne
+// concernent que le dialog du dessus
+const isTopmost = () => openDialogs[openDialogs.length - 1] === dialogId.value
+
+const lockScroll = () => {
+  if (!props.disableScroll) return
+  if (scrollLocks++ === 0) {
+    previousBodyOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+  }
+}
+
+const unlockScroll = () => {
+  if (!props.disableScroll || scrollLocks === 0) return
+  if (--scrollLocks === 0) {
+    document.body.style.overflow = previousBodyOverflow
+  }
+}
+
 // Gestion de l'ouverture/fermeture
 const openDialog = async () => {
   if (isOpen.value) return
+  previouslyFocused = document.activeElement as HTMLElement | null
   isOpen.value = true
+  openDialogs.push(dialogId.value)
   emit('update:modelValue', true)
   emit('open')
-  
-  if (props.disableScroll) {
-    document.body.style.overflow = 'hidden'
-  }
-  
+
+  lockScroll()
+  document.addEventListener('keydown', handleEscape)
+
   await nextTick()
   if (dialogRef.value) {
     cleanupFocusTrap.value = trapFocus(dialogRef.value)
+  }
+}
+
+const releaseDialog = () => {
+  const index = openDialogs.lastIndexOf(dialogId.value)
+  if (index !== -1) openDialogs.splice(index, 1)
+
+  document.removeEventListener('keydown', handleEscape)
+  unlockScroll()
+
+  if (cleanupFocusTrap.value) {
+    cleanupFocusTrap.value()
+    cleanupFocusTrap.value = null
   }
 }
 
@@ -95,29 +139,37 @@ const closeDialog = () => {
   isOpen.value = false
   emit('update:modelValue', false)
   emit('close')
-  
-  if (props.disableScroll) {
-    document.body.style.overflow = ''
+
+  releaseDialog()
+
+  // Rend le focus à l'élément déclencheur
+  if (previouslyFocused?.isConnected) {
+    previouslyFocused.focus()
   }
-  
-  if (cleanupFocusTrap.value) {
-    cleanupFocusTrap.value()
-    cleanupFocusTrap.value = null
-  }
+  previouslyFocused = null
 }
 
-// Gestionnaire de clic sur l'overlay
-const handleOverlayClick = () => {
+// Clic sur l'overlay : seulement si le geste a commencé sur l'overlay
+// (évite de fermer en relâchant une sélection de texte hors du dialog)
+let pointerDownOnOverlay = false
+const handleOverlayPointerDown = (event: PointerEvent) => {
+  pointerDownOnOverlay = event.target === event.currentTarget
+}
+
+const handleOverlayClick = (event: MouseEvent) => {
+  const startedOnOverlay = pointerDownOnOverlay
+  pointerDownOnOverlay = false
+  if (event.target !== event.currentTarget || !startedOnOverlay) return
   if (props.closeOnOverlayClick) {
     closeDialog()
   }
 }
 
-// Gestionnaire de touche Escape
+// Gestionnaire de touche Escape (dialog du dessus uniquement)
 const handleEscape = (event: KeyboardEvent) => {
-  if (event.key === 'Escape' && props.closeOnEscape) {
-    closeDialog()
-  }
+  if (event.key !== 'Escape' || !props.closeOnEscape || !isTopmost()) return
+  event.stopPropagation()
+  closeDialog()
 }
 
 // Watchers
@@ -134,16 +186,11 @@ onMounted(() => {
   if (props.modelValue) {
     openDialog()
   }
-  document.addEventListener('keydown', handleEscape)
 })
 
 onUnmounted(() => {
-  document.removeEventListener('keydown', handleEscape)
-  if (props.disableScroll) {
-    document.body.style.overflow = ''
-  }
-  if (cleanupFocusTrap.value) {
-    cleanupFocusTrap.value()
+  if (isOpen.value) {
+    releaseDialog()
   }
 })
 
@@ -161,6 +208,7 @@ defineExpose({
       v-if="isOpen"
       :class="overlayClasses"
       :style="{ zIndex: zIndex }"
+      @pointerdown="handleOverlayPointerDown"
       @click="handleOverlayClick"
     >
       <dialog
@@ -178,6 +226,7 @@ defineExpose({
           size="sm"
           :icon="XMarkIcon"
           icon-display="only"
+          :aria-label="closeLabel"
           @click="closeDialog"
         />
         <div
@@ -227,8 +276,7 @@ defineExpose({
 </template>
 
 <style lang="scss">
-@use '../../styles/main' as *;
-@use '../../styles/foundations/colors' as *;
+@use '../../styles/abstracts' as *;
 
 .su-dialog-overlay {
   position: fixed;
@@ -436,7 +484,7 @@ defineExpose({
 }
 
 // Mode de contraste élevé
-@media (prefers-contrast: high) {
+@media (prefers-contrast: more) {
   .su-dialog-overlay {
     background-color: rgb(0 0 0 / 80%); // Contraste plus élevé pour l'overlay
   }
