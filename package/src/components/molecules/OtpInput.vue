@@ -435,317 +435,185 @@ defineExpose({
 <style lang="scss" scoped>
 @use '../../styles/abstracts' as *;
 
-// ========================================
-// Base
-// ========================================
+// ============================================================
+// OTP INPUT — cases de saisie en surface de contrôle,
+// tailles alignées sur les autres champs (36/32px par défaut)
+// ============================================================
+
+@mixin su-otp-size($size) {
+  --_su-otp-cell: var(--su-control-height-#{$size});
+
+  @include up('sm') {
+    --_su-otp-cell: var(--su-control-height-#{$size}-compact);
+  }
+}
+
+@mixin su-otp-state($state, $border-alpha) {
+  &--#{$state} .su-otp-input__field {
+    border-color: with-alpha(state-#{$state}, $border-alpha);
+
+    &:focus {
+      @include focus-ring-field(var(--su-state-#{$state}));
+    }
+  }
+
+  &--#{$state}.su-otp-input--underline .su-otp-input__field:focus {
+    border-bottom-color: var(--su-state-#{$state});
+    box-shadow: none;
+  }
+}
 
 .su-otp-input {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
+  // 16px sur mobile (pas de zoom iOS), 14px dès `sm`
+  font-size: var(--su-font-size-base);
 
-  // ========================================
-  // Group
-  // ========================================
+  @include up('sm') {
+    font-size: var(--su-font-size-sm);
+  }
+
+  // ### Tailles (largeur = hauteur d'un contrôle)
+
+  &--sm { @include su-otp-size('sm'); }
+  &--md { @include su-otp-size('md'); }
+
+  &--lg {
+    @include su-otp-size('lg');
+
+    font-size: var(--su-font-size-lg);
+
+    @include up('sm') {
+      font-size: var(--su-font-size-base);
+    }
+  }
 
   &__group {
     display: flex;
     gap: 0.5rem;
   }
 
-  // ========================================
-  // Field (base commune)
-  // ========================================
+  // ### Case (variante « boxes » par défaut)
 
   &__field {
+    position: relative;
     box-sizing: border-box;
-    border: none;
+    width: var(--_su-otp-cell);
+    height: var(--_su-otp-cell);
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 1px solid var(--su-border-input);
+    border-radius: var(--su-radius-control);
     outline: none;
-    background: transparent;
-    font-family: inherit;
-    color: var(--su-text-primary);
+    background-color: var(--su-bg-control);
+    background-clip: padding-box;
+    box-shadow: var(--su-shadow-control);
+    font: inherit;
+    font-weight: var(--su-font-weight-medium);
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
     text-align: center;
-    caret-color: var(--su-primary-default);
-    font-weight: 600;
-    letter-spacing: 0.05em;
+    color: var(--su-text-primary);
+    caret-color: var(--su-ring);
+    // Masquer les flèches de spin (numeric)
+    appearance: textfield;
     @include transition(border-color, box-shadow, background-color);
 
     &::placeholder {
-      color: var(--su-text-placeholder);
-      font-weight: 400;
+      color: var(--su-text-tertiary);
+      font-weight: var(--su-font-weight-normal);
     }
 
-    &:focus-visible {
-      @include focus-ring;
+    &:focus {
+      z-index: 1;
+      @include focus-ring-field;
     }
-
-    // Masquer les flèches de spin (numeric)
-    -moz-appearance: textfield;
 
     &::-webkit-outer-spin-button,
     &::-webkit-inner-spin-button {
-      -webkit-appearance: none;
+      appearance: none;
       margin: 0;
     }
   }
 
-  // ========================================
-  // Variant: boxes
-  // ========================================
+  // ### Variante : soulignée
 
-  &--boxes {
-    .su-otp-input__field {
-      background-color: var(--su-bg-surface);
-      border: 1px solid var(--su-border-default);
-      border-radius: 0.5rem;
+  &--underline &__field {
+    border-width: 0 0 2px;
+    // Trait seul : couleur pleine pour rester visible sur fond sombre
+    border-color: var(--su-border-default);
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
 
-      &:focus {
-        border-color: var(--su-border-focus);
-      }
-
-      &--filled {
-        border-color: var(--su-border-strong);
-      }
+    &:focus {
+      border-bottom-color: var(--su-ring);
+      box-shadow: none;
     }
   }
 
-  // ========================================
-  // Variant: underline
-  // ========================================
-
-  &--underline {
-    .su-otp-input__field {
-      border: none;
-      border-bottom: 2px solid var(--su-border-default);
-      border-radius: 0;
-      background: transparent;
-
-      &:focus {
-        border-bottom-color: var(--su-primary-default);
-      }
-
-      &--filled {
-        border-bottom-color: var(--su-border-strong);
-      }
-    }
-  }
-
-  // ========================================
-  // Variant: seamless
-  // ========================================
+  // ### Variante : sans bordure
 
   &--seamless {
-    .su-otp-input__field {
-      border: none;
-      background: var(--su-bg-hover);
-      border-radius: 0.375rem;
-
-      &:focus {
-        background: var(--su-bg-active);
-      }
-    }
-
     .su-otp-input__group {
       gap: 0.25rem;
     }
-  }
-
-  // ========================================
-  // Sizes
-  // ========================================
-
-  &--sm {
-    gap: 0.375rem;
 
     .su-otp-input__field {
-      width: 2rem;
-      height: 2rem;
-      font-size: 0.875rem;
-    }
-
-    .su-otp-input__group {
-      gap: 0.375rem;
-    }
-
-    .su-otp-input__separator {
-      font-size: 0.875rem;
-    }
-  }
-
-  &--md {
-    .su-otp-input__field {
-      width: 2.75rem;
-      height: 2.75rem;
-      font-size: 1.125rem;
-    }
-
-    .su-otp-input__separator {
-      font-size: 1.125rem;
-    }
-  }
-
-  &--lg {
-    gap: 0.625rem;
-
-    .su-otp-input__field {
-      width: 3.5rem;
-      height: 3.5rem;
-      font-size: 1.5rem;
-    }
-
-    .su-otp-input__group {
-      gap: 0.625rem;
-    }
-
-    .su-otp-input__separator {
-      font-size: 1.5rem;
-    }
-  }
-
-  // ========================================
-  // States
-  // ========================================
-
-  &--error {
-    .su-otp-input__field {
-      border-color: var(--su-state-error);
+      border-color: transparent;
+      background-color: var(--su-bg-muted);
+      box-shadow: none;
 
       &:focus {
-        border-color: var(--su-state-error);
-      }
-    }
-
-    &.su-otp-input--underline .su-otp-input__field {
-      border-bottom-color: var(--su-state-error);
-
-      &:focus {
-        border-bottom-color: var(--su-state-error);
+        background-color: var(--su-bg-control);
       }
     }
   }
 
-  &--success {
-    .su-otp-input__field {
-      border-color: var(--su-state-success);
+  // ### États
 
-      &:focus {
-        border-color: var(--su-state-success);
-      }
-    }
-
-    &.su-otp-input--underline .su-otp-input__field {
-      border-bottom-color: var(--su-state-success);
-
-      &:focus {
-        border-bottom-color: var(--su-state-success);
-      }
-    }
-  }
-
-  &--warning {
-    .su-otp-input__field {
-      border-color: var(--su-state-warning);
-
-      &:focus {
-        border-color: var(--su-state-warning);
-      }
-    }
-
-    &.su-otp-input--underline .su-otp-input__field {
-      border-bottom-color: var(--su-state-warning);
-
-      &:focus {
-        border-bottom-color: var(--su-state-warning);
-      }
-    }
-  }
-
-  // ========================================
-  // Disabled
-  // ========================================
+  @include su-otp-state(error, 36%);
+  @include su-otp-state(success, 48%);
+  @include su-otp-state(warning, 48%);
 
   &--disabled {
+    @include disabled-state;
+
     .su-otp-input__field {
-      background-color: var(--su-bg-disabled);
-      border-color: var(--su-border-disabled);
-      color: var(--su-text-disabled);
+      box-shadow: none;
       cursor: not-allowed;
-      opacity: 0.6;
-    }
-
-    .su-otp-input__separator {
-      color: var(--su-text-disabled);
     }
   }
 
-  // ========================================
-  // Readonly
-  // ========================================
-
-  &--readonly {
-    .su-otp-input__field {
-      background-color: var(--su-bg-canvas);
-      cursor: default;
-    }
+  &--readonly .su-otp-input__field {
+    background-image: linear-gradient(var(--su-bg-muted), var(--su-bg-muted));
+    cursor: default;
   }
 
-  // ========================================
-  // Separator
-  // ========================================
+  // ### Séparateur entre groupes
 
   &__separator {
     display: flex;
     align-items: center;
-    color: var(--su-text-secondary);
-    font-weight: 500;
-    user-select: none;
     flex-shrink: 0;
+    color: var(--su-text-tertiary);
+    user-select: none;
   }
-
-  // ========================================
-  // Screen reader only
-  // ========================================
 
   &__sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
+    @include sr-only;
   }
-}
 
-// ========================================
-// High contrast
-// ========================================
-
-@media (prefers-contrast: more) {
-  .su-otp-input {
-    &__field {
+  @include high-contrast {
+    .su-otp-input__field {
       border-width: 2px;
-
-      &:focus-visible {
-        outline-width: 3px;
-      }
     }
 
-    &--underline .su-otp-input__field {
-      border-bottom-width: 3px;
+    &.su-otp-input--underline .su-otp-input__field {
+      border-width: 0 0 3px;
     }
-  }
-}
-
-// ========================================
-// Reduced motion
-// ========================================
-
-@media (prefers-reduced-motion: reduce) {
-  .su-otp-input__field {
-    transition: none;
   }
 }
 </style>

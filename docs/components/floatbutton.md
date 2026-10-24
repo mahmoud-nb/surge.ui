@@ -404,14 +404,13 @@ Le badge offre un feedback visuel pour :
 Le tooltip s'adapte automatiquement :
 - **Position** : S'ajuste selon la position du bouton
 - **Contenu** : Utilise le `label` comme texte
-- **Accessibilité** : Lié via `aria-describedby`
-- **Responsive** : Taille adaptée sur mobile
+- **Accessibilité** : Le `label` nomme déjà le bouton, l'infobulle est donc masquée des lecteurs d'écran
+- **Clavier** : Affichée au focus, masquée avec Échap
 
 ### 📱 Comportement responsive
 
 - **Mobile** : Offsets réduits automatiquement (16px au lieu de 24px)
 - **Zones sûres** : Support des encoches et barres de navigation
-- **Tooltip** : Taille réduite sur petits écrans
 - **Slot** : Largeur maximale adaptée à l'écran
 
 ## Accessibilité
@@ -423,12 +422,12 @@ Le composant FloatButton respecte les normes WCAG 2.1 AA :
 - **Navigation au clavier** : Support des touches Entrée et Espace
 - **Focus visible** : Indicateur de focus clair et contrasté
 - **Labels accessibles** : `aria-label` automatique ou personnalisé
-- **Tooltips liés** : Association via `aria-describedby`
-- **Badges accessibles** : Annonce vocale du contenu du badge
+- **Infobulle** : Affichée au survol et au focus, masquée avec Échap (WCAG 1.4.13)
+- **Badges accessibles** : La valeur du badge est ajoutée au nom du bouton (ex. « Messages (3) »)
 - **Contraste** : Ratios conformes WCAG AA (4.5:1 minimum)
 - **Tailles minimales** : Respecte les tailles minimales de cible tactile (44px)
 - **Mode sombre** : Contraste adapté automatiquement
-- **Contraste élevé** : Support de `prefers-contrast: high`
+- **Contraste élevé** : Support de `prefers-contrast: more`
 - **Réduction d'animation** : Respect de `prefers-reduced-motion`
 
 ### 🎯 Bonnes pratiques

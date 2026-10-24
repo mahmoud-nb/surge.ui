@@ -218,14 +218,13 @@ The badge provides visual feedback for:
 The tooltip automatically adapts:
 - **Position**: Adjusts based on button position
 - **Content**: Uses `label` as text
-- **Accessibility**: Linked via `aria-describedby`
-- **Responsive**: Adapted size on mobile
+- **Accessibility**: The `label` already names the button, so the tooltip is hidden from screen readers
+- **Keyboard**: Shown on focus, dismissed with Escape
 
 ### 📱 Responsive behavior
 
 - **Mobile**: Automatically reduced offsets (16px instead of 24px)
 - **Safe areas**: Support for notches and navigation bars
-- **Tooltip**: Reduced size on small screens
 - **Slot**: Maximum width adapted to screen
 
 ## Accessibility
@@ -237,12 +236,12 @@ The FloatButton component follows WCAG 2.1 AA standards:
 - **Keyboard navigation**: Support for Enter and Space keys
 - **Visible focus**: Clear and contrasted focus indicator
 - **Accessible labels**: Automatic or custom `aria-label`
-- **Linked tooltips**: Association via `aria-describedby`
-- **Accessible badges**: Voice announcement of badge content
+- **Tooltip**: Shown on hover and focus, dismissed with Escape (WCAG 1.4.13)
+- **Accessible badges**: The badge value is appended to the button name (e.g. "Messages (3)")
 - **Contrast**: WCAG AA compliant contrast ratios (4.5:1 minimum)
 - **Minimum sizes**: Respects minimum touch target sizes (44px)
 - **Dark mode**: Automatically adapted contrast
-- **High contrast**: Support for `prefers-contrast: high`
+- **High contrast**: Support for `prefers-contrast: more`
 - **Reduced motion**: Respects `prefers-reduced-motion`
 
 ### 🎯 Best practices

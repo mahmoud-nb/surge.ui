@@ -306,7 +306,7 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !props.lab
         class="su-dropdown-spinner"
       >
         <svg
-          class="su-spinner"
+          class="su-dropdown-spinner-icon"
           viewBox="0 0 24 24"
           aria-hidden="true"
         >
@@ -446,475 +446,208 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !props.lab
 <style lang="scss" scoped>
 @use '../../styles/abstracts' as *;
 
+// ============================================================
+// DROPDOWN — déclencheur = bouton partagé, menu = popover partagé
+// ============================================================
+
 .su-dropdown-container {
   position: relative;
   display: inline-block;
-  
+
   &--disabled {
-    opacity: 0.6;
     cursor: not-allowed;
   }
 }
 
+// ### Déclencheur
+
 .su-dropdown-trigger {
-  $self: &;
+  @include button-base;
 
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-family: inherit;
-  font-weight: 500;
-  border: 1px solid transparent;
-  cursor: pointer;
-  text-decoration: none;
-  white-space: nowrap;
-  user-select: none;
-  position: relative;
-  gap: $spacing-2;
-  border-radius: var(--su-radius-md);
-  
-  @include transition(all);
+  &--sm { @include control-size('sm'); }
+  &--md { @include control-size('md'); }
+  &--lg { @include control-size('lg'); }
 
-  // Focus visible pour l'accessibilité
-  &:focus-visible {
-    @include focus-ring;
-  }
+  @include button-variants;
 
-  // Tailles
-  &--sm {
-    padding: $spacing-1 $spacing-2;
-    font-size: $font-size-sm;
-    line-height: 1.25rem;
-    min-height: 2rem;
-    
-    &.su-dropdown-trigger--icon-only {
-      padding: $spacing-1;
-      width: 2rem;
+  // Menu ouvert : même rendu qu'au survol
+  &--open {
+    &.su-dropdown-trigger--primary {
+      background-color: with-alpha(primary-default, 90%);
+    }
+
+    &.su-dropdown-trigger--secondary {
+      background-color: with-alpha(secondary-default, 90%);
+    }
+
+    &.su-dropdown-trigger--outline {
+      background-image: linear-gradient(var(--su-bg-accent), var(--su-bg-accent));
+    }
+
+    &.su-dropdown-trigger--ghost {
+      background-color: var(--su-bg-accent);
     }
   }
 
-  &--md {
-    padding: 0.625rem $spacing-3;
-    font-size: $font-size-sm;
-    line-height: 1.25rem;
-    min-height: 2.5rem;
-    
-    &.su-dropdown-trigger--icon-only {
-      padding: 0.625rem;
-      width: 2.5rem;
-    }
-  }
-
-  &--lg {
-    padding: $spacing-2 1.5rem;
-    font-size: $font-size-base;
-    line-height: 1.5rem;
-    min-height: 3rem;
-    
-    &.su-dropdown-trigger--icon-only {
-      padding: $spacing-2;
-      width: 3rem;
-    }
-  }
-
-  // Variantes
-  &--primary {
-    background-color: var(--su-primary-600);
-    color: white;
-    border-color: transparent;
-    
-    &:hover:not(#{$self}--disabled):not(#{$self}--loading) {
-      background-color: var(--su-primary-700);
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px color-mix(in srgb, var(--su-primary-600) 40%, transparent);
-    }
-
-    &:active:not(#{$self}--disabled):not(#{$self}--loading) {
-      transform: translateY(0);
-      box-shadow: 0 2px 4px color-mix(in srgb, var(--su-primary-600) 40%, transparent);
-    }
-  }
-
-  &--secondary {
-    background-color: var(--su-gray-100);
-    color: var(--su-gray-900);
-    border-color: var(--su-gray-200);
-
-    &:hover:not(#{$self}--disabled):not(#{$self}--loading) {
-      background-color: var(--su-gray-200);
-      border-color: var(--su-gray-300);
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgb(107 114 128 / 15%);
-    }
-  }
-
-  &--outline {
-    background-color: transparent;
-    color: var(--su-primary-600);
-    border-color: var(--su-primary-200);
-
-    &:hover:not(#{$self}--disabled):not(#{$self}--loading) {
-      background-color: var(--su-primary-50);
-      border-color: var(--su-primary-300);
-      transform: translateY(-1px);
-    }
-  }
-
-  &--ghost {
-    background-color: transparent;
-    color: var(--su-primary-600);
-    border-color: transparent;
-
-    &:hover:not(#{$self}--disabled):not(#{$self}--loading) {
-      background-color: var(--su-primary-50);
-      transform: translateY(-1px);
-    }
-  }
-
-  // États
   &--disabled {
-    cursor: not-allowed;
-    
-    &:focus {
-      outline: none;
-      box-shadow: none;
-    }
+    @include button-disabled;
   }
 
-  &--loading {
-    cursor: wait;
+  &--icon-only {
+    padding-inline: 0.5rem;
   }
 
-  // Direction de l'icône
   &--icon-right {
     flex-direction: row-reverse;
   }
-
-  // Icônes
-  &__icon {
-    width: 1em;
-    height: 1em;
-    flex-shrink: 0;
-  }
-  
-  // Ajustements pour les boutons avec icônes seules
-  &--icon-only {
-    gap: 0;
-  }
 }
 
-/* Top-level selectors (lower specificity) must come before compound selectors */
 .su-dropdown-icon {
-  width: 1em;
-  height: 1em;
-  flex-shrink: 0;
-}
+  @include button-icon;
 
-.su-dropdown-trigger--icon-only .su-dropdown-icon {
-  width: 1.25em;
-  height: 1.25em;
+  margin-inline: -0.125rem;
 }
 
 .su-dropdown-label {
-  min-width: 0;
-
-  .su-dropdown-trigger--loading & {
-    opacity: 0.7;
-  }
+  @include truncate;
 }
 
 .su-dropdown-chevron {
-  width: 1em;
-  height: 1em;
-  color: currentcolor;
-  flex-shrink: 0;
+  @include button-icon;
 
-  @include transition(transform);
+  margin-inline-end: -0.25rem;
+  @include transition(rotate);
 
   .su-dropdown-trigger--open & {
-    transform: rotate(180deg);
+    rotate: 180deg;
   }
 }
 
 .su-dropdown-spinner {
   display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  
-  .su-spinner {
-    width: 1em;
-    height: 1em;
-    animation: spin 1s linear infinite;
+
+  &-icon {
+    width: 1rem;
+    height: 1rem;
+    animation: su-dropdown-spin 0.8s linear infinite;
   }
 }
 
+// ### Menu
+
 .su-dropdown-menu {
   position: absolute;
-  z-index: 50;
-  margin-top: 0.25rem;
-  background-color: white;
-  border: 1px solid var(--su-gray-200);
-  border-radius: var(--su-radius-md);
-  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 10%), 0 4px 6px -2px rgb(0 0 0 / 5%);
-  overflow: hidden;
-  min-width: 12rem;
-  
-  // Placements
+  min-width: max(100%, 12rem);
+  @include popover-surface;
+
   &--bottom-start {
-    top: 100%;
-    left: 0;
+    top: calc(100% + 0.25rem);
+    inset-inline-start: 0;
   }
-  
+
   &--bottom-end {
-    top: 100%;
-    right: 0;
+    top: calc(100% + 0.25rem);
+    inset-inline-end: 0;
   }
-  
+
   &--top-start {
-    bottom: 100%;
-    left: 0;
-    margin-top: 0;
-    margin-bottom: 0.25rem;
+    bottom: calc(100% + 0.25rem);
+    inset-inline-start: 0;
   }
-  
+
   &--top-end {
-    bottom: 100%;
-    right: 0;
-    margin-top: 0;
-    margin-bottom: 0.25rem;
+    bottom: calc(100% + 0.25rem);
+    inset-inline-end: 0;
   }
-  
+
   &--left-start {
     top: 0;
-    right: 100%;
-    margin-top: 0;
-    margin-right: 0.25rem;
+    inset-inline-end: calc(100% + 0.25rem);
   }
-  
+
   &--left-end {
     bottom: 0;
-    right: 100%;
-    margin-top: 0;
-    margin-right: 0.25rem;
+    inset-inline-end: calc(100% + 0.25rem);
   }
-  
+
   &--right-start {
     top: 0;
-    left: 100%;
-    margin-top: 0;
-    margin-left: 0.25rem;
+    inset-inline-start: calc(100% + 0.25rem);
   }
-  
+
   &--right-end {
     bottom: 0;
-    left: 100%;
-    margin-top: 0;
-    margin-left: 0.25rem;
+    inset-inline-start: calc(100% + 0.25rem);
   }
 }
 
 .su-dropdown-options {
   max-height: inherit;
-  overflow-y: auto;
-  padding: 0.25rem 0;
+  overflow: hidden auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--su-border-default) transparent;
 }
 
 .su-dropdown-option {
-  $self: &;
+  @include menu-item;
 
-  display: flex;
-  align-items: center;
-  gap: $spacing-3;
-  box-sizing: border-box;
-  width: 100%;
-  padding: $spacing-2 $spacing-3;
-  text-align: left;
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: var(--su-text-primary);
-  text-decoration: none;
+  font-size: var(--su-font-size-base);
 
-  @include transition(all);
-
-  &:hover:not(#{$self}--disabled) {
-    background-color: var(--su-gray-50);
+  @include up('sm') {
+    font-size: var(--su-font-size-sm);
   }
 
-  &--focused:not(#{$self}--disabled) {
-    background-color: var(--su-primary-50);
-    color: var(--su-primary-900);
-  }
-  
-  &--disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    color: var(--su-text-tertiary);
-  }
-  
   &-icon {
-    width: 1.25em;
-    height: 1.25em;
-    flex-shrink: 0;
-    color: var(--su-text-secondary);
+    @include button-icon;
   }
-  
+
   &-content {
     flex: 1;
     min-width: 0;
   }
-  
+
   &-label {
-    font-weight: 500;
-    color: inherit;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    @include truncate;
   }
-  
+
   &-description {
-    font-size: $font-size-sm;
-    color: var(--su-text-secondary);
     margin-top: 0.125rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    font-size: var(--su-font-size-xs);
+    color: var(--su-text-tertiary);
+    @include truncate;
   }
 }
 
 .su-dropdown-external-icon {
-  width: 1em;
-  height: 1em;
-  color: var(--su-text-tertiary);
+  width: 0.875rem;
+  height: 0.875rem;
   flex-shrink: 0;
+  margin-inline-start: auto;
+  color: var(--su-text-tertiary);
 }
 
 .su-dropdown-separator {
-  height: 1px;
-  background-color: var(--su-gray-200);
-  margin: 0.25rem 0;
+  @include menu-separator;
 }
 
-// Animations
-.su-dropdown-enter-active,
-.su-dropdown-leave-active {
-  @include transition(all);
+// ### Animations
 
-  transform-origin: top;
+@include popover-transition('su-dropdown');
+
+.su-dropdown-menu--top-start,
+.su-dropdown-menu--top-end {
+  transform-origin: bottom center;
 }
 
-.su-dropdown-enter-from,
-.su-dropdown-leave-to {
-  opacity: 0;
-  transform: scaleY(0.95) translateY(-0.5rem);
-}
-
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-
+@keyframes su-dropdown-spin {
   to {
-    transform: rotate(360deg);
+    rotate: 360deg;
   }
 }
 
-@media (prefers-color-scheme: dark) {
-  .su-dropdown-trigger {
-    &--secondary {
-      background-color: var(--su-gray-800);
-      color: var(--su-gray-100);
-      border-color: var(--su-gray-700);
-
-      &:hover:not(&--disabled, &--loading) {
-        background-color: var(--su-gray-700);
-        border-color: var(--su-gray-600);
-      }
-    }
-
-    &--outline {
-      color: var(--su-primary-400);
-      border-color: var(--su-primary-400);
-
-      &:hover:not(&--disabled, &--loading) {
-        background-color: color-mix(in srgb, var(--su-primary-400) 10%, transparent);
-        border-color: var(--su-primary-300);
-      }
-    }
-
-    &--ghost {
-      color: var(--su-primary-400);
-
-      &:hover:not(&--disabled, &--loading) {
-        background-color: color-mix(in srgb, var(--su-primary-400) 10%, transparent);
-      }
-    }
-  }
-  
-  .su-dropdown-menu {
-    background-color: var(--su-gray-800);
-    border-color: var(--su-gray-600);
-  }
-  
-  .su-dropdown-option {
-    color: var(--su-text-primary);
-    
-    &:hover:not(&--disabled) {
-      background-color: var(--su-gray-700);
-    }
-    
-    &--focused:not(&--disabled) {
-      background-color: color-mix(in srgb, var(--su-primary-400) 20%, transparent);
-      color: var(--su-primary-200);
-    }
-    
-    &--disabled {
-      color: var(--su-text-tertiary);
-    }
-    
-    &-icon {
-      color: var(--su-text-secondary);
-    }
-    
-    &-description {
-      color: var(--su-text-secondary);
-    }
-  }
-  
-  .su-dropdown-separator {
-    background-color: var(--su-gray-600);
-  }
-}
-
-@media (prefers-contrast: more) {
-  .su-dropdown-trigger {
-    border-width: 2px;
-    
-    &:focus-visible {
-      outline-width: 3px;
-    }
-  }
-  
-  .su-dropdown-menu {
-    border-width: 2px;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .su-dropdown-trigger,
-  .su-dropdown-chevron,
-  .su-dropdown-option,
-  .su-dropdown-enter-active,
-  .su-dropdown-leave-active {
-    @include transition(none);
-  }
-  
-  .su-dropdown-trigger:hover:not(.su-dropdown-trigger--disabled, .su-dropdown-trigger--loading) {
-    transform: none;
-  }
-  
-  .su-spinner {
-    animation: none;
+.su-dropdown-spinner-icon {
+  @include motion-reduce {
+    animation-duration: 2.4s;
   }
 }
 </style>
