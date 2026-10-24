@@ -261,6 +261,8 @@ export interface LinkProps extends AccessibilityProps {
   icon?: Component;
   iconDisplay?: 'top' | 'left' | 'right' | 'only';
   external?: boolean;
+  /** Texte lu par les lecteurs d'écran quand le lien s'ouvre dans un nouvel onglet */
+  externalLabel?: string;
 }
 
 // Panel.vue

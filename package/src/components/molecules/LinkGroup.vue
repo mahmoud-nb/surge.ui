@@ -133,155 +133,113 @@ const ariaAttributes = computed(() => {
 <style lang="scss">
 @use '../../styles/abstracts' as *;
 
-// Base styles - must come FIRST before modifier-specific styles
-.su-links-group-separator {
-  color: var(--su-text-tertiary);
-  font-weight: 500;
-  user-select: none;
-  font-size: 0.875em;
-}
+// ============================================================
+// LINK GROUP — liens alignés, séparés ou « connectés » (gap none)
+// en barre segmentée sur surface de contrôle
+// ============================================================
 
 .su-links-group {
   display: inline-flex;
   align-items: center;
   gap: $spacing-2;
-  
-  &--gap-sm {
-    gap: $spacing-1;
+
+  &--gap-sm { gap: $spacing-1; }
+  &--gap-md { gap: $spacing-2; }
+  &--gap-lg { gap: $spacing-3; }
+  &--gap-none { gap: 0; }
+
+  &--horizontal {
+    flex-direction: row;
   }
-  
-  &--gap-md {
-    gap: $spacing-2;
-  }
-  
-  &--gap-lg {
-    gap: $spacing-3;
-  }
-  
-  &--gap-none {
-    gap: 0;
-  }
-  
-  // Direction
+
   &--vertical {
     flex-direction: column;
     align-items: flex-start;
   }
-  
-  &--horizontal {
-    flex-direction: row;
-  }
-  
-  // Avec séparateurs
-  &--with-separator {
-    align-items: center;
-  }
-  
-  // Style connecté pour gap='none'
+
+  // ### Barre connectée
+
   &--connected {
     gap: 0;
-  }
-}
 
-// MUST come before compound selectors using them
-.su-links-group--vertical .su-links-group-separator {
-  display: none;
-}
+    .su-links-group__link {
+      justify-content: center;
+      box-sizing: border-box;
+      min-height: var(--su-control-height-md);
+      margin: 0;
+      padding: 0 0.75rem;
+      border: 1px solid var(--su-border-input);
+      border-radius: 0;
+      background-color: var(--su-bg-control);
+      background-clip: padding-box;
+      text-decoration: none;
 
-// Connected element styles - completely flattened
-.su-links-group--connected .su-links-group__link {
-  position: relative;
-  border: 1px solid transparent;
-}
+      @include up('sm') {
+        min-height: var(--su-control-height-md-compact);
+      }
 
-.su-links-group--connected .su-links-group__link:not(:first-child) {
-  margin-left: -1px;
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-}
+      &:hover:not(.su-link--disabled) {
+        z-index: 1;
+        background-image: linear-gradient(var(--su-bg-accent), var(--su-bg-accent));
+      }
 
-.su-links-group--connected .su-links-group__link:not(:last-child) {
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-}
-
-// Generic interactive states - placed FIRST  
-.su-links-group--connected .su-links-group__link:focus-visible {
-  z-index: 1;
-}
-
-.su-links-group--connected .su-links-group__link:hover:not(:disabled) {
-  z-index: 1;
-}
-
-.su-links-group--connected .su-links-group__link:active:not(:disabled) {
-  z-index: 1;
-}
-
-// Base state for enabled (non-disabled) links
-.su-links-group--connected .su-links-group__link:not(.su-link--disabled) {
-  border-color: var(--su-gray-200);
-  background-color: white;
-}
-
-// More specific multi-class variant
-.su-links-group--connected.su-links-group--vertical .su-links-group__link {
-  margin-left: 0;
-  margin-top: -1px;
-}
-
-.su-links-group--connected.su-links-group--vertical .su-links-group__link:first-child {
-  margin-top: 0;
-  border-radius: var(--su-radius-sm) var(--su-radius-sm) 0 0;
-}
-
-.su-links-group--connected.su-links-group--vertical .su-links-group__link:last-child {
-  border-radius: 0 0 var(--su-radius-sm) var(--su-radius-sm);
-}
-
-.su-links-group--connected.su-links-group--vertical .su-links-group__link:only-child {
-  border-radius: var(--su-radius-sm);
-}
-
-// Compound states for enabled links
-.su-links-group--connected .su-links-group__link:not(.su-link--disabled):hover {
-  border-color: var(--su-primary-300);
-  background-color: var(--su-primary-50);
-}
-
-.su-links-group--connected .su-links-group__link:not(.su-link--disabled):focus-visible {
-  border-color: var(--su-primary-500);
-}
-
-.su-links-group--connected .su-links-group__link:not(.su-link--disabled):active {
-  background-color: var(--su-primary-100);
-}
-
-.su-links-group--with-separator.su-links-group--vertical .su-links-group-separator {
-  display: none;
-}
-
-@media (prefers-color-scheme: dark) {
-  .su-links-group--connected .su-links-group__link:not(.su-link--disabled) {
-    border-color: var(--su-gray-600);
-    background-color: var(--su-gray-800);
-    
-    &:hover {
-      border-color: var(--su-primary-400);
-      background-color: color-mix(in srgb, var(--su-primary-400) 10%, transparent);
+      &:focus-visible {
+        z-index: 2;
+      }
     }
-    
-    &:focus-visible {
-      border-color: var(--su-primary-400);
+
+    &.su-links-group--horizontal {
+      box-shadow: var(--su-shadow-control);
+      border-radius: var(--su-radius-control);
+
+      .su-links-group__link {
+        &:not(:first-child) {
+          margin-inline-start: -1px;
+        }
+
+        &:first-child {
+          border-start-start-radius: var(--su-radius-control);
+          border-end-start-radius: var(--su-radius-control);
+        }
+
+        &:last-child {
+          border-start-end-radius: var(--su-radius-control);
+          border-end-end-radius: var(--su-radius-control);
+        }
+      }
     }
-    
-    &:active {
-      background-color: color-mix(in srgb, var(--su-primary-400) 20%, transparent);
+
+    &.su-links-group--vertical {
+      align-items: stretch;
+
+      .su-links-group__link {
+        justify-content: flex-start;
+
+        &:not(:first-child) {
+          margin-top: -1px;
+        }
+
+        &:first-child {
+          border-start-start-radius: var(--su-radius-control);
+          border-start-end-radius: var(--su-radius-control);
+        }
+
+        &:last-child {
+          border-end-start-radius: var(--su-radius-control);
+          border-end-end-radius: var(--su-radius-control);
+        }
+      }
     }
   }
-  
-  .su-links-group-separator {
-    color: var(--su-text-tertiary);
+}
+
+.su-links-group-separator {
+  color: var(--su-text-tertiary);
+  font-size: 0.875em;
+  user-select: none;
+
+  .su-links-group--vertical & {
+    display: none;
   }
 }
 </style>
