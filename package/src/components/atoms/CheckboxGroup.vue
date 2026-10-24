@@ -193,6 +193,12 @@ const isDisabled = (option: any) => {
           <!-- Texte -->
           <div class="su-checkbox__text">
             <div class="su-checkbox__label">{{ option.label }}</div>
+            <div
+              v-if="option.description"
+              class="su-checkbox__description"
+            >
+              {{ option.description }}
+            </div>
           </div>
         </div>
       </label>
@@ -211,310 +217,56 @@ const isDisabled = (option: any) => {
 <style lang="scss">
 @use '../../styles/abstracts' as *;
 
-@mixin su-checkbox-state($stateColor50, $stateColor300, $stateColor500) {
-  &.su-checkbox__option--inline-card,
-  &.su-checkbox__option--block-card {
-    border-color: #{$stateColor300};
-    
-    &--selected {
-      border-color: #{$stateColor500};
-      background-color: #{$stateColor50};
-    }
-  }
-  
-  .su-checkbox__indicator {
-    border-color: #{$stateColor500};
-    
-    &--checked {
-      background-color: #{$stateColor500};
-      border-color: #{$stateColor500};
-    }
-  }
-}
+// ============================================================
+// CHECKBOX GROUP — motifs partagés « choix » (abstracts/_patterns)
+// ============================================================
 
 .su-checkbox-group {
-  border: none;
-  padding: 0;
-  margin: 0;
-  
-  &__label {
-    display: block;
-    margin-bottom: 0.75rem;
-    
-    @include su-text('sm', 'primary', 'medium', 'tight');
-    
-    &--required {
-      .su-checkbox-group-required {
-        color: var(--su-state-error-fg);
-        margin-inline-start: 0.125rem;
-      }
-    }
-    
-    &--disabled {
-      color: var(--su-text-tertiary);
-      cursor: not-allowed;
-    }
-  }
-  
-  &__options {
-    display: flex;
-    gap: 0.75rem;
-  }
-  
-  // Direction
-  &--vertical {
-    .su-checkbox-group__options {
-      flex-direction: column;
-    }
-  }
-  
-  &--horizontal {
-    .su-checkbox-group__options {
-      flex-flow: row wrap;
-    }
-  }
-  
-  // Style carte
-  &--inline-card,
-  &--block-card {
-    .su-checkbox-group__options {
-      gap: 0.75rem;
-    }
-  }
-  
-  &--inline-card {
-    .su-checkbox-group__options {
-      gap: 0.5rem;
-    }
-  }
-  
-  // Scroll
-  &--scrollable {
-    @include scrollable-container;
-
-    padding-inline-end: 0.75rem;
-  }
+  @include choice-group('.su-checkbox-group__options');
 }
 
 .su-checkbox__option {
-  $self: &;
-
-  display: flex;
-  align-items: flex-start;
-  gap: 0.75rem;
-  cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  box-sizing: border-box;
-  
-  // Style par défaut
-  &--default {
-    padding: 0.25rem 0;
-    
-    &:hover:not(&--disabled) {
-      .su-checkbox__indicator {
-        border-color: var('--su-border-hover', $primary-400);
-      }
-    }
-  }
-
-  &--block-card {
-    width: 100%;
-  }
-  
-  // Style carte
-  &--inline-card,
-  &--block-card {
-    padding: 1rem;
-    border: 1px solid $gray-200;
-    border-radius: var(--su-radius-md);
-    background-color: var(--su-bg-surface);
-    
-    &:hover:not(&--disabled) {
-      border-color: var(--su-border-default);
-      box-shadow: var(--su-shadow-md);
-    }
-    
-    &--selected {
-      border-color: var(--su-border-default);
-      background-color: var(--su-primary-50);
-      box-shadow: var(--su-shadow-md);
-    }
-  }
-  
-  &--inline-card {
-    .su-checkbox__content {
-      text-align: center;
-    }
-    
-    .su-checkbox__indicator {
-      align-self: center;
-    }
-  }
-  
-  // Tailles
-  &--sm {
-    .su-checkbox__indicator {
-      @include squareSize(1rem);
-      
-      .su-checkbox__check {
-        @include squareSize(0.75rem);
-      }
-    }
-    
-    .su-checkbox__label {
-      font-size: var(--su-font-size-sm);
-    }
-    
-    .su-checkbox__description {
-      font-size: var(--su-font-size-xs);
-    }
-    
-    &.su-checkbox__option--inline-card,
-    &.su-checkbox__option--block-card {
-      padding: 0.75rem;
-    }
-  }
-  
-  &--md {
-    .su-checkbox__indicator {
-      @include squareSize(1.25rem);
-      
-      .su-checkbox__check {
-        @include squareSize(1rem);
-      }
-    }
-    
-    .su-checkbox__label {
-      font-size: var(--su-font-size-base);
-    }
-    
-    .su-checkbox__description {
-      font-size: var(--su-font-size-sm);
-    }
-
-    &.su-checkbox__option--inline-card,
-    &.su-checkbox__option--block-card {
-      padding: 1rem;
-    }
-  }
-  
-  &--lg {
-    .su-checkbox__indicator {
-      @include squareSize(1.5rem);
-      
-      .su-checkbox__check {
-        @include squareSize(1.25rem);
-      }
-    }
-    
-    .su-checkbox__label {
-      font-size: var(--su-font-size-lg);
-    }
-    
-    .su-checkbox__description {
-      font-size: var(--su-font-size-base);
-    }
-    
-    &.su-checkbox__option--inline-card,
-    &.su-checkbox__option--block-card {
-      padding: 1.25rem;
-    }
-  }
-  
-  // États
-  &--error {
-    @include su-checkbox-state($error-50, $error-300, $error-500);
-  }
-  
-  &--success {
-    @include su-checkbox-state($success-50, $success-300, $success-500);
-  }
-  
-  &--warning {
-    @include su-checkbox-state($warning-50, $warning-300, $warning-500);
-  }
-  
-  &--disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    
-    &.su-checkbox__option--inline-card,
-    &.su-checkbox__option--block-card {
-      background-color: var(--su-bg-disabled);
-      border-color: var(--su-border-disabled);
-    }
-  }
-}
-
-.su-checkbox__input {
-  position: absolute;
-  opacity: 0;
-  width: 0;
-  height: 0;
-  
-  &:focus + .su-checkbox__indicator {
-    box-shadow: 0 0 0 3px rgba($primary-500, 0.2);
-  }
-  
-  &:checked + .su-checkbox__indicator {
-    border-color: $primary-500;
-    background-color: $primary-500;
-    
-    .su-checkbox__check {
-      color: white;
-    }
-  }
+  @include choice-option('.su-checkbox__option', '.su-checkbox__input', '.su-checkbox__indicator');
 }
 
 .su-checkbox__indicator {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid var(--su-border-default);
-  border-radius: var(--su-radius-sm);
-  background-color: var(--su-bg-surface);
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  flex-shrink: 0;
-  
-  &--checked {
-    border-color: $primary-500;
-    background-color: $primary-500;
-  }
-  
+  @include choice-indicator('box');
+
+  &--checked,
   &--indeterminate {
-    border-color: $primary-500;
-    background-color: $primary-500;
-    
-    &::after {
-      content: '';
-      width: 60%;
-      height: 2px;
-      background-color: white;
-      border-radius: 1px;
-    }
+    @include choice-indicator-checked;
+  }
+
+  // Tiret de l'état indéterminé
+  &--indeterminate::after {
+    content: '';
+    width: 50%;
+    height: 2px;
+    border-radius: 1px;
+    background-color: currentcolor;
   }
 }
 
 .su-checkbox__check {
-  color: white;
+  width: 75%;
+  height: 75%;
   stroke-width: 3;
 }
 
 .su-checkbox__content {
-  flex: 1;
-  min-width: 0;
   display: flex;
+  flex: 1;
   align-items: flex-start;
   gap: 0.5rem;
+  min-width: 0;
 }
 
 .su-checkbox__icon {
-  width: 1.25em;
-  height: 1.25em;
+  width: 1.125em;
+  height: 1.125em;
   flex-shrink: 0;
-  color: var(--su-text-secondary);
-  margin-top: 0.125rem;
+  margin-top: 0.125em;
+  opacity: 0.8;
 }
 
 .su-checkbox__text {
@@ -523,136 +275,27 @@ const isDisabled = (option: any) => {
 }
 
 .su-checkbox__label {
-  font-weight: 500;
-  color: var(--su-text-primary);
-  line-height: var(--su-line-height-tight);
+  font-weight: var(--su-font-weight-medium);
 }
 
 .su-checkbox__description {
-  color: var(--su-text-secondary);
+  margin-top: 0.125rem;
+  font-size: var(--su-font-size-xs);
+  font-weight: var(--su-font-weight-normal);
   line-height: var(--su-line-height-normal);
-  margin-top: 0.25rem;
-}
-
-.su-checkbox-group-message {
-  font-size: var(--su-font-size-sm);
-  line-height: var(--su-line-height-tight);
-  
-  &--default {
-    color: var(--su-text-secondary);
-  }
-  
-  &--error {
-    color: $error-600;
-  }
-  
-  &--success {
-    color: $success-600;
-  }
-  
-  &--warning {
-    color: $warning-600;
-  }
+  color: var(--su-text-tertiary);
 }
 
 .su-checkbox-group-before,
 .su-checkbox-group-after {
   margin: 0.75rem 0;
-  
+
   &:first-child {
     margin-top: 0;
   }
-  
+
   &:last-child {
     margin-bottom: 0;
-  }
-}
-
-// Mode sombre
-@media (prefers-color-scheme: dark) {
-  .su-checkbox-group__label {
-    color: var(--su-text-primary)-dark;
-    
-    &--disabled {
-      color: var(--su-text-tertiary);
-    }
-  }
-  
-  .su-checkbox__option {
-    &--inline-card,
-    &--block-card {
-      background-color: $gray-800;
-      border-color: $gray-600;
-      
-      &:hover:not(&--disabled) {
-        border-color: $primary-400;
-      }
-      
-      &--selected {
-        border-color: $primary-400;
-        background-color: rgba($primary-400, 0.1);
-      }
-      
-      &--disabled {
-        background-color: $gray-900;
-        border-color: $gray-700;
-      }
-    }
-  }
-  
-  .su-checkbox__indicator {
-    border-color: $gray-500;
-    background-color: $gray-800;
-    
-    &--checked {
-      border-color: $primary-400;
-      background-color: $primary-400;
-    }
-  }
-  
-  .su-checkbox__label {
-    color: var(--su-text-primary)-dark;
-  }
-  
-  .su-checkbox__description {
-    color: var(--su-text-secondary)-dark;
-  }
-  
-  .su-checkbox-group-toggle {
-    background-color: $gray-800;
-    border-color: $gray-600;
-    color: $primary-400;
-    
-    &:hover {
-      background-color: $gray-700;
-      border-color: $primary-400;
-    }
-  }
-  
-  .su-checkbox-group-message {
-    &--default {
-      color: var(--su-text-secondary)-dark;
-    }
-  }
-}
-
-// Mode de contraste élevé
-@media (prefers-contrast: more) {
-  .su-checkbox__indicator {
-    border-width: 3px;
-  }
-  
-  .su-checkbox__option--inline-card,
-  .su-checkbox__option--block-card {
-    border-width: 2px;
-  }
-}
-
-// Support de la réduction des animations
-@media (prefers-reduced-motion: reduce) {
-  .su-checkbox__option,
-  .su-checkbox__indicator {
-    transition: none;
   }
 }
 </style>

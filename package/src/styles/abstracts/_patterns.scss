@@ -239,3 +239,176 @@
   margin: 0.25rem 0.5rem;
   background-color: var(--su-border-alpha);
 }
+
+// ### Choix (cases à cocher, boutons radio)
+
+/// Indicateur de choix : case (`box`) ou rond (`circle`)
+/// Taille lue sur `--_su-choice-size` (posée par `choice-option`)
+@mixin choice-indicator($shape: 'box') {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  width: var(--_su-choice-size, 1rem);
+  height: var(--_su-choice-size, 1rem);
+  border: 1px solid var(--su-border-input);
+  border-radius: if($shape == 'circle', var(--su-radius-full), 0.25rem);
+  background-color: var(--su-bg-control);
+  background-clip: padding-box;
+  box-shadow: var(--su-shadow-control);
+  @include transition(background-color, border-color, box-shadow);
+}
+
+/// Indicateur coché : fond primaire
+@mixin choice-indicator-checked {
+  border-color: var(--su-primary-default);
+  background-color: var(--su-primary-default);
+  color: var(--su-primary-text);
+  box-shadow: none;
+}
+
+/// Groupe d'options : directions, cartes, défilement
+/// @param {String} $options - sélecteur du conteneur des options
+@mixin choice-group($options) {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+
+  #{$options} {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  &--horizontal #{$options} {
+    flex-flow: row wrap;
+    gap: 0.75rem 1.5rem;
+  }
+
+  &--inline-card #{$options},
+  &--block-card #{$options} {
+    gap: 0.5rem;
+  }
+
+  &--scrollable {
+    @include scrollable-container;
+
+    padding-inline-end: 0.75rem;
+  }
+}
+
+/// Option de choix : tailles, libellé, description, focus, cartes, états
+/// @param {String} $self - sélecteur de l'option (ex. '.su-radio-option')
+/// @param {String} $input - sélecteur de l'input natif masqué
+/// @param {String} $indicator - sélecteur de l'indicateur visuel
+@mixin choice-option($self, $input, $indicator) {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.625rem;
+  box-sizing: border-box;
+  color: var(--su-text-primary);
+  line-height: 1.375;
+  cursor: pointer;
+
+  // Tailles : 16px, 18px puis 16px dès `sm`, 20px
+  &--sm {
+    --_su-choice-size: 1rem;
+
+    font-size: var(--su-font-size-sm);
+  }
+
+  &--md {
+    --_su-choice-size: 1.125rem;
+
+    font-size: var(--su-font-size-base);
+
+    @include up('sm') {
+      --_su-choice-size: 1rem;
+
+      font-size: var(--su-font-size-sm);
+    }
+  }
+
+  &--lg {
+    --_su-choice-size: 1.25rem;
+
+    font-size: var(--su-font-size-base);
+  }
+
+  // Input natif : masqué visuellement mais focusable
+  #{$input} {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: 0;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  // L'indicateur est centré sur la première ligne du libellé
+  #{$indicator} {
+    margin-top: calc((1.375em - var(--_su-choice-size, 1rem)) / 2);
+  }
+
+  #{$input}:focus-visible + #{$indicator} {
+    @include focus-ring;
+  }
+
+  &:hover:not(#{$self}--disabled) #{$input}:not(:checked) + #{$indicator} {
+    border-color: var(--su-border-default);
+  }
+
+  // Cartes
+  &--inline-card,
+  &--block-card {
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--su-border-alpha);
+    border-radius: var(--su-radius-control);
+    background-color: var(--su-bg-surface);
+    background-clip: padding-box;
+    box-shadow: var(--su-shadow-control);
+    @include transition(border-color, background-color, box-shadow);
+
+    &:hover:not(#{$self}--disabled) {
+      border-color: var(--su-border-default);
+    }
+
+    &:has(#{$input}:focus-visible) {
+      @include focus-ring-field;
+    }
+  }
+
+  &--inline-card#{$self}--selected,
+  &--block-card#{$self}--selected {
+    border-color: var(--su-primary-default);
+    background-color: with-alpha(primary-default, 4%);
+  }
+
+  &--block-card {
+    width: 100%;
+  }
+
+  &--inline-card {
+    align-items: center;
+  }
+
+  // États
+  @each $state in ('error', 'success', 'warning') {
+    &--#{$state} #{$input}:not(:checked) + #{$indicator} {
+      border-color: with-alpha(state-#{$state}, 48%);
+    }
+
+    &--#{$state}#{$self}--inline-card,
+    &--#{$state}#{$self}--block-card {
+      border-color: with-alpha(state-#{$state}, 48%);
+    }
+  }
+
+  &--disabled {
+    @include disabled-state;
+  }
+}

@@ -67,6 +67,7 @@ Source : `styles/abstracts/`
 | `button-base` / `button-variant($v)` / `button-variants` / `button-disabled` / `button-icon` | Bouton partagé (Button, déclencheur de Dropdown…) : variantes primary, secondary, outline, ghost |
 | `popover-surface` / `popover-transition($name)` | Surface flottante (SelectBox, Dropdown, panneau du FloatButton) et ses classes de transition Vue |
 | `menu-item($highlighted?)` / `menu-separator` | Option de liste ou de menu (32/28px) et séparateur |
+| `choice-group($options)` / `choice-option($self, $input, $indicator)` / `choice-indicator($shape)` / `choice-indicator-checked` | Cases à cocher et boutons radio : directions, cartes, tailles, focus, états |
 | `up($bp)` / `down($bp)` | Media queries (sm 640, md 768, lg 1024, xl 1280, 2xl 1536) |
 | `motion-reduce` / `high-contrast` / `dark-mode` | Préférences et mode du thème |
 | `interactive-states`, `surface`, `truncate`, `scrollable-container`, `touch-target`, `use-border-radius`, `su-border-radius`, `squareSize`, `su-text`, `su-text-ellipsis`, `su-form-field-container`, `su-formfield-box` | Mixins historiques, conservés |
