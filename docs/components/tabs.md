@@ -81,23 +81,17 @@ const tabs = ref([
 
 ### Props
 
-| Prop          | Type                                 | Default        | Description                      |
-| ------------- | ------------------------------------ | -------------- | -------------------------------- |
-| `modelValue`  | `string \| number`                   | `undefined`    | Onglet actif (lié à `v-model`)   |
-| `variant`     | `'underline' \| 'border' \| 'pills'` | `'underline'`  | Style visuel des onglets         |
-| `size`        | `'sm' \| 'md' \| 'lg'`               | `'md'`         | Taille des onglets               |
-| `align`       | `'start' \| 'center' \| 'end'`       | `'start'`      | Alignement horizontal            |
-| `orientation` | `'horizontal' \| 'vertical'`         | `'horizontal'` | Orientation des onglets          |
-| `lazy`        | `boolean`                            | `false`        | Rendu différé du contenu inactif |
-| `disabled`    | `boolean`                            | `false`        | Désactive tous les onglets       |
+| Prop         | Type                                     | Default       | Description                                                                                         |
+| ------------ | ---------------------------------------- | ------------- | --------------------------------------------------------------------------------------------------- |
+| `tabs`       | `TabItem[]`                              | `undefined`   | Onglets à afficher (`label`, `content`, champs libres pour les slots)                               |
+| `modelValue` | `number`                                 | `0`           | Index de l’onglet actif (lié à `v-model`)                                                           |
+| `variant`    | `'underline' \| 'pills' \| 'contained'` | `'underline'` | `underline` : filet et indicateur animé ; `pills` : contrôle segmenté ; `contained` : onglets attachés au panneau |
 
 ### Events
 
-| Event                | Type                                | Description                          |
-| -------------------- | ----------------------------------- | ------------------------------------ |
-| `@update:modelValue` | `(value: string \| number) => void` | Émis lors du changement d’onglet     |
-| `@change`            | `(value: string \| number) => void` | Émis après le changement d’onglet    |
-| `@focus`             | `(event: FocusEvent) => void`       | Émis quand un onglet reçoit le focus |
+| Event                | Type                      | Description                      |
+| -------------------- | ------------------------- | -------------------------------- |
+| `@update:modelValue` | `(value: number) => void` | Émis lors du changement d’onglet |
 
 ## Accessibilité
 
