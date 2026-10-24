@@ -262,19 +262,29 @@ defineExpose({ focus, select, inputRef })
 <style lang="scss">
 @use '../../styles/abstracts' as *;
 
-@mixin su-input--size($self, $name, $fontSize, $padding, $minHeight) {
-  &--#{$name} {
-    //min-height: $minHeight; // calc(#{$padding} * 2 + 1rem);
+// ============================================================
+// INPUT — surface de contrôle : bordure en transparence, reflet interne,
+// halo de focus de 3px, hauteurs 36/32px (compactes dès `sm`)
+// ============================================================
 
-    #{$self}__element {
-      padding: $padding;
-      font-size: $fontSize; 
+@mixin su-input--size($self, $name, $padding) {
+  &--#{$name} {
+    min-height: var(--su-control-height-#{$name});
+
+    @include up('sm') {
+      min-height: var(--su-control-height-#{$name}-compact);
     }
 
-    .su-input__prefix,
-    .su-input__suffix {
-      padding: $padding;
-      font-size: $fontSize;
+    #{$self}__element {
+      padding-inline: $padding;
+    }
+
+    #{$self}__prefix {
+      padding-inline-start: $padding;
+    }
+
+    #{$self}__suffix {
+      padding-inline-end: $padding;
     }
   }
 }
@@ -287,19 +297,53 @@ defineExpose({ focus, select, inputRef })
   }
 }
 
+@mixin su-input--state($state) {
+  &--#{$state} {
+    border-color: with-alpha(state-#{$state}, 48%);
+
+    &:focus-within {
+      @include focus-ring-field(var(--su-state-#{$state}));
+    }
+  }
+}
+
 .su-input {
   $self: &;
-  
-  display: flex;
-  align-items: center;
 
-  @include su-form-field-container;
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  color: var(--su-text-primary);
+  // 16px sur mobile (pas de zoom iOS), 14px dès `sm`
+  font-size: var(--su-font-size-base);
+  @include control-surface;
+
+  @include up('sm') {
+    font-size: var(--su-font-size-sm);
+  }
 
   &__element {
-    @include su-formfield-box($self);
+    flex: 1;
+    min-width: 0;
+    margin: 0;
+    padding-block: 0;
+    border: 0;
+    outline: none;
+    background: transparent;
+    font: inherit;
+    line-height: 1.5;
+    color: inherit;
+    border-radius: inherit;
 
-    width: 100%;
-    line-height: var(--su-line-height-normal);
+    &::placeholder {
+      color: var(--su-text-tertiary);
+    }
+
+    // Empêche le fond jaune de l'autoremplissage
+    &:autofill {
+      -webkit-text-fill-color: var(--su-text-primary);
+      transition: background-color 5000000s ease-in-out 0s;
+    }
 
     &[type='number'] {
       appearance: textfield;
@@ -312,33 +356,66 @@ defineExpose({ focus, select, inputRef })
     }
 
     &[type='search'] {
-      &::-webkit-search-cancel-button {
+      &::-webkit-search-cancel-button,
+      &::-webkit-search-decoration {
         appearance: none;
       }
     }
   }
 
-  // Sizes
-  @include su-input--size(&, sm, var(--su-font-size-sm), 0.25rem 0.5rem, 2rem);
-  @include su-input--size(&, md, var(--su-font-size-base), 0.5rem 0.75rem, 2.5rem);
-  @include su-input--size(&, lg, var(--su-font-size-lg), 0.75rem 1rem, 3rem);
+  // Champ autorempli : léger voile pour le signaler
+  &:has(#{$self}__element:autofill) {
+    background-image: linear-gradient(with-alpha(text-primary, 4%), with-alpha(text-primary, 4%));
+  }
 
-  // Text align
+  // ### Tailles
+
+  @include su-input--size(&, sm, calc(0.625rem - 1px));
+  @include su-input--size(&, md, calc(0.75rem - 1px));
+  @include su-input--size(&, lg, calc(0.875rem - 1px));
+
+  // ### Alignement du texte
+
   @include su-input--align(&, left);
   @include su-input--align(&, center);
   @include su-input--align(&, right);
 
-  // Prefix & Suffix
+  // ### États (l'erreur passe par aria-invalid, géré par control-surface)
+
+  @include su-input--state(success);
+  @include su-input--state(warning);
+
+  &--disabled {
+    @include disabled-state;
+
+    box-shadow: none;
+  }
+
+  &--readonly {
+    background-image: linear-gradient(var(--su-bg-muted), var(--su-bg-muted));
+  }
+
+  // ### Préfixe et suffixe
+
+  &--has-prefix #{$self}__element {
+    padding-inline-start: 0.5rem;
+  }
+
+  &--has-suffix #{$self}__element {
+    padding-inline-end: 0.5rem;
+  }
+
   &__prefix,
   &__suffix {
     display: flex;
     align-items: center;
-    flex-wrap: nowrap;
-    color: var(--su-text-secondary);
-    height: -webkit-fill-available;
-    
+    flex-shrink: 0;
+    gap: 0.375rem;
+    white-space: nowrap;
+    color: var(--su-text-tertiary);
+
     &__text {
-      font-weight: 500;
+      font-weight: var(--su-font-weight-medium);
     }
 
     &__icon {
@@ -346,35 +423,40 @@ defineExpose({ focus, select, inputRef })
       align-items: center;
       justify-content: center;
 
+      // 18px sur mobile, 16px dès `sm`
       .su-input-icon {
-        width: 1.25em;
-        height: 1.25em;
+        width: 1.125rem;
+        height: 1.125rem;
+        opacity: 0.8;
+
+        @include up('sm') {
+          width: 1rem;
+          height: 1rem;
+        }
       }
     }
-    
+
     &--clickable {
+      margin: -0.25rem;
+      padding: 0.25rem;
+      border-radius: var(--su-radius-sm);
       cursor: pointer;
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-      
-      &:hover:not(.su-input--disabled, .su-input--readonly) {
-        background-color: var(--su-bg-hover);
+      @include transition(background-color, color);
+
+      &:hover {
+        background-color: var(--su-bg-accent);
         color: var(--su-text-primary);
       }
-      
-      &:active:not(.su-input--disabled, .su-input--readonly) {
-        background-color: var(--su-bg-active);
+
+      &:focus-visible {
+        @include focus-ring($offset: 0);
+      }
+
+      #{$self}--disabled &,
+      #{$self}--readonly & {
+        pointer-events: none;
       }
     }
-  }
-
-  &__prefix {
-    border-top-left-radius: var(--su-radius-md);
-    border-bottom-left-radius: var(--su-radius-md);
-  }
-
-  &__suffix {
-    border-top-right-radius: var(--su-radius-md);
-    border-bottom-right-radius: var(--su-radius-md);
   }
 }
 </style>

@@ -34,8 +34,8 @@ const fieldId = 'otp-input-' + useId()
 const otpId = computed(() => (attrs.id as string) || fieldId)
 
 const otpInputProps = computed(() => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   // modelValue (déclaré par defineModel) passe par v-model : il ne doit pas écraser la liaison
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { label, message, fieldId: _fieldId, requiredText, modelValue: _modelValue, ...rest } = props as typeof props & { modelValue?: unknown }
   return rest
 })

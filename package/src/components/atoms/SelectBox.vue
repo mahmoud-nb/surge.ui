@@ -491,7 +491,7 @@ watch(modelValue, () => {
             class="su-select-spinner"
           >
             <svg
-              class="su-spinner"
+              class="su-select-spinner-icon"
               viewBox="0 0 24 24"
               aria-hidden="true"
             >
@@ -670,8 +670,68 @@ watch(modelValue, () => {
 </template>
 
 <style lang="scss">
+@use '../../styles/abstracts' as *;
+
+// ============================================================
+// SELECTBOX — déclencheur en surface de contrôle, liste en popover
+// (bordure alpha, ombre douce, reflet interne), options compactes
+// ============================================================
+
+// Icônes : 18px sur mobile, 16px dès `sm`
+@mixin su-select-icon {
+  flex-shrink: 0;
+  width: 1.125rem;
+  height: 1.125rem;
+
+  @include up('sm') {
+    width: 1rem;
+    height: 1rem;
+  }
+}
+
+@mixin su-select-state($state, $border-alpha) {
+  &--#{$state} {
+    border-color: with-alpha(state-#{$state}, $border-alpha);
+
+    &:focus-visible,
+    &.su-select__trigger--open {
+      @include focus-ring-field(var(--su-state-#{$state}));
+    }
+  }
+}
+
 .su-select {
-  $self: &;
+  position: relative;
+  width: 100%;
+  color: var(--su-text-primary);
+  // 16px sur mobile (pas de zoom iOS), 14px dès `sm`
+  font-size: var(--su-font-size-base);
+
+  @include up('sm') {
+    font-size: var(--su-font-size-sm);
+  }
+
+  &__container {
+    position: relative;
+
+    &--sm {
+      --_su-select-height: var(--su-control-height-sm);
+      --_su-select-height-compact: var(--su-control-height-sm-compact);
+      --_su-select-pad-x: calc(0.625rem - 1px);
+    }
+
+    &--md {
+      --_su-select-height: var(--su-control-height-md);
+      --_su-select-height-compact: var(--su-control-height-md-compact);
+      --_su-select-pad-x: calc(0.75rem - 1px);
+    }
+
+    &--lg {
+      --_su-select-height: var(--su-control-height-lg);
+      --_su-select-height-compact: var(--su-control-height-lg-compact);
+      --_su-select-pad-x: calc(0.875rem - 1px);
+    }
+  }
 
   &__trigger {
     display: flex;
@@ -679,116 +739,59 @@ watch(modelValue, () => {
     justify-content: space-between;
     gap: 0.5rem;
     width: 100%;
-    background-color: transparent;
-    border: 1px solid var(--su-border-default);
-    border-radius: var(--su-radius-md);
+    min-height: var(--_su-select-height);
+    padding: 0.125rem var(--_su-select-pad-x);
     cursor: pointer;
-    transition: all var(--su-duration-fast) cubic-bezier(0.4, 0, 0.2, 1);
-    box-sizing: border-box;
-    
-    &:focus {
-      outline: none;
-      border-color: var(--su-link-default);
-      box-shadow: 0 0 0 3px color-mix(in srgb, var(--su-link-default) 10%, transparent);
+    user-select: none;
+    outline: none;
+    @include control-surface;
+
+    @include up('sm') {
+      min-height: var(--_su-select-height-compact);
     }
-    
-    // États
-    &--error {
-      border-color: var(--su-state-error);
-      
-      &:focus {
-        border-color: var(--su-state-error);
-        box-shadow: 0 0 0 3px color-mix(in srgb, var(--su-state-error) 10%, transparent);
-      }
-    }
-    
-    &--success {
-      border-color: var(--su-state-success);
-      
-      &:focus {
-        border-color: var(--su-state-success);
-        box-shadow: 0 0 0 3px color-mix(in srgb, var(--su-state-success) 10%, transparent);
-      }
-    }
-    
-    &--warning {
-      border-color: var(--su-state-warning);
-      
-      &:focus {
-        border-color: var(--su-state-warning);
-        box-shadow: 0 0 0 3px color-mix(in srgb, var(--su-state-warning) 10%, transparent);
-      }
-    }
-    
-    &--disabled {
-      background-color: var(--su-bg-disabled);
-      border-color: var(--su-border-disabled);
-      cursor: not-allowed;
-      
-      &:focus {
-        border-color: var(--su-border-disabled);
+
+    // Liste ouverte : même anneau qu'au focus
+    &--open {
+      @include focus-ring-field;
+
+      &::before {
         box-shadow: none;
       }
     }
-    
-    &--readonly {
-      background-color: var(--su-bg-disabled);
-      cursor: default;
-    }
-    
-    &--open {
-      border-color: var(--su-link-default);
-      box-shadow: 0 0 0 3px color-mix(in srgb, var(--su-link-default) 10%, transparent);
-    }
-    
-    // Alignement
-    &--align-center {
-      .su-select-display-text {
-        text-align: center;
-      }
-    }
-    
-    &--align-right {
-      .su-select-display-text {
-        text-align: right;
-      }
-    }
-    
-    &--placeholder {
-      .su-select-display-text {
-        color: var(--su-text-tertiary);
-      }
-    }
-  }
 
-  &__container {
-    position: relative;
-    
-    &--sm {
-      #{$self}__trigger {
-        min-height: 2rem;
-        padding: 0.375rem 0.75rem;
-        font-size: var(--su-font-size-sm);
-      }
+    // États (aria-invalid est posé sur le déclencheur lui-même)
+    @include su-select-state(error, 36%);
+    @include su-select-state(success, 48%);
+    @include su-select-state(warning, 48%);
+
+    &--disabled {
+      @include disabled-state;
+
+      pointer-events: none;
+      box-shadow: none;
     }
-    
-    &--md {
-      #{$self}__trigger {
-        min-height: 2.5rem;
-        padding: 0.5rem 0.75rem;
-        font-size: var(--su-font-size-base);
-      }
+
+    &--readonly {
+      cursor: default;
+      background-image: linear-gradient(var(--su-bg-muted), var(--su-bg-muted));
     }
-    
-    &--lg {
-      #{$self}__trigger {
-        min-height: 3rem;
-        padding: 0.75rem 1rem;
-        font-size: var(--su-font-size-lg);
-      }
+
+    // Alignement
+    &--align-center .su-select-display-text {
+      text-align: center;
+    }
+
+    &--align-right .su-select-display-text {
+      text-align: right;
+    }
+
+    &--placeholder .su-select-display-text {
+      color: var(--su-text-tertiary);
     }
   }
 }
+
+// ### Contenu du déclencheur
 
 .su-select-content {
   flex: 1;
@@ -799,440 +802,315 @@ watch(modelValue, () => {
   display: flex;
   align-items: center;
   gap: 0.25rem;
+  flex-shrink: 0;
+  color: var(--su-text-tertiary);
 }
 
 .su-select-display {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  
+  min-width: 0;
+
   &-icon {
-    width: 1.25em;
-    height: 1.25em;
-    flex-shrink: 0;
-    color: var(--su-text-secondary);
+    @include su-select-icon;
+
+    opacity: 0.8;
   }
-  
+
   &-text {
     flex: 1;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    color: var(--su-text-primary);
+    @include truncate;
   }
 }
 
+// Sélection multiple : étiquettes compactes
 .su-select-tags {
   display: flex;
   flex-wrap: wrap;
   gap: 0.25rem;
-  align-items: center;
+  padding-block: 0.125rem;
 }
 
 .su-select-tag {
   display: inline-flex;
   align-items: center;
   gap: 0.25rem;
-  padding: 0.125rem 0.375rem;
-  background-color: var(--su-bg-selected);
-  color: var(--su-text-primary);
+  max-width: 12rem;
+  height: 1.375rem;
+  padding-inline: 0.375rem 0.125rem;
+  border: 1px solid var(--su-border-alpha);
   border-radius: var(--su-radius-sm);
-  font-size: 0.875em;
-  max-width: 150px;
-  
+  background-color: var(--su-bg-muted);
+  font-size: var(--su-font-size-xs);
+  font-weight: var(--su-font-weight-medium);
+
+  @include up('sm') {
+    height: 1.25rem;
+  }
+
   &--more {
-    background-color: var(--su-bg-hover);
+    padding-inline: 0.375rem;
     color: var(--su-text-secondary);
   }
-  
+
   &-icon {
-    width: 1em;
-    height: 1em;
+    width: 0.875rem;
+    height: 0.875rem;
     flex-shrink: 0;
   }
-  
+
   &-label {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    @include truncate;
   }
-  
+
   &-remove {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
+    width: 1rem;
+    height: 1rem;
     padding: 0;
-    background: none;
-    border: none;
+    border: 0;
+    border-radius: var(--su-radius-xs);
+    background: transparent;
+    color: var(--su-text-tertiary);
     cursor: pointer;
-    color: var(--su-link-default);
-    border-radius: 50%;
-    transition: all var(--su-duration-fast);
-    
+    @include transition(background-color, color);
+
     &:hover {
-      background-color: var(--su-bg-hover);
+      background-color: var(--su-bg-accent);
+      color: var(--su-text-primary);
     }
-    
+
+    &:focus-visible {
+      @include focus-ring($offset: 0);
+    }
+
     &-icon {
-      width: 0.875em;
-      height: 0.875em;
+      width: 0.75rem;
+      height: 0.75rem;
     }
   }
 }
 
 .su-select-spinner {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  
-  .su-spinner {
-    width: 1em;
-    height: 1em;
-    animation: spin 1s linear infinite;
+
+  &-icon {
+    @include su-select-icon;
+
+    animation: su-select-spin 0.8s linear infinite;
   }
 }
 
 .su-select-clear {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0.125rem;
-  background: none;
-  border: none;
+  width: 1.5rem;
+  height: 1.5rem;
+  padding: 0;
+  border: 0;
+  border-radius: var(--su-radius-sm);
+  background: transparent;
+  color: inherit;
   cursor: pointer;
-  color: var(--su-text-secondary);
-  border-radius: 50%;
-  transition: all var(--su-duration-fast);
-  
+  @include transition(background-color, color);
+
   &:hover {
-    background-color: var(--su-bg-hover);
+    background-color: var(--su-bg-accent);
     color: var(--su-text-primary);
   }
-  
+
+  &:focus-visible {
+    @include focus-ring($offset: 0);
+  }
+
   &-icon {
-    width: 1em;
-    height: 1em;
+    width: 1rem;
+    height: 1rem;
   }
 }
 
 .su-select-chevron {
-  width: 1.25em;
-  height: 1.25em;
-  color: var(--su-text-secondary);
-  transition: transform var(--su-duration-fast);
-  
+  @include su-select-icon;
+
+  opacity: 0.8;
+  @include transition(transform);
+
   &--open {
     transform: rotate(180deg);
   }
 }
 
+// ### Liste déroulante (popover)
+
 .su-select-dropdown {
   position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  z-index: 50;
-  margin-top: 0.25rem;
-  background-color: white;
-  border: 1px solid var(--su-border-default);
-  border-radius: var(--su-radius-md);
-  box-shadow: var(--su-shadow-md);
-  overflow: hidden;
+  top: calc(100% + 0.25rem);
+  inset-inline: 0;
+  @include popover-surface;
 }
 
 .su-select-search {
-  padding: 0.75rem;
-  border-bottom: 1px solid var(--su-border-default);
-  
+  margin: -0.25rem -0.25rem 0.25rem;
+  padding: 0.25rem;
+  border-bottom: 1px solid var(--su-border-alpha);
+
   &-container {
     position: relative;
-    display: flex;
-    align-items: center;
   }
-  
+
   &-icon {
     position: absolute;
-    left: 0.75rem;
-    width: 1.25em;
-    height: 1.25em;
-    color: var(--su-text-secondary);
+    inset-inline-start: 0.5rem;
+    top: 50%;
+    width: 1rem;
+    height: 1rem;
+    translate: 0 -50%;
+    color: var(--su-text-tertiary);
     pointer-events: none;
   }
-  
+
   &-input {
     width: 100%;
-    padding: 0.5rem 0.75rem 0.5rem 2.5rem;
-    border: 1px solid var(--su-border-default);
+    height: var(--su-control-height-sm);
+    padding-inline: 2rem 0.5rem;
+    border: 0;
     border-radius: var(--su-radius-sm);
-    font-size: var(--su-font-size-sm);
-    
-    &:focus {
-      outline: none;
-      border-color: var(--su-link-default);
-      box-shadow: 0 0 0 2px color-mix(in srgb, var(--su-link-default) 10%, transparent);
+    outline: none;
+    background: transparent;
+    font: inherit;
+    color: var(--su-text-primary);
+
+    @include up('sm') {
+      height: var(--su-control-height-sm-compact);
+    }
+
+    &::placeholder {
+      color: var(--su-text-tertiary);
+    }
+
+    &:focus-visible {
+      background-color: var(--su-bg-accent);
     }
   }
 }
 
 .su-select-options {
-  max-height: inherit;
   overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--su-border-default) transparent;
 }
 
 .su-select-group-header {
-  padding: 0.5rem 0.75rem;
-  font-size: var(--su-font-size-sm);
-  font-weight: 600;
-  color: var(--su-text-secondary);
-  background-color: var(--su-bg-hover);
-  border-bottom: 1px solid var(--su-border-default);
+  padding: 0.375rem 0.5rem 0.25rem;
+  font-size: var(--su-font-size-xs);
+  font-weight: var(--su-font-weight-medium);
+  color: var(--su-text-tertiary);
 }
 
 .su-select-option {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.75rem;
-  cursor: pointer;
-  transition: all var(--su-duration-fast);
-  
-  &:hover:not(&--disabled) {
-    background-color: var(--su-bg-hover);
+  @include menu-item;
+
+  &--selected {
+    font-weight: var(--su-font-weight-medium);
   }
-  
-  &--focused:not(&--disabled) {
-    background-color: var(--su-bg-selected);
-  }
-  
-  &--selected:not(&--disabled) {
-    background-color: var(--su-bg-selected);
-    color: var(--su-text-primary);
-  }
-  
-  &--disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-  }
-  
+
   &-checkbox {
-    flex-shrink: 0;
+    display: flex;
   }
-  
+
   &-icon {
-    width: 1.25em;
-    height: 1.25em;
-    flex-shrink: 0;
-    color: var(--su-text-secondary);
+    @include su-select-icon;
+
+    opacity: 0.8;
   }
-  
+
   &-content {
     flex: 1;
     min-width: 0;
   }
-  
+
   &-label {
-    font-weight: 500;
-    color: var(--su-text-primary);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    @include truncate;
   }
-  
+
   &-description {
-    font-size: var(--su-font-size-sm);
-    color: var(--su-text-secondary);
     margin-top: 0.125rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    font-size: var(--su-font-size-xs);
+    font-weight: var(--su-font-weight-normal);
+    color: var(--su-text-tertiary);
   }
-  
+
   &-check {
-    width: 1.25em;
-    height: 1.25em;
-    color: var(--su-link-default);
-    flex-shrink: 0;
+    @include su-select-icon;
+
+    margin-inline-start: auto;
   }
 }
 
+// Case à cocher des sélections multiples (même style que les cases à cocher)
 .su-select-checkbox {
-  width: 1.25rem;
-  height: 1.25rem;
-  border: 2px solid var(--su-border-default);
-  border-radius: var(--su-radius-sm);
-  display: flex;
+  position: relative;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  transition: all var(--su-duration-fast);
-  
-  &--checked {
-    background-color: var(--su-link-default);
-    border-color: var(--su-link-default);
-    
-    .su-select-checkbox-icon {
-      color: white;
-    }
+  width: 1.125rem;
+  height: 1.125rem;
+  border: 1px solid var(--su-border-input);
+  border-radius: var(--su-radius-sm);
+  background-color: var(--su-bg-control);
+  box-shadow: var(--su-shadow-control);
+  @include transition(background-color, border-color);
+
+  @include up('sm') {
+    width: 1rem;
+    height: 1rem;
   }
-  
+
+  &--checked {
+    border-color: var(--su-primary-default);
+    background-color: var(--su-primary-default);
+    color: var(--su-primary-text);
+    box-shadow: none;
+  }
+
   &-icon {
-    width: 0.875rem;
-    height: 0.875rem;
+    width: 0.75rem;
+    height: 0.75rem;
+    stroke-width: 3;
   }
 }
 
 .su-select-no-options {
-  padding: 1rem 0.75rem;
+  padding: 0.75rem 0.5rem;
   text-align: center;
-  color: var(--su-text-secondary);
-  font-style: italic;
-}
-
-.su-select-message {
   font-size: var(--su-font-size-sm);
-  line-height: var(--su-line-height-tight);
-  
-  &--default {
-    color: var(--su-text-secondary);
-  }
-  
-  &--error {
-    color: var(--su-state-error);
-  }
-  
-  &--success {
-    color: var(--su-state-success);
-  }
-  
-  &--warning {
-    color: var(--su-state-warning);
-  }
+  color: var(--su-text-tertiary);
 }
 
-// Animations
-.su-select-dropdown-enter-active,
-.su-select-dropdown-leave-active {
-  transition: all var(--su-duration-fast) cubic-bezier(0.4, 0, 0.2, 1);
-  transform-origin: top;
-}
+// ### Animation d'ouverture (opacité + léger zoom)
 
-.su-select-dropdown-enter-from,
-.su-select-dropdown-leave-to {
-  opacity: 0;
-  transform: scaleY(0.95) translateY(-0.5rem);
-}
+@include popover-transition('su-select-dropdown');
 
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-
+@keyframes su-select-spin {
   to {
-    transform: rotate(360deg);
+    rotate: 360deg;
   }
 }
 
-// Mode sombre
-@media (prefers-color-scheme: dark) {
-  .su-select-label {
-    color: var(--su-text-primary);
-    
-    &--disabled {
-      color: var(--su-text-tertiary);
-    }
-  }
-  
-  .su-select__trigger {
-    background-color: var(--su-bg-surface);
-    border-color: var(--su-border-default);
-    
-    &--disabled {
-      background-color: var(--su-bg-disabled);
-      border-color: var(--su-border-disabled);
-    }
-    
-    &--readonly {
-      background-color: var(--su-bg-disabled);
-    }
-  }
-  
-  .su-select-display-text {
-    color: var(--su-text-primary);
-  }
-  
-  .su-select-dropdown {
-    background-color: var(--su-bg-surface);
-    border-color: var(--su-border-default);
-  }
-  
-  .su-select-search-input {
-    background-color: var(--su-bg-hover);
-    border-color: var(--su-border-default);
-    color: var(--su-text-primary);
-  }
-  
-  .su-select-group-header {
-    background-color: var(--su-bg-hover);
-    border-color: var(--su-border-default);
-    color: var(--su-text-secondary);
-  }
-  
-  .su-select-option {
-    &:hover:not(&--disabled) {
-      background-color: var(--su-bg-hover);
-    }
-    
-    &--focused:not(&--disabled) {
-      background-color: var(--su-bg-selected);
-    }
-    
-    &--selected:not(&--disabled) {
-      background-color: var(--su-bg-selected);
-      color: var(--su-text-primary);
-    }
-    
-    &-label {
-      color: var(--su-text-primary);
-    }
-    
-    &-description {
-      color: var(--su-text-secondary);
-    }
-  }
-  
-  .su-select-message {
-    &--default {
-      color: var(--su-text-secondary);
-    }
-  }
-}
-
-// Mode de contraste élevé
-@media (prefers-contrast: more) {
-  .su-select__trigger {
-    border-width: 2px;
-    
-    &:focus {
-      border-width: 3px;
-    }
-  }
-  
-  .su-select-dropdown {
+// Contraste élevé : bordures pleines
+.su-select-tag {
+  @include high-contrast {
     border-width: 2px;
   }
 }
 
-// Support de la réduction des animations
-@media (prefers-reduced-motion: reduce) {
-  .su-select__trigger,
-  .su-select-chevron,
-  .su-select-option,
-  .su-select-dropdown-enter-active,
-  .su-select-dropdown-leave-active {
-    transition: none;
-  }
-  
-  .su-spinner {
-    animation: none;
+.su-select-spinner-icon {
+  @include motion-reduce {
+    animation-duration: 2.4s;
   }
 }
 </style>

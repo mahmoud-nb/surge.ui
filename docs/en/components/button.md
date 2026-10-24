@@ -130,8 +130,10 @@ import { PlusIcon, ArrowRightIcon, HeartIcon, TrashIcon } from '@heroicons/vue/2
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `variant` | `'primary' \| 'secondary' \| 'outline' \| 'ghost'` | `'primary'` | Button visual variant |
-| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Button size |
+| `type` | `'button' \| 'submit' \| 'reset'` | `'button'` | Native type. Use `'submit'` to submit a form |
+| `variant` | `'primary' \| 'secondary' \| 'outline' \| 'ghost' \| 'custom'` | `'primary'` | Visual variant: solid primary, soft secondary, neutral outline (subtle border and highlight), transparent ghost |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Size: 32/36/40px on mobile, 28/32/36px from 640px |
+| `radius` | `'none' \| 'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| 'full'` | `undefined` | Border radius. Defaults to the control radius (`--su-radius-control`, 10px) |
 | `disabled` | `boolean` | `false` | Disable the button |
 | `loading` | `boolean` | `false` | Show loading spinner |
 | `block` | `boolean` | `false` | Take full available width |

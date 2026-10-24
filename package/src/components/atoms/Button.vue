@@ -7,7 +7,6 @@ const props = withDefaults(defineProps<ButtonProps>(), {
   type: 'button',
   variant: 'primary',
   size: 'md',
-  radius: 'md',
   disabled: false,
   loading: false,
   loadingLabel: 'Chargement en cours...',
@@ -28,6 +27,7 @@ const classes = computed(() => {
     'su-button',
     props.size && `su-button--${props.size}`,
     props.variant && `su-button--${props.variant}`,
+    // Sans `radius`, le bouton prend le rayon des contrôles (--su-radius-control)
     props.radius && `su-button--radius-${props.radius}`,
     {
       'su-button--disabled': props.disabled,
@@ -64,13 +64,13 @@ const handleBlur = (event: FocusEvent) => {
 // Calcul des attributs ARIA
 const ariaAttributes = computed(() => {
   const attrs: Record<string, any> = {}
-  
+
   if (props.ariaLabel) attrs['aria-label'] = props.ariaLabel
   if (props.ariaDescribedBy) attrs['aria-describedby'] = props.ariaDescribedBy
   if (props.ariaExpanded !== undefined) attrs['aria-expanded'] = props.ariaExpanded
   if (props.ariaPressed !== undefined) attrs['aria-pressed'] = props.ariaPressed
   if (props.role) attrs['role'] = props.role
-  
+
   // États automatiques
   if (props.loading) {
     attrs['aria-busy'] = 'true'
@@ -101,238 +101,109 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !props.ari
     @focus="handleFocus"
     @blur="handleBlur"
   >
+    <!-- Icône -->
+    <component
+      :is="icon"
+      v-if="icon"
+      class="su-button__icon"
+      aria-hidden="true"
+    />
+
+    <!-- Contenu textuel (conservé pendant le chargement pour garder la largeur) -->
+    <span
+      v-if="hasText && $slots.default"
+      class="su-button__content"
+    >
+      <slot />
+    </span>
+
     <Spinner
       v-if="loading"
+      class="su-button__spinner"
       :label="loadingLabel"
+      color="currentColor"
+      :size="16"
     />
-    
-    <template v-if="!loading">
-      <!-- Icône -->
-      <component 
-        :is="icon" 
-        v-if="icon" 
-        class="su-button__icon"
-        aria-hidden="true"
-      />
-      
-      <!-- Contenu textuel -->
-      <span
-        v-if="hasText && $slots.default"
-        class="su-button__content"
-      >
-        <slot />
-      </span>
-    </template>
   </button>
 </template>
 
 <style lang="scss">
 @use '../../styles/abstracts' as *;
 
+// ============================================================
+// BUTTON — base et variantes partagées (abstracts/_patterns.scss)
+// ============================================================
+
 .su-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  font-family: inherit;
-  font-weight: 500;
-  border: 1px solid transparent;
-  border-radius: var(--su-radius-md);
-  cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  text-decoration: none;
-  white-space: nowrap;
-  user-select: none;
-  position: relative;
+  @include button-base;
 
-  // Focus visible amélioré pour l'accessibilité
-  &:focus-visible {
-    outline: 2px solid var(--su-border-focus);
-    outline-offset: 2px;
-    box-shadow: 0 0 0 4px rgb(37 99 235 / 15%);
-  }
-
-  &:hover:not(&--disabled, &--loading) {
-    transform: translateY(-1px);
-  }
-
-  &:active:not(&--disabled, &--loading) {
-    transform: translateY(0);
-  }
-
-  // Radius
+  // Radius explicites (prop `radius`)
   @include use-border-radius;
 
-  // Sizes
-  &--sm {
-    padding: 0.125rem 0.625rem;
-    font-size: 0.875rem;
-    line-height: 1.25rem;
-    min-height: 2rem; // 32px minimum pour l'accessibilité
-    
-    &.su-button--icon-only {
-      padding: 0.125rem;
-      width: 2rem;
-    }
+  // ### Tailles (36/32 · 32/28 · 40/36 px, compactes dès `sm`)
+
+  &--sm { @include control-size('sm'); }
+  &--md { @include control-size('md'); }
+  &--lg { @include control-size('lg'); }
+
+  &--icon-only {
+    padding-inline: 0;
+    aspect-ratio: 1;
   }
 
-  &--md {
-    padding: 0.625rem 1rem;
-    font-size: 0.875rem;
-    line-height: 1.25rem;
-    min-height: 2.5rem; // 40px minimum pour l'accessibilité
-    
-    &.su-button--icon-only {
-      padding: 0.625rem;
-      width: 2.5rem;
-    }
-  }
+  // ### Variantes
 
-  &--lg {
-    padding: 0.75rem 1.5rem;
-    font-size: 1rem;
-    line-height: 1.5rem;
-    min-height: 3rem; // 48px minimum pour l'accessibilité
-    
-    &.su-button--icon-only {
-      padding: 0.75rem;
-      width: 3rem;
-    }
-  }
+  @include button-variants;
 
-  // Variants
-  &--primary {
-    background-color: var(--su-primary-default);
-    color: var(--su-primary-text);
-    
-    &:hover:not(&--disabled, &--loading) {
-      background-color: var(--su-primary-hover);
-      transform: translateY(-1px);
-      box-shadow: var(--su-shadow-md);
-    }
-
-    &:active:not(&--disabled, &--loading) {
-      transform: translateY(0);
-      box-shadow: var(--su-shadow-sm);
-    }
-  }
-
-  &--secondary {
-    background-color: var(--su-secondary-default);
-    color: var(--su-secondary-text);
-    border-color: var(--su-border-default);
-
-    &:hover:not(&--disabled, &--loading) {
-      background-color: var(--su-secondary-hover);
-      border-color: var(--su-border-hover);
-      transform: translateY(-1px);
-      box-shadow: var(--su-shadow-sm);
-    }
-  }
-
-  &--outline {
-    background-color: transparent;
-    color: var(--su-primary-600);
-    border-color: var(--su-primary-200);
-
-    &:hover:not(&--disabled, &--loading) {
-      background-color: var(--su-primary-50);
-      border-color: var(--su-primary-300);
-      transform: translateY(-1px);
-    }
-  }
-
-  &--ghost {
-    background-color: transparent;
-    color: var(--su-primary-600);
-
-    &:hover:not(&--disabled, &--loading) {
-      background-color: var(--su-primary-50);
-      transform: translateY(-1px);
-    }
-  }
-  
   &--custom {
     background-color: var(--su-custom-button-bg, var(--su-primary-default));
     color: var(--su-custom-button-color, var(--su-primary-text));
     border: var(--su-custom-button-border, 1px solid transparent);
-    
-    &:hover:not(&--disabled, &--loading) {
-      background-color: var(--su-custom-button-hover-bg, var(--su-primary-hover));
-      transform: translateY(-1px);
-      box-shadow: var(--su-custom-button-hover-shadow, var(--su-shadow-md));
-    }
 
-    &:active:not(&--disabled, &--loading) {
-      transform: translateY(0);
-      box-shadow: var(--su-shadow-sm);
+    &:hover:not(:disabled) {
+      background-color: var(--su-custom-button-hover-bg, var(--su-primary-hover));
+      box-shadow: var(--su-custom-button-hover-shadow, none);
     }
   }
 
-  // States
+  // ### États
+
   &--disabled {
-    opacity: 0.6; // Amélioration du contraste
-    cursor: not-allowed;
-    
-    &:focus {
-      outline: none;
-      box-shadow: none;
-    }
+    @include button-disabled;
   }
 
   &--loading {
-    cursor: wait;
-    
+    // Le contenu reste en place (largeur stable) mais devient invisible
+    .su-button__icon,
     .su-button__content {
-      opacity: 0.7;
+      opacity: 0;
     }
+  }
+
+  &__spinner {
+    position: absolute;
+    inset: 0;
+    margin: auto;
   }
 
   &--block {
     width: 100%;
   }
-  
+
   // Direction de l'icône
   &--icon-right {
     flex-direction: row-reverse;
   }
 
-  // Icon styles
   &__icon {
-    width: 1em;
-    height: 1em;
-    flex-shrink: 0;
-  }
-  
-  // Ajustements pour les boutons avec icônes seules
-  &--icon-only {
-    gap: 0;
-    
-    .su-button__icon {
-      width: 1.25em;
-      height: 1.25em;
-    }
+    @include button-icon;
+
+    margin-inline: -0.125rem;
   }
 
-    // Support du mode de contraste élevé
-  @media (prefers-contrast: more) {
-    border-width: 2px;
-    
-    &:focus-visible {
-      outline-width: 3px;
-    }
-  }
-
-  // Support de la réduction des animations
-  @media (prefers-reduced-motion: reduce) {
-    transition: none;
-    
-    &:hover:not(&--disabled, &--loading) {
-      transform: none;
-    }
+  &--icon-only &__icon {
+    margin-inline: 0;
+    opacity: 1;
   }
 }
-
-// CSS custom properties now handle dark mode automatically
-// No dark mode overrides needed - colors update automatically based on data-theme attribute
 </style>

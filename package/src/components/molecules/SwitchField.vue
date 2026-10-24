@@ -27,8 +27,8 @@ const fieldId = 'switch-' + useId()
 const switchId = computed(() => attrs.id as string || fieldId)
 
 const switchProps = computed(() => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   // modelValue (déclaré par defineModel) passe par v-model : il ne doit pas écraser la liaison
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { label, message, modelValue: _modelValue, ...rest } = props as typeof props & { modelValue?: unknown }
   return rest
 })

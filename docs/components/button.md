@@ -116,7 +116,7 @@ import { PlusIcon, ArrowRightIcon, HeartIcon, TrashIcon } from '@heroicons/vue/2
       <SuButton radius="md">Medium</SuButton>
       <SuButton radius="lg">Large</SuButton>
       <SuButton radius="xl">Extra Large</SuButton>
-      <SuButton radius="max">Max</SuButton>
+      <SuButton radius="full">Full</SuButton>
     </div>
   </div>
 </div>
@@ -128,7 +128,7 @@ import { PlusIcon, ArrowRightIcon, HeartIcon, TrashIcon } from '@heroicons/vue/2
   <SuButton radius="md">Medium</SuButton>
   <SuButton radius="lg">Large</SuButton>
   <SuButton radius="xl">Extra Large</SuButton>
-  <SuButton radius="max">Max</SuButton>
+  <SuButton radius="full">Full</SuButton>
 </template>
 ```
 
@@ -180,9 +180,10 @@ import { PlusIcon, ArrowRightIcon, HeartIcon, TrashIcon } from '@heroicons/vue/2
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `variant` | `'primary' \| 'secondary' \| 'outline' \| 'ghost' \| 'default'` | `'default'` | Variante visuelle du bouton |
-| `size` | `'sm' \| 'md' \| 'lg' \| 'default'` | `'default'` | Taille du bouton |
-| `radius` | `'none' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| 'default'` | `'default'` | Rayon de bordure du bouton |
+| `type` | `'button' \| 'submit' \| 'reset'` | `'button'` | Type natif. Passer `'submit'` pour soumettre un formulaire |
+| `variant` | `'primary' \| 'secondary' \| 'outline' \| 'ghost' \| 'custom'` | `'primary'` | Variante visuelle : primaire pleine, secondaire douce, outline neutre (bordure légère et reflet), ghost transparent |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Taille : 32/36/40px sur mobile, 28/32/36px dès 640px |
+| `radius` | `'none' \| 'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| 'full'` | `undefined` | Rayon de bordure. Par défaut, rayon des contrôles (`--su-radius-control`, 10px) |
 | `disabled` | `boolean` | `false` | Désactive le bouton |
 | `loading` | `boolean` | `false` | Affiche un spinner de chargement |
 | `block` | `boolean` | `false` | Prend toute la largeur disponible |

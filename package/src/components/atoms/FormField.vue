@@ -128,80 +128,71 @@ const labelClasses = computed(() => [
 .su-form-field {
   $self: &;
 
+  // Label medium, message discret en text-xs
   display: flex;
   flex-direction: column;
-  gap: 0.375rem;
+  gap: 0.5rem;
 
   &__label {
-    display: block;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.125rem;
+    font-weight: var(--su-font-weight-medium);
+    line-height: 1.125;
+    color: var(--su-text-primary);
 
-    @include su-text('sm', 'primary', 'medium', 'tight');
-    
-    // TODO : Removed individual properties in favor of mixin
-    //font-size: var(--su-font-size-sm);
-    //font-weight: 500;
-    //color: var(--su-text-primary);
-    //line-height: var(--su-line-height-tight);
-
-    &--required {
-      .su-indicator-required {
-        color: var(--su-state-error);
-        margin-inline-start: 0.125rem;
-      }
+    .su-indicator-required {
+      color: var(--su-state-error-fg);
     }
-    
+
     &--disabled {
-      color: var(--su-text-tertiary);
+      opacity: var(--su-opacity-disabled);
       cursor: not-allowed;
     }
   }
 
   &__message {
-    font-size: var(--su-font-size-sm);
-    line-height: var(--su-line-height-tight);
+    margin-top: -0.125rem;
+    line-height: var(--su-line-height-normal);
 
     &--default {
-      color: var(--su-text-secondary);
+      color: var(--su-text-tertiary);
     }
-    
+
     &--error {
       color: var(--su-state-error-fg);
     }
-    
+
     &--success {
       color: var(--su-state-success-fg);
     }
-    
+
     &--warning {
       color: var(--su-state-warning-fg);
     }
   }
 
+  // Le label suit la typo des contrôles : 16px sur mobile, 14px dès sm
   &--sm {
-    #{$self}__label {
-      font-size: var(--su-font-size-sm);
-    }
-    #{$self}__message {
-      font-size: var(--su-font-size-sm);
-    } 
+    #{$self}__label { font-size: var(--su-font-size-sm); }
+    #{$self}__message { font-size: var(--su-font-size-xs); }
   }
 
   &--md {
     #{$self}__label {
       font-size: var(--su-font-size-base);
+
+      @include up('sm') {
+        font-size: var(--su-font-size-sm);
+      }
     }
-    #{$self}__message {
-      font-size: var(--su-font-size-base);
-    } 
+
+    #{$self}__message { font-size: var(--su-font-size-xs); }
   }
 
   &--lg {
-    #{$self}__label {
-      font-size: var(--su-font-size-lg);
-    }
-    #{$self}__message {
-      font-size: var(--su-font-size-lg);
-    } 
+    #{$self}__label { font-size: var(--su-font-size-base); }
+    #{$self}__message { font-size: var(--su-font-size-sm); }
   }
 }
 </style>
