@@ -1,4 +1,4 @@
-import type { Component } from "vue";
+import type { Component, Ref } from "vue";
 // Types globaux utilisés dans plusieurs composants
 export type Variant = 'primary' | 'secondary' | 'tertiary' | 'quaternary' | 'ghost' | 'link'
 export type Size = 'sm' | 'md' | 'lg'
@@ -472,9 +472,11 @@ export interface ProgressProps {
 export interface AccordionContext {
   multiple: boolean;
   level: number;
+  /** Items regroupés dans un seul cadre (prop `attached` de l'Accordion) */
+  attached: Readonly<Ref<boolean>>;
   isItemOpen: (id: string | number) => boolean;
   toggleItem: (id: string | number, item: any) => void;
-  registerItem: (id: string | number, ref: any) => void;
+  registerItem: (id: string | number, isDisabled?: () => boolean) => void;
   unregisterItem: (id: string | number) => void;
 }
 export interface AccordionItemProps {
@@ -795,6 +797,8 @@ export interface AccordionItemData {
 export interface AccordionProps extends AccessibilityProps {
   items?: AccordionItemData[];
   multiple?: boolean;
+  /** Regroupe les items dans un seul cadre, séparés par un filet (ignore `gap`) */
+  attached?: boolean;
   gap?: 'sm' | 'md' | 'lg' | 'none';
   modelValue?: (string | number)[];
   level?: 1 | 2 | 3 | 4 | 5 | 6;
