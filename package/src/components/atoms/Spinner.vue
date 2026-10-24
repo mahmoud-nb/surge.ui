@@ -5,10 +5,11 @@ import type { SpinnerProps } from '@/types'
 const props = withDefaults(defineProps<SpinnerProps>(), {
   size: 12,
   fill: 'none',
-  label: 'Loading...',
+  label: 'Chargement…',
   showLabel: false,
   type: 'modern',
-  color: '#333333',
+  // Hérite de la couleur du texte : suit le thème et le contexte (bouton, alerte…)
+  color: 'currentColor',
   thickness: 2,
   speed: 1
 })

@@ -276,7 +276,7 @@ const priceClasses = computed(() => [
   }
 
   &--highlight {
-    color: var(--su-state-error);
+    color: var(--su-state-error-fg);
   }
 
   &--muted {
@@ -289,7 +289,7 @@ const priceClasses = computed(() => [
 
   &--has-original {
     .su-price__value {
-      color: var(--su-state-error);
+      color: var(--su-state-error-fg);
     }
   }
 

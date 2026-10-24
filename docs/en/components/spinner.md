@@ -139,7 +139,7 @@ A modern and accessible spinner component for displaying loading states in your 
 | `color`      | `string`           | `currentColor`| Spinner color (accepts any CSS color value)  |
 | `thickness`  | `number`           | `2`           | Stroke thickness for classic and modern types  |
 | `speed`      | `number`           | `1`           | Animation speed in seconds   |
-| `label`      | `string`           | `'Loading...'`| Accessibility text for screen readers    |
+| `label`      | `string`           | `'Chargement…'`| Accessibility text for screen readers    |
 | `fill`       | `string`           | `'none'`      | Background color for SVG spinners    |
 
 

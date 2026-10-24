@@ -43,40 +43,42 @@ withDefaults(defineProps<PanelProps>(), {
 <style lang="scss" scoped>
 @use '../../styles/abstracts' as *;
 
+// ============================================================
+// PANEL — bloc de contenu sur fond doux, variantes bordée,
+// surélevée, discrète et mise en avant
+// ============================================================
+
 .su-panel {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  color: var(--su-text-primary);
+  gap: $spacing-2;
+  box-sizing: border-box;
+  padding: $spacing-4;
+  border: 1px solid transparent;
+  border-radius: var(--su-radius-xl);
   background-color: var(--su-bg-canvas);
-  border-radius: var(--su-radius-md);
-  padding: var(--su-spacing-4);
-  transition: background-color var(--su-duration-normal) ease, box-shadow var(--su-duration-normal) ease;
+  background-clip: padding-box;
+  color: var(--su-text-primary);
+  @include transition(background-color, border-color, box-shadow);
 
   &--bordered {
-    border: 1px solid var(--su-border-default);
+    border-color: var(--su-border-alpha);
+    background-color: var(--su-bg-surface);
   }
 
   &--elevated {
-    box-shadow: var(--su-shadow-md);
+    border-color: var(--su-border-alpha);
+    background-color: var(--su-bg-surface);
+    box-shadow: var(--su-shadow-popover);
   }
 
   &--subtle {
-    background-color: var(--su-bg-hover);
+    background-color: var(--su-bg-muted);
   }
 
   &--highlight {
-    background-color: var(--su-bg-selected);
-  }
-
-  [data-theme='dark'] &, .dark & {    
-    &--subtle {
-      background-color: var(--su-bg-hover);
-    }
-
-    &--highlight {
-      background-color: var(--su-bg-selected);
-    }
+    border-color: with-alpha(primary-default, 20%);
+    background-color: with-alpha(primary-default, 6%);
   }
 }
 </style>
