@@ -286,19 +286,17 @@ $control-sizes: (
   'lg': ('padding-inline': calc(0.875rem - 1px), 'gap': 0.5rem)
 ) !default;
 
-/// Reflet interne d'1px qui épouse la bordure (clair : ombre basse, sombre : liseré haut)
+/// Reflet interne d'1px (clair : ombre basse, sombre : liseré haut)
+/// Le pseudo-élément hérite des angles de l'élément : il suit les
+/// modificateurs de rayon et les groupes « connectés » sans arrondi.
 /// L'élément doit être en `position: relative`.
-@mixin inner-highlight($radius: var(--su-radius-lg)) {
-  --_su-radius: #{$radius};
-
-  border-radius: var(--_su-radius);
-
+@mixin inner-highlight {
   &::before {
     content: '';
     position: absolute;
     inset: 0;
     pointer-events: none;
-    border-radius: inner-radius(var(--_su-radius));
+    border-radius: inherit;
     box-shadow: var(--su-inner-highlight);
   }
 }
@@ -322,11 +320,14 @@ $control-sizes: (
 /// Surface d'un contrôle de saisie (input, textarea, select)
 @mixin control-surface($radius: var(--su-radius-control)) {
   position: relative;
+  // La bibliothèque n'impose pas de reset global : la hauteur inclut la bordure
+  box-sizing: border-box;
   background-color: var(--su-bg-control);
   border: 1px solid var(--su-border-input);
   box-shadow: var(--su-shadow-control);
   background-clip: padding-box;
-  @include inner-highlight($radius);
+  border-radius: $radius;
+  @include inner-highlight;
   @include transition(border-color, box-shadow, background-color);
 
   &:focus-within {

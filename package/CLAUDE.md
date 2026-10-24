@@ -12,6 +12,7 @@ styles/
 ├─ abstracts/      ← importé par les composants, n'émet AUCUN CSS
 │  ├─ _functions   token(), with-alpha(), mix-colors(), radius(), inner-radius(), rem()
 │  ├─ _mixins      transition, focus-ring, control-surface, inner-highlight…
+│  ├─ _patterns    motifs partagés : bouton, popover, élément de menu
 │  └─ _breakpoints up(), down(), pointer-coarse, motion-safe/reduce, high-contrast, dark-mode
 ├─ foundations/    palette brute, espacements, typo, animations (variables Sass)
 ├─ tokens/         _static (invariants), _semantic (tokens communs par mode), _contrast
@@ -63,6 +64,9 @@ Source : `styles/abstracts/`
 | `soft-variant($state)` | Fond 8 % / bordure 32 % / texte `-fg` (badges, alertes) |
 | `touch-target-overlay` | Zone tactile 44px sur `pointer: coarse` sans changer la taille visuelle |
 | `sr-only` | Masquage accessible |
+| `button-base` / `button-variant($v)` / `button-variants` / `button-disabled` / `button-icon` | Bouton partagé (Button, déclencheur de Dropdown…) : variantes primary, secondary, outline, ghost |
+| `popover-surface` / `popover-transition($name)` | Surface flottante (SelectBox, Dropdown, panneau du FloatButton) et ses classes de transition Vue |
+| `menu-item($highlighted?)` / `menu-separator` | Option de liste ou de menu (32/28px) et séparateur |
 | `up($bp)` / `down($bp)` | Media queries (sm 640, md 768, lg 1024, xl 1280, 2xl 1536) |
 | `motion-reduce` / `high-contrast` / `dark-mode` | Préférences et mode du thème |
 | `interactive-states`, `surface`, `truncate`, `scrollable-container`, `touch-target`, `use-border-radius`, `su-border-radius`, `squareSize`, `su-text`, `su-text-ellipsis`, `su-form-field-container`, `su-formfield-box` | Mixins historiques, conservés |
