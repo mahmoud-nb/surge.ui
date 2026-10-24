@@ -202,7 +202,7 @@ const ariaAttributes = computed(() => {
   }
 }
 
-@media (width <= 768px) {
+@include down('md') {
   .su-form-fields--horizontal {
     .su-form-fields-content {
       flex-direction: column;
