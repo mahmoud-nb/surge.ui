@@ -238,7 +238,7 @@ Universal, flexible, and responsive card component. Supports images, titles, con
 | `variant` | `'default' \| 'outlined' \| 'elevated' \| 'filled'` | `'default'` | Visual variant |
 | `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Size |
 | `direction` | `'vertical' \| 'horizontal'` | `'vertical'` | Layout direction |
-| `radius` | `Radius` | `'md'` | Border radius |
+| `radius` | `Radius` | `undefined` | Border radius. Defaults to the container radius (`--su-radius-container`, 16px) |
 | `clickable` | `boolean` | `false` | Makes the card clickable |
 | `href` | `string` | — | Link href (renders card as `<a>`) |
 | `target` | `LinkTarget` | — | Target attribute for links |

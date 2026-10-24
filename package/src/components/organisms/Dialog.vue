@@ -216,7 +216,7 @@ defineExpose({
         ref="dialogRef"
         :class="dialogClasses"
         :open="isOpen"
-        :style="{ width: width }"
+        :style="width ? { width, maxWidth: '100%' } : undefined"
         v-bind="ariaAttributes"
         @click.stop 
       >
@@ -235,27 +235,26 @@ defineExpose({
         >
           <!-- Header -->
           <div
-            v-if="$slots.head || title"
+            v-if="$slots.head || title || description"
             class="su-dialog-header"
           >
             <slot name="head">
               <h2
+                v-if="title"
                 :id="titleId"
                 class="su-dialog-title"
               >
                 {{ title }}
               </h2>
+              <p
+                v-if="description"
+                :id="descriptionId"
+                class="su-dialog-description"
+              >
+                {{ description }}
+              </p>
             </slot>
           </div>
-
-          <!-- Description (pour l'accessibilité si pas de slot head) -->
-          <p
-            v-if="description && !$slots.head"
-            :id="descriptionId"
-            class="sr-only"
-          >
-            {{ description }}
-          </p>
 
           <!-- Contenu principal -->
           <div class="su-dialog-content">
@@ -278,232 +277,253 @@ defineExpose({
 <style lang="scss">
 @use '../../styles/abstracts' as *;
 
+// ============================================================
+// DIALOG — fond assombri et flouté, fenêtre arrondie (16px) en
+// surface flottante, apparition par fondu et léger zoom.
+// Variantes tiroir (left/right/top/bottom) et plein écran.
+// ============================================================
+
 .su-dialog-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgb(0 0 0 / 50%);
+  inset: 0;
   display: flex;
-  justify-content: center;
   align-items: center;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
-  
-  &--open {
-    opacity: 1;
-    visibility: visible;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: 1rem;
+  background-color: var(--su-overlay-backdrop);
+  backdrop-filter: blur(4px);
+
+  // Tiroirs et plein écran : collés aux bords
+  &--left,
+  &--right,
+  &--top,
+  &--bottom,
+  &--full {
+    padding: 0;
   }
 
-  // Styles spécifiques pour les tiroirs (drawers)
-  &--left, &--right, &--top, &--bottom, &--full {
-    align-items: flex-start; // Pour que le tiroir ne soit pas centré verticalement par défaut
-    justify-content: flex-start; // Pour que le tiroir ne soit pas centré horizontalement par défaut
+  &--left {
+    justify-content: flex-start;
+  }
+
+  &--right {
+    justify-content: flex-end;
+  }
+
+  &--top {
+    align-items: flex-start;
+  }
+
+  &--bottom {
+    align-items: flex-end;
+  }
+
+  // Sur mobile, la fenêtre centrée devient une feuille ancrée en bas
+  &--center {
+    @include down('sm') {
+      align-items: flex-end;
+      padding: 0;
+    }
   }
 }
 
 .su-dialog {
-  background-color: var(--su-bg-surface);
-  border: none;
-  border-radius: var(--su-radius-lg);
-  box-shadow: var(--su-shadow-lg);
-  max-height: 90vh;
-  max-width: 90vw;
-  transform: scale(0.95);
-  opacity: 0;
-  transition: all var(--su-duration-normal) var(--su-ease-in-out);
+  // Réinitialisation de l'élément <dialog> natif
+  position: relative;
+  inset: auto;
+  display: flex;
+  flex-direction: column;
   box-sizing: border-box;
+  width: 100%;
+  max-width: 32rem;
+  max-height: calc(100dvh - 2rem);
   margin: 0;
   padding: 0;
-  position: initial;
+  border: 1px solid var(--su-border-alpha);
+  border-radius: var(--su-radius-container);
+  background-color: var(--su-bg-surface-elevated);
+  background-clip: padding-box;
+  color: var(--su-text-primary);
+  box-shadow: var(--su-shadow-xl);
+  @include inner-highlight;
 
-  .su-dialog-overlay--open & {
-    opacity: 1;
-    transform: scale(1);
+  &::before {
+    z-index: 1;
   }
 
-  &__close {
-    position: absolute!important;
+  > .su-dialog__close {
+    position: absolute;
     top: 0.75rem;
-    right: 0.75rem;
+    inset-inline-end: 0.75rem;
+    z-index: 2;
   }
 
   &__container {
     display: flex;
     flex-direction: column;
-    max-height: 100vh
+    min-height: 0;
+    max-height: inherit;
   }
 
-  // Display: center (default modal)
+  // ### Fenêtre centrée
+
   &--center {
-    min-width: 320px;
-    width: auto;
-    margin: auto;
-
-    .su-dialog__container {
-      max-height: calc(100vh - 2rem);
+    @include down('sm') {
+      max-width: none;
+      max-height: calc(100dvh - 3rem);
+      border-width: 1px 0 0;
+      border-end-start-radius: 0;
+      border-end-end-radius: 0;
     }
   }
 
-  // Display: left (drawer from left)
-  &--left {
-    height: 100%;
-    max-height: 100%;
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-    transform: translateX(-100%);
-    
-    .su-dialog-overlay--open & {
-      transform: translateX(0);
-    }
-  }
+  // ### Tiroirs
 
-  // Display: right (drawer from right)
+  &--left,
   &--right {
+    width: min(24rem, 100%);
+    max-width: none;
     height: 100%;
-    max-height: 100%;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-    margin-left: auto; // Pousse le tiroir à droite
-    transform: translateX(100%);
-
-    .su-dialog-overlay--open & {
-      transform: translateX(0);
-    }
+    max-height: none;
   }
 
-  // Display: top (drawer from top)
-  &--top {
-    width: 100%;
-    max-width: 100%;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-    transform: translateY(-100%);
-
-    .su-dialog-overlay--open & {
-      transform: translateY(0);
-    }
+  &--left {
+    border-width: 0 1px 0 0;
+    border-start-start-radius: 0;
+    border-end-start-radius: 0;
   }
 
-  // Display: bottom (drawer from bottom)
+  &--right {
+    border-width: 0 0 0 1px;
+    border-start-end-radius: 0;
+    border-end-end-radius: 0;
+  }
+
+  &--top,
   &--bottom {
-    width: 100%;
-    max-width: 100%;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-    margin-top: auto; // Pousse le tiroir en bas
-    transform: translateY(100%);
-
-    .su-dialog-overlay--open & {
-      transform: translateY(0);
-    }
+    max-width: none;
+    max-height: 85dvh;
   }
 
-  // Display: full (full screen)
-  &--full {
-    width: 100%;
-    height: 100%;
-    max-width: 100%;
-    max-height: 100%;
-    border-radius: 0;
-    transform: scale(1.05); // Légère animation pour le plein écran
+  &--top {
+    border-width: 0 0 1px;
+    border-start-start-radius: 0;
+    border-start-end-radius: 0;
+  }
 
-    .su-dialog-overlay--open & {
-      transform: scale(1);
-    }
+  &--bottom {
+    border-width: 1px 0 0;
+    border-end-start-radius: 0;
+    border-end-end-radius: 0;
+  }
+
+  // ### Plein écran
+
+  &--full {
+    max-width: none;
+    height: 100%;
+    max-height: none;
+    border: 0;
+    border-radius: 0;
+  }
+
+  @include high-contrast {
+    border-width: 2px;
   }
 }
 
+// ### Contenu
+
 .su-dialog-header {
-  padding: 1rem 1.5rem;
-  border-bottom: 1px solid var(--su-border-default);
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: 0.5rem;
   flex-shrink: 0;
+  // Réserve la place du bouton de fermeture
+  padding: 1.5rem 3.5rem 0.5rem 1.5rem;
 }
 
 .su-dialog-title {
   margin: 0;
   font-size: var(--su-font-size-xl);
   font-weight: var(--su-font-weight-semibold);
+  line-height: var(--su-line-height-tight);
   color: var(--su-text-primary);
 }
 
+.su-dialog-description {
+  margin: 0;
+  font-size: var(--su-font-size-sm);
+  line-height: var(--su-line-height-normal);
+  color: var(--su-text-tertiary);
+}
+
 .su-dialog-content {
-  padding: 1.5rem;
   flex-grow: 1;
+  min-height: 0;
+  padding: 1rem 1.5rem 1.5rem;
   overflow-y: auto;
-  -webkit-overflow-scrolling: touch; // Améliore le défilement sur iOS
+  overscroll-behavior: contain;
 }
 
+// Pied : boutons empilés sur mobile, alignés à droite au-delà
 .su-dialog-footer {
-  padding: 1rem 1.5rem;
-  border-top: 1px solid var(--su-border-default);
   display: flex;
-  justify-content: flex-end;
-  gap: 0.75rem;
+  flex-direction: column-reverse;
+  gap: 0.5rem;
   flex-shrink: 0;
+  padding: 1rem 1.5rem;
+  border-top: 1px solid var(--su-border-alpha);
+  background-color: var(--su-bg-muted);
+
+  @include up('sm') {
+    flex-direction: row;
+    justify-content: flex-end;
+  }
 }
 
-// Transitions
+// ### Transitions (overlay : fondu ; fenêtre : fondu + zoom ou glissement)
+
 .su-dialog-transition-enter-active,
 .su-dialog-transition-leave-active {
-  transition: opacity var(--su-duration-normal) var(--su-ease-in-out), transform var(--su-duration-normal) var(--su-ease-in-out);
+  transition: opacity var(--su-duration-normal) var(--su-ease-out);
+
+  .su-dialog {
+    transition:
+      opacity var(--su-duration-normal) var(--su-ease-out),
+      scale var(--su-duration-normal) var(--su-ease-out),
+      translate var(--su-duration-normal) var(--su-ease-out);
+  }
 }
 
 .su-dialog-transition-enter-from,
 .su-dialog-transition-leave-to {
   opacity: 0;
-  
-  .su-dialog--center & {
-    transform: scale(0.95);
-  }
-
-  .su-dialog--left & {
-    transform: translateX(-100%);
-  }
-
-  .su-dialog--right & {
-    transform: translateX(100%);
-  }
-
-  .su-dialog--top & {
-    transform: translateY(-100%);
-  }
-
-  .su-dialog--bottom & {
-    transform: translateY(100%);
-  }
-
-  .su-dialog--full & {
-    transform: scale(1.05);
-  }
-}
-
-// Mode de contraste élevé
-@media (prefers-contrast: more) {
-  .su-dialog-overlay {
-    background-color: rgb(0 0 0 / 80%); // Contraste plus élevé pour l'overlay
-  }
 
   .su-dialog {
-    border: 2px solid windowText; // Bordure visible en contraste élevé
-  }
-}
-
-// Réduction des animations
-@media (prefers-reduced-motion: reduce) {
-  .su-dialog-overlay,
-  .su-dialog {
-    transition: none !important;
+    opacity: 0;
   }
 
-  .su-dialog-transition-enter-active,
-  .su-dialog-transition-leave-active {
-    transition: none !important;
+  .su-dialog--center,
+  .su-dialog--full {
+    scale: 0.98;
+  }
+
+  .su-dialog--left {
+    translate: -100% 0;
+  }
+
+  .su-dialog--right {
+    translate: 100% 0;
+  }
+
+  .su-dialog--top {
+    translate: 0 -100%;
+  }
+
+  .su-dialog--bottom {
+    translate: 0 100%;
   }
 }
 </style>

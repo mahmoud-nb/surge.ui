@@ -291,7 +291,8 @@ const showFullScreen = ref(false)
 | `modelValue` | `boolean` | `false` | Controls the open/close state of the Dialog (used with `v-model`) |
 | `display` | `'center' \| 'left' \| 'right' \| 'top' \| 'bottom' \| 'full'` | `'center'` | Display mode of the Dialog |
 | `title` | `string` | `undefined` | Title of the Dialog (displayed in the `head` slot by default and for `aria-labelledby`) |
-| `description` | `string` | `undefined` | Description of the Dialog (used for `aria-describedby` if `title` is not provided or if the `head` slot is used without a title) |
+| `description` | `string` | `undefined` | Description shown under the title and linked to the Dialog with `aria-describedby` (not rendered when the `head` slot is used) |
+| `closeLabel` | `string` | `'Fermer'` | Accessible name of the close button |
 | `closeOnOverlayClick` | `boolean` | `true` | Allows closing the Dialog by clicking on the overlay |
 | `closeOnEscape` | `boolean` | `true` | Allows closing the Dialog with the `Escape` key |
 | `width` | `string` | `auto` | Custom width of the Dialog (e.g., `'500px'`, `'80%'`) |
