@@ -3,6 +3,7 @@ import { useCustomTheme } from './useCustomTheme'
 import { useUniqueId } from './useUniqueId'
 import { useBreakpoint } from './useBreakpoint'
 import { usePrice } from './usePrice'
+import { useFloatingPosition } from './useFloatingPosition'
 
 export {
   useTheme,
@@ -10,4 +11,7 @@ export {
   useUniqueId,
   useBreakpoint,
   usePrice,
+  useFloatingPosition,
 }
+
+export type { FloatingPositionOptions } from './useFloatingPosition'
