@@ -57,6 +57,16 @@ import OtpInputField from './components/molecules/OtpInputField.vue'
 
 import FormFieldGroup from './components/molecules/FormFieldGroup.vue'
 
+// Templates (layouts)
+import SingleColumnLayout from './components/templates/SingleColumnLayout.vue'
+import SidebarLayout from './components/templates/SidebarLayout.vue'
+import SplitLayout from './components/templates/SplitLayout.vue'
+import HolyGrailLayout from './components/templates/HolyGrailLayout.vue'
+import MagazineLayout from './components/templates/MagazineLayout.vue'
+import MasonryLayout from './components/templates/MasonryLayout.vue'
+import HeroLayout from './components/templates/HeroLayout.vue'
+import FullScreenLayout from './components/templates/FullScreenLayout.vue'
+
 import * as accessibility from './utils/accessibility'
 import { SurgeuiTheme, ThemeSymbol, flattenThemeToCSS } from './plugin/theme'
 
@@ -67,6 +77,7 @@ export { Link, LinkGroup, Button, ButtonGroup, Toggle, ToggleGroup, FloatButton,
 export { Input, Textarea, SelectBox, RadioGroup, CheckboxGroup, FileUpload, Switch, Slider, Password, OtpInput }
 export { InputField, SelectBoxField, RadioGroupField, CheckboxGroupField, PasswordField, SwitchField, FileUploadField, TextareaField, SliderField, OtpInputField }
 export { FormField, FormFieldGroup }
+export { SingleColumnLayout, SidebarLayout, SplitLayout, HolyGrailLayout, MagazineLayout, MasonryLayout, HeroLayout, FullScreenLayout }
 export { accessibility }
 
 export interface SurgeUpDSOptions {
@@ -151,6 +162,16 @@ export default {
 
     // ...... FormFieldGroup container
     app.component(`${prefix}FormFieldGroup`, FormFieldGroup)
+
+    // ## Templates (layouts)
+    app.component(`${prefix}SingleColumnLayout`, SingleColumnLayout)
+    app.component(`${prefix}SidebarLayout`, SidebarLayout)
+    app.component(`${prefix}SplitLayout`, SplitLayout)
+    app.component(`${prefix}HolyGrailLayout`, HolyGrailLayout)
+    app.component(`${prefix}MagazineLayout`, MagazineLayout)
+    app.component(`${prefix}MasonryLayout`, MasonryLayout)
+    app.component(`${prefix}HeroLayout`, HeroLayout)
+    app.component(`${prefix}FullScreenLayout`, FullScreenLayout)
   }
 }
 export * from './composables'
