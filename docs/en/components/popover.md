@@ -308,7 +308,9 @@ The Popover component complies with WCAG 2.1 Level AA standards and follows W3C 
 
 - **Complete keyboard navigation**: The popover can be opened with Enter or Space keys, and closed with the Escape key. Navigation inside the popover is done with the Tab key.
 
-- **Focus trapping in modal mode**: When modal mode is enabled, focus is trapped inside the popover, preventing the user from navigating to elements outside the popover until it's closed.
+- **Focus trapping in modal mode**: When modal mode is enabled, focus is trapped inside the popover ([useFocusTrap](/en/composables/usefocustrap)) and returned to the trigger on close.
+
+- **Closing**: Escape and pointer down outside go through [useDismiss](/en/composables/usedismiss): in a popover containing an open list, Escape only closes the list; inside a SuDialog, Escape closes the popover without closing the dialog.
 
 - **Appropriate ARIA attributes**: The component uses `aria-expanded` on the trigger to indicate the open state, `aria-haspopup` to signal the presence of a popover, `aria-controls` to link the trigger to the content, and `role="dialog"` on the content for proper identification by screen readers.
 

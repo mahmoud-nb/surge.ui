@@ -98,7 +98,7 @@ const tabs = ref([
 Le composant Tabs respecte les recommandations WAI-ARIA et WCAG 2.1 AA :
 
 - **Rôles ARIA** : tablist, tab, tabpanel
-- **Navigation clavier** : flèches gauche/droite (ou haut/bas si vertical)
+- **Navigation clavier** : flèches gauche / droite en boucle (inversées en lecture de droite à gauche), Début / Fin ; l'onglet atteint est activé aussitôt ([useListNavigation](/composables/uselistnavigation))
 - Focus visible et conforme
 - Support complet du mode RTL
 - Compatible lecteurs d’écran

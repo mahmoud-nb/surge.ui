@@ -541,10 +541,10 @@ Le composant Dropdown respecte les normes WCAG 2.1 AA :
 
 ### ✅ Fonctionnalités d'accessibilité
 
-- **Rôles ARIA** : `role="button"` pour le trigger, `role="menu"` pour le menu, `role="menuitem"` pour les options
-- **Navigation au clavier** : Support des touches fléchées, Entrée, Espace, Échap, Home/End
-- **Focus trap** : Gestion du focus dans le menu ouvert
-- **Annonces vocales** : Messages pour les lecteurs d'écran lors des sélections
+- **Motif « bouton de menu » (WAI-ARIA)** : bouton avec `aria-haspopup="menu"`, menu `role="menu"` nommé par le bouton, items `role="menuitem"`
+- **Focus mobile (roving)** : un seul item à la fois reçoit le focus ; les flèches le déplacent en boucle, les items désactivés sont sautés
+- **Saisie rapide** : taper une lettre amène le focus sur l'item suivant qui commence par elle
+- **Fermeture** : Échap (focus rendu au bouton), appui à l'extérieur ou focus qui quitte le menu ; Tab sort du menu vers l'élément suivant de la page
 - **États ARIA** : `aria-expanded`, `aria-haspopup`, `aria-controls`
 - **Labels accessibles** : Support d'`aria-label` et `aria-describedby`
 - **Focus visible** : Indicateurs de focus clairs et contrastés
@@ -588,13 +588,13 @@ Le composant Dropdown respecte les normes WCAG 2.1 AA :
 
 | Touche | Action |
 |--------|--------|
-| `Tab` | Naviguer vers/depuis le dropdown |
-| `Entrée` / `Espace` | Ouvrir/fermer le menu, sélectionner l'option focalisée |
-| `Flèche bas` | Ouvrir le menu ou naviguer vers l'option suivante |
-| `Flèche haut` | Naviguer vers l'option précédente |
-| `Home` | Aller à la première option |
-| `End` | Aller à la dernière option |
-| `Échap` | Fermer le menu |
+| `Entrée` / `Espace` | Sur le bouton : ouvrir le menu sur le premier item. Sur un item : l'activer |
+| `Flèche bas` | Sur le bouton : ouvrir le menu sur le premier item. Dans le menu : item suivant (en boucle) |
+| `Flèche haut` | Sur le bouton : ouvrir le menu sur le dernier item. Dans le menu : item précédent (en boucle) |
+| `Début` / `Fin` | Premier / dernier item |
+| `A-Z` | Saisie rapide : item suivant qui commence par ces lettres |
+| `Échap` | Fermer le menu, focus rendu au bouton |
+| `Tab` | Fermer le menu et passer à l'élément suivant de la page |
 
 ## Exemples d'usage avancés
 
