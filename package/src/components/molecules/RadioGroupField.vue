@@ -33,8 +33,9 @@ const fieldId = 'radio-group-' + useId()
 const groupId = computed(() => attrs.id as string || fieldId)
 
 const radioGroupProps = computed(() => {
+  // modelValue (déclaré par defineModel) passe par v-model : il ne doit pas écraser la liaison
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { label, message, ...rest } = props
+  const { label, message, modelValue: _modelValue, ...rest } = props as typeof props & { modelValue?: unknown }
   return rest
 })
 
@@ -65,12 +66,13 @@ const handleBlur = (event: FocusEvent) => {
     :required="required"
     :disabled="disabled"
   >
-    <template #default="{ fieldId: id, messageId }">
+    <template #default="{ fieldId: id, labelId, messageId }">
       <RadioGroup
         :id="id"
         :model-value="modelValue"
-        :aria-describedby="messageId"
         v-bind="radioGroupProps"
+        :aria-labelled-by="ariaLabelledBy || labelId"
+        :aria-described-by="[ariaDescribedBy, messageId].filter(Boolean).join(' ') || undefined"
         @change="handleChange"
         @focus="handleFocus"
         @blur="handleBlur"

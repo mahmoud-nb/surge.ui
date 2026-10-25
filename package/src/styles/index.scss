@@ -1,0 +1,27 @@
+// ============================================================
+// POINT D'ENTRÉE GLOBAL DES STYLES
+//
+// Émis UNE seule fois, importé par src/index.ts :
+//   - tokens statiques (:root) et reduced-motion
+//   - thèmes (data-theme + data-theme-mode)
+//   - surcouche contraste élevé
+//   - utilitaires globaux (.sr-only)
+//
+// Les composants n'importent JAMAIS ce fichier : ils utilisent
+// `@use '../../styles/abstracts' as *;` (aucune sortie CSS).
+// ============================================================
+
+@use 'core/variables';
+@use 'core/theme-loader' as loader;
+@use 'base/a11y';
+
+// ------------------------------------------------------------
+// Sélection des thèmes
+//   Bundle minimal       : @include loader.load-default-theme();
+//   Sélection            : @include loader.load-themes('default', 'ocean');
+//   Tous les thèmes      : @include loader.load-all-themes();
+// ------------------------------------------------------------
+@include loader.load-all-themes();
+
+// Support du contraste élevé
+@include loader.load-contrast(true);

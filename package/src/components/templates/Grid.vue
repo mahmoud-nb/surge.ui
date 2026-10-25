@@ -62,7 +62,7 @@ const gridStyle = computed(() => {
 </template>
 
 <style lang="scss" scoped>
-@use '../../styles/main' as *;
+@use '../../styles/abstracts' as *;
 
 .su-grid-wrapper {
   display: flex;
@@ -76,33 +76,9 @@ const gridStyle = computed(() => {
 }
 
 .su-grid-toggle {
-  background: transparent;
-  border: 1px solid var(--su-border-default);
-  border-radius: var(--su-radius-md);
-  padding: var(--su-spacing-2) var(--su-spacing-4);
-  cursor: pointer;
-  color: var(--su-text-primary);
-  font-size: var(--su-font-size-base);
-  font-weight: var(--su-font-weight-medium);
-  transition: all var(--su-duration-normal) var(--su-ease-in-out);
-
-  &:hover {
-    background-color: var(--su-bg-hover);
-    border-color: var(--su-border-strong);
-  }
-
-  &:focus-visible {
-    outline: var(--su-focus-ring-width) solid var(--su-border-focus);
-    outline-offset: var(--su-focus-ring-offset);
-  }
-
-  &:active {
-    background-color: var(--su-bg-active);
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    transition: none;
-  }
+  @include button-base;
+  @include control-size('md');
+  @include button-variant('outline');
 }
 
 .su-grid {

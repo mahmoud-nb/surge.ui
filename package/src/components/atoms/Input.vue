@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, useAttrs } from 'vue'
+import { computed, getCurrentInstance, ref, useAttrs, type HTMLAttributes, type StyleValue } from 'vue'
 import type { InputProps } from '@/types'
 
 defineOptions({ inheritAttrs: false })
@@ -30,13 +30,26 @@ const emit = defineEmits<{
 const modelValue = defineModel<string | number>({ default: '' })
 
 const attrs = useAttrs()
-const inputId = computed(() => (attrs.id as string) || undefined)
 
-// Détection des écouteurs d'événements pour l'accessibilité conditionnelle
-const hasPrefixClickListener = computed(() => typeof attrs.onPrefixClick === 'function')
-const hasPrefixIconClickListener = computed(() => typeof attrs.onPrefixIconClick === 'function')
-const hasSuffixClickListener = computed(() => typeof attrs.onSuffixClick === 'function')
-const hasSuffixIconClickListener = computed(() => typeof attrs.onSuffixIconClick === 'function')
+// Les écouteurs d'événements déclarés dans defineEmits ne figurent pas dans
+// attrs : on les lit sur les props du vnode.
+const vnodeProps = getCurrentInstance()?.vnode.props ?? {}
+const hasListener = (name: string) => typeof vnodeProps[name] === 'function'
+const hasPrefixClickListener = computed(() => hasListener('onPrefixClick'))
+const hasPrefixIconClickListener = computed(() => hasListener('onPrefixIconClick'))
+const hasSuffixClickListener = computed(() => hasListener('onSuffixClick'))
+const hasSuffixIconClickListener = computed(() => hasListener('onSuffixIconClick'))
+
+// class et style décorent le conteneur ; tous les autres attributs
+// (id, inputmode, enterkeyhint, data-*, écouteurs non déclarés…) vont sur l'input.
+const containerAttrs = computed(() => ({
+  class: attrs.class as HTMLAttributes['class'],
+  style: attrs.style as StyleValue
+}))
+const passthroughAttrs = computed(() => {
+  const { class: _class, style: _style, ...rest } = attrs
+  return rest
+})
 
 // Classes CSS
 const containerClasses = computed(() => [
@@ -57,10 +70,12 @@ const ariaAttributes = computed(() => {
   const attrs: Record<string, any> = {}
   
   if (props.ariaLabel) attrs['aria-label'] = props.ariaLabel
+  if (props.ariaLabelledBy) attrs['aria-labelledby'] = props.ariaLabelledBy
+  if (props.ariaDescribedBy) attrs['aria-describedby'] = props.ariaDescribedBy
   if (props.ariaInvalid !== undefined) attrs['aria-invalid'] = props.ariaInvalid
   if (props.required || props.ariaRequired) attrs['aria-required'] = 'true'
   if (props.state === 'error') attrs['aria-invalid'] = 'true'
-  
+
   return attrs
 })
 
@@ -68,9 +83,7 @@ const ariaAttributes = computed(() => {
 const nativeAttributes = computed(() => {
   const inputAttrs: Record<string, any> = {}
 
-  const { name } = attrs as Record<string, any>
-
-  if (name) inputAttrs.name = name
+  if (props.name) inputAttrs.name = props.name
   if (props.autocomplete) inputAttrs.autocomplete = props.autocomplete
   if (props.min !== undefined) inputAttrs.min = props.min
   if (props.max !== undefined) inputAttrs.max = props.max
@@ -83,16 +96,13 @@ const nativeAttributes = computed(() => {
   return inputAttrs
 })
 
-const dataAttributes = computed(() =>
-  Object.fromEntries(
-    Object.entries(attrs).filter(([key]) => key.startsWith('data-'))
-  )
-)
-
 // Gestionnaires d’événements
 const handleInput = (event: Event) => {
   const target = event.target as HTMLInputElement
-  modelValue.value = props.type === 'number' ? Number(target.value) : target.value
+  // Un champ numérique vidé reste vide (et non 0)
+  modelValue.value = props.type === 'number' && target.value !== ''
+    ? target.valueAsNumber
+    : target.value
   emit('input', event)
 }
 
@@ -132,7 +142,10 @@ defineExpose({ focus, select, inputRef })
 </script>
 
 <template>
-  <div :class="containerClasses">
+  <div
+    :class="[containerClasses, containerAttrs.class]"
+    :style="containerAttrs.style"
+  >
     <!-- Préfixe -->
     <div
       v-if="prefix || prefixIcon || $slots.prefix"
@@ -181,7 +194,6 @@ defineExpose({ focus, select, inputRef })
     </div>
 
     <input
-      :id="inputId"
       ref="inputRef"
       class="su-input__element"
       :type="type"
@@ -189,7 +201,7 @@ defineExpose({ focus, select, inputRef })
       :disabled="disabled"
       :readonly="readonly"
       :required="required"
-      v-bind="{ ...nativeAttributes, ...ariaAttributes, ...dataAttributes }"
+      v-bind="{ ...passthroughAttrs, ...nativeAttributes, ...ariaAttributes }"
       @input="handleInput"
       @change="handleChange"
       @focus="handleFocus"
@@ -248,21 +260,31 @@ defineExpose({ focus, select, inputRef })
 </template>
 
 <style lang="scss">
-@use '../../styles/main' as *;
+@use '../../styles/abstracts' as *;
 
-@mixin su-input--size($self, $name, $fontSize, $padding, $minHeight) {
+// ============================================================
+// INPUT — surface de contrôle : bordure en transparence, reflet interne,
+// halo de focus de 3px, hauteurs 36/32px (compactes dès `sm`)
+// ============================================================
+
+@mixin su-input--size($self, $name, $padding) {
   &--#{$name} {
-    //min-height: $minHeight; // calc(#{$padding} * 2 + 1rem);
+    min-height: var(--su-control-height-#{$name});
 
-    #{$self}__element {
-      padding: $padding;
-      font-size: $fontSize; 
+    @include up('sm') {
+      min-height: var(--su-control-height-#{$name}-compact);
     }
 
-    .su-input__prefix,
-    .su-input__suffix {
-      padding: $padding;
-      font-size: $fontSize;
+    #{$self}__element {
+      padding-inline: $padding;
+    }
+
+    #{$self}__prefix {
+      padding-inline-start: $padding;
+    }
+
+    #{$self}__suffix {
+      padding-inline-end: $padding;
     }
   }
 }
@@ -275,19 +297,55 @@ defineExpose({ focus, select, inputRef })
   }
 }
 
+@mixin su-input--state($state) {
+  &--#{$state} {
+    border-color: with-alpha(state-#{$state}, 48%);
+
+    &:focus-within {
+      @include focus-ring-field(var(--su-state-#{$state}));
+    }
+  }
+}
+
 .su-input {
   $self: &;
-  
-  display: flex;
-  align-items: center;
 
-  @include su-form-field-container;
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  color: var(--su-text-primary);
+
+  // 16px sur mobile (pas de zoom iOS), 14px dès `sm`
+  font-size: var(--su-font-size-base);
+
+  @include control-surface;
+
+  @include up('sm') {
+    font-size: var(--su-font-size-sm);
+  }
 
   &__element {
-    @include su-formfield-box($self);
+    flex: 1;
+    min-width: 0;
+    margin: 0;
+    padding-block: 0;
+    border: 0;
+    outline: none;
+    background: transparent;
+    font: inherit;
+    line-height: 1.5;
+    color: inherit;
+    border-radius: inherit;
 
-    width: 100%;
-    line-height: var(--su-line-height-normal);
+    &::placeholder {
+      color: var(--su-text-tertiary);
+    }
+
+    // Empêche le fond jaune de l'autoremplissage
+    &:autofill {
+      -webkit-text-fill-color: var(--su-text-primary);
+      transition: background-color 5000000s ease-in-out 0s;
+    }
 
     &[type='number'] {
       appearance: textfield;
@@ -300,33 +358,66 @@ defineExpose({ focus, select, inputRef })
     }
 
     &[type='search'] {
-      &::-webkit-search-cancel-button {
+      &::-webkit-search-cancel-button,
+      &::-webkit-search-decoration {
         appearance: none;
       }
     }
   }
 
-  // Sizes
-  @include su-input--size(&, sm, var(--su-font-size-sm), 0.25rem 0.5rem, 2rem);
-  @include su-input--size(&, md, var(--su-font-size-base), 0.5rem 0.75rem, 2.5rem);
-  @include su-input--size(&, lg, var(--su-font-size-lg), 0.75rem 1rem, 3rem);
+  // Champ autorempli : léger voile pour le signaler
+  &:has(#{$self}__element:autofill) {
+    background-image: linear-gradient(with-alpha(text-primary, 4%), with-alpha(text-primary, 4%));
+  }
 
-  // Text align
+  // ### Tailles
+
+  @include su-input--size(&, sm, calc(0.625rem - 1px));
+  @include su-input--size(&, md, calc(0.75rem - 1px));
+  @include su-input--size(&, lg, calc(0.875rem - 1px));
+
+  // ### Alignement du texte
+
   @include su-input--align(&, left);
   @include su-input--align(&, center);
   @include su-input--align(&, right);
 
-  // Prefix & Suffix
+  // ### États (l'erreur passe par aria-invalid, géré par control-surface)
+
+  @include su-input--state(success);
+  @include su-input--state(warning);
+
+  &--disabled {
+    @include disabled-state;
+
+    box-shadow: none;
+  }
+
+  &--readonly {
+    background-image: linear-gradient(var(--su-bg-muted), var(--su-bg-muted));
+  }
+
+  // ### Préfixe et suffixe
+
+  &--has-prefix #{$self}__element {
+    padding-inline-start: 0.5rem;
+  }
+
+  &--has-suffix #{$self}__element {
+    padding-inline-end: 0.5rem;
+  }
+
   &__prefix,
   &__suffix {
     display: flex;
     align-items: center;
-    flex-wrap: nowrap;
-    color: var(--su-text-secondary);
-    height: -webkit-fill-available;
-    
+    flex-shrink: 0;
+    gap: 0.375rem;
+    white-space: nowrap;
+    color: var(--su-text-tertiary);
+
     &__text {
-      font-weight: 500;
+      font-weight: var(--su-font-weight-medium);
     }
 
     &__icon {
@@ -334,35 +425,41 @@ defineExpose({ focus, select, inputRef })
       align-items: center;
       justify-content: center;
 
+      // 18px sur mobile, 16px dès `sm`
       .su-input-icon {
-        width: 1.25em;
-        height: 1.25em;
+        width: 1.125rem;
+        height: 1.125rem;
+        opacity: 0.8;
+
+        @include up('sm') {
+          width: 1rem;
+          height: 1rem;
+        }
       }
     }
-    
+
     &--clickable {
+      margin: -0.25rem;
+      padding: 0.25rem;
+      border-radius: var(--su-radius-sm);
       cursor: pointer;
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-      
-      &:hover:not(.su-input--disabled, .su-input--readonly) {
-        background-color: var(--su-bg-hover);
+
+      @include transition(background-color, color);
+
+      &:hover {
+        background-color: var(--su-bg-accent);
         color: var(--su-text-primary);
       }
-      
-      &:active:not(.su-input--disabled, .su-input--readonly) {
-        background-color: var(--su-bg-active);
+
+      &:focus-visible {
+        @include focus-ring($offset: 0);
+      }
+
+      #{$self}--disabled &,
+      #{$self}--readonly & {
+        pointer-events: none;
       }
     }
-  }
-
-  &__prefix {
-    border-top-left-radius: var(--su-radius-md);
-    border-bottom-left-radius: var(--su-radius-md);
-  }
-
-  &__suffix {
-    border-top-right-radius: var(--su-radius-md);
-    border-bottom-right-radius: var(--su-radius-md);
   }
 }
 </style>

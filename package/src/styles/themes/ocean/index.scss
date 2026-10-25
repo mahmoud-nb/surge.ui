@@ -8,10 +8,10 @@
 
 // --- Mode clair ---
 [data-theme='ocean'][data-theme-mode='light'] {
-  @include registry.generate-theme-vars($theme-ocean-light);
+  @include registry.generate-mode-vars($theme-ocean-light, 'light');
 }
 
 // --- Mode sombre ---
 [data-theme='ocean'][data-theme-mode='dark'] {
-  @include registry.generate-theme-vars($theme-ocean-dark);
+  @include registry.generate-mode-vars($theme-ocean-dark, 'dark');
 }

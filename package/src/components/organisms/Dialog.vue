@@ -1,9 +1,15 @@
 <script setup lang="ts">
-import { computed, ref, watch, onMounted, onUnmounted, nextTick, useAttrs, useId } from 'vue'
+import { computed, ref, watch, onMounted, onBeforeUnmount, nextTick, useAttrs, useId } from 'vue'
 import Button from '../atoms/Button.vue'
-import { trapFocus } from '../../utils/accessibility'
 import { XMarkIcon } from '@heroicons/vue/24/outline'
 import type { DialogProps } from '@/types'
+
+// ============================================================
+// Dialog sur l'élément natif <dialog> ouvert avec showModal() :
+// couche supérieure (plus de z-index), arrière-plan rendu inerte
+// par le navigateur (focus piégé), touche Échap native (`cancel`)
+// et fond `::backdrop`.
+// ============================================================
 
 const props = withDefaults(defineProps<DialogProps>(), {
   modelValue: false,
@@ -11,7 +17,8 @@ const props = withDefaults(defineProps<DialogProps>(), {
   closeOnOverlayClick: true,
   closeOnEscape: true,
   zIndex: 1000,
-  disableScroll: true
+  disableScroll: true,
+  closeLabel: 'Fermer'
 })
 
 const emit = defineEmits<{
@@ -22,43 +29,34 @@ const emit = defineEmits<{
 
 const attrs = useAttrs()
 
-// Refs
-const dialogRef = ref<HTMLDivElement>()
-const cleanupFocusTrap = ref<(() => void) | null>(null)
+const dialogRef = ref<HTMLDialogElement>()
 
 const fieldId = 'dialog-' + useId()
 const dialogId = computed(() => attrs.id as string || fieldId)
 const titleId = computed(() => props.title ? dialogId.value + '-title' : undefined)
 const descriptionId = computed(() => props.description ? dialogId.value + '-description' : undefined)
 
-// État d'ouverture interne
-const isOpen = ref(props.modelValue)
+// isOpen : état logique ; isRendered : contenu monté (il reste monté le
+// temps de l'animation de fermeture, puis est démonté)
+const isOpen = ref(false)
+const isRendered = ref(false)
+let unmountTimer: ReturnType<typeof setTimeout> | undefined
 
-// Classes CSS
-const overlayClasses = computed(() => [
-  'su-dialog-overlay',
-  `su-dialog-overlay--${props.display}`,
-  {
-    'su-dialog-overlay--open': isOpen.value
-  }
-])
+// Élément qui avait le focus avant l'ouverture, pour le lui rendre à la fermeture
+let previouslyFocused: HTMLElement | null = null
 
 const dialogClasses = computed(() => [
   'su-dialog',
   `su-dialog--${props.display}`,
   {
-    'su-dialog--open': isOpen.value
+    'su-dialog--lock-scroll': props.disableScroll
   }
 ])
 
-// Attributs ARIA
+// <dialog> porte déjà le rôle dialog (et aria-modal implicite via showModal)
 const ariaAttributes = computed(() => {
-  const attrs: Record<string, any> = {
-    role: 'dialog',
-    'aria-modal': 'true',
-    'aria-hidden': !isOpen.value
-  }
-  
+  const attrs: Record<string, string> = {}
+
   if (props.ariaLabelledBy) {
     attrs['aria-labelledby'] = props.ariaLabelledBy
   } else if (props.ariaLabel) {
@@ -66,28 +64,38 @@ const ariaAttributes = computed(() => {
   } else if (titleId.value) {
     attrs['aria-labelledby'] = titleId.value
   }
-  
+
   if (props.ariaDescribedBy) attrs['aria-describedby'] = props.ariaDescribedBy
   else if (descriptionId.value) attrs['aria-describedby'] = descriptionId.value
-  
+
   return attrs
 })
 
-// Gestion de l'ouverture/fermeture
+// Durée de transition calculée (la plus longue), pour démonter le contenu
+// une fois l'animation de fermeture terminée
+const getTransitionMs = (el?: HTMLElement): number => {
+  if (!el || typeof getComputedStyle === 'undefined') return 0
+  return Math.max(0, ...getComputedStyle(el).transitionDuration.split(',').map((value) => {
+    const n = parseFloat(value) || 0
+    return value.trim().endsWith('ms') ? n : n * 1000
+  }))
+}
+
 const openDialog = async () => {
   if (isOpen.value) return
+  clearTimeout(unmountTimer)
+  previouslyFocused = document.activeElement as HTMLElement | null
+  isRendered.value = true
   isOpen.value = true
   emit('update:modelValue', true)
   emit('open')
-  
-  if (props.disableScroll) {
-    document.body.style.overflow = 'hidden'
-  }
-  
+
   await nextTick()
-  if (dialogRef.value) {
-    cleanupFocusTrap.value = trapFocus(dialogRef.value)
-  }
+  const el = dialogRef.value
+  if (!el || el.open) return
+  // Repli pour les environnements sans showModal (anciens navigateurs, tests)
+  if (typeof el.showModal === 'function') el.showModal()
+  else el.setAttribute('open', '')
 }
 
 const closeDialog = () => {
@@ -95,59 +103,66 @@ const closeDialog = () => {
   isOpen.value = false
   emit('update:modelValue', false)
   emit('close')
-  
-  if (props.disableScroll) {
-    document.body.style.overflow = ''
+
+  const el = dialogRef.value
+  if (el?.open) {
+    if (typeof el.close === 'function') el.close()
+    else el.removeAttribute('open')
   }
-  
-  if (cleanupFocusTrap.value) {
-    cleanupFocusTrap.value()
-    cleanupFocusTrap.value = null
+
+  // Rend le focus à l'élément déclencheur
+  if (previouslyFocused?.isConnected) {
+    previouslyFocused.focus()
   }
+  previouslyFocused = null
+
+  unmountTimer = setTimeout(() => {
+    if (!isOpen.value) isRendered.value = false
+  }, getTransitionMs(el))
 }
 
-// Gestionnaire de clic sur l'overlay
-const handleOverlayClick = () => {
-  if (props.closeOnOverlayClick) {
-    closeDialog()
-  }
+// Échap : le navigateur émet `cancel` sur le dialog du dessus uniquement
+const handleCancel = (event: Event) => {
+  event.preventDefault()
+  if (props.closeOnEscape) closeDialog()
 }
 
-// Gestionnaire de touche Escape
-const handleEscape = (event: KeyboardEvent) => {
-  if (event.key === 'Escape' && props.closeOnEscape) {
-    closeDialog()
-  }
+// Fermeture native (ex. <form method="dialog">) : resynchronise l'état
+const handleNativeClose = () => {
+  if (isOpen.value) closeDialog()
 }
 
-// Watchers
+// Clic sur le fond : le conteneur couvre tout le dialog, un clic dont la
+// cible est le <dialog> lui-même tombe donc sur ::backdrop. Le geste doit
+// aussi commencer sur le fond (pas de fermeture en fin de sélection de texte).
+let pointerDownOnBackdrop = false
+const handleBackdropPointerDown = (event: PointerEvent) => {
+  pointerDownOnBackdrop = event.target === event.currentTarget
+}
+
+const handleBackdropClick = (event: MouseEvent) => {
+  const startedOnBackdrop = pointerDownOnBackdrop
+  pointerDownOnBackdrop = false
+  if (event.target !== event.currentTarget || !startedOnBackdrop) return
+  if (props.closeOnOverlayClick) closeDialog()
+}
+
 watch(() => props.modelValue, (newValue) => {
-  if (newValue) {
-    openDialog()
-  } else {
-    closeDialog()
-  }
+  if (newValue) openDialog()
+  else closeDialog()
 })
 
-// Lifecycle hooks
 onMounted(() => {
-  if (props.modelValue) {
-    openDialog()
-  }
-  document.addEventListener('keydown', handleEscape)
+  if (props.modelValue) openDialog()
 })
 
-onUnmounted(() => {
-  document.removeEventListener('keydown', handleEscape)
-  if (props.disableScroll) {
-    document.body.style.overflow = ''
-  }
-  if (cleanupFocusTrap.value) {
-    cleanupFocusTrap.value()
+onBeforeUnmount(() => {
+  clearTimeout(unmountTimer)
+  if (dialogRef.value?.open && typeof dialogRef.value.close === 'function') {
+    dialogRef.value.close()
   }
 })
 
-// Méthodes exposées
 defineExpose({
   open: openDialog,
   close: closeDialog,
@@ -156,306 +171,349 @@ defineExpose({
 </script>
 
 <template>
-  <Transition name="su-dialog-transition">
-    <div
-      v-if="isOpen"
-      :class="overlayClasses"
-      :style="{ zIndex: zIndex }"
-      @click="handleOverlayClick"
-    >
-      <dialog
-        :id="dialogId"
-        ref="dialogRef"
-        :class="dialogClasses"
-        :open="isOpen"
-        :style="{ width: width }"
-        v-bind="ariaAttributes"
-        @click.stop 
+  <dialog
+    :id="dialogId"
+    ref="dialogRef"
+    :class="dialogClasses"
+    :style="width ? { width, maxWidth: '100%' } : undefined"
+    v-bind="ariaAttributes"
+    @cancel="handleCancel"
+    @close="handleNativeClose"
+    @pointerdown="handleBackdropPointerDown"
+    @click="handleBackdropClick"
+  >
+    <template v-if="isRendered">
+      <Button
+        class="su-dialog__close"
+        variant="ghost"
+        size="sm"
+        :icon="XMarkIcon"
+        icon-display="only"
+        :aria-label="closeLabel"
+        @click="closeDialog"
+      />
+
+      <div
+        class="su-dialog__container"
+        :style="{ height: height }"
       >
-        <Button
-          class="su-dialog__close"
-          variant="ghost"
-          size="sm"
-          :icon="XMarkIcon"
-          icon-display="only"
-          @click="closeDialog"
-        />
+        <!-- Header -->
         <div
-          class="su-dialog__container"
-          :style="{ height: height }"
+          v-if="$slots.head || title || description"
+          class="su-dialog-header"
         >
-          <!-- Header -->
-          <div
-            v-if="$slots.head || title"
-            class="su-dialog-header"
-          >
-            <slot name="head">
-              <h2
-                :id="titleId"
-                class="su-dialog-title"
-              >
-                {{ title }}
-              </h2>
-            </slot>
-          </div>
-
-          <!-- Description (pour l'accessibilité si pas de slot head) -->
-          <p
-            v-if="description && !$slots.head"
-            :id="descriptionId"
-            class="sr-only"
-          >
-            {{ description }}
-          </p>
-
-          <!-- Contenu principal -->
-          <div class="su-dialog-content">
-            <slot />
-          </div>
-
-          <!-- Footer -->
-          <div
-            v-if="$slots.footer"
-            class="su-dialog-footer"
-          >
-            <slot name="footer" />
-          </div>
+          <slot name="head">
+            <h2
+              v-if="title"
+              :id="titleId"
+              class="su-dialog-title"
+            >
+              {{ title }}
+            </h2>
+            <p
+              v-if="description"
+              :id="descriptionId"
+              class="su-dialog-description"
+            >
+              {{ description }}
+            </p>
+          </slot>
         </div>
-      </dialog>
-    </div>
-  </Transition>
+
+        <!-- Contenu principal -->
+        <div class="su-dialog-content">
+          <slot />
+        </div>
+
+        <!-- Footer -->
+        <div
+          v-if="$slots.footer"
+          class="su-dialog-footer"
+        >
+          <slot name="footer" />
+        </div>
+      </div>
+    </template>
+  </dialog>
 </template>
 
 <style lang="scss">
-@use '../../styles/main' as *;
-@use '../../styles/foundations/colors' as *;
+@use '../../styles/abstracts' as *;
 
-.su-dialog-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgb(0 0 0 / 50%);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
-  
-  &--open {
-    opacity: 1;
-    visibility: visible;
-  }
+// ============================================================
+// DIALOG — <dialog> natif en couche supérieure, fond ::backdrop
+// assombri et flouté. Ouverture et fermeture animées grâce à
+// @starting-style et transition-behavior: allow-discrete.
+// ============================================================
 
-  // Styles spécifiques pour les tiroirs (drawers)
-  &--left, &--right, &--top, &--bottom, &--full {
-    align-items: flex-start; // Pour que le tiroir ne soit pas centré verticalement par défaut
-    justify-content: flex-start; // Pour que le tiroir ne soit pas centré horizontalement par défaut
-  }
+// Verrou de défilement de la page, sans JavaScript
+:root:has(.su-dialog--lock-scroll[open]) {
+  overflow: hidden;
+  scrollbar-gutter: stable;
 }
 
 .su-dialog {
-  background-color: var(--su-bg-surface);
-  border: none;
-  border-radius: var(--su-radius-lg);
-  box-shadow: var(--su-shadow-lg);
-  max-height: 90vh;
-  max-width: 90vw;
-  transform: scale(0.95);
-  opacity: 0;
-  transition: all var(--su-duration-normal) var(--su-ease-in-out);
+  // Réinitialisation du <dialog> natif
   box-sizing: border-box;
-  margin: 0;
+  display: flex;
+  flex-direction: column;
+  width: calc(100% - 2rem);
+  max-width: 32rem;
+  max-height: calc(100dvh - 2rem);
+  margin: auto;
   padding: 0;
-  position: initial;
+  overflow: visible;
+  border: 1px solid var(--su-border-alpha);
+  border-radius: var(--su-radius-container);
+  background-color: var(--su-bg-surface-elevated);
+  background-clip: padding-box;
+  color: var(--su-text-primary);
+  box-shadow: var(--su-shadow-xl);
+  outline: none;
 
-  .su-dialog-overlay--open & {
-    opacity: 1;
-    transform: scale(1);
+  @include inner-highlight;
+
+  // Pose « masquée » (avant ouverture et pendant la fermeture)
+  opacity: 0;
+  transition:
+    opacity var(--su-duration-normal) var(--su-ease-out),
+    scale var(--su-duration-normal) var(--su-ease-out),
+    translate var(--su-duration-normal) var(--su-ease-out),
+    display var(--su-duration-normal) allow-discrete,
+    overlay var(--su-duration-normal) allow-discrete;
+
+  &:not([open]) {
+    display: none;
   }
 
-  &__close {
-    position: absolute!important;
+  &[open] {
+    opacity: 1;
+    scale: none;
+    translate: none;
+
+    @starting-style {
+      opacity: 0;
+    }
+  }
+
+  &::before {
+    z-index: 1;
+  }
+
+  // Fond : assombri et flouté, en fondu
+  &::backdrop {
+    background-color: var(--su-overlay-backdrop);
+    backdrop-filter: blur(4px);
+    opacity: 0;
+    transition:
+      opacity var(--su-duration-normal) var(--su-ease-out),
+      display var(--su-duration-normal) allow-discrete,
+      overlay var(--su-duration-normal) allow-discrete;
+  }
+
+  &[open]::backdrop {
+    opacity: 1;
+
+    @starting-style {
+      opacity: 0;
+    }
+  }
+
+  > .su-dialog__close {
+    position: absolute;
     top: 0.75rem;
-    right: 0.75rem;
+    inset-inline-end: 0.75rem;
+    z-index: 2;
   }
 
   &__container {
     display: flex;
     flex-direction: column;
-    max-height: 100vh
+    flex: 1;
+    min-height: 0;
+    max-height: inherit;
+    border-radius: inherit;
   }
 
-  // Display: center (default modal)
+  // ### Fenêtre centrée (feuille ancrée en bas sur mobile)
+
   &--center {
-    min-width: 320px;
-    width: auto;
-    margin: auto;
+    scale: 0.98;
 
-    .su-dialog__container {
-      max-height: calc(100vh - 2rem);
+    &[open] {
+      @starting-style {
+        scale: 0.98;
+      }
+    }
+
+    @include down('sm') {
+      width: 100%;
+      max-width: none;
+      max-height: calc(100dvh - 3rem);
+      margin: auto 0 0;
+      border-width: 1px 0 0;
+      border-end-start-radius: 0;
+      border-end-end-radius: 0;
+      scale: none;
+      translate: 0 1rem;
+
+      &[open] {
+        @starting-style {
+          translate: 0 1rem;
+        }
+      }
     }
   }
 
-  // Display: left (drawer from left)
-  &--left {
-    height: 100%;
-    max-height: 100%;
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-    transform: translateX(-100%);
-    
-    .su-dialog-overlay--open & {
-      transform: translateX(0);
-    }
-  }
+  // ### Tiroirs
 
-  // Display: right (drawer from right)
+  &--left,
   &--right {
-    height: 100%;
-    max-height: 100%;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-    margin-left: auto; // Pousse le tiroir à droite
-    transform: translateX(100%);
+    width: min(24rem, 100%);
+    max-width: none;
+    height: 100dvh;
+    max-height: none;
+  }
 
-    .su-dialog-overlay--open & {
-      transform: translateX(0);
+  &--left {
+    margin: 0;
+    margin-inline-end: auto;
+    border-width: 0 1px 0 0;
+    border-start-start-radius: 0;
+    border-end-start-radius: 0;
+    translate: -100% 0;
+
+    &[open] {
+      @starting-style {
+        translate: -100% 0;
+      }
     }
   }
 
-  // Display: top (drawer from top)
-  &--top {
-    width: 100%;
-    max-width: 100%;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-    transform: translateY(-100%);
+  &--right {
+    margin: 0;
+    margin-inline-start: auto;
+    border-width: 0 0 0 1px;
+    border-start-end-radius: 0;
+    border-end-end-radius: 0;
+    translate: 100% 0;
 
-    .su-dialog-overlay--open & {
-      transform: translateY(0);
+    &[open] {
+      @starting-style {
+        translate: 100% 0;
+      }
     }
   }
 
-  // Display: bottom (drawer from bottom)
+  &--top,
   &--bottom {
     width: 100%;
-    max-width: 100%;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-    margin-top: auto; // Pousse le tiroir en bas
-    transform: translateY(100%);
+    max-width: none;
+    max-height: 85dvh;
+  }
 
-    .su-dialog-overlay--open & {
-      transform: translateY(0);
+  &--top {
+    margin: 0 0 auto;
+    border-width: 0 0 1px;
+    border-start-start-radius: 0;
+    border-start-end-radius: 0;
+    translate: 0 -100%;
+
+    &[open] {
+      @starting-style {
+        translate: 0 -100%;
+      }
     }
   }
 
-  // Display: full (full screen)
+  &--bottom {
+    margin: auto 0 0;
+    border-width: 1px 0 0;
+    border-end-start-radius: 0;
+    border-end-end-radius: 0;
+    translate: 0 100%;
+
+    &[open] {
+      @starting-style {
+        translate: 0 100%;
+      }
+    }
+  }
+
+  // ### Plein écran
+
   &--full {
     width: 100%;
-    height: 100%;
-    max-width: 100%;
-    max-height: 100%;
+    max-width: none;
+    height: 100dvh;
+    max-height: none;
+    margin: 0;
+    border: 0;
     border-radius: 0;
-    transform: scale(1.05); // Légère animation pour le plein écran
+    scale: 0.98;
 
-    .su-dialog-overlay--open & {
-      transform: scale(1);
+    &[open] {
+      @starting-style {
+        scale: 0.98;
+      }
     }
+  }
+
+  @include high-contrast {
+    border-width: 2px;
   }
 }
 
+// ### Contenu
+
 .su-dialog-header {
-  padding: 1rem 1.5rem;
-  border-bottom: 1px solid var(--su-border-default);
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: 0.5rem;
   flex-shrink: 0;
+
+  // Réserve la place du bouton de fermeture
+  padding: 1.5rem 3.5rem 0.5rem 1.5rem;
 }
 
 .su-dialog-title {
   margin: 0;
   font-size: var(--su-font-size-xl);
   font-weight: var(--su-font-weight-semibold);
+  line-height: var(--su-line-height-tight);
   color: var(--su-text-primary);
 }
 
+.su-dialog-description {
+  margin: 0;
+  font-size: var(--su-font-size-sm);
+  line-height: var(--su-line-height-normal);
+  color: var(--su-text-tertiary);
+}
+
 .su-dialog-content {
-  padding: 1.5rem;
   flex-grow: 1;
+  min-height: 0;
+  padding: 1rem 1.5rem 1.5rem;
   overflow-y: auto;
-  -webkit-overflow-scrolling: touch; // Améliore le défilement sur iOS
+  overscroll-behavior: contain;
 }
 
+// Pied : boutons empilés sur mobile, alignés à droite au-delà
 .su-dialog-footer {
-  padding: 1rem 1.5rem;
-  border-top: 1px solid var(--su-border-default);
   display: flex;
-  justify-content: flex-end;
-  gap: 0.75rem;
+  flex-direction: column-reverse;
+  gap: 0.5rem;
   flex-shrink: 0;
-}
+  padding: 1rem 1.5rem;
+  border-top: 1px solid var(--su-border-alpha);
+  border-end-start-radius: inherit;
+  border-end-end-radius: inherit;
+  background-color: var(--su-bg-muted);
 
-// Transitions
-.su-dialog-transition-enter-active,
-.su-dialog-transition-leave-active {
-  transition: opacity var(--su-duration-normal) var(--su-ease-in-out), transform var(--su-duration-normal) var(--su-ease-in-out);
-}
-
-.su-dialog-transition-enter-from,
-.su-dialog-transition-leave-to {
-  opacity: 0;
-  
-  .su-dialog--center & {
-    transform: scale(0.95);
-  }
-
-  .su-dialog--left & {
-    transform: translateX(-100%);
-  }
-
-  .su-dialog--right & {
-    transform: translateX(100%);
-  }
-
-  .su-dialog--top & {
-    transform: translateY(-100%);
-  }
-
-  .su-dialog--bottom & {
-    transform: translateY(100%);
-  }
-
-  .su-dialog--full & {
-    transform: scale(1.05);
-  }
-}
-
-// Mode de contraste élevé
-@media (prefers-contrast: high) {
-  .su-dialog-overlay {
-    background-color: rgb(0 0 0 / 80%); // Contraste plus élevé pour l'overlay
-  }
-
-  .su-dialog {
-    border: 2px solid windowText; // Bordure visible en contraste élevé
-  }
-}
-
-// Réduction des animations
-@media (prefers-reduced-motion: reduce) {
-  .su-dialog-overlay,
-  .su-dialog {
-    transition: none !important;
-  }
-
-  .su-dialog-transition-enter-active,
-  .su-dialog-transition-leave-active {
-    transition: none !important;
+  @include up('sm') {
+    flex-direction: row;
+    justify-content: flex-end;
   }
 }
 </style>

@@ -148,13 +148,13 @@ Lorsque la valeur de progression est inconnue, vous pouvez définir le composant
 | `min`             | `number`      | `0`               | Valeur minimale.                             |
 | `max`             | `number`      | `100`             | Valeur maximale.                             |
 | `size`            | `'sm' \| 'md' \| 'lg'` | `'md'`   | Définit la hauteur de la barre de progression.   |
-| `color`           | `string`      | `'#000'`        | Couleur de la barre en mode `default`.           |
-| `backgroundColor` | `string`      | `'#e0e0e0'`     | Couleur d’arrière-plan de la piste.            |
+| `color`           | `string`      | `undefined`     | Couleur de la barre en état `default` (par défaut : couleur primaire du thème). |
+| `backgroundColor` | `string`      | `undefined`     | Couleur de la piste (par défaut : fond doux du thème). |
 | `state`           | `'default' \| 'error' \| 'success' \| 'warning'` | `'default'`       | Définit l’état visuel du composant.     |
 | `showLabel`       | `boolean`                   | `false`           | Affiche la valeur de progression sous forme de texte.    |
 | `formatValue`     | `(value: number) => string` | `(v) => ${v}%` | Fonction permettant de personnaliser le format du texte affiché et de la valeur ARIA. |
 | `indeterminate` | `boolean`                 | `false`               | Displays an animated, indeterminate progress bar. |
-| `indeterminateLabel` | `string`                 | `''`               | La aleur de l'étiquette de l'état indéterminé. |
+| `indeterminateLabel` | `string`                 | `'En cours…'`      | Libellé de l'état indéterminé (affiché avec `showLabel` et lu par les lecteurs d'écran). |
 
 
 ### Attributs d'accessibilité

@@ -32,8 +32,9 @@ const fieldId = 'checkbox-group-' + useId()
 const checkboxGroupId = computed(() => attrs.id as string || fieldId)
 
 const checkboxGroupProps = computed(() => {
+  // modelValue (déclaré par defineModel) passe par v-model : il ne doit pas écraser la liaison
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { label, message, ...rest } = props
+  const { label, message, modelValue: _modelValue, ...rest } = props as typeof props & { modelValue?: unknown }
   return rest
 })
 </script>
@@ -48,12 +49,13 @@ const checkboxGroupProps = computed(() => {
     :required="required"
     :disabled="disabled"
   >
-    <template #default="{ fieldId: id, messageId }">
+    <template #default="{ fieldId: id, labelId, messageId }">
       <CheckboxGroup 
         :id="id"
-        :model-value="modelValue"
-        :aria-describedby="messageId"
+        v-model="modelValue"
         v-bind="checkboxGroupProps"
+        :aria-labelled-by="ariaLabelledBy || labelId"
+        :aria-described-by="[ariaDescribedBy, messageId].filter(Boolean).join(' ') || undefined"
         @change="$emit('change', $event)"
         @focus="$emit('focus', $event)"
         @blur="$emit('blur', $event)"

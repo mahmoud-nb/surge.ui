@@ -54,46 +54,27 @@ const tag = computed(() => (props.level === 'div' ? 'div' : `h${props.level}`))
 </template>
 
 <style lang="scss" scoped>
-@use '../../styles/main' as *;
-@use '../../styles/foundations/colors' as *;
+@use '../../styles/abstracts' as *;
 @use 'sass:map';
 
+// Titres : interlignage serré et léger resserrement des grands corps
 $heading-level: (
-  1: (
-    font-size: var(--su-font-size-3xl),
-    line-height: var(--su-line-height-relaxed)
-  ),
-  2: (
-    font-size: var(--su-font-size-2xl),
-    line-height: var(--su-line-height-relaxed)
-  ),
-  3: (
-    font-size: var(--su-font-size-xl),
-    line-height: var(--su-line-height-normal)
-  ),
-  4: (
-    font-size: var(--su-font-size-lg),
-    line-height: var(--su-line-height-normal)
-  ),
-  5: (
-    font-size: var(--su-font-size-md),
-    line-height: var(--su-line-height-tight)
-  ),
-  6: (
-    font-size: var(--su-font-size-sm),
-    line-height: var(--su-line-height-tight)
-  )
+  1: (font-size: var(--su-font-size-3xl), line-height: 1.2, letter-spacing: -0.025em),
+  2: (font-size: var(--su-font-size-2xl), line-height: 1.25, letter-spacing: -0.02em),
+  3: (font-size: var(--su-font-size-xl), line-height: 1.3, letter-spacing: -0.01em),
+  4: (font-size: var(--su-font-size-lg), line-height: 1.35, letter-spacing: 0),
+  5: (font-size: var(--su-font-size-md), line-height: 1.4, letter-spacing: 0),
+  6: (font-size: var(--su-font-size-sm), line-height: 1.4, letter-spacing: 0)
 );
 
 .su-heading {
-  $self: &;
-
-  font-family: var(--su-font-family-base);
-  font-weight: 600;
+  font-family: var(--su-font-family-heading, var(--su-font-family-base));
+  font-weight: var(--su-font-weight-semibold);
   color: var(--su-text-primary);
+  text-wrap: balance;
 
   &--primary {
-    color: var(--su-text-primary)
+    color: var(--su-text-primary);
   }
 
   &--secondary {
@@ -111,26 +92,27 @@ $heading-level: (
   &--with-slots {
     display: flex;
     align-items: center;
-    gap: var(--su-spacing-2);
+    gap: $spacing-2;
 
     svg {
       display: inline-block;
-      width: 1.5rem;
-      height: 1.5rem;
+      width: 1em;
+      height: 1em;
+      flex-shrink: 0;
     }
   }
 
   &--truncate {
     display: block;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+
+    @include truncate;
   }
 
   @each $level, $styles in $heading-level {
     &--level-#{$level} {
       font-size: map.get($styles, font-size);
       line-height: map.get($styles, line-height);
+      letter-spacing: map.get($styles, letter-spacing);
     }
   }
 }

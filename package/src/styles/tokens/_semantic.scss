@@ -1,0 +1,58 @@
+// ============================================================
+// TOKENS SÉMANTIQUES COMMUNS — SURFACES ET ÉTATS
+//
+// Fusionnés dans chaque thème (voir themes/<nom>/index.scss) :
+//   map.merge($semantic-light, $theme-<nom>-light)
+// Un thème peut donc surcharger n'importe lequel de ces tokens.
+//
+// Les valeurs dérivées (var(--su-…)) sont résolues sur l'élément
+// qui porte data-theme : elles suivent le thème courant.
+// ============================================================
+
+$semantic-light: (
+  // Anneau de focus (boutons, cases, liens, champs)
+  'ring': var(--su-border-focus),
+
+  // Surfaces en transparence : s'adaptent à n'importe quel fond
+  'border-input': rgb(0 0 0 / 10%),
+  'border-alpha': rgb(0 0 0 / 8%),
+  'bg-accent': rgb(0 0 0 / 4%),
+  'bg-muted': rgb(0 0 0 / 4%),
+  'bg-control': var(--su-bg-surface),
+
+  // Relief : reflet interne d'1px + ombre très légère
+  'inner-highlight': 0 1px rgb(0 0 0 / 4%),
+  'shadow-control': 0 1px 2px 0 rgb(0 0 0 / 5%),
+  'shadow-popover': (0 4px 12px -2px rgb(0 0 0 / 8%), 0 2px 4px -2px rgb(0 0 0 / 5%)),
+
+  // Fond des modales
+  'overlay-backdrop': rgb(0 0 0 / 32%),
+
+  // Texte des états sur fond doux (≈ nuance 700)
+  'state-success-fg': color-mix(in srgb, var(--su-state-success) 80%, black),
+  'state-warning-fg': color-mix(in srgb, var(--su-state-warning) 75%, black),
+  'state-error-fg': color-mix(in srgb, var(--su-state-error) 85%, black),
+  'state-info-fg': color-mix(in srgb, var(--su-state-info) 80%, black)
+) !default;
+
+$semantic-dark: (
+  'ring': var(--su-border-focus),
+
+  'border-input': rgb(255 255 255 / 8%),
+  'border-alpha': rgb(255 255 255 / 6%),
+  'bg-accent': rgb(255 255 255 / 4%),
+  'bg-muted': rgb(255 255 255 / 4%),
+  'bg-control': rgb(255 255 255 / 3%),
+
+  'inner-highlight': 0 -1px rgb(255 255 255 / 6%),
+  'shadow-control': 0 1px 2px 0 rgb(0 0 0 / 20%),
+  'shadow-popover': (0 4px 12px -2px rgb(0 0 0 / 40%), 0 2px 4px -2px rgb(0 0 0 / 30%)),
+
+  'overlay-backdrop': rgb(0 0 0 / 48%),
+
+  // Texte des états sur fond doux (≈ nuance 400)
+  'state-success-fg': color-mix(in srgb, var(--su-state-success) 70%, white),
+  'state-warning-fg': color-mix(in srgb, var(--su-state-warning) 70%, white),
+  'state-error-fg': color-mix(in srgb, var(--su-state-error) 70%, white),
+  'state-info-fg': color-mix(in srgb, var(--su-state-info) 70%, white)
+) !default;

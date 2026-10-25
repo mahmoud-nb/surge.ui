@@ -23,6 +23,7 @@
     "dev:docs": "npm run dev -w docs",
     "storybook": "npm run storybook -w package",
     "build-storybook": "npm run build-storybook -w package",
+    "test": "npm run test -w package",
     "lint": "npm run lint:js && npm run lint:style",
     "lint:fix": "npm run lint:js:fix && npm run lint:style:fix",
     "lint:js": "eslint . --ext .js,.ts,.vue",

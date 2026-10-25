@@ -1,0 +1,80 @@
+@use 'sass:map';
+
+// ============================================================
+// POINTS DE RUPTURE ET PRÉFÉRENCES UTILISATEUR
+// Valeurs alignées sur le composable useBreakpoint.
+// ============================================================
+
+$breakpoints: (
+  'sm': 640px,
+  'md': 768px,
+  'lg': 1024px,
+  'xl': 1280px,
+  '2xl': 1536px
+) !default;
+
+/// Largeur d'écran supérieure ou égale au point de rupture
+/// @example @include up(sm) { … }
+@mixin up($name) {
+  @if not map.has-key($breakpoints, $name) {
+    @error "Point de rupture inconnu : '#{$name}'. Valeurs : #{map.keys($breakpoints)}";
+  }
+
+  @media (width >= map.get($breakpoints, $name)) {
+    @content;
+  }
+}
+
+/// Largeur d'écran strictement inférieure au point de rupture
+@mixin down($name) {
+  @if not map.has-key($breakpoints, $name) {
+    @error "Point de rupture inconnu : '#{$name}'. Valeurs : #{map.keys($breakpoints)}";
+  }
+
+  @media (width < map.get($breakpoints, $name)) {
+    @content;
+  }
+}
+
+/// Pointeur imprécis (écran tactile)
+@mixin pointer-coarse {
+  @media (pointer: coarse) {
+    @content;
+  }
+}
+
+/// Animations autorisées par l'utilisateur
+@mixin motion-safe {
+  @media (prefers-reduced-motion: no-preference) {
+    @content;
+  }
+}
+
+/// Animations réduites (préférence système ou data-motion="reduce")
+@mixin motion-reduce {
+  @media (prefers-reduced-motion: reduce) {
+    @content;
+  }
+
+  :where([data-motion='reduce']) & {
+    @content;
+  }
+}
+
+/// Contraste élevé (préférence système ou data-contrast="high")
+@mixin high-contrast {
+  @media (prefers-contrast: more) {
+    @content;
+  }
+
+  :where([data-contrast='high']) & {
+    @content;
+  }
+}
+
+/// Mode sombre du thème courant
+@mixin dark-mode {
+  :where([data-theme-mode='dark']) & {
+    @content;
+  }
+}

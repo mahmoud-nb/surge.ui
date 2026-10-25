@@ -74,7 +74,7 @@ Un composant de spinner moderne et accessible pour afficher des états de charge
 | `color`      | `string`           | `currentColor`| Couleur du spinner (accepte n'importe quelle valeur CSS)  |
 | `thickness`  | `number`           | `2`           | Épaisseur du trait pour les types classic et modern  |
 | `speed`      | `number`           | `1`           | Vitesse de l'animation en secondes  |
-| `label`      | `string`           | `'Loading...'`| Texte accessibilité pour les lecteurs d'écran    |
+| `label`      | `string`           | `'Chargement…'`| Texte accessibilité pour les lecteurs d'écran    |
 | `fill`       | `string`           | `'none'`      | Couleur de fond pour les spinners SVG   |
 
 ### Attributs d'accessibilité

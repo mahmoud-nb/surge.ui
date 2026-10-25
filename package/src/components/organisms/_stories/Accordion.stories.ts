@@ -33,6 +33,10 @@ const meta: Meta<typeof Accordion> = {
       description: 'Base heading level for semantic structure',
       control: { type: 'number', min: 1, max: 6 }
     },
+    attached: {
+      description: 'Regroupe les items dans un seul cadre, séparés par un filet (ignore gap)',
+      control: { type: 'boolean' }
+    },
     gap: {
       description: 'Spacing between accordion items',
       control: { type: 'select', options: ['sm', 'md', 'lg', 'none'] }
@@ -113,6 +117,39 @@ export const SingleOpen: Story = {
         <div style="margin-top: 16px; font-size: 0.875rem; color: #666;">
           Sections ouvertes: {{ modelValue.join(', ') }}
         </div>
+      </div>
+    `
+  })
+}
+
+export const Attached: Story = {
+  args: {
+    multiple: true,
+    attached: true,
+    items: sampleItems,
+    level: 2
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Les items sont regroupés dans un seul cadre et séparés par un filet : pratique pour une FAQ ou un panneau de réglages compact.'
+      }
+    }
+  },
+  render: (args) => ({
+    components: { Accordion },
+    setup() {
+      const modelValue = ref(['section-1'])
+      return { args, modelValue }
+    },
+    template: `
+      <div style="width: 600px; max-width: 90vw;">
+        <Accordion
+          v-bind="args"
+          v-model="modelValue"
+          @update:modelValue="args['update:modelValue']"
+          @item-toggle="args['item-toggle']"
+        />
       </div>
     `
   })

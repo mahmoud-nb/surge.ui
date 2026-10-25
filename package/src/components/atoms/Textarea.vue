@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watch, nextTick, useAttrs } from 'vue'
+import { computed, ref, watch, nextTick, useAttrs, type HTMLAttributes, type StyleValue } from 'vue'
 import type { TextareaProps } from '@/types'
 
 defineOptions({ inheritAttrs: false }) // name: 'Textarea'
@@ -34,6 +34,17 @@ const attrs = useAttrs()
 
 const textareaRef = ref<HTMLTextAreaElement>()
 const textareaId = computed(() => attrs.id as string || undefined)
+
+// class et style décorent le conteneur ; tous les autres attributs
+// (id, name, data-*, écouteurs non déclarés…) vont sur le textarea.
+const containerAttrs = computed(() => ({
+  class: attrs.class as HTMLAttributes['class'],
+  style: attrs.style as StyleValue
+}))
+const passthroughAttrs = computed(() => {
+  const { class: _class, style: _style, ...rest } = attrs
+  return rest
+})
 
 // Valeur normalisée
 const currentValue = computed(() => modelValue.value || '')
@@ -93,11 +104,19 @@ const ariaAttributes = computed(() => {
   const attrs: Record<string, any> = {}
   
   if (props.ariaLabel) attrs['aria-label'] = props.ariaLabel
+  if (props.ariaLabelledBy) attrs['aria-labelledby'] = props.ariaLabelledBy
   if (props.ariaInvalid !== undefined) attrs['aria-invalid'] = props.ariaInvalid
   if (props.ariaRequired !== undefined) attrs['aria-required'] = props.ariaRequired
   if (props.required) attrs['aria-required'] = 'true'
   if (props.state === 'error' || isOverLimit.value) attrs['aria-invalid'] = 'true'
-  
+
+  // Message du champ + compteur de caractères
+  const describedBy = [
+    props.ariaDescribedBy,
+    props.showCounter && props.maxLength && textareaId.value ? `${textareaId.value}-counter` : undefined
+  ].filter(Boolean).join(' ')
+  if (describedBy) attrs['aria-describedby'] = describedBy
+
   return attrs
 })
 
@@ -113,20 +132,33 @@ const nativeAttributes = computed(() => {
   return attrs
 })
 
-// Auto-resize
+// Auto-resize : natif en CSS (field-sizing: content) quand il est supporté,
+// sinon calcul JS à partir de la hauteur de ligne réelle
+const supportsFieldSizing = typeof CSS !== 'undefined' && CSS.supports?.('field-sizing', 'content')
+
+// Bornes en nombre de lignes, lues par le CSS (min/max-height en `lh`)
+const autoResizeStyle = computed(() => props.autoResize
+  ? { '--su-textarea-min-rows': props.minRows ?? 2, '--su-textarea-max-rows': props.maxRows ?? 10 }
+  : undefined
+)
+
 const adjustHeight = async () => {
-  if (!props.autoResize || !textareaRef.value) return
-  
+  if (!props.autoResize || !textareaRef.value || supportsFieldSizing) return
+
   await nextTick()
-  
+
   const textarea = textareaRef.value
-  const minHeight = props.minRows ? props.minRows * 1.5 : 3 * 1.5
-  const maxHeight = props.maxRows ? props.maxRows * 1.5 : 10 * 1.5
-  
+  const style = getComputedStyle(textarea)
+  const lineHeight = parseFloat(style.lineHeight) || parseFloat(style.fontSize) * 1.5
+  const chrome = parseFloat(style.paddingTop) + parseFloat(style.paddingBottom)
+    + parseFloat(style.borderTopWidth) + parseFloat(style.borderBottomWidth)
+  const minHeight = (props.minRows ?? 2) * lineHeight + chrome
+  const maxHeight = (props.maxRows ?? 10) * lineHeight + chrome
+
   textarea.style.height = 'auto'
-  const scrollHeight = textarea.scrollHeight
-  const newHeight = Math.max(minHeight * 16, Math.min(maxHeight * 16, scrollHeight))
+  const newHeight = Math.max(minHeight, Math.min(maxHeight, textarea.scrollHeight))
   textarea.style.height = `${newHeight}px`
+  textarea.style.overflowY = textarea.scrollHeight > maxHeight ? 'auto' : 'hidden'
 }
 
 // Gestionnaires d'événements
@@ -190,10 +222,12 @@ watch(() => props.autoResize, (newValue) => {
 </script>
 
 <template>
-  <div>
+  <div
+    :class="containerAttrs.class"
+    :style="containerAttrs.style"
+  >
     <div :class="containerClasses">
       <textarea
-        :id="textareaId"
         ref="textareaRef"
         :class="textareaClasses"
         :value="modelValue"
@@ -202,7 +236,8 @@ watch(() => props.autoResize, (newValue) => {
         :readonly="readonly"
         :required="required"
         :rows="autoResize ? minRows : rows"
-        v-bind="{ ...nativeAttributes, ...ariaAttributes }"
+        :style="autoResizeStyle"
+        v-bind="{ ...passthroughAttrs, ...nativeAttributes, ...ariaAttributes }"
         @input="handleInput"
         @change="handleChange"
         @focus="handleFocus"
@@ -233,71 +268,103 @@ watch(() => props.autoResize, (newValue) => {
 </template>
 
 <style lang="scss">
-@use '../../styles/main' as *;
-@use '../../styles/foundations/colors' as *;
+@use '../../styles/abstracts' as *;
 
-.su-textarea {
-  $self: &;
+// ============================================================
+// TEXTAREA — même surface de contrôle que l'Input
+// ============================================================
 
-  display: block;
-  resize: vertical;
-  width: 100%;
+@mixin su-textarea--state($state) {
+  &--#{$state} {
+    border-color: with-alpha(state-#{$state}, 48%);
 
-  //@include su-form-field-element;
-  @include su-formfield-box($self);
-  
-  &--disabled {
-    resize: none;
-  }
-  
-  &--readonly {
-    resize: none;
-  }
-  
-  &--auto-resize {
-    resize: none;
-    overflow-y: hidden;
-  }
-  
-  &--over-limit {
-    color: var(--su-state-error);
+    &:focus-within {
+      @include focus-ring-field(var(--su-state-#{$state}));
+    }
   }
 }
 
 .su-textarea-container {
-  @include su-form-field-container;
-  
-  // Tailles
+  display: flex;
+  color: var(--su-text-primary);
+
+  // 16px sur mobile (pas de zoom iOS), 14px dès `sm`
+  font-size: var(--su-font-size-base);
+
+  @include control-surface;
+
+  @include up('sm') {
+    font-size: var(--su-font-size-sm);
+  }
+
+  // Marges internes par taille (lues par .su-textarea)
   &--sm {
-    .su-textarea {
-      padding: 0.5rem 0.75rem;
-      font-size: var(--su-font-size-sm);
-      line-height: 1.4;
-    }
+    --_su-textarea-pad-x: calc(0.625rem - 1px);
+    --_su-textarea-pad-y: calc(0.25rem - 1px);
   }
-  
+
   &--md {
-    .su-textarea {
-      padding: 0.75rem;
-      font-size: var(--su-font-size-base);
-      line-height: 1.5;
-    }
+    --_su-textarea-pad-x: calc(0.75rem - 1px);
+    --_su-textarea-pad-y: calc(0.375rem - 1px);
   }
-  
+
   &--lg {
-    .su-textarea {
-      padding: 1rem;
-      font-size: var(--su-font-size-lg);
-      line-height: 1.6;
-    }
+    --_su-textarea-pad-x: calc(0.875rem - 1px);
+    --_su-textarea-pad-y: calc(0.5rem - 1px);
   }
-  
-  &--over-limit {
-    border-color: var(--su-state-error);
-    
-    &:focus-within {
-      border-color: var(--su-state-error);
-      box-shadow: 0 0 0 3px rgb(var(--su-state-error-rgb) / 10%);
+
+  // L'erreur et le dépassement passent par aria-invalid (control-surface)
+  @include su-textarea--state(success);
+  @include su-textarea--state(warning);
+
+  &--disabled {
+    @include disabled-state;
+
+    box-shadow: none;
+  }
+
+  &--readonly {
+    background-image: linear-gradient(var(--su-bg-muted), var(--su-bg-muted));
+  }
+}
+
+.su-textarea {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: var(--_su-textarea-pad-y) var(--_su-textarea-pad-x);
+  border: 0;
+  outline: none;
+  background: transparent;
+  font: inherit;
+  line-height: 1.5;
+  color: inherit;
+  border-radius: inherit;
+  resize: vertical;
+
+  &::placeholder {
+    color: var(--su-text-tertiary);
+  }
+
+  &--disabled,
+  &--readonly {
+    resize: none;
+  }
+
+  &--disabled {
+    cursor: not-allowed;
+  }
+
+  &--auto-resize {
+    resize: none;
+    overflow-y: hidden;
+
+    // Redimensionnement natif : la hauteur suit le contenu entre min et max lignes
+    @supports (field-sizing: content) {
+      field-sizing: content;
+      overflow-y: auto;
+      min-height: calc(var(--su-textarea-min-rows, 2) * 1lh + 2 * var(--_su-textarea-pad-y));
+      max-height: calc(var(--su-textarea-max-rows, 10) * 1lh + 2 * var(--_su-textarea-pad-y));
     }
   }
 }
@@ -307,7 +374,6 @@ watch(() => props.autoResize, (newValue) => {
   justify-content: space-between;
   align-items: flex-start;
   gap: 1rem;
-  min-height: 1.25rem;
   margin-top: 0.375rem;
 }
 
@@ -317,18 +383,18 @@ watch(() => props.autoResize, (newValue) => {
 
 .su-textarea-counter {
   flex-shrink: 0;
-  font-size: var(--su-font-size-sm);
-  font-weight: 500;
-  color: var(--su-text-secondary);
+  font-size: var(--su-font-size-xs);
+  font-variant-numeric: tabular-nums;
+  color: var(--su-text-tertiary);
   line-height: var(--su-line-height-tight);
-  
+
   &--near-limit {
-    color: var(--su-state-warning);
+    color: var(--su-state-warning-fg);
   }
-  
+
   &--over-limit {
-    color: var(--su-state-error);
-    font-weight: 600;
+    color: var(--su-state-error-fg);
+    font-weight: var(--su-font-weight-medium);
   }
 }
 </style>

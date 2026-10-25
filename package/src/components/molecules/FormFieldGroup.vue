@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, h, Fragment, Comment, Text } from 'vue'
+import { computed, h, Fragment, Comment, Text, type VNode } from 'vue'
 import Input from './InputField.vue'
 import SelectBox from './SelectBoxField.vue'
 import RadioGroup from './RadioGroupField.vue'
@@ -49,7 +49,7 @@ const processedFields = computed(() => {
   if (!slots?.default) return []
 
   const children = (slots?.default?.() ?? [])
-  const processedChildren = []
+  const processedChildren: VNode[] = []
 
   for (const vnode of children) {
     // Vérifie si le VNode est un composant de formulaire accepté
@@ -139,22 +139,22 @@ const ariaAttributes = computed(() => {
 </template>
 
 <style lang="scss">
-@use '../../styles/foundations/spacing' as space;
+@use '../../styles/abstracts' as *;
 
 .su-form-fields {
   display: flex;
   flex-direction: column;
   
   &--section-gap-sm {
-    gap: space.$spacing-4;
+    gap: $spacing-4;
   }
   
   &--section-gap-md {
-    gap: space.$spacing-6;
+    gap: $spacing-6;
   }
   
   &--section-gap-lg {
-    gap: space.$spacing-8;
+    gap: $spacing-8;
   }
   
   &--section-gap-xl {
@@ -176,19 +176,19 @@ const ariaAttributes = computed(() => {
   }
   
   .su-form-fields--gap-sm & {
-    gap: space.$spacing-3;
+    gap: $spacing-3;
   }
   
   .su-form-fields--gap-md & {
-    gap: space.$spacing-4;
+    gap: $spacing-4;
   }
   
   .su-form-fields--gap-lg & {
-    gap: space.$spacing-6;
+    gap: $spacing-6;
   }
   
   .su-form-fields--gap-xl & {
-    gap: space.$spacing-8;
+    gap: $spacing-8;
   }
   
   .su-form-fields--horizontal & {
@@ -202,7 +202,7 @@ const ariaAttributes = computed(() => {
   }
 }
 
-@media (width <= 768px) {
+@include down('md') {
   .su-form-fields--horizontal {
     .su-form-fields-content {
       flex-direction: column;

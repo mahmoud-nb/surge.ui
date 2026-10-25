@@ -1,6 +1,6 @@
 # Dialog
 
-Versatile Dialog component for displaying modals (centered) or drawers (side, top/bottom, full screen). It offers complete accessibility management, focus trap, and customization options to adapt to various use cases.
+Versatile Dialog component for displaying modals (centered) or drawers (side, top/bottom, full screen). It is built on the native `<dialog>` element opened with `showModal()`: the browser handles the top layer, the backdrop (`::backdrop`), making the rest of the page inert and keeping focus inside. It offers customization options to adapt to various use cases.
 
 ## Usage examples
 
@@ -291,12 +291,13 @@ const showFullScreen = ref(false)
 | `modelValue` | `boolean` | `false` | Controls the open/close state of the Dialog (used with `v-model`) |
 | `display` | `'center' \| 'left' \| 'right' \| 'top' \| 'bottom' \| 'full'` | `'center'` | Display mode of the Dialog |
 | `title` | `string` | `undefined` | Title of the Dialog (displayed in the `head` slot by default and for `aria-labelledby`) |
-| `description` | `string` | `undefined` | Description of the Dialog (used for `aria-describedby` if `title` is not provided or if the `head` slot is used without a title) |
+| `description` | `string` | `undefined` | Description shown under the title and linked to the Dialog with `aria-describedby` (not rendered when the `head` slot is used) |
+| `closeLabel` | `string` | `'Fermer'` | Accessible name of the close button |
 | `closeOnOverlayClick` | `boolean` | `true` | Allows closing the Dialog by clicking on the overlay |
 | `closeOnEscape` | `boolean` | `true` | Allows closing the Dialog with the `Escape` key |
 | `width` | `string` | `auto` | Custom width of the Dialog (e.g., `'500px'`, `'80%'`) |
 | `height` | `string` | `auto` | Custom height of the Dialog (e.g., `'400px'`, `'90vh'`) |
-| `zIndex` | `number` | `1000` | Z-index of the Dialog and its overlay |
+| `zIndex` | `number` | — | **Deprecated**, no effect: the Dialog renders in the browser top layer, above any z-index |
 | `disableScroll` | `boolean` | `true` | Disables page body scrolling when the Dialog is open |
 
 ### Accessibility Attributes
@@ -329,13 +330,13 @@ The Dialog component is designed to comply with WCAG 2.1 AA standards:
 
 ### ✅ Accessibility Features
 
-- **ARIA Role**: `role="dialog"` and `aria-modal="true"` to indicate to screen readers that it is a modal window.
-- **Focus Management**: Implements a "focus trap" to ensure that focus remains within the Dialog when open, preventing the user from accidentally navigating outside.
+- **Native dialog**: a `<dialog>` opened with `showModal()` has the `dialog` role and is modal for assistive technologies (the rest of the page becomes inert).
+- **Focus Management**: the browser keeps focus inside the Dialog while it is open; no JavaScript focus trap.
 - **Initial Focus**: Focus is automatically moved to the first focusable element within the Dialog upon opening.
 - **Focus Restoration**: Focus is restored to the element that triggered the Dialog's opening after it closes.
 - **Labels and Descriptions**: Uses `aria-labelledby` (via the `title` prop or `ariaLabelledBy`) and `aria-describedby` (via the `description` prop or `ariaDescribedBy`) to provide semantic context to screen readers.
-- **Accessible Closing**: The Dialog can be closed with the `Escape` key (if `closeOnEscape` is `true`).
-- **Scroll Disablement**: Page body scrolling is disabled when the Dialog is open to prevent unwanted interactions with underlying content.
+- **Accessible Closing**: `Escape` fires the native `cancel` event, which closes the Dialog when `closeOnEscape` is `true`. With several Dialogs open, only the top one closes.
+- **Scroll Disablement**: page scrolling is locked in CSS (`:root:has(...)`) while a Dialog with `disableScroll` is open, including nested Dialogs.
 - **Smooth Transitions**: Animations are designed to be smooth and respect `prefers-reduced-motion`.
 
 ### 🎯 Best Practices

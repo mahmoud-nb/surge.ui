@@ -72,6 +72,40 @@ Il est idéal pour présenter des informations hiérarchisées sans surcharger l
 </template>
 ```
 
+### Éléments attachés
+
+Avec `attached`, les items forment un seul bloc séparé par des filets : idéal pour une FAQ ou un panneau de réglages.
+
+<div class="component-demo">
+  <div class="demo-section">
+    <SuAccordion attached>
+      <SuAccordionItem title="Livraison">
+        <p>Expédition sous 48 h ouvrées.</p>
+      </SuAccordionItem>
+      <SuAccordionItem title="Retours">
+        <p>Retour gratuit pendant 30 jours.</p>
+      </SuAccordionItem>
+      <SuAccordionItem title="Garantie">
+        <p>Deux ans, pièces et main-d’œuvre.</p>
+      </SuAccordionItem>
+    </SuAccordion>
+  </div>
+</div>
+
+```vue
+<SuAccordion attached>
+  <SuAccordionItem title="Livraison">
+    <p>Expédition sous 48 h ouvrées.</p>
+  </SuAccordionItem>
+  <SuAccordionItem title="Retours">
+    <p>Retour gratuit pendant 30 jours.</p>
+  </SuAccordionItem>
+  <SuAccordionItem title="Garantie">
+    <p>Deux ans, pièces et main-d’œuvre.</p>
+  </SuAccordionItem>
+</SuAccordion>
+```
+
 ### Contenu personnalisé
 
 <div class="component-demo">
@@ -104,9 +138,11 @@ Il est idéal pour présenter des informations hiérarchisées sans surcharger l
 
 **Accordion**
 
-| Prop       | Type      | Par défaut | Description                                                       |
-| ---------- | --------- | ---------- | ----------------------------------------------------------------- |
-| `multiple` | `boolean` | `false`    | Si `true`, plusieurs panneaux peuvent être ouverts simultanément. |
+| Prop       | Type                              | Par défaut | Description                                                                 |
+| ---------- | --------------------------------- | ---------- | --------------------------------------------------------------------------- |
+| `multiple` | `boolean`                         | `false`    | Si `true`, plusieurs panneaux peuvent être ouverts simultanément.           |
+| `attached` | `boolean`                         | `false`    | Regroupe les items dans un seul cadre, séparés par un filet (ignore `gap`). |
+| `gap`      | `'sm' \| 'md' \| 'lg' \| 'none'` | `'md'`     | Espacement entre les items séparés.                                         |
 
 **AccordionItem**
 

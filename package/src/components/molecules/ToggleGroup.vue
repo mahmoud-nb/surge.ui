@@ -90,7 +90,7 @@ const handleItemToggle = (value: string | number) => {
 </template>
 
 <style lang="scss" scoped>
-@use '../../styles/main' as *;
+@use '../../styles/abstracts' as *;
 
 .su-toggle-group {
   display: inline-flex;

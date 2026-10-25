@@ -1,4 +1,4 @@
-import type { Component } from "vue";
+import type { Component, Ref } from "vue";
 // Types globaux utilisés dans plusieurs composants
 export type Variant = 'primary' | 'secondary' | 'tertiary' | 'quaternary' | 'ghost' | 'link'
 export type Size = 'sm' | 'md' | 'lg'
@@ -71,7 +71,10 @@ export interface BadgeProps extends AccessibilityProps {
 export type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'custom';
 export type ButtonSize = 'sm' | 'md' | 'lg';
 export type ButtonRadius = 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'full';
+export type ButtonType = 'button' | 'submit' | 'reset';
 export interface ButtonProps extends AccessibilityProps {
+  /** Type natif du bouton. Par défaut 'button' pour ne pas soumettre un formulaire involontairement */
+  type?: ButtonType;
   variant?: ButtonVariant;
   size?: ButtonSize;
   radius?: ButtonRadius;
@@ -95,6 +98,8 @@ export interface CheckboxOption {
   icon?: Component;
 }
 export interface CheckboxGroupProps extends AccessibilityProps {
+  /** Nom des cases, pour la soumission native du formulaire */
+  name?: string;
   options: CheckboxOption[];
   value?: (string | number)[];
   size?: Size;
@@ -256,6 +261,8 @@ export interface LinkProps extends AccessibilityProps {
   icon?: Component;
   iconDisplay?: 'top' | 'left' | 'right' | 'only';
   external?: boolean;
+  /** Texte lu par les lecteurs d'écran quand le lien s'ouvre dans un nouvel onglet */
+  externalLabel?: string;
 }
 
 // Panel.vue
@@ -418,6 +425,8 @@ export interface SwitchProps extends AccessibilityProps {
   rightLabel?: string;
   leftIcon?: Component;
   rightIcon?: Component;
+  /** Marge entre la pastille et le bord de la piste (true par défaut). `false` : pastille au ras de la piste */
+  padded?: boolean;
   size?: Size;
   state?: State;
   disabled?: boolean;
@@ -467,9 +476,11 @@ export interface ProgressProps {
 export interface AccordionContext {
   multiple: boolean;
   level: number;
+  /** Items regroupés dans un seul cadre (prop `attached` de l'Accordion) */
+  attached: Readonly<Ref<boolean>>;
   isItemOpen: (id: string | number) => boolean;
   toggleItem: (id: string | number, item: any) => void;
-  registerItem: (id: string | number, ref: any) => void;
+  registerItem: (id: string | number, isDisabled?: () => boolean) => void;
   unregisterItem: (id: string | number) => void;
 }
 export interface AccordionItemProps {
@@ -790,6 +801,8 @@ export interface AccordionItemData {
 export interface AccordionProps extends AccessibilityProps {
   items?: AccordionItemData[];
   multiple?: boolean;
+  /** Regroupe les items dans un seul cadre, séparés par un filet (ignore `gap`) */
+  attached?: boolean;
   gap?: 'sm' | 'md' | 'lg' | 'none';
   modelValue?: (string | number)[];
   level?: 1 | 2 | 3 | 4 | 5 | 6;
@@ -818,8 +831,11 @@ export interface DialogProps extends AccessibilityProps {
   closeOnEscape?: boolean;
   width?: string;
   height?: string;
+  /** @deprecated Sans effet : le dialog s'ouvre dans la couche supérieure du navigateur (showModal) */
   zIndex?: number;
   disableScroll?: boolean;
+  /** Nom accessible du bouton de fermeture */
+  closeLabel?: string;
 }
 
 // Tabs.vue

@@ -32,7 +32,7 @@ const slots = defineSlots<{
 // Refs
 const floatButtonRef = ref<HTMLElement>()
 const isVisible = ref(true)
-const showTooltip = ref(false)
+const isTooltipVisible = ref(false)
 const lastScrollY = ref(0)
 
 // Calcul de la position
@@ -43,14 +43,11 @@ const positionStyles = computed(() => {
   }
   
   // Position horizontale
-  if (props.position === 'right') {
-    styles.right = `${props.offset.x || 24}px`
-  } else {
-    styles.left = `${props.offset.x || 24}px`
-  }
+  const side = props.position === 'right' ? 'right' : 'left'
+  styles[side] = `max(${props.offset.x ?? 24}px, env(safe-area-inset-${side}))`
   
   // Position verticale
-  styles.bottom = `${props.offset.y || 24}px`
+  styles.bottom = `max(${props.offset.y ?? 24}px, env(safe-area-inset-bottom))`
   
   return styles
 })
@@ -79,7 +76,8 @@ const buttonClasses = computed(() => [
 const tooltipClasses = computed(() => [
   'su-float-button-tooltip',
   `su-float-button-tooltip--${props.tooltipPosition}`,
-  `su-float-button-tooltip--in-${props.position}`
+  `su-float-button-tooltip--in-${props.position}`,
+  { 'su-float-button-tooltip--visible': isTooltipVisible.value }
 ])
 
 // Attributs pour le lien/bouton
@@ -124,24 +122,29 @@ const handleClick = (event: MouseEvent) => {
 
 const handleFocus = (event: FocusEvent) => {
   if (props.showTooltip && props.label) {
-    showTooltip.value = true
+    isTooltipVisible.value = true
   }
   emit('focus', event)
 }
 
 const handleBlur = (event: FocusEvent) => {
-  showTooltip.value = false
+  isTooltipVisible.value = false
   emit('blur', event)
 }
 
 const handleMouseEnter = () => {
   if (props.showTooltip && props.label && !props.disabled) {
-    showTooltip.value = true
+    isTooltipVisible.value = true
   }
 }
 
 const handleMouseLeave = () => {
-  showTooltip.value = false
+  isTooltipVisible.value = false
+}
+
+// Échap masque l'infobulle sans déplacer le focus (WCAG 1.4.13)
+const handleKeydown = (event: KeyboardEvent) => {
+  if (event.key === 'Escape') isTooltipVisible.value = false
 }
 
 // Lifecycle
@@ -185,23 +188,21 @@ defineExpose({
     <!-- Bouton flottant principal -->
     <div class="su-float-button-wrapper">
       <!-- Badge -->
-      <div 
-        v-if="badge" 
+      <div
+        v-if="badge"
         class="su-float-button-badge"
-        :aria-label="`Badge: ${badge}`"
+        aria-hidden="true"
       >
         {{ badge }}
       </div>
 
       <!-- Tooltip -->
-      <div 
-        v-if="true || showTooltip && label && showTooltip"
-        :id="`${$attrs.id || 'float-button'}-tooltip`"
+      <div
+        v-if="showTooltip && label"
         :class="tooltipClasses"
-        role="tooltip"
+        aria-hidden="true"
       >
         {{ label }}
-        <div class="su-float-button-tooltip-arrow" />
       </div>
 
       <!-- Lien ou Bouton -->
@@ -215,11 +216,11 @@ defineExpose({
         icon-display="only"
         :disabled="disabled"
         :loading="loading"
-        :aria-label="label || ariaLabel"
-        :aria-describedby="showTooltip && label ? `${$attrs.id || 'float-button'}-tooltip` : ariaDescribedBy"
+        :aria-label="badge ? `${label || ariaLabel} (${badge})` : (label || ariaLabel)"
+        :aria-describedby="ariaDescribedBy"
         v-bind="href ? linkAttributes : {}"
-        label="test"
         @click="handleClick"
+        @keydown="handleKeydown"
         @focus="handleFocus"
         @blur="handleBlur"
         @mouseenter="handleMouseEnter"
@@ -230,61 +231,60 @@ defineExpose({
 </template>
 
 <style lang="scss" scoped>
-@use '../../styles/core/mixins' as *;
-@use '../../styles/foundations/spacing' as space;
-@use '../../styles/foundations/typography' as typo;
+@use '../../styles/abstracts' as *;
+
+// ============================================================
+// FLOAT BUTTON — bouton rond flottant, infobulle et panneau
+// en surface popover
+// ============================================================
 
 .su-float-button-container {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: space.$spacing-4;
+  gap: $spacing-3;
 
-  @include transition(all);
-  
+  @include transition(opacity, translate);
+
   &--left {
     align-items: flex-start;
   }
-  
+
   &--hidden {
     opacity: 0;
     visibility: hidden;
-    transform: translateY(100px);
+    translate: 0 1.5rem;
   }
-  
+
   &--disabled {
     pointer-events: none;
   }
-  
-  // Tailles
-  &--sm {
-    gap: space.$spacing-3;
-  }
-  
-  &--md {
-    gap: space.$spacing-4;
-  }
-  
+
   &--lg {
-    gap: space.$spacing-5;
+    gap: $spacing-4;
   }
+
+  // La position (prop `offset` + zones sûres) est appliquée en style inline :
+  // aucune règle CSS ne doit l'écraser, quelle que soit la largeur d'écran.
 }
 
+// Panneau de contenu additionnel (LinkGroup, ButtonGroup…)
 .su-float-button-slot {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  background-color: white;
-  border: 1px solid var(--su-gray-200);
-  border-radius: var(--su-radius-lg);
-  box-shadow: 0 10px 25px rgb(0 0 0 / 15%);
-  padding: space.$spacing-1;
-  
-  // Animation d'apparition
-  animation: slide-up 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  
+
+  @include popover-surface;
+
+  animation: su-float-button-in var(--su-duration-normal) var(--su-ease-out);
+
   &--left {
     align-items: flex-start;
+  }
+
+  @include down('md') {
+    max-width: calc(100vw - 5rem);
   }
 }
 
@@ -295,278 +295,161 @@ defineExpose({
   justify-content: center;
 }
 
+// Le bouton est un SuButton (ou SuLink) : la classe est posée sur sa racine
 .su-float-button {
-  border-radius: 50% !important;
-  box-shadow: 0 8px 25px rgb(0 0 0 / 15%);
-  position: relative;
-  
-  @include transition(all);
+  border-radius: var(--su-radius-full);
+  padding: 0;
+  box-shadow: var(--su-shadow-lg);
 
   &:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 35px rgb(0 0 0 / 20%);
+    box-shadow: var(--su-shadow-xl);
   }
-  
-  &:active:not(:disabled) {
-    transform: translateY(0);
-  }
-  
-  // Tailles spécifiques pour les boutons flottants
+
   &--sm {
-    width: 3rem !important;
-    height: 3rem !important;
-    padding: 0 !important;
-    
-    .su-button__icon {
+    width: 2.5rem;
+    height: 2.5rem;
+
+    :deep(.su-button__icon) {
+      width: 1.125rem;
+      height: 1.125rem;
+    }
+  }
+
+  &--md {
+    width: 3rem;
+    height: 3rem;
+
+    :deep(.su-button__icon) {
       width: 1.25rem;
       height: 1.25rem;
     }
   }
-  
-  &--md {
-    width: 3.5rem !important;
-    height: 3.5rem !important;
-    padding: 0 !important;
-    
-    .su-button__icon {
+
+  &--lg {
+    width: 3.5rem;
+    height: 3.5rem;
+
+    :deep(.su-button__icon) {
       width: 1.5rem;
       height: 1.5rem;
     }
   }
-  
-  &--lg {
-    width: 4rem !important;
-    height: 4rem !important;
-    padding: 0 !important;
-    
-    .su-button__icon {
-      width: 1.75rem;
-      height: 1.75rem;
-    }
-  }
 }
 
+// Pastille de compteur
 .su-float-button-badge {
   position: absolute;
-  top: -0.375rem;
-  right: -0.375rem;
-  min-width: 1.25rem;
-  height: 1.25rem;
+  top: -0.25rem;
+  right: -0.25rem;
+  z-index: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--su-error-500);
-  color: white;
-  font-size: typo.$font-size-xs;
-  font-weight: 600;
-  border-radius: 9999px;
-  padding: 0 0.375rem;
-  border: 1px solid white;
-  z-index: 1;
+  box-sizing: border-box;
+  min-width: 1.25rem;
+  height: 1.25rem;
+  padding: 0 0.3125rem;
+  border-radius: var(--su-radius-full);
+  background-color: var(--su-state-error);
+  color: var(--su-primary-text);
+  font-size: var(--su-font-size-xs);
+  font-weight: var(--su-font-weight-semibold);
+  font-variant-numeric: tabular-nums;
+
+  // Anneau de la couleur du fond pour détacher la pastille du bouton
+  box-shadow: 0 0 0 2px var(--su-bg-canvas);
+  pointer-events: none;
 }
 
-.su-float-button-tooltip-arrow {
-  position: absolute;
-  width: 0;
-  height: 0;
-  border: 6px solid transparent;
-}
-
+// Infobulle : surface claire, sans flèche
 .su-float-button-tooltip {
   position: absolute;
-  padding: space.$spacing-1 0.75rem;
-  background-color: var(--su-gray-900);
-  color: white;
-  font-size: typo.$font-size-sm;
-  font-weight: 500;
+  z-index: var(--su-z-tooltip);
+  box-sizing: border-box;
+  max-width: 12.5rem;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid var(--su-border-alpha);
   border-radius: var(--su-radius-md);
+  background-color: var(--su-bg-surface-elevated);
+  background-clip: padding-box;
+  color: var(--su-text-primary);
+  font-size: var(--su-font-size-xs);
+  font-weight: var(--su-font-weight-medium);
   white-space: nowrap;
+  box-shadow: var(--su-shadow-popover);
   pointer-events: none;
-  z-index: 2;
-  max-width: 200px;
-  
-  // Positions du tooltip
+  opacity: 0;
+  scale: 0.98;
+
+  @include transition(opacity, scale);
+
+  &--visible {
+    opacity: 1;
+    scale: 1;
+  }
+
   &--top {
-    bottom: 100%;
-    margin-bottom: 0.75rem;
-    
+    bottom: calc(100% + 0.5rem);
+
     &.su-float-button-tooltip--in-right {
       right: 0;
     }
-    
+
     &.su-float-button-tooltip--in-left {
       left: 0;
     }
-    
-    .su-float-button-tooltip-arrow {
-      top: 100%;
-      border-top-color: var(--su-gray-900);
-    }
   }
-  
+
   &--bottom {
-    top: 100%;
-    margin-top: 0.75rem;
-    
+    top: calc(100% + 0.5rem);
+
     &.su-float-button-tooltip--in-right {
       right: 0;
     }
-    
+
     &.su-float-button-tooltip--in-left {
       left: 0;
     }
-    
-    .su-float-button-tooltip-arrow {
-      bottom: 100%;
-      border-bottom-color: var(--su-gray-900);
-    }
   }
-  
+
   &--left {
-    right: 100%;
-    margin-right: 0.75rem;
+    right: calc(100% + 0.5rem);
     top: 50%;
-    transform: translateY(-50%);
-    
-    .su-float-button-tooltip-arrow {
-      left: 100%;
-      top: 50%;
-      transform: translateY(-50%);
-      border-left-color: var(--su-gray-900);
-    }
+    translate: 0 -50%;
   }
-  
+
   &--right {
-    left: 100%;
-    margin-left: 0.75rem;
+    left: calc(100% + 0.5rem);
     top: 50%;
-    transform: translateY(-50%);
-    
-    .su-float-button-tooltip-arrow {
-      right: 100%;
-      top: 50%;
-      transform: translateY(-50%);
-      border-right-color: var(--su-gray-900);
-    }
+    translate: 0 -50%;
+  }
+
+  @include high-contrast {
+    border-width: 2px;
   }
 }
 
-@keyframes slide-up {
+@keyframes su-float-button-in {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    translate: 0 0.5rem;
   }
 
   to {
     opacity: 1;
-    transform: translateY(0);
+    translate: 0 0;
   }
 }
 
-@media (prefers-color-scheme: dark) {
-  .su-float-button-slot {
-    background-color: var(--su-gray-800);
-    border-color: var(--su-gray-600);
-  }
-  
-  .su-float-button-tooltip {
-    background-color: var(--su-gray-100);
-    color: var(--su-gray-900);
-    
-    &--top .su-float-button-tooltip-arrow {
-      border-top-color: var(--su-gray-100);
-    }
-    
-    &--bottom .su-float-button-tooltip-arrow {
-      border-bottom-color: var(--su-gray-100);
-    }
-    
-    &--left .su-float-button-tooltip-arrow {
-      border-left-color: var(--su-gray-100);
-    }
-    
-    &--right .su-float-button-tooltip-arrow {
-      border-right-color: var(--su-gray-100);
-    }
-  }
-  
-  .su-float-button-badge {
-    border-color: var(--su-gray-800);
-  }
-}
-
-@media (prefers-contrast: high) {
-  .su-float-button {
-    border: 3px solid currentcolor;
-  }
-  
-  .su-float-button-badge {
-    border-width: 3px;
-  }
-  
-  .su-float-button-tooltip {
-    border: 2px solid var(--su-gray-600);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .su-float-button-container,
-  .su-float-button,
-  .su-float-button-slot {
-    @include transition(none);
-
-    animation: none;
-  }
-  
-  .su-float-button-container--hidden {
-    transform: none;
-  }
-  
-  .su-float-button:hover:not(:disabled) {
-    transform: none;
-  }
-  
-  .su-float-button-badge {
+.su-float-button-slot {
+  @include motion-reduce {
     animation: none;
   }
 }
 
-@media (width <= 768px) {
-  .su-float-button-container {
-    bottom: 16px !important;
-  
-    &--right {
-      right: 16px !important;
-    }
-    
-    &--left {
-      left: 16px !important;
-    }
-  }
-  
-  .su-float-button-slot {
-    max-width: calc(100vw - 80px);
-    margin-right: 0.5rem;
-    margin-left: 0.5rem;
-  }
-  
-  .su-float-button-tooltip {
-    max-width: 150px;
-    font-size: typo.$font-size-xs;
-  }
-}
-
-@supports (padding: max(0px)) {
-  .su-float-button-container {
-    bottom: max(24px, env(safe-area-inset-bottom));
-    
-    &--right {
-      right: max(24px, env(safe-area-inset-right));
-    }
-    
-    &--left {
-      left: max(24px, env(safe-area-inset-left));
-    }
+.su-float-button-container--hidden {
+  @include motion-reduce {
+    translate: none;
   }
 }
 </style>

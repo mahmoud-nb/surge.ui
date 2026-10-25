@@ -10,6 +10,7 @@ const props = withDefaults(defineProps<LinkProps>(), {
   disabled: false,
   iconDisplay: 'left',
   external: false,
+  externalLabel: "(s'ouvre dans un nouvel onglet)",
   tabIndex: 0
 })
 
@@ -26,7 +27,6 @@ const isRouterLink = computed(() => {
 })
 
 const isExternalLink = computed(() => {
-  console.log('isExternalLink:', props.external, props.href, props.target)
   return props.external || (props.href && (props.href.startsWith('http') || props.href.startsWith('//') || props.target === '_blank'))
 })
 
@@ -138,53 +138,51 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel) {
     </span>
 
     <!-- Icône externe -->
-    <ArrowTopRightOnSquareIcon 
+    <ArrowTopRightOnSquareIcon
       v-if="isExternalLink && hasText"
-      class="su-link__icon"
+      class="su-link__icon su-link__icon--external"
       aria-hidden="true"
     />
+    <span
+      v-if="isExternalLink && linkAttributes.target === '_blank'"
+      class="sr-only"
+    >{{ externalLabel }}</span>
   </component>
 </template>
 
 <style lang="scss">
-@use '../../styles/main' as *;
-@use '../../styles/foundations/colors' as *;
+@use '../../styles/abstracts' as *;
+
+// ============================================================
+// LINK — lien texte sans marge parasite, soulignement décalé,
+// anneau de focus arrondi. Les variantes avec fond au survol
+// (primary, secondary, custom) gagnent une marge compensée.
+// ============================================================
 
 .su-link {
   $self: &;
 
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: 0.375rem;
-  font-family: inherit;
-  text-decoration: none;
-  cursor: pointer;
   box-sizing: border-box;
   border-radius: var(--su-radius-sm);
-  transition: all var(--su-duration-fast) cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
+  font-family: inherit;
+  font-weight: var(--su-font-weight-medium);
+  text-decoration-line: none;
+  text-decoration-thickness: from-font;
+  text-underline-offset: 0.25em;
+  cursor: pointer;
+  outline: none;
+
+  @include transition(color, background-color, text-decoration-color);
 
   &:focus-visible {
-    outline: 2px solid var(--su-link-default);
-    outline-offset: 2px;
-    box-shadow: 0 0 0 4px rgb(37 99 235 / 20%);
+    @include focus-ring;
   }
 
-  // Support du mode de contraste élevé
-  @media (prefers-contrast: high) {
-    &:focus-visible {
-      outline-width: 3px;
-    }
-  }
-
-  // Support de la réduction des animations
-  @media (prefers-reduced-motion: reduce) {
-    transition: none;
-    
-    &:hover:not(&--disabled) {
-      transform: none;
-    }
-  }
+  // ### Disposition
 
   &--block {
     display: flex;
@@ -195,10 +193,6 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel) {
     }
   }
 
-  &--icon-left {
-    flex-direction: row;
-  }
-  
   &--icon-right {
     flex-direction: row-reverse;
   }
@@ -207,231 +201,145 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel) {
     flex-direction: column;
   }
 
-  &__icon {
-    flex-shrink: 0;
-  }
+  // ### Tailles
 
-  // Tailles
   &--sm {
     font-size: var(--su-font-size-sm);
     line-height: var(--su-line-height-tight);
-    padding: 0.125rem 0.25rem;
-    
-    .su-link__icon {
-      width: 1rem;
-      height: 1rem;
-    }
-    
-    &.su-link--icon-only {
-      padding: 0.25rem;
-      width: 1.5rem;
-      height: 1.5rem;
-      justify-content: center;
-    }
+
+    --_su-link-icon: 0.875rem;
   }
 
   &--md {
     font-size: var(--su-font-size-base);
     line-height: var(--su-line-height-normal);
-    padding: 0.25rem 0.375rem;
-    
-    .su-link__icon {
-      width: 1.125rem;
-      height: 1.125rem;
-    }
-    
-    &.su-link--icon-only {
-      padding: 0.375rem;
-      width: 2rem;
-      height: 2rem;
-      justify-content: center;
+
+    --_su-link-icon: 1rem;
+
+    @include up('sm') {
+      font-size: var(--su-font-size-sm);
     }
   }
 
   &--lg {
-    font-size: var(--su-font-size-lg);
+    font-size: var(--su-font-size-base);
     line-height: var(--su-line-height-normal);
-    padding: 0.375rem 0.5rem;
-    
-    .su-link__icon {
-      width: 1.25rem;
-      height: 1.25rem;
-    }
-    
-    &.su-link--icon-only {
-      padding: 0.5rem;
-      width: 2.5rem;
-      height: 2.5rem;
-      justify-content: center;
-    }
+
+    --_su-link-icon: 1.125rem;
   }
 
-  // Variantes
-  &--default {
-    color: var(--su-link-default);
-    
-    &:hover:not(&--disabled) {
-      color: var(--su-link-hover);
-    }
+  &__icon {
+    width: var(--_su-link-icon, 1em);
+    height: var(--_su-link-icon, 1em);
+    flex-shrink: 0;
 
-    &:active:not(&--disabled) {
-      color: var(--su-link-active);
-    }
-  }
-
-  &--primary {
-    color: var(--su-link-default);
-    font-weight: 600;
-    
-    &:hover:not(&--disabled) {
-      color: var(--su-link-hover);
-      background-color: var(--su-bg-selected);
-    }
-
-    &:active:not(&--disabled) {
-      background-color: var(--su-bg-hover);
-    }
-  }
-
-  &--secondary {
-    color: var(--su-text-primary);
-    
-    &:hover:not(&--disabled) {
-      color: var(--su-link-default);
-      background-color: var(--su-bg-hover);
-    }
-
-    &:active:not(&--disabled) {
-      background-color: var(--su-bg-active);
-    }
-  }
-
-  &--muted {
-    color: var(--su-text-secondary);
-    
-    &:hover:not(&--disabled) {
-      color: var(--su-text-primary);
-    }
-
-    &:active:not(&--disabled) {
-      color: var(--su-link-default);
-    }
-  }
-
-  &--custom {
-    color: var(--su-custom-link-color, var(--su-link-default));
-    font-weight: 600;
-    
-    &:hover:not(&--disabled) {
-      color: var(--su-custom-link-hover-color, var(--su-link-hover));
-      background-color: var(--su-bg-selected);
-    }
-
-    &:active:not(&--disabled) {
-      color: var(--su-custom-link-active-color, var(--su-link-default));
-      background-color: var(--su-bg-hover);
-    }
-  }
-
-  // Soulignement
-  &--default-underline {
-    text-decoration: none;
-    
-    &:hover:not(&--disabled) {
-      text-decoration: underline;
-    }
-  }
-  
-  &--underline-always {
-    text-decoration: underline;
-  }
-
-  &--underline-hover {
-    text-decoration: none;
-    
-    &:hover:not(&--disabled) {
-      text-decoration: underline;
-    }
-  }
-
-  &--underline-never {
-    text-decoration: none;
-    
-    &:hover:not(&--disabled) {
-      text-decoration: none;
-    }
-  }
-
-  // États
-  &--disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    pointer-events: none;
-    
-    &:focus {
-      outline: none;
-      box-shadow: none;
-    }
-  }
-
-  &--external {
-    .su-link__icon {
+    &--external {
+      width: calc(var(--_su-link-icon, 1em) * 0.85);
+      height: calc(var(--_su-link-icon, 1em) * 0.85);
       opacity: 0.7;
-      flex-shrink: 0;
-      transition: opacity var(--su-duration-fast);
-    }
-  }
-  
-  // Ajustements pour les liens avec icônes seules
-  &--icon-only {
-    gap: 0;
-    
-    .su-link__icon {
-      width: 1.25em;
-      height: 1.25em;
     }
   }
 
   &__content {
     min-width: 0;
   }
-}
 
-// Mode sombre
-@media (prefers-color-scheme: dark) {
-  .su-link {
-    &--default {
-      color: var(--su-link-default);
-      
-      &:hover:not(&--disabled) {
-        color: var(--su-link-hover);
-      }
+  // ### Variantes
+
+  &--default {
+    color: var(--su-link-default);
+
+    &:hover {
+      color: var(--su-link-hover);
     }
+  }
 
-    &--primary {
-      color: var(--su-link-default);
-      
-      &:hover:not(&--disabled) {
-        color: var(--su-link-hover);
-        background-color: var(--su-bg-selected);
-      }
-    }
+  &--muted {
+    color: var(--su-text-tertiary);
+    font-weight: var(--su-font-weight-normal);
 
-    &--secondary {
+    &:hover {
       color: var(--su-text-primary);
-      
-      &:hover:not(&--disabled) {
-        color: var(--su-link-default);
-        background-color: var(--su-bg-hover);
-      }
     }
+  }
 
-    &--muted {
-      color: var(--su-text-secondary);
-      
-      &:hover:not(&--disabled) {
-        color: var(--su-text-primary);
-      }
+  // Variantes « pastille » : fond au survol, marge compensée
+  &--primary,
+  &--secondary,
+  &--custom {
+    margin-inline: -0.375rem;
+    padding: 0.125rem 0.375rem;
+  }
+
+  &--primary {
+    color: var(--su-link-default);
+
+    &:hover {
+      color: var(--su-link-hover);
+      background-color: with-alpha(link-default, 8%);
+    }
+  }
+
+  &--secondary {
+    color: var(--su-text-primary);
+
+    &:hover {
+      background-color: var(--su-bg-accent);
+    }
+  }
+
+  &--custom {
+    color: var(--su-custom-link-color, var(--su-link-default));
+
+    &:hover {
+      color: var(--su-custom-link-hover-color, var(--su-link-hover));
+      background-color: var(--su-custom-link-hover-bg, with-alpha(link-default, 8%));
+    }
+  }
+
+  // ### Soulignement (décoration en transparence, pleine au survol)
+
+  &--underline-always {
+    text-decoration-line: underline;
+    text-decoration-color: color-mix(in srgb, currentcolor 40%, transparent);
+
+    &:hover {
+      text-decoration-color: currentcolor;
+    }
+  }
+
+  &--underline-default,
+  &--underline-hover {
+    &:hover {
+      text-decoration-line: underline;
+    }
+  }
+
+  // ### États
+
+  &--disabled {
+    @include disabled-state;
+
+    pointer-events: none;
+  }
+
+  &--icon-only {
+    justify-content: center;
+    gap: 0;
+    margin-inline: 0;
+    padding: 0.375rem;
+
+    #{$self}__icon {
+      width: calc(var(--_su-link-icon, 1em) * 1.125);
+      height: calc(var(--_su-link-icon, 1em) * 1.125);
+    }
+  }
+
+  @include high-contrast {
+    text-decoration-line: underline;
+
+    &:focus-visible {
+      outline-width: 3px;
     }
   }
 }

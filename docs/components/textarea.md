@@ -615,9 +615,9 @@ Le composant Textarea respecte les normes WCAG 2.1 AA et les bonnes pratiques W3
 Le textarea ajuste automatiquement sa hauteur selon le contenu :
 
 - **Hauteur minimale** : Définie par `minRows`
-- **Hauteur maximale** : Définie par `maxRows`
-- **Ajustement fluide** : Transition douce
-- **Performance optimisée** : Calcul efficace
+- **Hauteur maximale** : Définie par `maxRows` (défilement au-delà)
+- **Natif quand c'est possible** : `field-sizing: content` en CSS, sans JavaScript
+- **Repli** : calcul JS basé sur la hauteur de ligne réelle pour les navigateurs plus anciens
 
 ### 📊 Compteur de caractères
 

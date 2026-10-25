@@ -78,6 +78,7 @@ const getNavItems = (section: string = 'display', lang: string = 'fr') => {
       { text: 'useCustomTheme', link: `${langPrefix}/composables/usecustomtheme` },
       { text: 'useBreakpoint', link: `${langPrefix}/composables/usebreakpoint`, badge: NEW_BADGE },
       { text: 'usePrice', link: `${langPrefix}/composables/useprice`, badge: NEW_BADGE },
+      { text: 'useFloatingPosition', link: `${langPrefix}/composables/usefloatingposition`, badge: NEW_BADGE },
     ]
   }
 

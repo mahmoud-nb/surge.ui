@@ -22,29 +22,31 @@ $statics : (
   'gray-800': colors.$gray-800,
   'gray-900': colors.$gray-900,
   'gray-950': colors.$gray-950,
-  
+
   // Typographie
   'font-family-base': typo.$font-family-base,
   'font-family-mono': typo.$font-family-mono,
-  
+
   'font-size-xs': typo.$font-size-xs,
   'font-size-sm': typo.$font-size-sm,
   'font-size-base': typo.$font-size-base,
+  'font-size-md': typo.$font-size-md,
   'font-size-lg': typo.$font-size-lg,
   'font-size-xl': typo.$font-size-xl,
   'font-size-2xl': typo.$font-size-2xl,
   'font-size-3xl': typo.$font-size-3xl,
+  'font-size-4xl': typo.$font-size-4xl,
 
   'font-weight-light': typo.$font-weight-light,
   'font-weight-normal': typo.$font-weight-normal,
   'font-weight-medium': typo.$font-weight-medium,
   'font-weight-semibold': typo.$font-weight-semibold,
   'font-weight-bold': typo.$font-weight-bold,
-  
+
   'line-height-tight': typo.$line-height-tight,
   'line-height-normal': typo.$line-height-normal,
   'line-height-relaxed': typo.$line-height-relaxed,
-  
+
   // Espacement
   'spacing-1': space.$spacing-1,
   'spacing-2': space.$spacing-2,
@@ -53,28 +55,55 @@ $statics : (
   'spacing-6': space.$spacing-6,
   'spacing-8': space.$spacing-8,
   'spacing-12': space.$spacing-12,
-  
+
   // Radius
+  'radius-none': space.$radius-none,
+  'radius-xs': space.$radius-xs,
   'radius-sm': space.$radius-sm,
   'radius-md': space.$radius-md,
   'radius-lg': space.$radius-lg,
   'radius-xl': space.$radius-xl,
+  'radius-2xl': space.$radius-2xl,
   'radius-full': space.$radius-full,
-  
+  'radius-control': static.$radius-control,
+  'radius-container': static.$radius-container,
+
   // Shadows
   'shadow-xs': static.$shadow-xs,
   'shadow-sm': static.$shadow-sm,
   'shadow-md': static.$shadow-md,
   'shadow-lg': static.$shadow-lg,
-  
+  'shadow-xl': static.$shadow-xl,
+
   // Focus
   'focus-ring-width': static.$focus-ring-width,
   'focus-ring-offset': static.$focus-ring-offset,
-  
+
+  // Contrôles (boutons, champs, selects)
+  'control-height-sm': static.$control-height-sm,
+  'control-height-sm-compact': static.$control-height-sm-compact,
+  'control-height-md': static.$control-height-md,
+  'control-height-md-compact': static.$control-height-md-compact,
+  'control-height-lg': static.$control-height-lg,
+  'control-height-lg-compact': static.$control-height-lg-compact,
+  'opacity-disabled': static.$opacity-disabled,
+  'touch-target-min': static.$touch-target-min,
+
+  // Z-index
+  'z-dropdown': static.$z-dropdown,
+  'z-sticky': static.$z-sticky,
+  'z-fixed': static.$z-fixed,
+  'z-modal-backdrop': static.$z-modal-backdrop,
+  'z-modal': static.$z-modal,
+  'z-popover': static.$z-popover,
+  'z-tooltip': static.$z-tooltip,
+
   // Animations
   'duration-fast': anim.$duration-fast,
   'duration-normal': anim.$duration-normal,
   'duration-slow': anim.$duration-slow,
+  'ease-in': anim.$ease-in,
+  'ease-out': anim.$ease-out,
   'ease-in-out': anim.$ease-in-out,
   'animation-scale': 1
 ) !default;
@@ -84,10 +113,6 @@ $statics : (
     --su-#{$key}: #{$value};
   }
 }
-
-$shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 5%);
-$shadow-md: 0 4px 6px -1px rgb(0 0 0 / 10%), 0 2px 4px -2px rgb(0 0 0 / 10%);
-$shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 10%), 0 4px 6px -4px rgb(0 0 0 / 10%);
 
 // ============================================================
 // REDUCED MOTION

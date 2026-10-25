@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch, useId } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, reactive, ref, watch, useId } from 'vue'
 import type { TabsProps } from '@/types'
 
 const props = withDefaults(defineProps<TabsProps>(), {
@@ -15,21 +15,75 @@ const tabsId = useId()
 watch(() => props.modelValue, v => (activeIndex.value = v))
 watch(activeIndex, v => emit('update:modelValue', v))
 
+// Boutons d'onglet, pour déplacer le focus avec l'onglet actif
+const tabRefs = ref<HTMLButtonElement[]>([])
+const setTabRef = (el: unknown, index: number) => {
+  if (el) tabRefs.value[index] = el as HTMLButtonElement
+}
+
+const selectTab = (index: number) => {
+  activeIndex.value = index
+  // Le focus suit l'onglet activé (pattern WAI-ARIA « activation automatique »)
+  nextTick(() => tabRefs.value[index]?.focus())
+}
+
 // Gestion du clavier
 const handleKeydown = (event: KeyboardEvent) => {
   const total = props.tabs?.length ?? 0
   if (!total) return
 
-  if (event.key === 'ArrowRight') {
-    activeIndex.value = (activeIndex.value + 1) % total
-  } else if (event.key === 'ArrowLeft') {
-    activeIndex.value = (activeIndex.value - 1 + total) % total
-  } else if (event.key === 'Home') {
-    activeIndex.value = 0
-  } else if (event.key === 'End') {
-    activeIndex.value = total - 1
+  const targets: Record<string, number> = {
+    ArrowRight: (activeIndex.value + 1) % total,
+    ArrowLeft: (activeIndex.value - 1 + total) % total,
+    Home: 0,
+    End: total - 1
   }
+  if (!(event.key in targets)) return
+
+  event.preventDefault()
+  selectTab(targets[event.key])
 }
+
+// ============================================================
+// Indicateur animé (variantes underline et pills) : il glisse
+// jusqu'à l'onglet actif, dont on mesure la position.
+// ============================================================
+
+const listRef = ref<HTMLElement>()
+const hasIndicator = computed(() => props.variant !== 'contained')
+const indicator = reactive({ left: 0, top: 0, width: 0, height: 0, ready: false })
+
+const updateIndicator = () => {
+  const tab = tabRefs.value[activeIndex.value]
+  if (!tab) return
+  indicator.left = tab.offsetLeft
+  indicator.top = tab.offsetTop
+  indicator.width = tab.offsetWidth
+  indicator.height = tab.offsetHeight
+  indicator.ready = true
+}
+
+const indicatorStyle = computed(() => ({
+  '--su-tabs-indicator-left': `${indicator.left}px`,
+  '--su-tabs-indicator-top': `${indicator.top}px`,
+  '--su-tabs-indicator-width': `${indicator.width}px`,
+  '--su-tabs-indicator-height': `${indicator.height}px`
+}))
+
+watch([activeIndex, () => props.tabs?.length, () => props.variant], () => nextTick(updateIndicator))
+
+let resizeObserver: ResizeObserver | undefined
+
+onMounted(() => {
+  updateIndicator()
+  if (typeof ResizeObserver !== 'undefined' && listRef.value) {
+    // Recalcule si la liste change de taille (police chargée, responsive…)
+    resizeObserver = new ResizeObserver(updateIndicator)
+    resizeObserver.observe(listRef.value)
+  }
+})
+
+onBeforeUnmount(() => resizeObserver?.disconnect())
 
 // Classes
 const tabClasses = (index: number) => [
@@ -40,17 +94,31 @@ const tabClasses = (index: number) => [
 </script>
 
 <template>
-  <div class="su-tabs">
+  <div
+    class="su-tabs"
+    :class="`su-tabs--${variant}`"
+  >
     <!-- Liste des onglets -->
     <div
+      ref="listRef"
       role="tablist"
       class="su-tabs-list"
+      :style="hasIndicator ? indicatorStyle : undefined"
       @keydown="handleKeydown"
     >
+      <span
+        v-if="hasIndicator"
+        class="su-tabs-indicator"
+        :class="{ 'su-tabs-indicator--ready': indicator.ready }"
+        aria-hidden="true"
+      />
+
       <button
         v-for="(tab, index) in tabs"
         :id="`tab-${tabsId}-${index}`"
         :key="index"
+        :ref="(el) => setTabRef(el, index)"
+        type="button"
         role="tab"
         :aria-controls="`panel-${tabsId}-${index}`"
         :aria-selected="index === activeIndex"
@@ -76,6 +144,7 @@ const tabClasses = (index: number) => [
       :id="`panel-${tabsId}-${index}`"
       :key="index"
       role="tabpanel"
+      tabindex="0"
       :aria-labelledby="`tab-${tabsId}-${index}`"
       class="su-tab-panel"
     >
@@ -91,64 +160,199 @@ const tabClasses = (index: number) => [
 </template>
 
 <style scoped lang="scss">
-@use '../../styles/main' as *;
+@use '../../styles/abstracts' as *;
+
+// ============================================================
+// TABS — trois variantes :
+//   underline : filet sous la liste + indicateur primaire animé
+//   pills     : liste en fond doux + pastille en surface animée
+//   contained : onglets « classeur » attachés au panneau
+// ============================================================
 
 .su-tabs {
   display: flex;
   flex-direction: column;
+  gap: 0.5rem;
   width: 100%;
 }
 
 .su-tabs-list {
+  position: relative;
+  z-index: 0;
   display: flex;
-  gap: 1rem;
-  border-bottom: 2px solid var(--su-border-default);
+  align-items: center;
+  max-width: 100%;
+  overflow-x: auto;
+  scrollbar-width: none;
 }
 
 .su-tab {
-  background: none;
-  border: none;
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-  font-weight: var(--su-font-weight-medium);
-  font-size: var(--su-font-size-base);
-  color: var(--su-text-secondary);
-  transition: all var(--su-duration-normal) var(--su-ease-in-out);
   position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  box-sizing: border-box;
+  min-height: var(--su-control-height-md);
+  padding: 0 0.75rem;
+  border: 1px solid transparent;
+  border-radius: var(--su-radius-md);
+  background: transparent;
+  color: var(--su-text-tertiary);
+  font: inherit;
+  font-size: var(--su-font-size-base);
+  font-weight: var(--su-font-weight-medium);
+  white-space: nowrap;
+  cursor: pointer;
+  outline: none;
 
-  &--active {
-    color: var(--su-text-primary);
-    border-bottom: 2px solid var(--su-primary-default);
-  }
+  @include transition(color, background-color, box-shadow);
 
-  &--contained.su-tab--active {
-    background-color: var(--su-primary-default);
-    color: var(--su-text-inverse);
-    border-radius: var(--su-radius-lg) var(--su-radius-lg) 0 0;
-    border-bottom: none;
+  @include up('sm') {
+    min-height: var(--su-control-height-md-compact);
+    font-size: var(--su-font-size-sm);
   }
 
   &:hover:not(&--active) {
+    color: var(--su-text-secondary);
+  }
+
+  &--active {
     color: var(--su-text-primary);
-    background-color: var(--su-bg-hover);
   }
 
   &:focus-visible {
-    outline: var(--su-focus-ring-width) solid var(--su-border-focus);
-    outline-offset: var(--su-focus-ring-offset);
+    @include focus-ring($offset: calc(var(--su-focus-ring-width) * -1));
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    transition: none;
+  &:disabled {
+    @include disabled-state;
+
+    pointer-events: none;
   }
 }
+
+// Indicateur partagé : position et taille lues sur la liste
+.su-tabs-indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  width: var(--su-tabs-indicator-width);
+  height: var(--su-tabs-indicator-height);
+  translate: var(--su-tabs-indicator-left) var(--su-tabs-indicator-top);
+  pointer-events: none;
+  opacity: 0;
+
+  &--ready {
+    opacity: 1;
+
+    @include transition(translate, width, height);
+  }
+}
+
+// ### Underline
+
+.su-tabs--underline {
+  .su-tabs-list {
+    gap: 0.25rem;
+    padding-block: 0.25rem;
+    box-shadow: inset 0 -1px var(--su-border-alpha);
+  }
+
+  .su-tab:hover:not(.su-tab--active) {
+    background-color: var(--su-bg-accent);
+  }
+
+  // Filet de 2px au pied de l'onglet actif
+  .su-tabs-indicator {
+    z-index: 1;
+    top: auto;
+    bottom: 0;
+    height: 2px;
+    border-radius: 2px;
+    background-color: var(--su-primary-default);
+    translate: var(--su-tabs-indicator-left) 0;
+  }
+}
+
+// ### Pills (contrôle segmenté)
+
+.su-tabs--pills {
+  .su-tabs-list {
+    align-self: flex-start;
+    gap: 0.125rem;
+    padding: 0.125rem;
+    border-radius: var(--su-radius-control);
+    background-color: var(--su-bg-muted);
+  }
+
+  .su-tab {
+    border-radius: calc(var(--su-radius-control) - 0.125rem);
+  }
+
+  // Pastille en surface de contrôle
+  .su-tabs-indicator {
+    border-radius: calc(var(--su-radius-control) - 0.125rem);
+    background-color: var(--su-bg-surface);
+    box-shadow: var(--su-shadow-control), 0 0 0 1px var(--su-border-alpha);
+  }
+}
+
+// ### Contained (classeur)
+
+.su-tabs--contained {
+  gap: 0;
+
+  .su-tabs-list {
+    gap: 0.25rem;
+    padding-inline: 0.5rem;
+    box-shadow: inset 0 -1px var(--su-border-alpha);
+  }
+
+  .su-tab {
+    border-end-start-radius: 0;
+    border-end-end-radius: 0;
+
+    &:hover:not(.su-tab--active) {
+      background-color: var(--su-bg-accent);
+    }
+
+    &--active {
+      border-color: var(--su-border-alpha);
+      border-bottom-color: var(--su-bg-surface);
+      background-color: var(--su-bg-surface);
+    }
+  }
+
+  .su-tab-panel {
+    padding: 1rem;
+    border: 1px solid var(--su-border-alpha);
+    border-top: 0;
+    border-end-start-radius: var(--su-radius-control);
+    border-end-end-radius: var(--su-radius-control);
+    background-color: var(--su-bg-surface);
+  }
+}
+
+// ### Panneau
 
 .su-tab-panel {
-  padding: 1rem;
-  animation: fadeIn var(--su-duration-normal) var(--su-ease-in-out);
+  outline: none;
+  border-radius: var(--su-radius-md);
+  animation: su-tab-panel-in var(--su-duration-normal) var(--su-ease-out);
+
+  &:focus-visible {
+    @include focus-ring;
+  }
+
+  @include motion-reduce {
+    animation: none;
+  }
 }
 
-@keyframes fadeIn {
+@keyframes su-tab-panel-in {
   from {
     opacity: 0;
   }
@@ -158,9 +362,9 @@ const tabClasses = (index: number) => [
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .su-tab-panel {
-    animation: none;
+.su-tabs-indicator {
+  @include high-contrast {
+    outline: 1px solid currentcolor;
   }
 }
 </style>

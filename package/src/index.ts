@@ -1,4 +1,7 @@
 import type { App } from 'vue'
+// Styles globaux (tokens, thèmes, contraste, utilitaires) — émis une seule fois
+import './styles/index.scss'
+
 // ## Display Components ................................................
 import Icon from './components/atoms/Icon.vue'
 import Heading from './components/atoms/Heading.vue'
@@ -77,13 +80,14 @@ export default {
   install(app: App, options: SurgeUpDSOptions = {}) {
     const { prefix = 'Su', theme = {} } = options
     const mergedTheme = { ...defaultTheme, ...theme }
-    const root = document.documentElement
 
     // Injection globale du thème pour accès reactif dans les composants
     app.provide(ThemeSymbol, mergedTheme)
 
     // Génération et application des variables CSS personnalisées
+    // (côté client uniquement : document n'existe pas en SSR)
     if (typeof document !== 'undefined') {
+      const root = document.documentElement
       const cssVariables = flattenThemeToCSS(mergedTheme)
       for (const [varName, value] of Object.entries(cssVariables)) {
         root.style.setProperty(varName, value)

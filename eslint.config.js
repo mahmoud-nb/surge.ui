@@ -109,6 +109,18 @@ export default [
     },
   },
   
+  // Fichiers de configuration exécutés par Node (Vite, Storybook, VitePress)
+  {
+    files: [
+      '**/*.config.{js,ts,mjs,mts}',
+      '**/.storybook/**/*.{js,ts}',
+      '**/.vitepress/config.{js,ts,mts}',
+    ],
+    languageOptions: {
+      globals: nodeGlobals,
+    },
+  },
+
   // Configuration pour les fichiers Vue
   ...vuePlugin.configs['flat/recommended'],
   {

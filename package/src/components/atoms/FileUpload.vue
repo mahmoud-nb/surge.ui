@@ -380,7 +380,7 @@ defineExpose({
         aria-hidden="true"
       >
         <svg
-          class="su-spinner"
+          class="su-file-upload-spinner-icon"
           viewBox="0 0 24 24"
         >
           <circle
@@ -484,7 +484,7 @@ defineExpose({
             aria-hidden="true"
           >
             <svg
-              class="su-spinner"
+              class="su-file-upload-spinner-icon"
               viewBox="0 0 24 24"
             >
               <circle
@@ -541,260 +541,262 @@ defineExpose({
 </template>
 
 <style lang="scss">
-@use '../../styles/main' as *;
-@use '../../styles/foundations/colors' as *;
+@use '../../styles/abstracts' as *;
+
+// ============================================================
+// FILE UPLOAD — zone de dépôt en pointillés sur surface douce,
+// liste de fichiers en cartes compactes. Styles partagés avec
+// FileUploadField (mêmes classes).
+// ============================================================
 
 .su-file-upload-container {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  
+  gap: 0.75rem;
+  width: 100%;
+
   &--disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
+    @include disabled-state;
+
+    .su-file-upload-dropzone {
+      cursor: not-allowed;
+    }
   }
 }
 
+// L'input natif est masqué : la zone de dépôt le pilote
 .su-file-upload-input {
-  position: absolute;
-  opacity: 0;
-  width: 0;
-  height: 0;
-  pointer-events: none;
+  @include sr-only;
 }
 
+// ### Zone de dépôt
+
 .su-file-upload-dropzone {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 2rem;
-  border: 2px dashed var(--su-border-default);
-  border-radius: var(--su-radius-lg);
-  background-color: var(--su-bg-canvas);
+  gap: 0.75rem;
+  box-sizing: border-box;
+  padding: 1.5rem 1rem;
+  border: 1px dashed var(--su-border-default);
+  border-radius: var(--su-radius-container);
+  background-color: var(--su-bg-muted);
+  text-align: center;
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  
+  outline: none;
+
+  @include transition(border-color, background-color, box-shadow);
+
   &:hover:not(&--disabled, &--readonly) {
-    border-color: var(--su-border-hover);
-    background-color: var(--su-bg-primary-canvas);
+    border-color: var(--su-border-strong);
+    background-color: var(--su-bg-accent);
   }
-  
-  &:focus {
-    outline: none;
-    border-color: var(--su-border-focus);
-    box-shadow: 0 0 0 3px rgba($primary-500, 0.1);
+
+  &:focus-visible {
+    @include focus-ring;
   }
-  
-  // Tailles
+
+  // ### Variantes
+
+  &--solid {
+    border-style: solid;
+    border-color: var(--su-border-input);
+    background-color: var(--su-bg-control);
+    box-shadow: var(--su-shadow-control);
+  }
+
+  &--minimal {
+    flex-direction: row;
+    justify-content: flex-start;
+    padding: 0.75rem 1rem;
+    border-style: solid;
+    border-color: var(--su-border-input);
+    border-radius: var(--su-radius-control);
+    background-color: var(--su-bg-control);
+    text-align: start;
+
+    .su-file-upload-icon {
+      width: 1.25rem;
+      height: 1.25rem;
+    }
+  }
+
+  // ### Tailles
+
   &--sm {
-    padding: 1.5rem;
-    
+    gap: 0.5rem;
+    padding: 1rem 0.75rem;
+
     .su-file-upload-icon {
-      width: 2rem;
-      height: 2rem;
-    }
-    
-    .su-file-upload-primary-text {
-      font-size: var(--su-font-size-sm);
-    }
-    
-    .su-file-upload-secondary-text {
-      font-size: 0.75rem;
+      width: 1.5rem;
+      height: 1.5rem;
     }
   }
-  
-  &--md {
-    padding: 2rem;
-    
-    .su-file-upload-icon {
-      width: 3rem;
-      height: 3rem;
-    }
-  }
-  
+
   &--lg {
-    padding: 2.5rem;
-    
+    gap: 1rem;
+    padding: 2.5rem 1.5rem;
+
     .su-file-upload-icon {
-      width: 4rem;
-      height: 4rem;
-    }
-    
-    .su-file-upload-primary-text {
-      font-size: var(--su-font-size-lg);
+      width: 2.5rem;
+      height: 2.5rem;
     }
   }
-  
-  // États
-  &--error {
-    border-color: var(--su-state-error-border-color, $error-300);
-    background-color: var(--su-state-error-bg, $error-50);
-    
-    &:hover:not(&--disabled, &--readonly) {
-      border-color: var(--su-state-error-border-hover, $error-400);
-      background-color: var(--su-state-error-bg, $error-50);
-    }
-    
-    &:focus {
-      border-color: var(--su-state-error-border-focus, $error-500);
-      box-shadow: 0 0 0 3px rgba(var(--su-state-error-border-focus, $error-500), 0.1);
+
+  // ### États
+
+  @each $state in ('error', 'success', 'warning') {
+    &--#{$state} {
+      border-color: with-alpha(state-#{$state}, 48%);
+      background-color: with-alpha(state-#{$state}, 4%);
     }
   }
-  
-  &--success {
-    border-color: var(--su-state-success-border-color, $success-300);
-    background-color: var(--su-state-success-bg, $success-50);
-    
-    &:hover:not(&--disabled, &--readonly) {
-      border-color: var(--su-state-success-border-hover, $success-400);
-    }
-    
-    &:focus {
-      border-color: var(--su-state-success-border-focus, $success-500);
-      box-shadow: 0 0 0 3px rgba(var(--su-state-success-border-focus, $success-500), 0.1);
-    }
-  }
-  
-  &--warning {
-    border-color: var(--su-state-warning-border-color, $warning-300);
-    background-color: var(--su-state-warning-bg, $warning-50);
-    
-    &:hover:not(&--disabled, &--readonly) {
-      border-color: var(--su-state-warning-border-hover, $warning-400);
-    }
-    
-    &:focus {
-      border-color: var(--su-state-warning-border-focus, $warning-500);
-      box-shadow: 0 0 0 3px rgba(var(--su-state-warning-border-focus, $warning-500), 0.1);
-    }
-  }
-  
+
+  // Fichier survolé au-dessus de la zone
   &--dragging {
-    border-color: $primary-500;
-    background-color: $primary-100;
-    transform: scale(1.02);
+    border-style: solid;
+    border-color: var(--su-ring);
+    background-color: with-alpha(primary-default, 6%);
+    box-shadow: 0 0 0 3px with-alpha(ring, 24%);
   }
-  
-  &--disabled,
+
   &--readonly {
-    cursor: not-allowed;
-    
-    &:hover {
-      border-color: $gray-300;
-      background-color: $gray-50;
-    }
+    cursor: default;
   }
 }
 
 .su-file-upload-icon {
-  width: 3rem;
-  height: 3rem;
-  color: var(--su-text-secondary);
-  margin-bottom: 1rem;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  
+  width: 2rem;
+  height: 2rem;
+  flex-shrink: 0;
+  color: var(--su-text-tertiary);
+
+  @include transition(color, translate);
+
   &--dragging {
-    color: $primary-600;
-    transform: scale(1.1);
+    color: var(--su-primary-default);
+    translate: 0 -0.125rem;
   }
+}
+
+.su-file-upload-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.su-file-upload-primary-text {
+  margin: 0;
+  font-size: var(--su-font-size-sm);
+  font-weight: var(--su-font-weight-medium);
+  color: var(--su-text-primary);
+}
+
+.su-file-upload-secondary-text {
+  margin: 0;
+  font-size: var(--su-font-size-xs);
+  color: var(--su-text-tertiary);
 }
 
 .su-file-upload-loading {
   position: absolute;
-  top: 1rem;
-  right: 1rem;
+  inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  
-  .su-spinner {
-    width: 1.5rem;
-    height: 1.5rem;
-    color: $primary-600;
-    animation: spin 1s linear infinite;
+  border-radius: inherit;
+  background-color: with-alpha(bg-surface, 70%);
+  color: var(--su-primary-default);
+}
+
+.su-file-upload-spinner-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  animation: su-file-upload-spin 0.8s linear infinite;
+
+  @include motion-reduce {
+    animation-duration: 2.4s;
   }
 }
 
-.su-file-upload-progress-bar {
-  width: 100%;
-  height: 0.25rem;
-  background-color: $gray-200;
-  border-radius: 9999px;
-  overflow: hidden;
-  margin-top: 0.5rem;
-}
-
-.su-file-upload-progress-fill {
-  height: 100%;
-  background-color: var(--su-bg-canvas);
-  border-radius: inherit;
-  transition: width 0.3s ease;
-}
-
-.su-file-upload-text {
-  text-align: center;
-}
-
-.su-file-upload-primary-text {
-  font-size: var(--su-font-size-base);
-  font-weight: 500;
-  color: var(--su-text-primary);
-  margin: 0 0 0.5rem;
-}
-
-.su-file-upload-secondary-text {
-  font-size: var(--su-font-size-sm);
-  color: var(--su-text-secondary);
-  margin: 0;
-}
+// ### Liste des fichiers
 
 .su-file-upload-list {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.5rem;
 }
 
 .su-file-upload-item {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  padding: 0.75rem;
-  background-color: white;
-  border: 1px solid $gray-200;
-  border-radius: var(--su-radius-md);
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  
-  &:hover {
-    box-shadow: 0 2px 4px rgb(0 0 0 / 5%);
-  }
-  
-  &--error {
-    border-color: var(--su-state-error-border-color, $error-300);
-    background-color: var(--su-state-error-bg, $error-50);
-  }
-  
-  &--success {
-    border-color: var(--su-state-success-border-color, $success-300);
-    background-color: var(--su-state-success-bg, $success-50);
-  }
-  
-  &--uploading {
-    border-color: var(--su-border-selected, $primary-300);
-    background-color: var(--su-bg-selected);
-  }
-}
-
-.su-file-upload-item-preview {
-  flex-shrink: 0;
-  width: 2.5rem;
-  height: 2.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: var(--su-bg-canvas);
-  border-radius: var(--su-radius-sm);
+  box-sizing: border-box;
+  padding: 0.5rem 0.75rem;
   overflow: hidden;
+  border: 1px solid var(--su-border-alpha);
+  border-radius: var(--su-radius-control);
+  background-color: var(--su-bg-surface);
+  background-clip: padding-box;
+  box-shadow: var(--su-shadow-control);
+
+  &--error {
+    border-color: with-alpha(state-error, 36%);
+    background-color: with-alpha(state-error, 4%);
+  }
+
+  &-preview {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 2.5rem;
+    height: 2.5rem;
+    overflow: hidden;
+    border-radius: var(--su-radius-md);
+    background-color: var(--su-bg-muted);
+  }
+
+  &-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    color: var(--su-text-tertiary);
+  }
+
+  &-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &-name {
+    font-size: var(--su-font-size-sm);
+    font-weight: var(--su-font-weight-medium);
+    color: var(--su-text-primary);
+
+    @include truncate;
+  }
+
+  &-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.125rem;
+    font-size: var(--su-font-size-xs);
+    font-variant-numeric: tabular-nums;
+    color: var(--su-text-tertiary);
+  }
+
+  &-error {
+    color: var(--su-state-error-fg);
+  }
+
+  &-status {
+    display: flex;
+    flex-shrink: 0;
+  }
 }
 
 .su-file-upload-preview-image {
@@ -803,63 +805,14 @@ defineExpose({
   object-fit: cover;
 }
 
-.su-file-upload-item-icon {
-  width: 1.5rem;
-  height: 1.5rem;
-  color: var(--su-text-secondary);
-}
-
-.su-file-upload-item-info {
-  flex: 1;
-  min-width: 0;
-}
-
-.su-file-upload-item-name {
-  font-weight: 500;
-  color: var(--su-text-primary);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  margin-bottom: 0.125rem;
-}
-
-.su-file-upload-item-details {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: var(--su-font-size-sm);
-  color: var(--su-text-secondary);
-}
-
-.su-file-upload-item-size {
-  color: var(--su-text-secondary);
-}
-
-.su-file-upload-item-progress {
-  color: var(--su-primary-default, $primary-600);
-  font-weight: 500;
-}
-
-.su-file-upload-item-error {
-  color: var(--su-state-error);
-  font-weight: 500;
-}
-
-.su-file-upload-item-status {
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .su-file-upload-status-icon {
-  width: 1.25rem;
-  height: 1.25rem;
-  
+  width: 1.125rem;
+  height: 1.125rem;
+
   &--success {
     color: var(--su-state-success);
   }
-  
+
   &--error {
     color: var(--su-state-error);
   }
@@ -867,39 +820,33 @@ defineExpose({
 
 .su-file-upload-spinner {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  
-  .su-spinner {
-    width: 1.25rem;
-    height: 1.25rem;
-    color: var(--su-primary-default, $primary-600);
-    animation: spin 1s linear infinite;
-  }
+  color: var(--su-primary-default);
 }
 
 .su-file-upload-remove-button {
-  flex-shrink: 0;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 2rem;
-  height: 2rem;
-  background: none;
-  border: none;
-  border-radius: 50%;
+  flex-shrink: 0;
+  width: 1.75rem;
+  height: 1.75rem;
+  padding: 0;
+  border: 0;
+  border-radius: var(--su-radius-md);
+  background: transparent;
+  color: var(--su-text-tertiary);
   cursor: pointer;
-  color: var(--su-text-secondary);
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  
+
+  @include transition(background-color, color);
+  @include touch-target-overlay;
+
   &:hover {
-    background-color: var(--su-state-error-bg, $error-100);
-    color: var(--su-state-error, $error-600);
+    background-color: var(--su-bg-accent);
+    color: var(--su-text-primary);
   }
-  
-  &:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px rgba($error-500, 0.2);
+
+  &:focus-visible {
+    @include focus-ring($offset: 0);
   }
 }
 
@@ -908,116 +855,26 @@ defineExpose({
   height: 1rem;
 }
 
-.su-file-upload-message {
-  font-size: var(--su-font-size-sm);
-  line-height: var(--su-line-height-tight);
-  
-  &--default {
-    color: var(--su-text-secondary);
-  }
-  
-  &--error {
-    color: var(--su-state-error);
-  }
-  
-  &--success {
-    color: var(--su-state-success);
-  }
-  
-  &--warning {
-    color: var(--su-state-warning);
-  }
+// Barre de progression au pied de la carte
+.su-file-upload-progress-bar {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  background-color: var(--su-bg-muted);
 }
 
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
+.su-file-upload-progress-fill {
+  height: 100%;
+  background-color: var(--su-primary-default);
 
+  @include transition(width);
+}
+
+@keyframes su-file-upload-spin {
   to {
-    transform: rotate(360deg);
-  }
-}
-
-// Mode sombre
-@media (prefers-color-scheme: dark) {
-  .su-file-upload-dropzone {
-    background-color: $gray-800;
-    border-color: $gray-600;
-    
-    &:hover:not(&--disabled, &--readonly) {
-      background-color: $gray-700;
-      border-color: $primary-400;
-    }
-    
-    &--dragging {
-      background-color: rgba($primary-400, 0.2);
-      border-color: $primary-400;
-    }
-  }
-  
-  .su-file-upload-primary-text {
-    color: var(--su-text-primary);
-  }
-  
-  .su-file-upload-secondary-text {
-    color: var(--su-text-secondary);
-  }
-  
-  .su-file-upload-item {
-    background-color: $gray-800;
-    border-color: $gray-600;
-  }
-  
-  .su-file-upload-item-preview {
-    background-color: $gray-700;
-  }
-  
-  .su-file-upload-item-name {
-    color: var(--su-text-primary);
-  }
-  
-  .su-file-upload-item-details {
-    color: var(--su-text-secondary);
-  }
-  
-  .su-file-upload-message {
-    &--default {
-      color: var(--su-text-secondary);
-    }
-  }
-}
-
-// Mode de contraste élevé
-@media (prefers-contrast: high) {
-  .su-file-upload-dropzone {
-    border-width: 3px;
-  }
-  
-  .su-file-upload-item {
-    border-width: 2px;
-  }
-}
-
-// Support de la réduction des animations
-@media (prefers-reduced-motion: reduce) {
-  .su-file-upload-dropzone,
-  .su-file-upload-icon,
-  .su-file-upload-item,
-  .su-file-upload-remove-button {
-    transition: none;
-  }
-  
-  .su-file-upload-dropzone--dragging {
-    transform: none;
-  }
-  
-  .su-file-upload-icon--dragging {
-    transform: none;
-  }
-  
-  .su-spinner {
-    animation: none;
+    rotate: 360deg;
   }
 }
 </style>

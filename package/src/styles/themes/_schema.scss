@@ -103,6 +103,23 @@ $theme-required-tokens: (
   // Ombre
   'shadow-color',
 
+  // Tokens communs — fournis par défaut par tokens/_semantic.scss,
+  // surchargeables thème par thème
+  'ring',
+  'border-input',
+  'border-alpha',
+  'bg-accent',
+  'bg-muted',
+  'bg-control',
+  'inner-highlight',
+  'shadow-control',
+  'shadow-popover',
+  'overlay-backdrop',
+  'state-success-fg',
+  'state-warning-fg',
+  'state-error-fg',
+  'state-info-fg',
+
   // Palette primaire (50–950) — requise pour les composants qui l'utilisent directement
   'primary-50',
   'primary-100',

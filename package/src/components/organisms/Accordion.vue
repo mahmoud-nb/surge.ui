@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { ref, computed, provide, watch, onMounted, onUnmounted } from 'vue'
-import { useUniqueId } from '@/composables'
+import { ref, computed, provide, watch, useId } from 'vue'
+
 import AccordionItem from '../molecules/AccordionItem.vue'
-import type { AccordionItemData, AccordionProps } from '@/types'
+import type { AccordionContext, AccordionItemData, AccordionProps } from '@/types'
 
 const props = withDefaults(defineProps<AccordionProps>(), {
   multiple: false,
+  attached: false,
   level: 2,
   gap: 'md',
   items: () => [],
@@ -25,22 +26,29 @@ watch(() => props.modelValue, (newValue) => {
   openItems.value = new Set(newValue)
 })
 
-// Cache stable des IDs générés pour les items sans ID fourni
-const itemIdCache = new Map<number, string>()
+// IDs stables (identiques côté serveur et client) pour les items sans ID fourni
+const baseId = useId()
 
 const itemsWithIds = computed(() => {
   return props.items.map((item, index) => {
     if (item.id) return { ...item }
-    if (!itemIdCache.has(index)) {
-      itemIdCache.set(index, useUniqueId('accordion-item'))
-    }
-    return { ...item, id: itemIdCache.get(index) }
+    return { ...item, id: `accordion-item-${baseId}-${index}` }
   })
 })
+
+const classes = computed(() => [
+  'su-accordion',
+  props.attached ? 'su-accordion--attached' : `su-accordion--gap-${props.gap}`
+])
 
 // Vérifier si un item est ouvert
 const isItemOpen = (itemId: string | number) => {
   return openItems.value.has(itemId)
+}
+
+const commit = (next: Set<string | number>) => {
+  openItems.value = next
+  emit('update:modelValue', Array.from(next))
 }
 
 // Basculer l'état d'un item
@@ -49,163 +57,90 @@ const toggleItem = (itemId: string | number, item: AccordionItemData) => {
 
   const newOpenItems = new Set(openItems.value)
 
-  if (props.multiple) {
-    // Mode multiple : ajouter/supprimer sans affecter les autres
-    if (newOpenItems.has(itemId)) {
-      newOpenItems.delete(itemId)
-    } else {
-      newOpenItems.add(itemId)
-    }
+  if (newOpenItems.has(itemId)) {
+    newOpenItems.delete(itemId)
   } else {
-    // Mode simple : fermer tous les autres et ouvrir celui-ci
-    if (newOpenItems.has(itemId)) {
-      newOpenItems.delete(itemId)
-    } else {
-      newOpenItems.clear()
-      newOpenItems.add(itemId)
-    }
+    // Mode simple : un seul item ouvert à la fois
+    if (!props.multiple) newOpenItems.clear()
+    newOpenItems.add(itemId)
   }
 
-  openItems.value = newOpenItems
-  emit('update:modelValue', Array.from(newOpenItems))
+  commit(newOpenItems)
   emit('item-toggle', item)
 }
 
-// Navigation clavier avancée pour tout l'accordéon
-const accordionRef = ref<HTMLElement>()
-const itemRefs = ref<Map<string | number, { focus: () => void }>>(new Map())
+// Les items s'enregistrent pour les raccourcis « tout ouvrir / tout fermer »
+const registeredItems = new Map<string | number, () => boolean>()
 
-// Enregistrer un item pour la navigation
-const registerItem = (itemId: string | number, itemRef: { focus: () => void }) => {
-  itemRefs.value.set(itemId, itemRef)
+const registerItem = (itemId: string | number, isDisabled: () => boolean = () => false) => {
+  registeredItems.set(itemId, isDisabled)
 }
 
-// Désenregistrer un item
 const unregisterItem = (itemId: string | number) => {
-  itemRefs.value.delete(itemId)
+  registeredItems.delete(itemId)
 }
+
+const enabledItemIds = () => [...registeredItems].filter(([, isDisabled]) => !isDisabled()).map(([id]) => id)
 
 // Fournir le contexte aux enfants
-provide('accordion', {
+provide<AccordionContext>('accordion', {
   multiple: props.multiple,
-  level: computed(() => Math.min(6, props.level + 1) as 1 | 2 | 3 | 4 | 5 | 6),
+  level: Math.min(6, props.level + 1),
+  attached: computed(() => props.attached),
   isItemOpen,
   toggleItem,
   registerItem,
   unregisterItem
 })
 
-// Navigation clavier globale
+// ============================================================
+// Navigation clavier (pattern WAI-ARIA Accordion)
+// Flèches, Début/Fin entre les en-têtes ; Alt+Début ouvre tout
+// (mode multiple), Alt+Fin ferme tout.
+// ============================================================
+
+const accordionRef = ref<HTMLElement>()
+
+const getHeaders = () => Array.from(
+  accordionRef.value?.querySelectorAll<HTMLButtonElement>('.su-accordion-item__header:not(:disabled)') ?? []
+).filter((header) => header.closest('.su-accordion') === accordionRef.value)
+
 const handleKeydown = (event: KeyboardEvent) => {
-  if (!accordionRef.value) return
+  const headers = getHeaders()
+  const current = headers.indexOf(event.target as HTMLButtonElement)
+  // Les touches ne concernent que les en-têtes (pas le contenu des panneaux)
+  if (current === -1) return
 
-  const focusableItems = Array.from(itemRefs.value.values()).filter((_, index) => {
-    const item = itemsWithIds.value[index]
-    return item && !item.disabled
-  })
-
-  if (focusableItems.length === 0) return
-
-  const currentIndex = focusableItems.findIndex(ref => 
-    document.activeElement === document.querySelector(`[data-accordion-item="${ref}"]`)
-  )
-
-  const keys = {
-    Home: () => {
-      event.preventDefault()
-      focusableItems[0]?.focus()
-    },
-    End: () => {
-      event.preventDefault()
-      focusableItems[focusableItems.length - 1]?.focus()
-    },
-    ArrowDown: () => {
-      event.preventDefault()
-      const nextIndex = (currentIndex + 1) % focusableItems.length
-      focusableItems[nextIndex]?.focus()
-    },
-    ArrowUp: () => {
-      event.preventDefault()
-      const prevIndex = (currentIndex - 1 + focusableItems.length) % focusableItems.length
-      focusableItems[prevIndex]?.focus()
-    },
-    PageDown: () => {
-      event.preventDefault()
-      const nextIndex = Math.min(currentIndex + 3, focusableItems.length - 1)
-      focusableItems[nextIndex]?.focus()
-    },
-    PageUp: () => {
-      event.preventDefault()
-      const prevIndex = Math.max(currentIndex - 3, 0)
-      focusableItems[prevIndex]?.focus()
-    }
-  }
-
-  const action = keys[event.key as keyof typeof keys]
-  if (action) {
-    action()
-  }
-}
-
-// Gestionnaire global pour les raccourcis clavier
-const handleGlobalKeydown = (event: KeyboardEvent) => {
   if (event.altKey) {
-    const itemsArray = Array.from(itemRefs.value.entries())
-    const currentItemIndex = itemsArray.findIndex(([_, ref]) => 
-      document.activeElement === document.querySelector(`[data-accordion-item="${ref}"]`)
-    )
-
-    if (event.key === 'Home' && event.altKey) {
+    if (event.key === 'Home' && props.multiple) {
       event.preventDefault()
-      // Ouvrir tous les items (mode multiple seulement)
-      if (props.multiple) {
-        const allIds = itemsWithIds.value.map(item => item.id).filter(Boolean) as (string | number)[]
-        openItems.value = new Set(allIds)
-        emit('update:modelValue', Array.from(openItems.value))
-      }
-    } else if (event.key === 'End' && event.altKey) {
+      commit(new Set(enabledItemIds()))
+    } else if (event.key === 'End') {
       event.preventDefault()
-      // Fermer tous les items
-      openItems.value.clear()
-      emit('update:modelValue', [])
-    } else if (event.key === 'ArrowDown' && event.altKey && currentItemIndex !== -1) {
-      event.preventDefault()
-      // Ouvrir l'item courant
-      const currentItemId = itemsArray[currentItemIndex][0]
-      const currentItem = itemsWithIds.value.find(item => item.id === currentItemId)
-      if (currentItem && !currentItem.disabled) {
-        toggleItem(currentItemId, currentItem)
-      }
-    } else if (event.key === 'ArrowUp' && event.altKey && currentItemIndex !== -1) {
-      event.preventDefault()
-      // Fermer l'item courant
-      const currentItemId = itemsArray[currentItemIndex][0]
-      const currentItem = itemsWithIds.value.find(item => item.id === currentItemId)
-      if (currentItem && !currentItem.disabled && openItems.value.has(currentItemId)) {
-        toggleItem(currentItemId, currentItem)
-      }
+      commit(new Set())
     }
+    return
   }
+
+  const targets: Record<string, number> = {
+    ArrowDown: (current + 1) % headers.length,
+    ArrowUp: (current - 1 + headers.length) % headers.length,
+    Home: 0,
+    End: headers.length - 1
+  }
+  if (!(event.key in targets)) return
+
+  event.preventDefault()
+  headers[targets[event.key]]?.focus()
 }
-
-
-onMounted(() => {
-  document.addEventListener('keydown', handleGlobalKeydown)
-})
-
-onUnmounted(() => {
-  document.removeEventListener('keydown', handleGlobalKeydown)
-})
 </script>
 
 <template>
   <div
     ref="accordionRef"
-    class="su-accordion"
-    :class="`su-accordion--gap-${gap}`"
-    role="region"
-    :aria-multiselectable="multiple"
-    :aria-label="ariaLabel || 'Accordion'"
+    :class="classes"
+    :role="ariaLabel ? 'region' : undefined"
+    :aria-label="ariaLabel"
     @keydown="handleKeydown"
   >
     <!-- Rendu via prop items -->
@@ -231,39 +166,44 @@ onUnmounted(() => {
 </template>
 
 <style lang="scss" scoped>
-@use '../../styles/core/mixins' as *;
-@use '../../styles/foundations/spacing' as space;
+@use '../../styles/abstracts' as *;
 
 .su-accordion {
-  width: 100%;
   display: flex;
   flex-direction: column;
-  gap: space.$spacing-2;
+  width: 100%;
+  gap: $spacing-2;
 
   &--gap-sm {
-    gap: space.$spacing-1;
+    gap: $spacing-1;
   }
 
   &--gap-md {
-    gap: space.$spacing-2;
+    gap: $spacing-2;
   }
 
   &--gap-lg {
-    gap: space.$spacing-3;
+    gap: $spacing-3;
   }
 
   &--gap-none {
     gap: 0;
   }
-}
 
-/* Support pour les préférences de réduction de mouvement */
-@media (prefers-reduced-motion: reduce) {
-  .su-accordion {
-    * {
-      @include transition(none);
+  // Éléments attachés : un seul cadre, séparateurs entre les items
+  // (les items retirent leur propre cadre, voir AccordionItem)
+  &--attached {
+    gap: 0;
+    overflow: hidden;
+    box-sizing: border-box;
+    border: 1px solid var(--su-border-alpha);
+    border-radius: var(--su-radius-control);
+    background-color: var(--su-bg-surface);
+    background-clip: padding-box;
+    box-shadow: var(--su-shadow-control);
 
-      animation: none;
+    @include high-contrast {
+      border-width: 2px;
     }
   }
 }

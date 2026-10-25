@@ -35,33 +35,27 @@ const customStyles = computed(() => {
 </template>
 
 <style lang="scss" scoped>
-@use '../../styles/main' as *;
-@use '../../styles/foundations/colors' as *;
+@use '../../styles/abstracts' as *;
 
 .su-grid-cell {
-  padding: var(--su-spacing-4);
-  background: var(--su-bg-surface);
+  box-sizing: border-box;
+  padding: $spacing-4;
+  border: 1px solid transparent;
+  border-radius: var(--su-radius-control);
+  background-color: var(--su-bg-surface);
+  background-clip: padding-box;
   color: var(--su-text-primary);
-  transition: all var(--su-duration-normal) var(--su-ease-in-out);
-  border-radius: var(--su-radius-md);
 
+  @include transition(border-color, box-shadow);
   @include use-border-radius;
 
   &--bordered {
-    border: 1px solid var(--su-border-default);
-  }
-
-  &:hover {
-    box-shadow: var(--su-shadow-md);
+    border-color: var(--su-border-alpha);
+    box-shadow: var(--su-shadow-control);
   }
 
   &:focus-within {
-    outline: var(--su-focus-ring-width) solid var(--su-border-focus);
-    outline-offset: var(--su-focus-ring-offset);
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    transition: none;
+    @include focus-ring-field;
   }
 }
 </style>

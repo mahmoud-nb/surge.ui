@@ -17,7 +17,10 @@ $contrast-overrides: (
   'border-subtle': $pure-black,
   'border-strong': $pure-black,
   'border-focus': #0000ff, // Bleu pur
-  
+  'border-input': $pure-black,
+  'border-alpha': $pure-black,
+  'ring': #0000ff,
+
   // États avec couleurs saturées
   'state-success': #008000,  // Vert pur
   'state-error': #ff0000,    // Rouge pur
@@ -40,7 +43,10 @@ $contrast-dark-overrides: (
   'border-subtle': $pure-white,
   'border-strong': $pure-white,
   'border-focus': #00ffff, // Cyan pur
-  
+  'border-input': $pure-white,
+  'border-alpha': $pure-white,
+  'ring': #00ffff,
+
   'state-success': #00ff00,
   'state-error': #ff4444,
   'state-warning': #ffaa00,

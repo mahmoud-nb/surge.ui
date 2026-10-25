@@ -190,7 +190,7 @@ const priceClasses = computed(() => [
 </template>
 
 <style lang="scss" scoped>
-@use '../../styles/main' as *;
+@use '../../styles/abstracts' as *;
 
 .su-price {
   display: inline-flex;
@@ -198,6 +198,7 @@ const priceClasses = computed(() => [
   gap: 0.25rem;
   font-family: inherit;
   color: var(--su-text-primary);
+
   @include transition(color);
 
   // ========================================
@@ -276,7 +277,7 @@ const priceClasses = computed(() => [
   }
 
   &--highlight {
-    color: var(--su-state-error);
+    color: var(--su-state-error-fg);
   }
 
   &--muted {
@@ -289,7 +290,7 @@ const priceClasses = computed(() => [
 
   &--has-original {
     .su-price__value {
-      color: var(--su-state-error);
+      color: var(--su-state-error-fg);
     }
   }
 
@@ -343,7 +344,7 @@ const priceClasses = computed(() => [
 // Contraste élevé
 // ========================================
 
-@media (prefers-contrast: high) {
+@media (prefers-contrast: more) {
   .su-price {
     &__original {
       text-decoration-thickness: 2px;

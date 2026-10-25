@@ -8,7 +8,6 @@ const props = withDefaults(defineProps<CardProps>(), {
   variant: 'default',
   size: 'md',
   direction: 'vertical',
-  radius: 'md',
   clickable: false,
   imageFit: 'cover',
   imageRatio: '16/9',
@@ -83,7 +82,8 @@ const cardClasses = computed(() => [
   `su-card--${props.variant}`,
   `su-card--${props.size}`,
   `su-card--${props.direction}`,
-  `su-card--radius-${props.radius}`,
+  // Sans `radius`, la carte prend le rayon des conteneurs (--su-radius-container)
+  props.radius && `su-card--radius-${props.radius}`,
   {
     'su-card--clickable': (props.clickable || props.href) && !props.disabled,
     'su-card--disabled': props.disabled,
@@ -223,124 +223,82 @@ const handleKeydown = (event: KeyboardEvent) => {
 </template>
 
 <style lang="scss" scoped>
-@use '../../styles/main' as *;
+@use '../../styles/abstracts' as *;
 
-// ========================================
-// Base
-// ========================================
+// ============================================================
+// CARD — conteneur arrondi (16px), bordure en transparence,
+// ombre légère, typo resserrée
+// ============================================================
 
 .su-card {
+  position: relative;
   display: flex;
   flex-direction: column;
+  box-sizing: border-box;
+  overflow: hidden;
+  border-radius: var(--su-radius-container);
   color: var(--su-text-primary);
   background-color: var(--su-bg-surface);
-  overflow: hidden;
+  background-clip: padding-box;
   text-decoration: none;
-  @include transition(box-shadow, border-color, transform);
 
-  // ========================================
-  // Variants
-  // ========================================
+  @include transition(box-shadow, border-color, background-color);
+
+  // ### Variantes
 
   &--default {
-    border: 1px solid var(--su-border-default);
+    border: 1px solid var(--su-border-alpha);
+    box-shadow: var(--su-shadow-control);
   }
 
   &--outlined {
-    border: 1px solid var(--su-border-strong);
+    border: 1px solid var(--su-border-default);
     background-color: transparent;
   }
 
   &--elevated {
-    border: 1px solid var(--su-border-subtle);
-    box-shadow:
-      0 1px 3px 0 rgba(0, 0, 0, 0.1),
-      0 1px 2px -1px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--su-border-alpha);
+    box-shadow: var(--su-shadow-popover);
   }
 
   &--filled {
-    border: none;
-    background-color: var(--su-bg-hover);
+    border: 1px solid transparent;
+    background-color: var(--su-bg-muted);
   }
 
-  // ========================================
-  // Radius
-  // ========================================
+  // ### Rayons explicites (prop `radius`)
 
   &--radius-none { border-radius: 0; }
-  &--radius-sm { border-radius: 0.25rem; }
-  &--radius-md { border-radius: 0.5rem; }
-  &--radius-lg { border-radius: 0.75rem; }
-  &--radius-xl { border-radius: 1rem; }
+  &--radius-sm { border-radius: var(--su-radius-md); }
+  &--radius-md { border-radius: var(--su-radius-lg); }
+  &--radius-lg { border-radius: var(--su-radius-xl); }
+  &--radius-xl { border-radius: var(--su-radius-2xl); }
   &--radius-full { border-radius: 1.5rem; }
 
-  // ========================================
-  // Sizes (padding & typography)
-  // ========================================
+  // ### Tailles (marges et typographie)
 
   &--sm {
-    .su-card__body {
-      padding: 0.75rem;
-      gap: 0.5rem;
-    }
-
-    .su-card__title {
-      font-size: 0.875rem;
-    }
-
-    .su-card__subtitle,
-    .su-card__content {
-      font-size: 0.75rem;
-    }
-
-    .su-card__footer {
-      padding-top: 0.5rem;
-    }
+    --_su-card-pad: 1rem;
+    --_su-card-gap: 0.5rem;
+    --_su-card-title: var(--su-font-size-base);
+    --_su-card-text: var(--su-font-size-xs);
   }
 
   &--md {
-    .su-card__body {
-      padding: 1.25rem;
-      gap: 0.75rem;
-    }
-
-    .su-card__title {
-      font-size: 1.125rem;
-    }
-
-    .su-card__subtitle,
-    .su-card__content {
-      font-size: 0.875rem;
-    }
-
-    .su-card__footer {
-      padding-top: 0.75rem;
-    }
+    --_su-card-pad: 1.5rem;
+    --_su-card-gap: 0.75rem;
+    --_su-card-title: var(--su-font-size-lg);
+    --_su-card-text: var(--su-font-size-sm);
   }
 
   &--lg {
-    .su-card__body {
-      padding: 1.75rem;
-      gap: 1rem;
-    }
-
-    .su-card__title {
-      font-size: 1.375rem;
-    }
-
-    .su-card__subtitle,
-    .su-card__content {
-      font-size: 1rem;
-    }
-
-    .su-card__footer {
-      padding-top: 1rem;
-    }
+    --_su-card-pad: 2rem;
+    --_su-card-gap: 1rem;
+    --_su-card-title: var(--su-font-size-xl);
+    --_su-card-text: var(--su-font-size-base);
   }
 
-  // ========================================
-  // Direction
-  // ========================================
+  // ### Direction
 
   &--vertical {
     flex-direction: column;
@@ -360,9 +318,19 @@ const handleKeydown = (event: KeyboardEvent) => {
       aspect-ratio: auto;
     }
 
-    .su-card__body {
-      flex: 1;
-      min-width: 0;
+    // Empilement vertical sur petit écran
+    @include down('sm') {
+      flex-direction: column;
+
+      .su-card__image-wrapper {
+        width: 100%;
+        max-width: none;
+      }
+
+      .su-card__image {
+        height: auto;
+        aspect-ratio: 16/9;
+      }
     }
   }
 
@@ -377,22 +345,14 @@ const handleKeydown = (event: KeyboardEvent) => {
     }
   }
 
-  // ========================================
-  // Interactive (clickable / link)
-  // ========================================
+  // ### Interactive (clickable / lien)
 
   &--clickable {
     cursor: pointer;
 
     &:hover {
-      border-color: var(--su-border-hover);
-      box-shadow:
-        0 4px 6px -1px rgba(0, 0, 0, 0.1),
-        0 2px 4px -2px rgba(0, 0, 0, 0.1);
-    }
-
-    &:active {
-      transform: scale(0.99);
+      border-color: var(--su-border-default);
+      box-shadow: var(--su-shadow-popover);
     }
 
     &:focus-visible {
@@ -400,27 +360,17 @@ const handleKeydown = (event: KeyboardEvent) => {
     }
   }
 
-  // ========================================
-  // Disabled
-  // ========================================
-
   &--disabled {
-    opacity: 0.5;
+    opacity: var(--su-opacity-disabled);
     pointer-events: none;
     cursor: default;
   }
-
-  // ========================================
-  // Full width
-  // ========================================
 
   &--full-width {
     width: 100%;
   }
 
-  // ========================================
-  // Image
-  // ========================================
+  // ### Image
 
   &__image-wrapper {
     position: relative;
@@ -448,14 +398,11 @@ const handleKeydown = (event: KeyboardEvent) => {
 
   &__image-overlay {
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    inset: 0;
     display: flex;
     align-items: flex-start;
     justify-content: flex-end;
-    padding: 0.5rem;
+    padding: 0.75rem;
     pointer-events: none;
 
     > * {
@@ -463,107 +410,64 @@ const handleKeydown = (event: KeyboardEvent) => {
     }
   }
 
-  // ========================================
-  // Body
-  // ========================================
+  // ### Corps
 
   &__body {
     display: flex;
     flex-direction: column;
     flex: 1;
+    gap: var(--_su-card-gap);
     min-width: 0;
+    padding: var(--_su-card-pad);
   }
 
   &__header {
     margin-bottom: 0.25rem;
   }
 
-  // ========================================
-  // Titles
-  // ========================================
-
   &__titles {
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
+    gap: 0.375rem;
   }
 
   &__title {
     margin: 0;
-    font-weight: 600;
-    line-height: 1.3;
+    font-size: var(--_su-card-title);
+    font-weight: var(--su-font-weight-semibold);
+    line-height: var(--su-line-height-tight);
     color: var(--su-text-primary);
   }
 
   &__subtitle {
     margin: 0;
+    font-size: var(--_su-card-text);
     line-height: 1.4;
-    color: var(--su-text-secondary);
+    color: var(--su-text-tertiary);
   }
-
-  // ========================================
-  // Content
-  // ========================================
 
   &__content {
-    line-height: 1.5;
+    font-size: var(--_su-card-text);
+    line-height: var(--su-line-height-normal);
     color: var(--su-text-secondary);
   }
 
-  // ========================================
-  // Footer
-  // ========================================
-
+  // Pied : séparé par un filet qui traverse la carte
   &__footer {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    margin-top: auto;
-    border-top: 1px solid var(--su-border-subtle);
+    margin: auto calc(var(--_su-card-pad) * -1) calc(var(--_su-card-pad) * -1);
+    padding: calc(var(--_su-card-gap) + 0.25rem) var(--_su-card-pad);
+    border-top: 1px solid var(--su-border-alpha);
   }
-}
 
-// ========================================
-// Responsive — horizontal → vertical on small screens
-// ========================================
-
-@media (max-width: 640px) {
-  .su-card--horizontal {
-    flex-direction: column;
-
-    .su-card__image-wrapper {
-      width: 100%;
-      max-width: none;
-    }
-
-    .su-card__image {
-      height: auto;
-      aspect-ratio: 16/9;
-    }
-  }
-}
-
-// ========================================
-// High contrast
-// ========================================
-
-@media (prefers-contrast: high) {
-  .su-card {
+  @include high-contrast {
     border-width: 2px;
 
-    &--clickable:focus-visible {
+    &.su-card--clickable:focus-visible {
       outline-width: 3px;
     }
-  }
-}
-
-// ========================================
-// Reduced motion
-// ========================================
-
-@media (prefers-reduced-motion: reduce) {
-  .su-card {
-    transition: none;
   }
 }
 </style>

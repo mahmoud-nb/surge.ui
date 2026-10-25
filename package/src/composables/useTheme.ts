@@ -59,7 +59,7 @@ const ALL_THEMES: ThemeMetadata[] = [
 // ============================================================
 let isInitialized = false;
 const themeName = ref<ThemeName>(themeConfig.defaultTheme);
-const themeMode = ref<ThemeMode>(themeConfig.defaultThemeMode ?? 'auto');
+const themeMode = ref<ThemeMode>(themeConfig.defaultThemeMode ?? 'system');
 const contrastMode = ref<ContrastMode>('auto');
 const motionMode = ref<MotionMode>('auto');
 

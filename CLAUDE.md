@@ -21,6 +21,10 @@ npm run storybook          # Storybook on port 6006
 npm run dev:docs           # VitePress dev server
 npm run dev                # Build lib then start docs dev server
 
+# Tests (Vitest + @vue/test-utils + happy-dom)
+npm test                   # Run once (from root or package/)
+npm run test:watch -w package
+
 # Linting
 npm run lint               # ESLint + Stylelint (read-only check)
 npm run lint:fix           # ESLint + Stylelint with auto-fix
@@ -30,7 +34,7 @@ npm run commit             # Interactive conventional commit prompt
 npm run release            # standard-version (auto semver bump)
 ```
 
-No test runner is configured yet (`vitest.setup.ts` exists but no tests). Validate changes with `npm run build:lib` and `npm run lint`.
+Tests live in `package/tests/*.spec.ts` (Vitest, `happy-dom` environment, configured in `package/vite.config.ts`, CSS disabled). Validate changes with `npm test`, `npm run build:lib` and `npm run lint`. Stylelint still reports pre-existing `no-descending-specificity` / `no-duplicate-selectors` errors.
 
 ## Architecture
 
@@ -60,11 +64,13 @@ No test runner is configured yet (`vitest.setup.ts` exists but no tests). Valida
 - `useTheme` — theme switching (light/dark/ocean/forest/sunset), localStorage persistence, system preference detection
 - `useCustomTheme` — runtime CSS variable injection
 - `useUniqueId` — deterministic unique IDs for accessibility
+- `useFloatingPosition` — positions popovers, menus and lists against their trigger (`@floating-ui/dom`: `position: fixed`, flip, shift, arrow, `data-placement`); used by Popover, Dropdown and SelectBox
 
 **Styles** (`styles/`):
 - SCSS with `api: 'modern-compiler'`
-- CSS Custom Properties with `--su-` prefix (defined in `styles/tokens/`)
-- 5 built-in themes (light, dark, ocean, forest, sunset) in `styles/themes/`
+- CSS Custom Properties with `--su-` prefix (defined in `styles/tokens/` and `styles/core/_variables.scss`)
+- 4 built-in themes × light/dark (default, ocean, forest, sunset) in `styles/themes/`
+- `styles/index.scss` is the only file that emits global CSS (imported once by `src/index.ts`); components import `styles/abstracts` (functions/mixins only, no CSS output)
 - BEM naming: `.su-button`, `.su-button--primary`, `.su-button__icon`
 - Theme config in `src/theme.config.ts`
 - Build produces a single CSS bundle (`cssCodeSplit: false`)
@@ -73,7 +79,7 @@ No test runner is configured yet (`vitest.setup.ts` exists but no tests). Valida
 
 ### Storybook (`package/.storybook/`)
 
-Storybook 8 with `@storybook/vue3-vite`. Stories live in `components/<layer>/_stories/<Component>.stories.ts` using CSF3 format. All stories should have `tags: ['autodocs']`. The `@storybook/addon-a11y` is enabled for accessibility auditing.
+Storybook 8 with `@storybook/vue3-vite`. Stories live in `components/<layer>/_stories/<Component>.stories.ts` using CSF3 format. All stories should have `tags: ['autodocs']`. `@storybook/addon-a11y` is installed (Accessibility panel). Keep it on the same version as the other Storybook packages (8.6.14) to avoid loading two Storybook cores.
 
 Note: `reactDocgen: false` in Storybook config means argTypes must be defined manually in stories (not auto-generated from TypeScript types).
 
@@ -95,7 +101,7 @@ The docs site imports components from `@surgeui/ds-vue` (symlinked via `file:../
 - **IDs:** Use Vue's `useId()` or `useUniqueId()` for accessible DOM IDs. Never `Math.random()`.
 - **i18n:** User-facing strings in components should be props with French defaults (e.g., `loadingLabel: 'Chargement en cours...'`), overridable by consumers.
 - **Path alias:** `@/` maps to `package/src/` in both Vite and TypeScript configs.
-- **CSS:** Scoped SCSS in components. Use existing design tokens (`--su-*`), spacing (`space.$spacing-*`), and typography (`typo.$font-size-*`) from `styles/`. Use mixins from `styles/core/_mixins.scss` (`@include transition(...)`, `@include focus-ring`).
+- **CSS:** SCSS in components with a single import: `@use '../../styles/abstracts' as *;`. Use design tokens (`--su-*`), spacing (`$spacing-*`) and the functions/mixins from `styles/abstracts/` (`token()`, `with-alpha()`, `@include transition(...)`, `@include focus-ring`, `@include control-surface`). See `package/CLAUDE.md`.
 
 <!-- threadmind:start -->
 ## ThreadMind — Context Management

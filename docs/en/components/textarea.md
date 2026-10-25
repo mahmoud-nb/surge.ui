@@ -615,9 +615,9 @@ The Textarea component follows WCAG 2.1 AA standards and W3C best practices:
 The textarea automatically adjusts its height to content:
 
 - **Minimum height**: Defined by `minRows`
-- **Maximum height**: Defined by `maxRows`
-- **Smooth adjustment**: Gentle transition
-- **Optimized performance**: Efficient calculation
+- **Maximum height**: Defined by `maxRows` (scrolls beyond it)
+- **Native when possible**: CSS `field-sizing: content`, no JavaScript
+- **Fallback**: JS measurement based on the actual line height for older browsers
 
 ### 📊 Character counter
 

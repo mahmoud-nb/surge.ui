@@ -102,6 +102,7 @@ import { HomeIcon, ArrowRightIcon, UserIcon, ArrowTopRightOnSquareIcon } from '@
 | `underline` | `'always' \\| 'hover' \\| 'never'` | `'hover'` | Underline behavior |
 | `disabled` | `boolean` | `false` | Disables the link |
 | `external` | `boolean` | `false` | Marks the link as external |
+| `externalLabel` | `string` | `"(s'ouvre dans un nouvel onglet)"` | Text read by screen readers when the link opens in a new tab |
 | `icon` | `Component` | `undefined` | Icon to display |
 | `iconDisplay` | `'top' \\| 'left' \\| 'right' \\| 'only'` | `'left'` | Icon position |
 

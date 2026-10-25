@@ -243,7 +243,7 @@ Carte universelle flexible et responsive. Supporte images, titres, contenu, acti
 | `variant` | `'default' \| 'outlined' \| 'elevated' \| 'filled'` | `'default'` | Variante visuelle |
 | `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Taille |
 | `direction` | `'vertical' \| 'horizontal'` | `'vertical'` | Direction du layout |
-| `radius` | `Radius` | `'md'` | Rayon des coins |
+| `radius` | `Radius` | `undefined` | Rayon des coins. Par défaut, rayon des conteneurs (`--su-radius-container`, 16px) |
 | `clickable` | `boolean` | `false` | Rend la carte cliquable |
 | `href` | `string` | — | Lien href (rend la carte en `<a>`) |
 | `target` | `LinkTarget` | — | Attribut target pour les liens |
