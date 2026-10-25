@@ -831,6 +831,7 @@ export interface DialogProps extends AccessibilityProps {
   closeOnEscape?: boolean;
   width?: string;
   height?: string;
+  /** @deprecated Sans effet : le dialog s'ouvre dans la couche supérieure du navigateur (showModal) */
   zIndex?: number;
   disableScroll?: boolean;
   /** Nom accessible du bouton de fermeture */

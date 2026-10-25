@@ -1,6 +1,6 @@
 # Dialog
 
-Composant Dialog polyvalent pour afficher des modales (centrées) ou des tiroirs (latéraux, haut/bas, plein écran). Il offre une gestion complète de l'accessibilité, du focus trap, et des options de personnalisation pour s'adapter à divers cas d'usage.
+Composant Dialog polyvalent pour afficher des modales (centrées) ou des tiroirs (latéraux, haut/bas, plein écran). Il repose sur l'élément natif `<dialog>` ouvert avec `showModal()` : le navigateur gère la couche supérieure, le fond (`::backdrop`), l'inertie du reste de la page et le maintien du focus. Il offre des options de personnalisation pour s'adapter à divers cas d'usage.
 
 ## Exemples d'utilisation
 
@@ -297,7 +297,7 @@ const showFullScreen = ref(false)
 | `closeOnEscape` | `boolean` | `true` | Permet de fermer le Dialog avec la touche `Escape` |
 | `width` | `string` | `auto` | Largeur personnalisée du Dialog (ex: `'500px'`, `'80%'`) |
 | `height` | `string` | `auto` | Hauteur personnalisée du Dialog (ex: `'400px'`, `'90vh'`) |
-| `zIndex` | `number` | `1000` | Z-index du Dialog et de son overlay |
+| `zIndex` | `number` | — | **Obsolète**, sans effet : le Dialog s'affiche dans la couche supérieure du navigateur, au-dessus de tout z-index |
 | `disableScroll` | `boolean` | `true` | Désactive le défilement du corps de la page lorsque le Dialog est ouvert |
 
 ### Attributs d'accessibilité
@@ -330,13 +330,13 @@ Le composant Dialog est conçu en respectant les normes WCAG 2.1 AA :
 
 ### ✅ Fonctionnalités d'accessibilité
 
-- **Rôle ARIA** : `role="dialog"` et `aria-modal="true"` pour indiquer aux lecteurs d'écran qu'il s'agit d'une fenêtre modale.
-- **Gestion du focus** : Implémentation d'un "focus trap" pour s'assurer que le focus reste à l'intérieur du Dialog lorsqu'il est ouvert, empêchant l'utilisateur de naviguer accidentellement en dehors.
+- **Dialog natif** : `<dialog>` ouvert avec `showModal()` porte le rôle `dialog` et est modal pour les technologies d'assistance (le reste de la page devient inerte).
+- **Gestion du focus** : le navigateur maintient le focus dans le Dialog tant qu'il est ouvert ; aucun piège à focus en JavaScript.
 - **Focus initial** : Le focus est automatiquement déplacé vers le premier élément focusable du Dialog à l'ouverture.
 - **Retour du focus** : Le focus est restauré sur l'élément qui a déclenché l'ouverture du Dialog après sa fermeture.
 - **Labels et descriptions** : Utilisation de `aria-labelledby` (via la prop `title` ou `ariaLabelledBy`) et `aria-describedby` (via la prop `description` ou `ariaDescribedBy`) pour fournir un contexte sémantique aux lecteurs d'écran.
-- **Fermeture accessible** : Le Dialog peut être fermé avec la touche `Escape` (si `closeOnEscape` est `true`).
-- **Désactivation du scroll** : Le défilement du corps de la page est désactivé lorsque le Dialog est ouvert pour éviter les interactions indésirables avec le contenu sous-jacent.
+- **Fermeture accessible** : `Escape` déclenche l'événement natif `cancel`, qui ferme le Dialog si `closeOnEscape` est `true`. Avec plusieurs Dialogs ouverts, seul celui du dessus se ferme.
+- **Désactivation du scroll** : le défilement de la page est bloqué en CSS (`:root:has(...)`) tant qu'un Dialog avec `disableScroll` est ouvert, y compris avec des Dialogs imbriqués.
 - **Transitions fluides** : Les animations sont conçues pour être douces et respectent `prefers-reduced-motion`.
 
 ### 🎯 Bonnes pratiques
