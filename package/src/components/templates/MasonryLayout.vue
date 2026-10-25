@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import type { LayoutBreakpoint, MasonryLayoutProps } from '@/types'
+import type { MasonryLayoutProps } from '@/types'
+import { columnVars } from '@/utils/layout'
 
 // Mur d'éléments de hauteurs variables (médias, cartes, citations)
 // empilés en colonnes sans trous. Les éléments se lisent colonne par
@@ -17,30 +18,15 @@ defineSlots<{
   default?(): any
 }>()
 
-const BREAKPOINTS: ('base' | LayoutBreakpoint)[] = ['base', 'sm', 'md', 'lg', 'xl']
-
-// Mobile first : chaque point de rupture hérite du précédent s'il n'est pas défini
-const columnVars = computed(() => {
-  if (props.columnWidth) return {}
-  const config = typeof props.columns === 'number' ? { base: props.columns } : props.columns
-  let current = 1
-  return Object.fromEntries(BREAKPOINTS.map((bp) => {
-    const value = config[bp]
-    if (typeof value === 'number' && value > 0) current = Math.floor(value)
-    return [`--su-masonry-columns-${bp}`, current]
-  }))
-})
-
 const classes = computed(() => [
   'su-masonry-layout',
   `su-masonry-layout--gap-${props.gap}`,
   { 'su-masonry-layout--fluid': !!props.columnWidth }
 ])
 
-const styles = computed(() => ({
-  ...columnVars.value,
-  ...(props.columnWidth ? { '--su-masonry-column-width': props.columnWidth } : {})
-}))
+const styles = computed(() => props.columnWidth
+  ? { '--su-masonry-column-width': props.columnWidth }
+  : columnVars(props.columns, '--su-masonry-columns'))
 </script>
 
 <template>

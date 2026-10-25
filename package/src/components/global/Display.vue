@@ -13,8 +13,8 @@ import Alert from '../organisms/Alert.vue'
 import Tabs from '../organisms/Tabs.vue'
 import Accordion from '../organisms/Accordion.vue'
 import Button from '../atoms/Button.vue'
-import Grid from '../templates/Grid.vue'
-import GridCell from '../templates/GridCell.vue'
+import GridLayout from '../templates/GridLayout.vue'
+import GridCell from './GridCell.vue'
 import Preview from './Preview.vue'
 import GlobalPreview from './GlobalPreview.vue'
 import {
@@ -102,7 +102,10 @@ const teamAvatars = ref([
       <!-- HEADING -->
       <div class="section">
         <h3>Titres - Niveaux et variantes</h3>
-        <Grid view-mode="list">
+        <GridLayout
+          view="list"
+          view-toggle
+        >
           <GridCell
             radius="md"
             background-color="#F9F9F9"
@@ -155,13 +158,16 @@ const teamAvatars = ref([
               </Heading>
             </Preview>
           </GridCell>
-        </Grid>
+        </GridLayout>
       </div>
 
       <!-- IMAGE -->
       <div class="section">
         <h3>Images - Ratios et comportements</h3>
-        <Grid view-mode="list">
+        <GridLayout
+          view="list"
+          view-toggle
+        >
           <GridCell
             radius="md"
             background-color="#F9F9F9"
@@ -215,13 +221,16 @@ const teamAvatars = ref([
               />
             </Preview>
           </GridCell>
-        </Grid>
+        </GridLayout>
       </div>
 
       <!-- PANEL -->
       <div class="section">
         <h3>Panels - Variantes et styles</h3>
-        <Grid view-mode="list">
+        <GridLayout
+          view="list"
+          view-toggle
+        >
           <GridCell
             radius="md"
             background-color="#F9F9F9"
@@ -304,13 +313,13 @@ const teamAvatars = ref([
               </Panel>
             </Preview>
           </GridCell>
-        </Grid>
+        </GridLayout>
       </div>
 
       <!-- AVATAR -->
       <div class="section">
         <h3>Avatars - Tailles et variantes</h3>
-        <Grid>
+        <GridLayout view-toggle>
           <GridCell
             radius="md"
             background-color="#F9F9F9"
@@ -393,13 +402,16 @@ const teamAvatars = ref([
               />
             </Preview>
           </GridCell>
-        </Grid>
+        </GridLayout>
       </div>
 
       <!-- AVATAR GROUP -->
       <div class="section">
         <h3>Groupes d'avatars</h3>
-        <Grid view-mode="list">
+        <GridLayout
+          view="list"
+          view-toggle
+        >
           <GridCell
             radius="md"
             background-color="#F9F9F9"
@@ -454,13 +466,13 @@ const teamAvatars = ref([
               />
             </Preview>
           </GridCell>
-        </Grid>
+        </GridLayout>
       </div>
 
       <!-- BADGE -->
       <div class="section">
         <h3>Badges - Variantes et tailles</h3>
-        <Grid>
+        <GridLayout view-toggle>
           <GridCell
             radius="md"
             background-color="#F9F9F9"
@@ -565,13 +577,16 @@ const teamAvatars = ref([
               </Badge>
             </Preview>
           </GridCell>
-        </Grid>
+        </GridLayout>
       </div>
 
       <!-- ALERT -->
       <div class="section">
         <h3>Alertes - Types et états</h3>
-        <Grid view-mode="list">
+        <GridLayout
+          view="list"
+          view-toggle
+        >
           <GridCell
             radius="md"
             background-color="#F9F9F9"
@@ -624,13 +639,16 @@ const teamAvatars = ref([
               />
             </Preview>
           </GridCell>
-        </Grid>
+        </GridLayout>
       </div>
 
       <!-- PROGRESS -->
       <div class="section">
         <h3>Barre de progression - États et tailles</h3>
-        <Grid view-mode="list">
+        <GridLayout
+          view="list"
+          view-toggle
+        >
           <GridCell
             radius="md"
             background-color="#F9F9F9"
@@ -715,13 +733,13 @@ const teamAvatars = ref([
               />
             </Preview>
           </GridCell>
-        </Grid>
+        </GridLayout>
       </div>
 
       <!-- SPINNER -->
       <div class="section">
         <h3>Spinners - Types d'animations</h3>
-        <Grid>
+        <GridLayout view-toggle>
           <GridCell
             radius="md"
             background-color="#F9F9F9"
@@ -801,13 +819,16 @@ const teamAvatars = ref([
               />
             </Preview>
           </GridCell>
-        </Grid>
+        </GridLayout>
       </div>
 
       <!-- TABS -->
       <div class="section">
         <h3>Onglets - Navigation par tabulation</h3>
-        <Grid view-mode="list">
+        <GridLayout
+          view="list"
+          view-toggle
+        >
           <GridCell
             radius="md"
             background-color="#F9F9F9"
@@ -817,13 +838,16 @@ const teamAvatars = ref([
               <Tabs :tabs="tabsData" />
             </Preview>
           </GridCell>
-        </Grid>
+        </GridLayout>
       </div>
 
       <!-- ACCORDION -->
       <div class="section">
         <h3>Accordéon - Sections dépliables</h3>
-        <Grid view-mode="list">
+        <GridLayout
+          view="list"
+          view-toggle
+        >
           <GridCell
             radius="md"
             background-color="#F9F9F9"
@@ -838,13 +862,16 @@ const teamAvatars = ref([
               />
             </Preview>
           </GridCell>
-        </Grid>
+        </GridLayout>
       </div>
 
       <!-- DIALOG -->
       <div class="section">
         <h3>Dialogs - Modales et tiroirs</h3>
-        <Grid view-mode="list">
+        <GridLayout
+          view="list"
+          view-toggle
+        >
           <GridCell
             radius="md"
             background-color="#F9F9F9"
@@ -877,7 +904,7 @@ const teamAvatars = ref([
               </Dialog>
             </Preview>
           </GridCell>
-        </Grid>
+        </GridLayout>
       </div>
     </div>
   </GlobalPreview>

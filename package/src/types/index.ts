@@ -900,20 +900,7 @@ export interface CardProps extends AccessibilityProps {
 
 // --- TEMPLATES ---
 
-interface GridBreakpoints {
-  mobile?: number
-  tablet?: number
-  miniDesktop?: number
-  desktop?: number
-}
-
-export interface GridProps {
-  columns?: GridBreakpoints
-  gap?: string | number
-  viewMode?: 'grid' | 'list'
-  responsive?: boolean
-}
-
+// GridCell.vue (vitrines Storybook)
 export interface GridCellProps {
   bordered?: boolean
   radius?: Radius
@@ -1002,7 +989,33 @@ export interface MagazineLayoutProps {
 }
 
 /** Nombre de colonnes : fixe, ou par largeur de conteneur (mobile first) */
-export type MasonryColumns = number | Partial<Record<'base' | LayoutBreakpoint, number>>
+export type LayoutColumns = number | Partial<Record<'base' | LayoutBreakpoint, number>>
+
+/** Affichage des cellules du GridLayout : en grille, ou empilées en liste */
+export type GridLayoutView = 'grid' | 'list'
+
+// L'affichage (GridLayoutView) passe par `v-model:view` (defineModel)
+export interface GridLayoutProps {
+  /** Colonnes par largeur de conteneur (défaut : 1, 2 dès `sm`, 3 dès `lg`) */
+  columns?: LayoutColumns
+  /** Largeur minimale d'une cellule (longueur CSS) : grille auto-fill, le nombre de colonnes s'adapte seul et remplace `columns` */
+  minItemWidth?: string
+  /** Alignement vertical des cellules d'une rangée (`stretch` : même hauteur) */
+  align?: 'start' | 'center' | 'end' | 'stretch'
+  /** Élément qui contient les cellules : `ul` ou `ol` pour une liste (cellules `li`) */
+  itemsTag?: 'div' | 'ul' | 'ol'
+  /** Affiche le sélecteur grille / liste dans l'en-tête */
+  viewToggle?: boolean
+  /** Nom accessible du sélecteur grille / liste */
+  viewToggleLabel?: string
+  /** Libellé du bouton « grille » */
+  gridLabel?: string
+  /** Libellé du bouton « liste » */
+  listLabel?: string
+  gap?: LayoutGap
+}
+
+export type MasonryColumns = LayoutColumns
 
 export interface MasonryLayoutProps {
   /** Colonnes par largeur de conteneur (défaut : 1, 2 dès `sm`, 3 dès `lg`) */

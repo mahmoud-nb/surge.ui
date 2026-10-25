@@ -14,8 +14,8 @@ import {
   AtSymbolIcon,
   PhoneIcon
 } from '@heroicons/vue/24/outline'
-import Grid from '../templates/Grid.vue'
-import GridCell from '../templates/GridCell.vue'
+import GridLayout from '../templates/GridLayout.vue'
+import GridCell from './GridCell.vue'
 import GlobalPreview from './GlobalPreview.vue'
 
 // État pour le formulaire de contact
@@ -130,7 +130,10 @@ const handleSurveySubmit = () => {
       <!-- FORMULAIRE DE CONTACT -->
       <div class="section">
         <h3>Formulaire de Contact</h3>
-        <Grid view-mode="list">
+        <GridLayout
+          view="list"
+          view-toggle
+        >
           <GridCell
             radius="md"
             background-color="#F9F9F9"
@@ -229,13 +232,16 @@ const handleSurveySubmit = () => {
               </div>
             </form>
           </GridCell>
-        </Grid>
+        </GridLayout>
       </div>
 
       <!-- FORMULAIRE D'INSCRIPTION -->
       <div class="section">
         <h3>Formulaire d'Inscription</h3>
-        <Grid view-mode="list">
+        <GridLayout
+          view="list"
+          view-toggle
+        >
           <GridCell
             radius="md"
             background-color="#F9F9F9"
@@ -346,13 +352,16 @@ const handleSurveySubmit = () => {
               </div>
             </form>
           </GridCell>
-        </Grid>
+        </GridLayout>
       </div>
 
       <!-- FORMULAIRE DE CONNEXION -->
       <div class="section">
         <h3>Formulaire de Connexion</h3>
-        <Grid view-mode="list">
+        <GridLayout
+          view="list"
+          view-toggle
+        >
           <GridCell
             radius="md"
             background-color="#F9F9F9"
@@ -417,13 +426,16 @@ const handleSurveySubmit = () => {
               </p>
             </form>
           </GridCell>
-        </Grid>
+        </GridLayout>
       </div>
 
       <!-- FORMULAIRE DE PROFIL -->
       <div class="section">
         <h3>Formulaire de Profil Utilisateur</h3>
-        <Grid view-mode="list">
+        <GridLayout
+          view="list"
+          view-toggle
+        >
           <GridCell
             radius="md"
             background-color="#F9F9F9"
@@ -531,13 +543,16 @@ const handleSurveySubmit = () => {
               </div>
             </form>
           </GridCell>
-        </Grid>
+        </GridLayout>
       </div>
 
       <!-- FORMULAIRE DE SONDAGE -->
       <div class="section">
         <h3>Formulaire de Sondage de Satisfaction</h3>
-        <Grid view-mode="list">
+        <GridLayout
+          view="list"
+          view-toggle
+        >
           <GridCell
             radius="md"
             background-color="#F9F9F9"
@@ -598,13 +613,16 @@ const handleSurveySubmit = () => {
               </div>
             </form>
           </GridCell>
-        </Grid>
+        </GridLayout>
       </div>
 
       <!-- FORMULAIRE D'UPLOAD MULTI-FICHIERS -->
       <div class="section">
         <h3>Formulaire avec Upload de Fichiers</h3>
-        <Grid view-mode="list">
+        <GridLayout
+          view="list"
+          view-toggle
+        >
           <GridCell
             radius="md"
             background-color="#F9F9F9"
@@ -706,7 +724,7 @@ const handleSurveySubmit = () => {
               </div>
             </form>
           </GridCell>
-        </Grid>
+        </GridLayout>
       </div>
     </div>
   </GlobalPreview>

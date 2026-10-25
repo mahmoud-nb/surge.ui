@@ -63,6 +63,7 @@ import SidebarLayout from './components/templates/SidebarLayout.vue'
 import SplitLayout from './components/templates/SplitLayout.vue'
 import HolyGrailLayout from './components/templates/HolyGrailLayout.vue'
 import MagazineLayout from './components/templates/MagazineLayout.vue'
+import GridLayout from './components/templates/GridLayout.vue'
 import MasonryLayout from './components/templates/MasonryLayout.vue'
 import HeroLayout from './components/templates/HeroLayout.vue'
 import FullScreenLayout from './components/templates/FullScreenLayout.vue'
@@ -77,7 +78,7 @@ export { Link, LinkGroup, Button, ButtonGroup, Toggle, ToggleGroup, FloatButton,
 export { Input, Textarea, SelectBox, RadioGroup, CheckboxGroup, FileUpload, Switch, Slider, Password, OtpInput }
 export { InputField, SelectBoxField, RadioGroupField, CheckboxGroupField, PasswordField, SwitchField, FileUploadField, TextareaField, SliderField, OtpInputField }
 export { FormField, FormFieldGroup }
-export { SingleColumnLayout, SidebarLayout, SplitLayout, HolyGrailLayout, MagazineLayout, MasonryLayout, HeroLayout, FullScreenLayout }
+export { SingleColumnLayout, SidebarLayout, SplitLayout, HolyGrailLayout, MagazineLayout, GridLayout, MasonryLayout, HeroLayout, FullScreenLayout }
 export { accessibility }
 
 export interface SurgeUpDSOptions {
@@ -169,6 +170,7 @@ export default {
     app.component(`${prefix}SplitLayout`, SplitLayout)
     app.component(`${prefix}HolyGrailLayout`, HolyGrailLayout)
     app.component(`${prefix}MagazineLayout`, MagazineLayout)
+    app.component(`${prefix}GridLayout`, GridLayout)
     app.component(`${prefix}MasonryLayout`, MasonryLayout)
     app.component(`${prefix}HeroLayout`, HeroLayout)
     app.component(`${prefix}FullScreenLayout`, FullScreenLayout)
