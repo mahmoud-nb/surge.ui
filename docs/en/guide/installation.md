@@ -96,9 +96,23 @@ app.use(SurgeUpDS, {
 
 ###### options
 
-| Options     | Description          |
-|-------------|----------------------|
-| `prefix`    | Préfix du composants |
+| Option | Description |
+|--------|-------------|
+| `prefix` | Component prefix (`Su` by default) |
+| `theme` | Theme customization |
+| `locale` | Language of default texts: a provided locale (`locales.en`), partial messages or a ref |
+
+### Component language
+
+Default component texts (accessible labels, messages, screen reader announcements) are in French. Pass another locale to the plugin:
+
+```ts
+import SurgeUI, { locales } from '@surgeui/ds-vue'
+
+app.use(SurgeUI, { locale: locales.en })
+```
+
+See [useLocale](/en/composables/uselocale) to customize messages or switch language at runtime.
 
 ## TypeScript
 

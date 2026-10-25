@@ -91,6 +91,9 @@ const getNavItems = (section: string = 'display', lang: string = 'fr') => {
       { text: 'useBreakpoint', link: `${langPrefix}/composables/usebreakpoint`, badge: NEW_BADGE },
       { text: 'usePrice', link: `${langPrefix}/composables/useprice`, badge: NEW_BADGE },
       { text: 'useFloatingPosition', link: `${langPrefix}/composables/usefloatingposition`, badge: NEW_BADGE },
+      { text: 'useLocale', link: `${langPrefix}/composables/uselocale`, badge: NEW_BADGE },
+      { text: 'useFormField', link: `${langPrefix}/composables/useformfield`, badge: NEW_BADGE },
+      { text: 'useAnnouncer', link: `${langPrefix}/composables/useannouncer`, badge: NEW_BADGE },
     ]
   }
 

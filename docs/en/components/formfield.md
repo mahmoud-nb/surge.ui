@@ -36,14 +36,12 @@ Container component for form fields with label, help messages, validation states
     Default slot here
   </SuFormField>
 
-  <!-- With slot props retrieval -->
-  <SuFormField label="Username">
-    <template #default="slotProps">
-      <FormControlComponent v-bind="slotProps" />
-    </template>
+  <!-- SurgeUI control: linked automatically (id, label, message, states) -->
+  <SuFormField label="Username" message="At least 3 characters" required>
+    <SuInput v-model="username" />
   </SuFormField>
 
-  <!-- With slot props destructuring -->
+  <!-- Native element: with slot props -->
   <SuFormField 
     label="Email" 
     message="Used for login"
@@ -61,6 +59,34 @@ Container component for form fields with label, help messages, validation states
 </template>
 ```
 
+### Automatic control linking
+
+SurgeUI controls (SuInput, SuTextarea, SuSelectBox, SuRadioGroup, SuCheckboxGroup, SuSwitch, SuSlider, SuFileUpload, SuOtpInput) placed in the slot link themselves to the field through [useFormField](/en/composables/useformfield):
+
+- the control **id** = the label target;
+- **aria-describedby** completed with the message;
+- **aria-labelledby** pointing to the label for controls a `<label for>` cannot target (SelectBox, checkbox/radio groups, Slider, OtpInput); clicking the label focuses them;
+- **state**, **size**, **required** and **disabled** inherited from the field; an explicit value on the control still wins.
+
+<div class="component-demo">
+  <div class="demo-section">
+    <h4>Without slot props</h4>
+    <div class="demo-inputs">
+      <SuFormField label="Country" message="Country of residence" state="error" required>
+        <SuSelectBox :options="[{ value: 'fr', label: 'France' }, { value: 'be', label: 'Belgium' }]" />
+      </SuFormField>
+    </div>
+  </div>
+</div>
+
+```vue
+<SuFormField label="Country" message="Country of residence" state="error" required>
+  <SuSelectBox :options="countries" v-model="country" />
+</SuFormField>
+```
+
+For a custom control, use the [useFormField](/en/composables/useformfield) composable.
+
 ### Props exposed in default slot
 
 The default slot automatically exposes the following props to facilitate accessibility:
@@ -70,6 +96,7 @@ The default slot automatically exposes the following props to facilitate accessi
   <SuFormField label="Example field" message="Help message">
     <template #default="{ fieldId, messageId, state, disabled }">
       <!-- fieldId: Unique field ID (e.g. "field-123") -->
+      <!-- labelId: Label ID (when a label is given) -->
       <!-- messageId: Help message ID (e.g. "message-123") -->
       <!-- state: Current state ('default' | 'error' | 'success' | 'warning') -->
       <!-- disabled: Boolean indicating if field is disabled -->
