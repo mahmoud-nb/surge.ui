@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { computed, ref, watch, nextTick, onMounted, onUnmounted, useAttrs, useId } from 'vue'
 import { ChevronDownIcon, XMarkIcon, MagnifyingGlassIcon, CheckIcon } from '@heroicons/vue/24/outline'
-import { trapFocus, announceToScreenReader } from '@/utils/accessibility'
+import { announceToScreenReader } from '@/utils/accessibility'
+import { useFloatingPosition } from '@/composables/useFloatingPosition'
 import type { SelectOption, SelectBoxProps } from '@/types'
 
 defineOptions({ inheritAttrs: false })
@@ -45,24 +46,42 @@ const fieldId = 'selectbox-' + useId()
 
 // Refs
 const selectRef = ref<HTMLDivElement>()
-const inputRef = ref<HTMLInputElement>()
+const inputRef = ref<HTMLDivElement>()
 const dropdownRef = ref<HTMLDivElement>()
 const searchInputRef = ref<HTMLInputElement>()
 
 // État local
 const isOpen = ref(false)
 const searchQuery = ref('')
+// Option mise en avant (clavier ou survol) : le focus DOM reste sur le
+// déclencheur (ou le champ de recherche), l'option est annoncée via
+// aria-activedescendant
 const focusedIndex = ref(-1)
-const cleanupFocusTrap = ref<(() => void) | null>(null)
+
+// Saisie rapide : les lettres tapées à la suite forment un préfixe
+let typeaheadBuffer = ''
+let typeaheadTimer: ReturnType<typeof setTimeout> | undefined
+
+// Positionnement de la liste (fixed, retournée s'il manque de place)
+useFloatingPosition(inputRef, dropdownRef, {
+  placement: 'bottom-start',
+  open: isOpen,
+  offset: 4,
+  matchReferenceWidth: true
+})
 
 // IDs pour l'accessibilité
 const selectId = computed(() => attrs.id as string || fieldId)
 const listboxId = computed(() => `${selectId.value}-listbox`)
+const optionId = (index: number) => `${listboxId.value}-option-${index}`
+const activeDescendant = computed(() =>
+  isOpen.value && focusedIndex.value >= 0 ? optionId(focusedIndex.value) : undefined
+)
 
 // Normalisation des options
 const normalizedOptions = computed(() => {
   if (props.groups && props.groups.length > 0) {
-    return props.groups.flatMap(group => 
+    return props.groups.flatMap(group =>
       group.options.map(option => ({ ...option, group: group.label }))
     )
   }
@@ -74,7 +93,7 @@ const filteredOptions = computed(() => {
   if (!props.searchable || !searchQuery.value) {
     return normalizedOptions.value
   }
-  
+
   const query = searchQuery.value.toLowerCase()
   return normalizedOptions.value.filter(option =>
     option.label.toLowerCase().includes(query) ||
@@ -82,20 +101,32 @@ const filteredOptions = computed(() => {
   )
 })
 
-// Options groupées pour l'affichage
-const groupedOptions = computed(() => {
-  const groups: Record<string, SelectOption[]> = {}
-  
-  filteredOptions.value.forEach(option => {
-    const groupName = option.group || ''
-    if (!groups[groupName]) {
-      groups[groupName] = []
+// Sections affichées (une par groupe) ; l'index de chaque option suit
+// l'ordre d'affichage, qui est aussi l'ordre de navigation au clavier
+const optionSections = computed(() => {
+  const sections: { label: string; items: SelectOption[] }[] = []
+
+  for (const option of filteredOptions.value) {
+    const label = option.group || ''
+    let section = sections.find(s => s.label === label)
+    if (!section) {
+      section = { label, items: [] }
+      sections.push(section)
     }
-    groups[groupName].push(option)
-  })
-  
-  return groups
+    section.items.push(option)
+  }
+
+  let index = 0
+  return sections.map((section, sectionIndex) => ({
+    label: section.label,
+    labelId: `${listboxId.value}-group-${sectionIndex}`,
+    options: section.items.map(option => ({ option, index: index++ }))
+  }))
 })
+
+const navigableOptions = computed(() =>
+  optionSections.value.flatMap(section => section.options.map(item => item.option))
+)
 
 // Valeur sélectionnée normalisée
 const selectedValue = computed({
@@ -111,6 +142,10 @@ const selectedValue = computed({
   }
 })
 
+const isSelected = (option: SelectOption) => props.multiple
+  ? (selectedValue.value as (string | number)[]).includes(option.value)
+  : selectedValue.value === option.value
+
 // Options sélectionnées
 const selectedOptions = computed(() => {
   if (props.multiple) {
@@ -118,7 +153,7 @@ const selectedOptions = computed(() => {
     return values ? normalizedOptions.value.filter(option => values.includes(option.value)) : []
   } else {
     const value = selectedValue.value as string | number
-    return value !== undefined && value !== null 
+    return value !== undefined && value !== null
       ? normalizedOptions.value.filter(option => option.value === value)
       : []
   }
@@ -129,14 +164,14 @@ const displayText = computed(() => {
   if (selectedOptions.value.length === 0) {
     return props.placeholder
   }
-  
+
   if (props.multiple) {
     if (selectedOptions.value.length === 1) {
       return selectedOptions.value[0].label
     }
     return `${selectedOptions.value.length} éléments sélectionnés`
   }
-  
+
   return selectedOptions.value[0]?.label || props.placeholder
 })
 
@@ -167,29 +202,100 @@ const triggerClasses = computed(() => [
   }
 ])
 
-// Attributs ARIA
-const ariaAttributes = computed(() => {
-  const attrs: Record<string, any> = {
-    'aria-haspopup': 'listbox',
-    'aria-expanded': isOpen.value,
-    'aria-controls': isOpen.value ? listboxId.value : undefined,
-    'role': 'combobox'
-  }
-  
-  if (props.ariaLabel) attrs['aria-label'] = props.ariaLabel
-  if (props.ariaInvalid !== undefined) attrs['aria-invalid'] = props.ariaInvalid
-  if (props.ariaRequired !== undefined) attrs['aria-required'] = props.ariaRequired
-  if (props.required) attrs['aria-required'] = 'true'
-  if (props.state === 'error') attrs['aria-invalid'] = 'true'
-  if (props.multiple) attrs['aria-multiselectable'] = 'true'
-  
-  return attrs
-})
+// Attributs ARIA du déclencheur (motif « combobox » + « listbox »)
+const ariaAttributes = computed<Record<string, any>>(() => ({
+  role: 'combobox',
+  'aria-haspopup': 'listbox',
+  'aria-expanded': isOpen.value ? 'true' : 'false',
+  'aria-controls': isOpen.value ? listboxId.value : undefined,
+  // Avec recherche, c'est le champ de recherche qui porte l'option active
+  'aria-activedescendant': props.searchable ? undefined : activeDescendant.value,
+  'aria-label': props.ariaLabel,
+  'aria-labelledby': props.ariaLabelledBy,
+  'aria-describedby': props.ariaDescribedBy,
+  'aria-invalid': props.state === 'error' || props.ariaInvalid ? 'true' : undefined,
+  'aria-required': props.required || props.ariaRequired ? 'true' : undefined,
+  'aria-disabled': props.disabled ? 'true' : undefined,
+  'aria-readonly': props.readonly ? 'true' : undefined
+}))
 
-// Gestion des événements
+// ### Navigation dans la liste (les options désactivées sont sautées)
+
+const findEnabled = (start: number, step: 1 | -1) => {
+  const list = navigableOptions.value
+  for (let i = start; i >= 0 && i < list.length; i += step) {
+    if (!list[i].disabled) return i
+  }
+  return -1
+}
+
+const focusFirst = () => {
+  focusedIndex.value = findEnabled(0, 1)
+}
+
+const focusLast = () => {
+  focusedIndex.value = findEnabled(navigableOptions.value.length - 1, -1)
+}
+
+const focusSelectedOrFirst = () => {
+  const index = navigableOptions.value.findIndex(option => !option.disabled && isSelected(option))
+  if (index !== -1) focusedIndex.value = index
+  else focusFirst()
+}
+
+const moveFocus = (step: 1 | -1) => {
+  if (focusedIndex.value === -1) {
+    if (step === 1) focusFirst()
+    else focusLast()
+    return
+  }
+  const next = findEnabled(focusedIndex.value + step, step)
+  if (next !== -1) focusedIndex.value = next
+}
+
+const hoverOption = (index: number) => {
+  if (!navigableOptions.value[index]?.disabled) focusedIndex.value = index
+}
+
+// ### Ouverture et fermeture
+
+const openDropdown = async () => {
+  if (props.disabled || props.readonly || isOpen.value) return
+
+  isOpen.value = true
+  searchQuery.value = ''
+  focusSelectedOrFirst()
+
+  emit('open')
+
+  await nextTick()
+
+  if (props.searchable) {
+    searchInputRef.value?.focus()
+  }
+}
+
+/**
+ * @param restoreFocus - rend le focus au déclencheur (faux quand le focus
+ * quitte déjà le composant : clic extérieur, Tab)
+ */
+const closeDropdown = (restoreFocus = true) => {
+  if (!isOpen.value) return
+
+  // Le focus revient au déclencheur avant que le champ de recherche
+  // ne soit démonté, pour ne pas le perdre
+  if (restoreFocus) inputRef.value?.focus()
+
+  isOpen.value = false
+  focusedIndex.value = -1
+  searchQuery.value = ''
+
+  emit('close')
+}
+
 const toggleDropdown = () => {
   if (props.disabled || props.readonly) return
-  
+
   if (isOpen.value) {
     closeDropdown()
   } else {
@@ -197,181 +303,233 @@ const toggleDropdown = () => {
   }
 }
 
-const openDropdown = async () => {
-  if (props.disabled || props.readonly) return
-  
-  isOpen.value = true
-  searchQuery.value = ''
-  focusedIndex.value = -1
-  
-  emit('open')
-  
-  await nextTick()
-  
-  if (props.searchable && searchInputRef.value) {
-    searchInputRef.value.focus()
-  }
-  
-  // Configuration du focus trap
-  if (dropdownRef.value) {
-    cleanupFocusTrap.value = trapFocus(dropdownRef.value)
-  }
-}
-
-const closeDropdown = () => {
-  isOpen.value = false
-  focusedIndex.value = -1
-  
-  if (cleanupFocusTrap.value) {
-    cleanupFocusTrap.value()
-    cleanupFocusTrap.value = null
-  }
-  
-  emit('close')
-  
-  // Retour du focus au trigger
-  if (inputRef.value) {
-    inputRef.value.focus()
-  }
-}
+// ### Sélection
 
 const selectOption = (option: SelectOption) => {
   if (option.disabled) return
-  
-  let newValue: string | number | (string | number)[]
-  
+
   if (props.multiple) {
     const currentValues = (selectedValue.value as (string | number)[]) || []
-    const isSelected = currentValues.includes(option.value)
-    
-    if (isSelected) {
-      newValue = currentValues.filter(v => v !== option.value)
-    } else {
-      if (props.maxSelectedItems && currentValues.length >= props.maxSelectedItems) {
-        announceToScreenReader(`Maximum ${props.maxSelectedItems} éléments sélectionnables`)
-        return
-      }
-      newValue = [...currentValues, option.value]
+    const wasSelected = currentValues.includes(option.value)
+
+    if (!wasSelected && props.maxSelectedItems && currentValues.length >= props.maxSelectedItems) {
+      announceToScreenReader(`Maximum ${props.maxSelectedItems} éléments sélectionnables`)
+      return
     }
-  } else {
-    newValue = option.value
+
+    selectedValue.value = wasSelected
+      ? currentValues.filter(v => v !== option.value)
+      : [...currentValues, option.value]
+
+    // La liste reste ouverte : on annonce le changement
+    announceToScreenReader(`${option.label} ${wasSelected ? 'désélectionné' : 'sélectionné'}`)
+    return
   }
-  
-  selectedValue.value = newValue
-  
-  // Annonce pour les lecteurs d'écran
-  const action = props.multiple && (selectedValue.value as (string | number)[]).includes(option.value) ? 'désélectionné' : 'sélectionné'
-  announceToScreenReader(`${option.label} ${action}`)
-  
-  if (!props.multiple && props.closeOnSelect) {
+
+  selectedValue.value = option.value
+
+  if (props.closeOnSelect) {
     closeDropdown()
   }
+}
+
+const selectFocused = () => {
+  const option = navigableOptions.value[focusedIndex.value]
+  if (option) selectOption(option)
 }
 
 const clearSelection = (event: Event) => {
   event.stopPropagation()
-  
-  const newValue = props.multiple ? [] : undefined
-  selectedValue.value = newValue
-  
+
+  selectedValue.value = props.multiple ? [] : undefined
+
   announceToScreenReader('Sélection effacée')
+  inputRef.value?.focus()
 }
 
-const removeSelectedOption = (option: SelectOption, event: Event) => {
-  event.stopPropagation()
-  
-  if (props.multiple) {
-    const currentValues = (selectedValue.value as (string | number)[]) || []
-    const newValue = currentValues.filter(v => v !== option.value)
-    selectedValue.value = newValue
-    
-    announceToScreenReader(`${option.label} retiré de la sélection`)
-  }
+const removeSelectedOption = (option: SelectOption, event?: Event) => {
+  event?.stopPropagation()
+  if (!props.multiple || props.disabled || props.readonly) return
+
+  const currentValues = (selectedValue.value as (string | number)[]) || []
+  selectedValue.value = currentValues.filter(v => v !== option.value)
+
+  announceToScreenReader(`${option.label} retiré de la sélection`)
 }
+
+// Retour arrière : retire la dernière étiquette (sélection multiple)
+const removeLastSelected = () => {
+  const last = selectedOptions.value[selectedOptions.value.length - 1]
+  if (!props.multiple || !last || props.disabled || props.readonly) return false
+  removeSelectedOption(last)
+  return true
+}
+
+// ### Recherche et saisie rapide
 
 const handleSearch = (event: Event) => {
   const target = event.target as HTMLInputElement
   searchQuery.value = target.value
-  focusedIndex.value = -1
   emit('search', searchQuery.value)
 }
 
-const handleKeydown = (event: KeyboardEvent) => {
+// La première option correspondante est mise en avant pendant la recherche
+watch(searchQuery, (query) => {
+  if (!isOpen.value) return
+  if (query) focusFirst()
+  else focusSelectedOrFirst()
+})
+
+const handleTypeahead = (char: string) => {
+  clearTimeout(typeaheadTimer)
+  typeaheadBuffer += char.toLowerCase()
+  typeaheadTimer = setTimeout(() => { typeaheadBuffer = '' }, 500)
+
+  // Même lettre répétée : on passe d'une option à l'autre avec cette initiale
+  const repeated = [...typeaheadBuffer].every(c => c === typeaheadBuffer[0])
+  const query = repeated ? typeaheadBuffer[0] : typeaheadBuffer
+  const list = navigableOptions.value
+  const start = Math.max(focusedIndex.value + (typeaheadBuffer.length === 1 || repeated ? 1 : 0), 0)
+
+  for (let i = 0; i < list.length; i++) {
+    const index = (start + i) % list.length
+    const option = list[index]
+    if (!option.disabled && option.label.toLowerCase().startsWith(query)) {
+      focusedIndex.value = index
+      return
+    }
+  }
+}
+
+// ### Clavier
+
+/** Touches communes au déclencheur et au champ de recherche */
+const handleNavigationKey = (event: KeyboardEvent, editable: boolean) => {
   switch (event.key) {
-    case 'Enter':
-    case ' ':
-      event.preventDefault()
-      if (!isOpen.value) {
-        openDropdown()
-      } else if (focusedIndex.value >= 0) {
-        const option = filteredOptions.value[focusedIndex.value]
-        if (option) selectOption(option)
-      }
-      break
-      
-    case 'Escape':
-      event.preventDefault()
-      closeDropdown()
-      break
-      
     case 'ArrowDown':
       event.preventDefault()
-      if (!isOpen.value) {
-        openDropdown()
-      } else {
-        focusedIndex.value = Math.min(focusedIndex.value + 1, filteredOptions.value.length - 1)
-      }
-      break
-      
+      if (!isOpen.value) openDropdown()
+      else if (!event.altKey) moveFocus(1)
+      return true
+
     case 'ArrowUp':
       event.preventDefault()
-      if (isOpen.value) {
-        focusedIndex.value = Math.max(focusedIndex.value - 1, -1)
-      }
-      break
-      
+      if (!isOpen.value) openDropdown()
+      else if (event.altKey) selectFocused()
+      else moveFocus(-1)
+      return true
+
     case 'Home':
-      if (isOpen.value) {
-        event.preventDefault()
-        focusedIndex.value = 0
-      }
-      break
-      
     case 'End':
-      if (isOpen.value) {
-        event.preventDefault()
-        focusedIndex.value = filteredOptions.value.length - 1
-      }
-      break
-      
-    case 'Tab':
-      if (isOpen.value) {
-        closeDropdown()
-      }
-      break
-  }
-}
+      // Dans le champ de recherche, Début/Fin déplacent le curseur
+      if (!isOpen.value || editable) return false
+      event.preventDefault()
+      if (event.key === 'Home') focusFirst()
+      else focusLast()
+      return true
 
-const handleFocus = (event: FocusEvent) => {
-  emit('focus', event)
-}
+    case 'Enter':
+      event.preventDefault()
+      if (!isOpen.value) openDropdown()
+      else selectFocused()
+      return true
 
-const handleBlur = (event: FocusEvent) => {
-  // Fermer seulement si le focus sort complètement du composant
-  setTimeout(() => {
-    if (isOpen.value && selectRef.value && !selectRef.value.contains(document.activeElement)) {
+    case 'Escape':
+      if (!isOpen.value) return false
+      // Ne ferme pas aussi une boîte de dialogue parente
+      event.preventDefault()
+      event.stopPropagation()
       closeDropdown()
-      emit('blur', event)
-    }
-  }, 0)
+      return true
+
+    case 'Tab':
+      if (isOpen.value) closeDropdown(false)
+      return false
+  }
+  return false
 }
 
-// Fermeture au clic extérieur
-const handleClickOutside = (event: Event) => {
-  if (isOpen.value && selectRef.value && !selectRef.value.contains(event.target as Node)) {
-    closeDropdown()
+const handleTriggerKeydown = (event: KeyboardEvent) => {
+  if (props.disabled || props.readonly) return
+  if (handleNavigationKey(event, false)) return
+
+  if (event.key === 'Backspace' || event.key === 'Delete') {
+    if (removeLastSelected()) event.preventDefault()
+    return
+  }
+
+  const printable = event.key.length === 1 && !event.ctrlKey && !event.metaKey && !event.altKey
+  if (!printable) return
+
+  // Espace : ouvre ou sélectionne, sauf au milieu d'une saisie rapide
+  if (event.key === ' ' && !typeaheadBuffer) {
+    event.preventDefault()
+    if (!isOpen.value) openDropdown()
+    else selectFocused()
+    return
+  }
+
+  event.preventDefault()
+
+  // Avec recherche : la lettre ouvre la liste et amorce la recherche
+  if (props.searchable) {
+    openDropdown()
+    searchQuery.value = event.key
+    emit('search', searchQuery.value)
+    return
+  }
+
+  // Liste fermée sans valeur : la recherche part du début, première option incluse
+  if (!isOpen.value) {
+    openDropdown()
+    if (selectedOptions.value.length === 0) focusedIndex.value = -1
+  }
+  handleTypeahead(event.key)
+}
+
+const handleSearchKeydown = (event: KeyboardEvent) => {
+  if (handleNavigationKey(event, true)) return
+
+  if (event.key === 'Backspace' && !searchQuery.value) {
+    if (removeLastSelected()) event.preventDefault()
   }
 }
+
+// Un clic dans la liste ne doit pas retirer le focus du déclencheur
+// (ni du champ de recherche), sinon la liste se fermerait avant le clic
+const handleDropdownMousedown = (event: MouseEvent) => {
+  if (event.target !== searchInputRef.value) event.preventDefault()
+}
+
+// ### Focus
+
+const handleFocusIn = (event: FocusEvent) => {
+  // N'émet `focus` que si le focus vient de l'extérieur du composant
+  if (!selectRef.value?.contains(event.relatedTarget as Node | null)) {
+    emit('focus', event)
+  }
+}
+
+const handleFocusOut = (event: FocusEvent) => {
+  if (selectRef.value?.contains(event.relatedTarget as Node | null)) return
+  closeDropdown(false)
+  emit('blur', event)
+}
+
+// Fermeture au clic extérieur (pointerdown : avant le clic lui-même)
+const handlePointerDownOutside = (event: PointerEvent) => {
+  if (isOpen.value && selectRef.value && !selectRef.value.contains(event.target as Node)) {
+    closeDropdown(false)
+  }
+}
+
+// L'option mise en avant reste visible dans la liste
+watch(focusedIndex, async (index) => {
+  if (index < 0 || !isOpen.value) return
+  await nextTick()
+  const element = dropdownRef.value?.querySelector<HTMLElement>(`[id="${optionId(index)}"]`)
+  element?.scrollIntoView?.({ block: 'nearest' })
+})
 
 // Méthodes exposées
 const focus = () => {
@@ -396,29 +554,23 @@ defineExpose({
 
 // Lifecycle
 onMounted(() => {
-  document.addEventListener('click', handleClickOutside, { passive: true })
+  document.addEventListener('pointerdown', handlePointerDownOutside)
 })
 
 onUnmounted(() => {
-  document.removeEventListener('click', handleClickOutside, { passive: true } as any)
-  if (cleanupFocusTrap.value) {
-    cleanupFocusTrap.value()
-  }
-})
-
-// Watchers
-watch(modelValue, () => {
-  // Réinitialiser l'index de focus quand la valeur change
-  focusedIndex.value = -1
+  document.removeEventListener('pointerdown', handlePointerDownOutside)
+  clearTimeout(typeaheadTimer)
 })
 </script>
 
 <template>
   <div class="su-select">
     <!-- Container principal -->
-    <div 
+    <div
       ref="selectRef"
       :class="containerClasses"
+      @focusin="handleFocusIn"
+      @focusout="handleFocusOut"
     >
       <!-- Trigger -->
       <div
@@ -428,9 +580,7 @@ watch(modelValue, () => {
         :tabindex="disabled ? -1 : 0"
         v-bind="ariaAttributes"
         @click="toggleDropdown"
-        @keydown="handleKeydown"
-        @focus="handleFocus"
-        @blur="handleBlur"
+        @keydown="handleTriggerKeydown"
       >
         <!-- Contenu du trigger -->
         <div class="su-select-content">
@@ -444,38 +594,45 @@ watch(modelValue, () => {
               :key="option.value"
               class="su-select-tag"
             >
-              <component 
-                :is="option.icon" 
-                v-if="option.icon" 
+              <component
+                :is="option.icon"
+                v-if="option.icon"
                 class="su-select-tag-icon"
                 aria-hidden="true"
               />
               <span class="su-select-tag-label">{{ option.label }}</span>
+              <!-- Hors tabulation : au clavier, Retour arrière retire la
+                   dernière étiquette et la liste permet de désélectionner -->
               <button
+                v-if="!disabled && !readonly"
                 type="button"
+                tabindex="-1"
                 class="su-select-tag-remove"
                 :aria-label="`Retirer ${option.label}`"
                 @click="removeSelectedOption(option, $event)"
               >
-                <XMarkIcon class="su-select-tag-remove-icon" />
+                <XMarkIcon
+                  class="su-select-tag-remove-icon"
+                  aria-hidden="true"
+                />
               </button>
             </span>
-            <span 
-              v-if="selectedOptions.length > 3" 
+            <span
+              v-if="selectedOptions.length > 3"
               class="su-select-tag su-select-tag--more"
             >
               +{{ selectedOptions.length - 3 }}
             </span>
           </div>
-      
+
           <!-- Sélection simple ou placeholder -->
           <div
             v-else
             class="su-select-display"
           >
-            <component 
-              :is="selectedOptions[0].icon" 
-              v-if="selectedOptions[0]?.icon" 
+            <component
+              :is="selectedOptions[0].icon"
+              v-if="selectedOptions[0]?.icon"
               class="su-select-display-icon"
               aria-hidden="true"
             />
@@ -512,7 +669,7 @@ watch(modelValue, () => {
               />
             </svg>
           </div>
-      
+
           <!-- Clear button -->
           <button
             v-else-if="clearable && selectedOptions.length > 0 && !disabled && !readonly"
@@ -521,11 +678,14 @@ watch(modelValue, () => {
             aria-label="Effacer la sélection"
             @click="clearSelection"
           >
-            <XMarkIcon class="su-select-clear-icon" />
+            <XMarkIcon
+              class="su-select-clear-icon"
+              aria-hidden="true"
+            />
           </button>
-      
+
           <!-- Chevron -->
-          <ChevronDownIcon 
+          <ChevronDownIcon
             class="su-select-chevron"
             :class="{ 'su-select-chevron--open': isOpen }"
             aria-hidden="true"
@@ -537,11 +697,9 @@ watch(modelValue, () => {
       <Transition name="su-select-dropdown">
         <div
           v-if="isOpen"
-          :id="listboxId"
           ref="dropdownRef"
           class="su-select-dropdown"
-          role="listbox"
-          :aria-multiselectable="multiple"
+          @mousedown="handleDropdownMousedown"
         >
           <!-- Recherche -->
           <div
@@ -557,111 +715,120 @@ watch(modelValue, () => {
                 ref="searchInputRef"
                 type="text"
                 class="su-select-search-input"
+                role="combobox"
+                aria-autocomplete="list"
+                aria-expanded="true"
+                :aria-controls="listboxId"
+                :aria-activedescendant="activeDescendant"
+                :aria-label="searchPlaceholder"
+                autocomplete="off"
                 :placeholder="searchPlaceholder"
                 :value="searchQuery"
                 @input="handleSearch"
-                @keydown="handleKeydown"
+                @keydown="handleSearchKeydown"
               >
             </div>
           </div>
 
           <!-- Options -->
           <div
+            :id="listboxId"
             class="su-select-options"
+            role="listbox"
+            :aria-multiselectable="multiple ? 'true' : undefined"
+            :aria-label="ariaLabel"
+            :aria-labelledby="ariaLabelledBy"
             :style="{ maxHeight: maxHeight }"
           >
-            <template v-if="filteredOptions.length > 0">
-              <template
-                v-for="(groupOptions, groupName) in groupedOptions"
-                :key="groupName"
-              >
-                <!-- Groupe header -->
-                <div 
-                  v-if="groupName && props.groups && props.groups.length > 0" 
-                  class="su-select-group-header"
-                  role="group"
-                  :aria-label="groupName"
-                >
-                  {{ groupName }}
-                </div>
-            
-                <!-- Options du groupe -->
-                <div
-                  v-for="option in groupOptions"
-                  :key="option.value"
-                  class="su-select-option"
-                  :class="{
-                    'su-select-option--selected': multiple ? 
-                      (selectedValue as (string | number)[]).includes(option.value) : 
-                      selectedValue === option.value,
-                    'su-select-option--disabled': option.disabled,
-                    'su-select-option--focused': filteredOptions.indexOf(option) === focusedIndex
-                  }"
-                  role="option"
-                  :aria-selected="multiple ? 
-                    (selectedValue as (string | number)[]).includes(option.value) : 
-                    selectedValue === option.value"
-                  :aria-disabled="option.disabled"
-                  @click="selectOption(option)"
-                  @mouseenter="focusedIndex = filteredOptions.indexOf(option)"
-                >
-                  <!-- Checkbox pour multiselect -->
-                  <div
-                    v-if="multiple"
-                    class="su-select-option-checkbox"
-                  >
-                    <div 
-                      class="su-select-checkbox"
-                      :class="{
-                        'su-select-checkbox--checked': (selectedValue as (string | number)[]).includes(option.value)
-                      }"
-                    >
-                      <CheckIcon 
-                        v-if="(selectedValue as (string | number)[]).includes(option.value)"
-                        class="su-select-checkbox-icon" 
-                        aria-hidden="true"
-                      />
-                    </div>
-                  </div>
-              
-                  <!-- Icône de l'option -->
-                  <component 
-                    :is="option.icon" 
-                    v-if="option.icon" 
-                    class="su-select-option-icon"
-                    aria-hidden="true"
-                  />
-              
-                  <!-- Contenu de l'option -->
-                  <div class="su-select-option-content">
-                    <div class="su-select-option-label">
-                      {{ option.label }}
-                    </div>
-                    <div 
-                      v-if="option.description" 
-                      class="su-select-option-description"
-                    >
-                      {{ option.description }}
-                    </div>
-                  </div>
-              
-                  <!-- Indicateur de sélection pour single select -->
-                  <CheckIcon 
-                    v-if="!multiple && selectedValue === option.value"
-                    class="su-select-option-check" 
-                    aria-hidden="true"
-                  />
-                </div>
-              </template>
-            </template>
-        
-            <!-- Aucun résultat -->
             <div
-              v-else
-              class="su-select-no-options"
+              v-for="section in optionSections"
+              :key="section.labelId"
+              :role="section.label ? 'group' : undefined"
+              :aria-labelledby="section.label ? section.labelId : undefined"
+              class="su-select-group"
             >
-              {{ searchQuery ? noResultsText : noOptionsText }}
+              <!-- Groupe header -->
+              <div
+                v-if="section.label"
+                :id="section.labelId"
+                class="su-select-group-header"
+                role="presentation"
+              >
+                {{ section.label }}
+              </div>
+
+              <!-- Options du groupe -->
+              <div
+                v-for="{ option, index } in section.options"
+                :id="optionId(index)"
+                :key="option.value"
+                class="su-select-option"
+                :class="{
+                  'su-select-option--selected': isSelected(option),
+                  'su-select-option--disabled': option.disabled,
+                  'su-select-option--focused': index === focusedIndex
+                }"
+                role="option"
+                :aria-selected="isSelected(option) ? 'true' : 'false'"
+                :aria-disabled="option.disabled ? 'true' : undefined"
+                @click="selectOption(option)"
+                @mousemove="hoverOption(index)"
+              >
+                <!-- Checkbox pour multiselect -->
+                <div
+                  v-if="multiple"
+                  class="su-select-option-checkbox"
+                  aria-hidden="true"
+                >
+                  <div
+                    class="su-select-checkbox"
+                    :class="{ 'su-select-checkbox--checked': isSelected(option) }"
+                  >
+                    <CheckIcon
+                      v-if="isSelected(option)"
+                      class="su-select-checkbox-icon"
+                    />
+                  </div>
+                </div>
+
+                <!-- Icône de l'option -->
+                <component
+                  :is="option.icon"
+                  v-if="option.icon"
+                  class="su-select-option-icon"
+                  aria-hidden="true"
+                />
+
+                <!-- Contenu de l'option -->
+                <div class="su-select-option-content">
+                  <div class="su-select-option-label">
+                    {{ option.label }}
+                  </div>
+                  <div
+                    v-if="option.description"
+                    class="su-select-option-description"
+                  >
+                    {{ option.description }}
+                  </div>
+                </div>
+
+                <!-- Indicateur de sélection pour single select -->
+                <CheckIcon
+                  v-if="!multiple && isSelected(option)"
+                  class="su-select-option-check"
+                  aria-hidden="true"
+                />
+              </div>
             </div>
+          </div>
+
+          <!-- Aucun résultat (hors de la liste : ce n'est pas une option) -->
+          <div
+            v-if="filteredOptions.length === 0"
+            class="su-select-no-options"
+            role="status"
+          >
+            {{ searchQuery ? noResultsText : noOptionsText }}
           </div>
         </div>
       </Transition>
@@ -704,6 +871,7 @@ watch(modelValue, () => {
   position: relative;
   width: 100%;
   color: var(--su-text-primary);
+
   // 16px sur mobile (pas de zoom iOS), 14px dès `sm`
   font-size: var(--su-font-size-base);
 
@@ -744,6 +912,7 @@ watch(modelValue, () => {
     cursor: pointer;
     user-select: none;
     outline: none;
+
     @include control-surface;
 
     @include up('sm') {
@@ -820,6 +989,7 @@ watch(modelValue, () => {
 
   &-text {
     flex: 1;
+
     @include truncate;
   }
 }
@@ -876,6 +1046,7 @@ watch(modelValue, () => {
     background: transparent;
     color: var(--su-text-tertiary);
     cursor: pointer;
+
     @include transition(background-color, color);
 
     &:hover {
@@ -916,6 +1087,7 @@ watch(modelValue, () => {
   background: transparent;
   color: inherit;
   cursor: pointer;
+
   @include transition(background-color, color);
 
   &:hover {
@@ -937,6 +1109,7 @@ watch(modelValue, () => {
   @include su-select-icon;
 
   opacity: 0.8;
+
   @include transition(transform);
 
   &--open {
@@ -947,10 +1120,18 @@ watch(modelValue, () => {
 // ### Liste déroulante (popover)
 
 .su-select-dropdown {
-  position: absolute;
-  top: calc(100% + 0.25rem);
-  inset-inline: 0;
+  // Position fixe : left/top calculés par useFloatingPosition (retournée
+  // au-dessus s'il manque de place, jamais coupée par un overflow)
+  position: fixed;
+  top: 0;
+  left: 0;
+  max-width: calc(100vw - 1rem);
+
   @include popover-surface;
+
+  &[data-placement^='top'] {
+    transform-origin: bottom center;
+  }
 }
 
 .su-select-search {
@@ -1063,6 +1244,7 @@ watch(modelValue, () => {
   border-radius: var(--su-radius-sm);
   background-color: var(--su-bg-control);
   box-shadow: var(--su-shadow-control);
+
   @include transition(background-color, border-color);
 
   @include up('sm') {

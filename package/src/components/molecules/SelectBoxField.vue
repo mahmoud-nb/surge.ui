@@ -76,12 +76,13 @@ defineExpose({
     :required="required"
     :disabled="disabled"
   >
-    <template #default="{ fieldId: id, messageId }">
+    <template #default="{ fieldId: id, labelId, messageId }">
       <SelectBox
         :id="id"
         ref="selectBoxRef"
         v-model="modelValue"
         v-bind="{ ...selectBoxProps }"
+        :aria-labelled-by="[labelId, ariaLabelledBy].filter(Boolean).join(' ') || undefined"
         :aria-described-by="[ariaDescribedBy, messageId].filter(Boolean).join(' ') || undefined"
         @change="emit('change', $event)"
         @open="emit('open')"

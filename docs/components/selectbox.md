@@ -278,17 +278,23 @@ Le composant `SuSelectBox` peut être utilisé avec `SuFormField` pour bénéfic
     label="Pays" 
     message="Sélectionnez votre pays de résidence"
   >
-    <template #default="slotProps">
+    <template #default="{ fieldId, labelId, messageId }">
       <SuSelectBox 
+        :id="fieldId"
+        :aria-labelledby="labelId"
+        :aria-describedby="messageId"
         :options="countries"
         placeholder="Choisissez un pays..."
-        v-bind="slotProps"
         v-model="selectedCountry"
       />
     </template>
   </SuFormField>
 </template>
 ```
+
+::: tip Nom accessible
+Le déclencheur est un `combobox` (et non un `<input>`) : `<label for>` ne lui donne pas de nom. Reliez le label avec `aria-labelledby="labelId"`, ou utilisez directement `SuSelectBoxField`, qui le fait pour vous.
+:::
 
 ### Avec destructuration des slot props
 
@@ -299,10 +305,11 @@ Le composant `SuSelectBox` peut être utilisé avec `SuFormField` pour bénéfic
     :required="true"
     message="Champ obligatoire"
   >
-    <template #default="{ fieldId, messageId, state, disabled }">
+    <template #default="{ fieldId, labelId, messageId, state, disabled }">
       <SuSelectBox 
         :options="categories"
         :id="fieldId"
+        :aria-labelledby="labelId"
         :aria-describedby="messageId"
         :state="state"
         :disabled="disabled"
@@ -591,6 +598,7 @@ Lorsque utilisé avec `SuFormField`, le composant reçoit automatiquement :
 | Prop | Type | Description |
 |------|------|-------------|
 | `id` | `string` | ID unique du champ (fieldId) |
+| `aria-labelledby` | `string` | ID du label (labelId) : nomme le combobox et la liste |
 | `aria-describedby` | `string` | ID du message associé (messageId) |
 | `state` | `string` | État de validation |
 | `disabled` | `boolean` | État désactivé |
@@ -645,11 +653,13 @@ Le composant SelectBox respecte les normes WCAG 2.1 AA et les bonnes pratiques W
 
 ### ✅ Fonctionnalités d'accessibilité
 
-- **Navigation au clavier** : Support complet (flèches, Entrée, Espace, Échap, Home/End)
-- **Attributs ARIA** : `role="combobox"`, `aria-expanded`, `aria-controls`, `aria-multiselectable`
-- **Focus trap** : Gestion du focus dans le dropdown
-- **Annonces vocales** : Messages pour les lecteurs d'écran
-- **Labels associés** : Via les props de SuFormField (fieldId)
+- **Motif combobox + listbox (WAI-ARIA)** : le déclencheur (`role="combobox"`, `aria-expanded`, `aria-controls`) pilote une liste `role="listbox"` (`aria-multiselectable` en sélection multiple), dont les options portent `aria-selected` et `aria-disabled`
+- **Focus conservé** : le focus reste sur le déclencheur (ou sur le champ de recherche) ; l'option mise en avant est annoncée via `aria-activedescendant` et défile automatiquement dans la vue
+- **Groupes nommés** : chaque groupe d'options est un `role="group"` relié à son titre
+- **Saisie rapide** : taper une lettre met en avant l'option suivante qui commence ainsi ; avec `searchable`, la lettre ouvre la liste et amorce la recherche
+- **Annonces vocales** : sélection multiple, retrait d'une étiquette, limite atteinte
+- **Labels associés** : via `aria-labelledby` (labelId de SuFormField, automatique avec SuSelectBoxField)
+- **Positionnement** : la liste est en `position: fixed`, retournée au-dessus s'il manque de place et jamais coupée par un parent en `overflow: hidden`
 - **Messages d'état** : Via aria-describedby (messageId)
 - **Contraste des couleurs** : Ratios conformes WCAG AA (4.5:1)
 - **Focus visible** : Indicateurs clairs et contrastés
@@ -667,12 +677,14 @@ Le composant SelectBox respecte les normes WCAG 2.1 AA et les bonnes pratiques W
   :state="countryError ? 'error' : 'default'"
   :message="countryError || 'Sélectionnez votre pays de résidence'"
 >
-  <template #default="slotProps">
+  <template #default="{ fieldId, labelId, messageId }">
     <SuSelectBox 
+      :id="fieldId"
+      :aria-labelledby="labelId"
+      :aria-describedby="messageId"
       :options="countries"
       :searchable="true"
       placeholder="Rechercher un pays..."
-      v-bind="slotProps"
       v-model="country"
     />
   </template>
@@ -699,14 +711,15 @@ Le composant SelectBox respecte les normes WCAG 2.1 AA et les bonnes pratiques W
 
 | Touche | Action |
 |--------|--------|
-| `Tab` | Naviguer vers/depuis le SelectBox |
-| `Entrée` / `Espace` | Ouvrir/fermer le dropdown, sélectionner l'option |
-| `Flèche bas` | Ouvrir le dropdown ou option suivante |
-| `Flèche haut` | Option précédente |
-| `Home` | Première option |
-| `End` | Dernière option |
-| `Échap` | Fermer le dropdown |
-| `A-Z` | Recherche rapide par première lettre |
+| `Tab` | Naviguer vers/depuis le SelectBox (ferme la liste) |
+| `Entrée` / `Espace` | Ouvrir la liste, sélectionner l'option mise en avant |
+| `Flèche bas` | Ouvrir la liste ou option suivante (les options désactivées sont sautées) |
+| `Flèche haut` | Ouvrir la liste ou option précédente |
+| `Alt` + `Flèche haut` | Sélectionner l'option mise en avant |
+| `Début` / `Fin` | Première / dernière option (dans le champ de recherche : déplace le curseur) |
+| `Échap` | Fermer la liste sans changer la valeur (le focus revient au déclencheur) |
+| `A-Z` | Saisie rapide : met en avant l'option suivante qui commence par ces lettres |
+| `Retour arrière` | Sélection multiple : retire la dernière étiquette (déclencheur ou recherche vide) |
 
 ## Exemples d'usage avancés
 

@@ -95,8 +95,14 @@ const createInteractiveStory = (args: any): Story => ({
     // On utilise v-model pour lier la ref locale au composant : v-model="value" | v-model="value" @change="args['onUpdate:value']"
     template: `<div style="width: 300px; min-height: 250px;">
       <FormField v-bind="formFieldArgs">
-        <template #default="slotProps">
-          <SelectBox v-bind="{ ...args, ...slotProps }" v-model="value" />
+        <template #default="{ fieldId, labelId, messageId }">
+          <SelectBox
+            v-bind="args"
+            :id="fieldId"
+            v-model="value"
+            :aria-labelled-by="labelId"
+            :aria-described-by="formFieldArgs.message ? messageId : undefined"
+          />
         </template>
       </FormField>
     </div>`,

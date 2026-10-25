@@ -278,17 +278,23 @@ The `SuSelectBox` component can be used with `SuFormField` to benefit from a com
     label="Country" 
     message="Select your country of residence"
   >
-    <template #default="slotProps">
+    <template #default="{ fieldId, labelId, messageId }">
       <SuSelectBox 
+        :id="fieldId"
+        :aria-labelledby="labelId"
+        :aria-describedby="messageId"
         :options="countries"
         placeholder="Choose a country..."
-        v-bind="slotProps"
         v-model="selectedCountry"
       />
     </template>
   </SuFormField>
 </template>
 ```
+
+::: tip Accessible name
+The trigger is a `combobox` (not an `<input>`), so `<label for>` does not name it. Link the label with `aria-labelledby="labelId"`, or use `SuSelectBoxField`, which does it for you.
+:::
 
 ### With slot props destructuring
 
@@ -299,10 +305,11 @@ The `SuSelectBox` component can be used with `SuFormField` to benefit from a com
     :required="true"
     message="Required field"
   >
-    <template #default="{ fieldId, messageId, state, disabled }">
+    <template #default="{ fieldId, labelId, messageId, state, disabled }">
       <SuSelectBox 
         :options="categories"
         :id="fieldId"
+        :aria-labelledby="labelId"
         :aria-describedby="messageId"
         :state="state"
         :disabled="disabled"
@@ -591,6 +598,7 @@ When used with `SuFormField`, the component automatically receives:
 | Prop | Type | Description |
 |------|------|-------------|
 | `id` | `string` | Unique field ID (fieldId) |
+| `aria-labelledby` | `string` | Label ID (labelId): names the combobox and the list |
 | `aria-describedby` | `string` | Associated message ID (messageId) |
 | `state` | `string` | Validation state |
 | `disabled` | `boolean` | Disabled state |
@@ -645,11 +653,13 @@ The SelectBox component follows WCAG 2.1 AA standards and W3C best practices:
 
 ### ✅ Accessibility features
 
-- **Keyboard navigation**: Complete support (arrows, Enter, Space, Escape, Home/End)
-- **ARIA attributes**: `role="combobox"`, `aria-expanded`, `aria-controls`, `aria-multiselectable`
-- **Focus trap**: Focus management in dropdown
-- **Voice announcements**: Messages for screen readers
-- **Associated labels**: Via SuFormField props (fieldId)
+- **Combobox + listbox pattern (WAI-ARIA)**: the trigger (`role="combobox"`, `aria-expanded`, `aria-controls`) drives a `role="listbox"` list (`aria-multiselectable` for multiple selection) whose options carry `aria-selected` and `aria-disabled`
+- **Focus stays put**: focus remains on the trigger (or the search field); the highlighted option is announced through `aria-activedescendant` and scrolled into view
+- **Named groups**: each option group is a `role="group"` linked to its title
+- **Typeahead**: typing a letter highlights the next option starting with it; with `searchable`, the letter opens the list and starts the search
+- **Voice announcements**: multiple selection, tag removal, limit reached
+- **Associated labels**: through `aria-labelledby` (SuFormField labelId, automatic with SuSelectBoxField)
+- **Positioning**: the list uses `position: fixed`, flips above when space runs out and is never clipped by an `overflow: hidden` parent
 - **State messages**: Via aria-describedby (messageId)
 - **Color contrast**: WCAG AA compliant ratios (4.5:1)
 - **Visible focus**: Clear and contrasted indicators
@@ -667,12 +677,14 @@ The SelectBox component follows WCAG 2.1 AA standards and W3C best practices:
   :state="countryError ? 'error' : 'default'"
   :message="countryError || 'Select your country of residence'"
 >
-  <template #default="slotProps">
+  <template #default="{ fieldId, labelId, messageId }">
     <SuSelectBox 
+      :id="fieldId"
+      :aria-labelledby="labelId"
+      :aria-describedby="messageId"
       :options="countries"
       :searchable="true"
       placeholder="Search a country..."
-      v-bind="slotProps"
       v-model="country"
     />
   </template>
@@ -699,14 +711,15 @@ The SelectBox component follows WCAG 2.1 AA standards and W3C best practices:
 
 | Key | Action |
 |--------|--------|
-| `Tab` | Navigate to/from SelectBox |
-| `Enter` / `Space` | Open/close dropdown, select option |
-| `Arrow down` | Open dropdown or next option |
-| `Arrow up` | Previous option |
-| `Home` | First option |
-| `End` | Last option |
-| `Escape` | Close dropdown |
-| `A-Z` | Quick search by first letter |
+| `Tab` | Navigate to/from SelectBox (closes the list) |
+| `Enter` / `Space` | Open the list, select the highlighted option |
+| `Arrow down` | Open the list or next option (disabled options are skipped) |
+| `Arrow up` | Open the list or previous option |
+| `Alt` + `Arrow up` | Select the highlighted option |
+| `Home` / `End` | First / last option (in the search field: moves the caret) |
+| `Escape` | Close the list without changing the value (focus returns to the trigger) |
+| `A-Z` | Typeahead: highlights the next option starting with these letters |
+| `Backspace` | Multiple selection: removes the last tag (trigger or empty search) |
 
 ## Advanced usage examples
 
