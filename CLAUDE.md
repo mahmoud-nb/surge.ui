@@ -32,9 +32,12 @@ npm run lint:fix           # ESLint + Stylelint with auto-fix
 # Releases (conventional commits via commitizen)
 npm run commit             # Interactive conventional commit prompt
 npm run release            # standard-version (auto semver bump)
+npm run release:publish    # build lib + npm publish -w package (manual fallback)
 ```
 
 Tests live in `package/tests/*.spec.ts` (Vitest, `happy-dom` environment, configured in `package/vite.config.ts`, CSS disabled). Validate changes with `npm test`, `npm run build:lib` and `npm run lint`. Stylelint still reports pre-existing `no-descending-specificity` / `no-duplicate-selectors` errors.
+
+Release flow: `npm run release:dry` → `npm run release` (bumps package.json + package/package.json, CHANGELOG, tag `vX.Y.Z`) → `npm install --package-lock-only` → `git push --follow-tags origin main`. Pushing the tag triggers `.github/workflows/release.yml`: checks tag = package version, lint, tests, build, `npm publish -w package --provenance` (secret `NPM_TOKEN`, skipped if the version is already on npm) and a GitHub release from the CHANGELOG section. Always push tags: `standard-version` computes the next changelog from the latest tag.
 
 ## Architecture
 
