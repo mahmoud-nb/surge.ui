@@ -308,7 +308,9 @@ Le composant Popover est conforme aux normes WCAG 2.1 niveau AA et suit les bonn
 
 - **Navigation clavier complète** : le popover peut être ouvert avec les touches Entrée ou Espace et fermé avec la touche Échap. La navigation à l'intérieur du popover se fait avec la touche Tab.
 
-- **Piégeage du focus en mode modal** : lorsque le mode modal est activé, le focus est piégé à l'intérieur du popover, empêchant l'utilisateur de naviguer vers les éléments extérieurs jusqu'à sa fermeture.
+- **Piégeage du focus en mode modal** : lorsque le mode modal est activé, le focus est piégé à l'intérieur du popover ([useFocusTrap](/composables/usefocustrap)) et rendu au déclencheur à la fermeture.
+
+- **Fermeture** : Échap et l'appui à l'extérieur passent par [useDismiss](/composables/usedismiss) : dans un popover contenant une liste ouverte, Échap ne ferme que la liste ; dans un SuDialog, Échap ferme le popover sans fermer le dialog.
 
 - **Attributs ARIA appropriés** : le composant utilise `aria-expanded` sur le déclencheur pour indiquer l'état d'ouverture, `aria-haspopup` pour signaler la présence d'un popover, `aria-controls` pour lier le déclencheur au contenu, et `role="dialog"` sur le contenu pour une identification correcte par les lecteurs d'écran.
 

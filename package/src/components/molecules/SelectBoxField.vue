@@ -15,10 +15,6 @@ const props = withDefaults(defineProps<SelectBoxFieldProps>(), {
   disabled: false,
   readonly: false,
   required: false,
-  placeholder: 'Sélectionnez une option...',
-  searchPlaceholder: 'Rechercher...',
-  noOptionsText: 'Aucune option disponible',
-  noResultsText: 'Aucun résultat trouvé',
   maxHeight: '200px',
   textAlign: 'left',
   dir: 'auto',
@@ -76,14 +72,11 @@ defineExpose({
     :required="required"
     :disabled="disabled"
   >
-    <template #default="{ fieldId: id, labelId, messageId }">
+    <template #default>
       <SelectBox
-        :id="id"
         ref="selectBoxRef"
         v-model="modelValue"
         v-bind="{ ...selectBoxProps }"
-        :aria-labelled-by="[labelId, ariaLabelledBy].filter(Boolean).join(' ') || undefined"
-        :aria-described-by="[ariaDescribedBy, messageId].filter(Boolean).join(' ') || undefined"
         @change="emit('change', $event)"
         @open="emit('open')"
         @close="emit('close')"

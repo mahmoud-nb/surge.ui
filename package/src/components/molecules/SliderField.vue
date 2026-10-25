@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, ref, useAttrs, useId } from 'vue'
-import { announceToScreenReader } from '@/utils/accessibility'
 import FormField from '@/components/atoms/FormField.vue'
 import type { SliderFieldProps } from '@/types'
+import { useLocale } from '@/composables/useLocale'
 
 export interface Props extends Omit<SliderFieldProps, 'value'> {}
 
@@ -22,6 +22,9 @@ const props = withDefaults(defineProps<Props>(), {
   showTicks: false,
   showLabels: false
 })
+
+// Textes par défaut : locale courante
+const { t } = useLocale()
 
 // Utilisation de defineModel pour v-model
 const modelValue = defineModel<number | [number, number]>()
@@ -142,7 +145,7 @@ const getAriaAttributes = (thumbType: 'min' | 'max') => {
   
   if (props.ariaLabel) {
     attrs['aria-label'] = isDualRange.value 
-      ? `${props.ariaLabel} ${thumbType === 'min' ? 'minimum' : 'maximum'}` 
+      ? `${props.ariaLabel} ${t(thumbType === 'min' ? 'slider.min' : 'slider.max')}` 
       : props.ariaLabel
   }
   if (props.ariaInvalid !== undefined) attrs['aria-invalid'] = props.ariaInvalid
@@ -197,12 +200,7 @@ const updateValue = (newValue: number, thumbType: 'min' | 'max' = 'min') => {
   } else {
     currentValue.value = clampedValue
   }
-  
-  // Annonce pour les lecteurs d'écran
-  const announcement = isDualRange.value 
-    ? `${thumbType === 'min' ? 'Minimum' : 'Maximum'} : ${formatValue(clampedValue)}`
-    : formatValue(clampedValue)
-  announceToScreenReader(announcement)
+
 }
 
 const handleMouseDown = (event: MouseEvent, thumbType: 'min' | 'max' = 'min') => {

@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { computed, ref, shallowRef, watch, onMounted, nextTick, useId } from 'vue'
 import type { OtpInputProps } from '@/types'
+import { useLocale } from '@/composables/useLocale'
+import { useFormField } from '@/composables/useFormField'
 
 defineOptions({ inheritAttrs: false })
 
@@ -17,8 +19,15 @@ const props = withDefaults(defineProps<OtpInputProps>(), {
   autoSubmit: false,
   autoFocus: false,
   placeholder: '',
-  separator: '-',
+  separator: '-'
 })
+
+// Contexte du SuFormField parent : id, label, message et états du champ
+const { state: fieldState, size: fieldSize, disabled: fieldDisabled, required: fieldRequired, describedBy: fieldDescribedBy, labelledBy: fieldLabelledBy } = useFormField(props, { labelable: false, focus: () => focus() })
+
+// Textes par défaut : prop explicite, sinon locale courante
+const { t } = useLocale()
+
 
 const modelValue = defineModel<string>({ default: '' })
 
@@ -132,10 +141,10 @@ const groups = computed<OtpGroup[]>(() => {
 const containerClasses = computed(() => [
   'su-otp-input',
   `su-otp-input--${props.variant}`,
-  `su-otp-input--${props.size}`,
+  `su-otp-input--${fieldSize.value}`,
   {
-    [`su-otp-input--${props.state}`]: props.state !== 'default',
-    'su-otp-input--disabled': props.disabled,
+    [`su-otp-input--${fieldState.value}`]: fieldState.value !== 'default',
+    'su-otp-input--disabled': fieldDisabled.value,
     'su-otp-input--readonly': props.readonly,
     'su-otp-input--masked': props.masked,
   },
@@ -148,21 +157,21 @@ const containerClasses = computed(() => [
 const ariaAttributes = computed(() => {
   const attrs: Record<string, string> = {}
   if (props.ariaLabel) attrs['aria-label'] = props.ariaLabel
-  if (props.ariaLabelledBy) attrs['aria-labelledby'] = props.ariaLabelledBy
-  if (props.ariaDescribedBy) attrs['aria-describedby'] = props.ariaDescribedBy
-  if (props.state === 'error') attrs['aria-invalid'] = 'true'
-  if (props.required || props.ariaRequired) attrs['aria-required'] = 'true'
+  if (fieldLabelledBy.value) attrs['aria-labelledby'] = fieldLabelledBy.value
+  if (fieldDescribedBy.value) attrs['aria-describedby'] = fieldDescribedBy.value
+  if (fieldState.value === 'error') attrs['aria-invalid'] = 'true'
+  if (fieldRequired.value || props.ariaRequired) attrs['aria-required'] = 'true'
   return attrs
 })
 
 const defaultAriaLabel = computed(() => {
-  return props.ariaLabel || `Code de vérification à ${props.length} caractères`
+  return props.ariaLabel || t('otpInput.label', { length: props.length })
 })
 
 const progressText = computed(() => {
   const filled = digits.value.filter((d) => d !== '').length
   if (filled === 0) return ''
-  return `${filled} caractère${filled > 1 ? 's' : ''} saisi${filled > 1 ? 's' : ''} sur ${props.length}`
+  return t('otpInput.progress', { count: filled, length: props.length })
 })
 
 // ========================================
@@ -210,7 +219,7 @@ const focusField = (index: number) => {
 // ========================================
 
 const handleInput = (event: Event, index: number) => {
-  if (props.disabled || props.readonly) return
+  if (fieldDisabled.value || props.readonly) return
 
   const input = event.target as HTMLInputElement
   const value = input.value
@@ -243,7 +252,7 @@ const handleInput = (event: Event, index: number) => {
 }
 
 const handleKeydown = (event: KeyboardEvent, index: number) => {
-  if (props.disabled) return
+  if (fieldDisabled.value) return
 
   switch (event.key) {
     case 'Backspace':
@@ -289,7 +298,7 @@ const handleKeydown = (event: KeyboardEvent, index: number) => {
 }
 
 const handlePaste = (event: ClipboardEvent) => {
-  if (props.disabled || props.readonly) return
+  if (fieldDisabled.value || props.readonly) return
 
   event.preventDefault()
   const pasteData = event.clipboardData?.getData('text') || ''
@@ -407,9 +416,9 @@ defineExpose({
           :inputmode="inputMode"
           :value="digit"
           :placeholder="placeholder"
-          :disabled="disabled"
+          :disabled="fieldDisabled"
           :readonly="readonly"
-          :aria-label="`Caractère ${group.startIndex + fieldIndex + 1} sur ${length}`"
+          :aria-label="t('otpInput.character', { index: group.startIndex + fieldIndex + 1, length })"
           :autocomplete="group.startIndex + fieldIndex === 0 ? 'one-time-code' : 'off'"
           maxlength="1"
           @input="handleInput($event, group.startIndex + fieldIndex)"

@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import { computed, ref, nextTick, onMounted, onUnmounted, useAttrs, useId } from 'vue'
-import { trapFocus, announceToScreenReader } from '@/utils/accessibility'
+import { computed, ref, nextTick, useAttrs, useId } from 'vue'
 import { ChevronDownIcon } from '@heroicons/vue/24/outline'
 import type { DropdownProps } from '@/types'
 import { useFloatingPosition } from '@/composables/useFloatingPosition'
+import { useLocale } from '@/composables/useLocale'
+import { useListNavigation } from '@/composables/useListNavigation'
+import { useDismiss } from '@/composables/useDismiss'
 
 const props = withDefaults(defineProps<DropdownProps>(), {
   options: () => [],
@@ -13,11 +15,14 @@ const props = withDefaults(defineProps<DropdownProps>(), {
   variant: 'outline',
   disabled: false,
   loading: false,
-  loadingLabel: 'Chargement en cours...',
   iconDisplay: 'left',
   closeOnSelect: true,
   maxHeight: '300px'
 })
+
+// Textes par défaut : prop explicite, sinon locale courante
+const { t } = useLocale()
+const loadingText = computed(() => props.loadingLabel ?? t('common.loading'))
 
 const emit = defineEmits<{
   select: [option: any]
@@ -33,7 +38,6 @@ const attrs = useAttrs()
 const dropdownRef = ref<HTMLDivElement>()
 const triggerRef = ref<HTMLButtonElement>()
 const menuRef = ref<HTMLDivElement>()
-const cleanupFocusTrap = ref<(() => void) | null>(null)
 
 // État local
 const isOpen = ref(false)
@@ -45,16 +49,31 @@ const { placement: currentPlacement } = useFloatingPosition(triggerRef, menuRef,
   offset: 4,
   matchReferenceWidth: true
 })
-const focusedIndex = ref(-1)
 
 const fieldId = 'dropdown-' + useId()
 const dropdownId = computed(() => attrs.id as string || fieldId)
 const menuId = computed(() => `${dropdownId.value}-menu`)
 
-// Options filtrées (sans les séparateurs pour la navigation)
-const navigableOptions = computed(() => {
-  return props.options.filter(option => !option.separator && !option.disabled)
+// Items du menu (sans les séparateurs) et leurs éléments DOM
+const menuItems = computed(() => props.options.filter(option => !option.separator))
+const itemRefs = ref<(HTMLElement | null)[]>([])
+const setItemRef = (el: unknown, option: unknown) => {
+  const index = menuItems.value.indexOf(option as never)
+  if (index === -1) return
+  itemRefs.value[index] = (el as { $el?: HTMLElement } | null)?.$el ?? (el as HTMLElement | null)
+}
+
+// Le focus se déplace d'item en item (un seul tabulable) ; les items
+// désactivés sont sautés, la navigation boucle, saisie rapide par libellé
+const nav = useListNavigation({
+  items: menuItems,
+  isDisabled: (option) => !!option.disabled,
+  mode: 'roving',
+  loop: true,
+  getElement: (index) => itemRefs.value[index],
+  typeahead: { getLabel: (option) => option.label ?? '' }
 })
+const activeIndex = nav.activeIndex
 
 // Classes CSS
 const containerClasses = computed(() => [
@@ -105,116 +124,90 @@ const ariaAttributes = computed(() => {
 })
 
 // Gestion des événements
+
+/**
+ * @param focus - item qui reçoit le focus à l'ouverture (clavier, clic) ;
+ * `none` pour une ouverture au survol
+ */
+const openDropdown = async (focus: 'first' | 'last' | 'none' = 'first') => {
+  if (props.disabled || props.loading || isOpen.value) return
+
+  isOpen.value = true
+  emit('open')
+
+  await nextTick()
+  if (focus === 'first') nav.first()
+  else if (focus === 'last') nav.last()
+}
+
+/** @param returnFocus - rend le focus au déclencheur (Échap, choix d'un item) */
+const closeDropdown = (returnFocus = true) => {
+  if (!isOpen.value) return
+
+  // Le focus revient au déclencheur avant que le menu ne soit retiré
+  if (returnFocus) triggerRef.value?.focus()
+
+  isOpen.value = false
+  nav.reset()
+  itemRefs.value = []
+  emit('close')
+}
+
 const toggleDropdown = () => {
   if (props.disabled || props.loading) return
-  
-  if (isOpen.value) {
-    closeDropdown()
-  } else {
-    openDropdown()
-  }
-}
 
-const openDropdown = async () => {
-  if (props.disabled || props.loading) return
-  
-  isOpen.value = true
-  focusedIndex.value = -1
-  
-  emit('open')
-  
-  await nextTick()
-  
-  // Configuration du focus trap
-  if (menuRef.value) {
-    cleanupFocusTrap.value = trapFocus(menuRef.value)
-  }
-}
-
-const closeDropdown = () => {
-  isOpen.value = false
-  focusedIndex.value = -1
-  
-  if (cleanupFocusTrap.value) {
-    cleanupFocusTrap.value()
-    cleanupFocusTrap.value = null
-  }
-  
-  emit('close')
-  
-  // Retour du focus au trigger
-  if (triggerRef.value) {
-    triggerRef.value.focus()
-  }
+  if (isOpen.value) closeDropdown()
+  else openDropdown('first')
 }
 
 const selectOption = (option: any) => {
   if (option.disabled || option.separator) return
-  
+
   emit('select', option)
-  
-  // Annonce pour les lecteurs d'écran
-  announceToScreenReader(`${option.label} sélectionné`)
-  
+
   if (props.closeOnSelect) {
     closeDropdown()
   }
 }
 
-const handleKeydown = (event: KeyboardEvent) => {
-  switch (event.key) {
-    case 'Enter':
-    case ' ':
-      event.preventDefault()
-      if (!isOpen.value) {
-        openDropdown()
-      } else if (focusedIndex.value >= 0) {
-        const option = navigableOptions.value[focusedIndex.value]
-        if (option) selectOption(option)
-      }
-      break
-      
-    case 'Escape':
-      event.preventDefault()
-      closeDropdown()
-      break
-      
-    case 'ArrowDown':
-      event.preventDefault()
-      if (!isOpen.value) {
-        openDropdown()
-      } else {
-        focusedIndex.value = Math.min(focusedIndex.value + 1, navigableOptions.value.length - 1)
-      }
-      break
-      
-    case 'ArrowUp':
-      event.preventDefault()
-      if (isOpen.value) {
-        focusedIndex.value = Math.max(focusedIndex.value - 1, -1)
-      }
-      break
-      
-    case 'Home':
-      if (isOpen.value) {
-        event.preventDefault()
-        focusedIndex.value = 0
-      }
-      break
-      
-    case 'End':
-      if (isOpen.value) {
-        event.preventDefault()
-        focusedIndex.value = navigableOptions.value.length - 1
-      }
-      break
-      
-    case 'Tab':
-      if (isOpen.value) {
-        closeDropdown()
-      }
-      break
+// Déclencheur : Entrée / Espace passent par le clic natif du bouton ;
+// les flèches ouvrent le menu sur le premier ou le dernier item
+const handleTriggerKeydown = (event: KeyboardEvent) => {
+  if (props.disabled || props.loading) return
+
+  if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+    event.preventDefault()
+    const focus = event.key === 'ArrowDown' ? 'first' : 'last'
+    if (isOpen.value) {
+      if (focus === 'first') nav.first()
+      else nav.last()
+    } else {
+      openDropdown(focus)
+    }
   }
+}
+
+// Menu : flèches, Début / Fin, saisie rapide ; Tab quitte le menu
+const handleMenuKeydown = (event: KeyboardEvent) => {
+  if (nav.handleKeydown(event)) return
+
+  if (event.key === 'Tab') {
+    // Le focus repart du déclencheur : Tab va à l'élément suivant de la page
+    closeDropdown(true)
+    return
+  }
+
+  // Espace active aussi un lien (un bouton le fait nativement)
+  if (event.key === ' ' && event.target instanceof HTMLAnchorElement) {
+    event.preventDefault()
+    event.target.click()
+  }
+}
+
+// Survol : l'item survolé reçoit le focus, le clavier reprend de là
+const hoverItem = (option: any) => {
+  const index = menuItems.value.indexOf(option)
+  if (index !== -1 && !option.disabled && index !== activeIndex.value) nav.setActiveIndex(index)
 }
 
 const handleFocus = (event: FocusEvent) => {
@@ -222,33 +215,27 @@ const handleFocus = (event: FocusEvent) => {
 }
 
 const handleBlur = (event: FocusEvent) => {
-  // Fermer seulement si le focus sort complètement du composant
-  setTimeout(() => {
-    if (isOpen.value && dropdownRef.value && !dropdownRef.value.contains(document.activeElement)) {
-      closeDropdown()
-      emit('blur', event)
-    }
-  }, 0)
+  emit('blur', event)
 }
 
 const handleMouseEnter = () => {
   if (props.trigger === 'hover' && !props.disabled && !props.loading) {
-    openDropdown()
+    openDropdown('none')
   }
 }
 
 const handleMouseLeave = () => {
   if (props.trigger === 'hover') {
-    closeDropdown()
+    closeDropdown(false)
   }
 }
 
-// Fermeture au clic extérieur
-const handleClickOutside = (event: Event) => {
-  if (isOpen.value && dropdownRef.value && !dropdownRef.value.contains(event.target as Node)) {
-    closeDropdown()
-  }
-}
+// Échap (rend le focus), appui extérieur et perte du focus ferment le menu
+useDismiss([triggerRef, menuRef], {
+  enabled: isOpen,
+  focusOutside: true,
+  onDismiss: (reason) => closeDropdown(reason === 'escape')
+})
 
 // Méthodes exposées
 const focus = () => {
@@ -256,7 +243,7 @@ const focus = () => {
 }
 
 const open = () => {
-  openDropdown()
+  openDropdown('none')
 }
 
 const close = () => {
@@ -269,18 +256,6 @@ defineExpose({
   close,
   dropdownRef,
   triggerRef
-})
-
-// Lifecycle
-onMounted(() => {
-  document.addEventListener('click', handleClickOutside, { passive: true })
-})
-
-onUnmounted(() => {
-  document.removeEventListener('click', handleClickOutside, { passive: true } as any)
-  if (cleanupFocusTrap.value) {
-    cleanupFocusTrap.value()
-  }
 })
 
 // Validation pour les boutons avec icône seule
@@ -305,7 +280,7 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !props.lab
       :tabindex="disabled ? -1 : 0"
       v-bind="ariaAttributes"
       @click="toggleDropdown"
-      @keydown="handleKeydown"
+      @keydown="handleTriggerKeydown"
       @focus="handleFocus"
       @blur="handleBlur"
     >
@@ -335,7 +310,7 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !props.lab
             stroke-linecap="round"
           />
         </svg>
-        <span class="sr-only">{{ loadingLabel }}</span>
+        <span class="sr-only">{{ loadingText }}</span>
       </span>
       
       <template v-else>
@@ -372,7 +347,9 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !props.lab
         ref="menuRef"
         :class="menuClasses"
         role="menu"
+        :aria-labelledby="dropdownId"
         :style="{ maxHeight: maxHeight }"
+        @keydown="handleMenuKeydown"
       >
         <div class="su-dropdown-options">
           <template
@@ -390,19 +367,20 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !props.lab
             <component
               :is="option.href ? 'a' : 'button'"
               v-else
+              :ref="(el: unknown) => setItemRef(el, option)"
               :href="option.href"
               :target="option.target"
               :rel="option.rel"
               class="su-dropdown-option"
               :class="{
                 'su-dropdown-option--disabled': option.disabled,
-                'su-dropdown-option--focused': navigableOptions.indexOf(option) === focusedIndex
+                'su-dropdown-option--focused': menuItems.indexOf(option) === activeIndex
               }"
               role="menuitem"
-              :aria-disabled="option.disabled"
-              :tabindex="option.disabled ? -1 : 0"
+              :aria-disabled="option.disabled || undefined"
+              tabindex="-1"
               @click="selectOption(option)"
-              @mouseenter="focusedIndex = navigableOptions.indexOf(option)"
+              @mousemove="hoverItem(option)"
             >
               <!-- Icône de l'option -->
               <component 

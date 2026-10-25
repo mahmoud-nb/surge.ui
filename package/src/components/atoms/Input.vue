@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, getCurrentInstance, ref, useAttrs, type HTMLAttributes, type StyleValue } from 'vue'
 import type { InputProps } from '@/types'
+import { useFormField } from '@/composables/useFormField'
 
 defineOptions({ inheritAttrs: false })
 
@@ -13,6 +14,9 @@ const props = withDefaults(defineProps<InputProps>(), {
   required: false,
   textAlign: 'default'
 })
+
+// Contexte du SuFormField parent : id, label, message et états du champ
+const { id: controlId, state: fieldState, size: fieldSize, disabled: fieldDisabled, required: fieldRequired, describedBy: fieldDescribedBy, labelledBy: fieldLabelledBy } = useFormField(props, {})
 
 const emit = defineEmits<{
   input: [event: Event]
@@ -54,11 +58,11 @@ const passthroughAttrs = computed(() => {
 // Classes CSS
 const containerClasses = computed(() => [
   'su-input',
-  `su-input--${props.size}`,
-  `su-input--${props.state}`,
+  `su-input--${fieldSize.value}`,
+  `su-input--${fieldState.value}`,
   `su-input--align-${props.textAlign}`,
   {
-    'su-input--disabled': props.disabled,
+    'su-input--disabled': fieldDisabled.value,
     'su-input--readonly': props.readonly,
     'su-input--has-prefix': props.prefix || props.prefixIcon,
     'su-input--has-suffix': props.suffix || props.suffixIcon
@@ -70,11 +74,11 @@ const ariaAttributes = computed(() => {
   const attrs: Record<string, any> = {}
   
   if (props.ariaLabel) attrs['aria-label'] = props.ariaLabel
-  if (props.ariaLabelledBy) attrs['aria-labelledby'] = props.ariaLabelledBy
-  if (props.ariaDescribedBy) attrs['aria-describedby'] = props.ariaDescribedBy
+  if (fieldLabelledBy.value) attrs['aria-labelledby'] = fieldLabelledBy.value
+  if (fieldDescribedBy.value) attrs['aria-describedby'] = fieldDescribedBy.value
   if (props.ariaInvalid !== undefined) attrs['aria-invalid'] = props.ariaInvalid
-  if (props.required || props.ariaRequired) attrs['aria-required'] = 'true'
-  if (props.state === 'error') attrs['aria-invalid'] = 'true'
+  if (fieldRequired.value || props.ariaRequired) attrs['aria-required'] = 'true'
+  if (fieldState.value === 'error') attrs['aria-invalid'] = 'true'
 
   return attrs
 })
@@ -114,22 +118,22 @@ const handleKeyup = (event: KeyboardEvent) => emit('keyup', event)
 
 // Gestionnaires d'événements pour prefix et suffix
 const handlePrefixClick = (event: MouseEvent | KeyboardEvent) => {
-  if (props.disabled || props.readonly) return
+  if (fieldDisabled.value || props.readonly) return
   emit('prefix-click', event as MouseEvent)
 }
 
 const handlePrefixIconClick = (event: MouseEvent | KeyboardEvent) => {
-  if (props.disabled || props.readonly) return
+  if (fieldDisabled.value || props.readonly) return
   emit('prefix-icon-click', event as MouseEvent)
 }
 
 const handleSuffixClick = (event: MouseEvent | KeyboardEvent) => {
-  if (props.disabled || props.readonly) return
+  if (fieldDisabled.value || props.readonly) return
   emit('suffix-click', event as MouseEvent)
 }
 
 const handleSuffixIconClick = (event: MouseEvent | KeyboardEvent) => {
-  if (props.disabled || props.readonly) return
+  if (fieldDisabled.value || props.readonly) return
   emit('suffix-icon-click', event as MouseEvent)
 }
 
@@ -163,7 +167,7 @@ defineExpose({ focus, select, inputRef })
         v-if="prefixIcon"
         class="su-input__prefix__icon"
         :class="{ 'su-input__prefix--clickable': hasPrefixIconClickListener }"
-        :tabindex="hasPrefixIconClickListener && !disabled && !readonly ? 0 : -1"
+        :tabindex="hasPrefixIconClickListener && !fieldDisabled && !readonly ? 0 : -1"
         :role="hasPrefixIconClickListener ? 'button' : undefined"
         :aria-label="hasPrefixIconClickListener ? prefixIconLabel : undefined"
         @click="handlePrefixIconClick"
@@ -182,7 +186,7 @@ defineExpose({ focus, select, inputRef })
         v-if="prefix"
         class="su-input__prefix__text"
         :class="{ 'su-input__prefix--clickable': hasPrefixClickListener }"
-        :tabindex="hasPrefixClickListener && !disabled && !readonly ? 0 : -1"
+        :tabindex="hasPrefixClickListener && !fieldDisabled && !readonly ? 0 : -1"
         :role="hasPrefixClickListener ? 'button' : undefined"
         :aria-label="hasPrefixClickListener ? prefixLabel : undefined"
         @click="handlePrefixClick"
@@ -198,10 +202,10 @@ defineExpose({ focus, select, inputRef })
       class="su-input__element"
       :type="type"
       :value="modelValue"
-      :disabled="disabled"
+      :disabled="fieldDisabled"
       :readonly="readonly"
-      :required="required"
-      v-bind="{ ...passthroughAttrs, ...nativeAttributes, ...ariaAttributes }"
+      :required="fieldRequired"
+      v-bind="{ ...passthroughAttrs, id: controlId, ...nativeAttributes, ...ariaAttributes }"
       @input="handleInput"
       @change="handleChange"
       @focus="handleFocus"
@@ -220,7 +224,7 @@ defineExpose({ focus, select, inputRef })
         v-if="suffix"
         class="su-input__suffix__text"
         :class="{ 'su-input__suffix--clickable': hasSuffixClickListener }"
-        :tabindex="hasSuffixClickListener && !disabled && !readonly ? 0 : -1"
+        :tabindex="hasSuffixClickListener && !fieldDisabled && !readonly ? 0 : -1"
         :role="hasSuffixClickListener ? 'button' : undefined"
         :aria-label="hasSuffixClickListener ? suffixLabel : undefined"
         @click="handleSuffixClick"
@@ -235,7 +239,7 @@ defineExpose({ focus, select, inputRef })
         v-if="suffixIcon"
         class="su-input__suffix__icon"
         :class="{ 'su-input__suffix--clickable': hasSuffixIconClickListener }"
-        :tabindex="hasSuffixIconClickListener && !disabled && !readonly ? 0 : -1"
+        :tabindex="hasSuffixIconClickListener && !fieldDisabled && !readonly ? 0 : -1"
         :role="hasSuffixIconClickListener ? 'button' : undefined"
         :aria-label="hasSuffixIconClickListener ? suffixIconLabel : undefined"
         @click="handleSuffixIconClick"

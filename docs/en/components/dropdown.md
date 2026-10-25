@@ -199,10 +199,10 @@ The Dropdown component follows WCAG 2.1 AA standards:
 
 ### ✅ Accessibility features
 
-- **ARIA roles**: `role="button"` for trigger, `role="menu"` for menu, `role="menuitem"` for options
-- **Keyboard navigation**: Support for arrow keys, Enter, Space, Escape, Home/End
-- **Focus trap**: Focus management in open menu
-- **Voice announcements**: Messages for screen readers during selections
+- **Menu button pattern (WAI-ARIA)**: button with `aria-haspopup="menu"`, `role="menu"` menu named by the button, `role="menuitem"` items
+- **Roving focus**: one item at a time receives focus; arrows move it in a loop, disabled items are skipped
+- **Typeahead**: typing a letter moves focus to the next item starting with it
+- **Closing**: Escape (focus returns to the button), pointer down outside or focus leaving the menu; Tab leaves the menu to the next element on the page
 - **ARIA states**: `aria-expanded`, `aria-haspopup`, `aria-controls`
 - **Accessible labels**: Support for `aria-label` and `aria-describedby`
 - **Visible focus**: Clear and contrasted focus indicators
@@ -246,10 +246,10 @@ The Dropdown component follows WCAG 2.1 AA standards:
 
 | Key | Action |
 |-----|--------|
-| `Tab` | Navigate to/from dropdown |
-| `Enter` / `Space` | Open/close menu, select focused option |
-| `Arrow Down` | Open menu or navigate to next option |
-| `Arrow Up` | Navigate to previous option |
-| `Home` | Go to first option |
-| `End` | Go to last option |
-| `Escape` | Close menu |
+| `Enter` / `Space` | On the button: open the menu on the first item. On an item: activate it |
+| `Arrow Down` | On the button: open the menu on the first item. In the menu: next item (looping) |
+| `Arrow Up` | On the button: open the menu on the last item. In the menu: previous item (looping) |
+| `Home` / `End` | First / last item |
+| `A-Z` | Typeahead: next item starting with these letters |
+| `Escape` | Close the menu, focus returns to the button |
+| `Tab` | Close the menu and move to the next element on the page |

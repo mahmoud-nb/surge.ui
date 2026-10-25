@@ -66,13 +66,10 @@ const handleBlur = (event: FocusEvent) => {
     :required="required"
     :disabled="disabled"
   >
-    <template #default="{ fieldId: id, labelId, messageId }">
+    <template #default>
       <RadioGroup
-        :id="id"
         :model-value="modelValue"
         v-bind="radioGroupProps"
-        :aria-labelled-by="ariaLabelledBy || labelId"
-        :aria-described-by="[ariaDescribedBy, messageId].filter(Boolean).join(' ') || undefined"
         @change="handleChange"
         @focus="handleFocus"
         @blur="handleBlur"

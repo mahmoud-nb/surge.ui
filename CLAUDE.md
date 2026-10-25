@@ -65,6 +65,12 @@ Tests live in `package/tests/*.spec.ts` (Vitest, `happy-dom` environment, config
 - `useCustomTheme` — runtime CSS variable injection
 - `useUniqueId` — deterministic unique IDs for accessibility
 - `useFloatingPosition` — positions popovers, menus and lists against their trigger (`@floating-ui/dom`: `position: fixed`, flip, shift, arrow, `data-placement`); used by Popover, Dropdown and SelectBox
+- `useLocale` — default component texts (labels, placeholders, announcements) from `src/locales/` (`fr` default, `en`); plugin option `locale`, `provideLocale()`, `defineLocale()`, typed `t('namespace.key', params)` with `Intl.PluralRules` plurals
+- `useFormField` — links a control to the surrounding `FormField` (provide/inject): id, `aria-describedby` (message), `aria-labelledby` (non-labelable controls), inherited state/size/disabled/required; used by every form atom
+- `useAnnouncer` / `announce()` — screen reader announcements through persistent live regions (inside the open modal `<dialog>` when there is one)
+- `useFocusTrap` / `createFocusTrap()` — stacked focus traps (Tab cycling, focus brought back, focus returned on deactivate); used by Popover modal. Not needed for `Dialog` (native `showModal()`)
+- `useDismiss` — layered dismissal: Escape closes only the top layer (and cancels a parent `<dialog>` close), `pointerdown` outside closes each layer it is outside of (layers opened above count as inside), optional focus-outside; used by Popover, Dropdown, SelectBox
+- `useListNavigation` / `useTypeahead` — arrows, Home/End, typeahead, disabled items skipped, RTL-aware horizontal arrows; `virtual` mode (aria-activedescendant: SelectBox) or `roving` mode (DOM focus: Dropdown menu, Tabs, Accordion)
 
 **Styles** (`styles/`):
 - SCSS with `api: 'modern-compiler'`
@@ -75,7 +81,7 @@ Tests live in `package/tests/*.spec.ts` (Vitest, `happy-dom` environment, config
 - Theme config in `src/theme.config.ts`
 - Build produces a single CSS bundle (`cssCodeSplit: false`)
 
-**Accessibility utilities** (`utils/accessibility.ts`): `trapFocus()`, `announceToScreenReader()`, `getContrastRatio()` (WCAG 2.1), `generateId()`.
+**Accessibility utilities** (`utils/accessibility.ts`): `trapFocus()` (deprecated, delegates to `createFocusTrap()`), `announceToScreenReader()` (deprecated, delegates to `announce()`), `getContrastRatio()` (WCAG 2.1), `generateId()`.
 
 ### Storybook (`package/.storybook/`)
 
@@ -99,7 +105,10 @@ The docs site imports components from `@surgeui/ds-vue` (symlinked via `file:../
 - **Commits:** Conventional commits format — `feat(Button): add loading state`, `fix(a11y): correct contrast ratio`.
 - **Components:** `<script setup lang="ts">` exclusively. Props via `withDefaults(defineProps<T>(), {...})`. Emits via `defineEmits<{...}>()`. Models via `defineModel<T>()`.
 - **IDs:** Use Vue's `useId()` or `useUniqueId()` for accessible DOM IDs. Never `Math.random()`.
-- **i18n:** User-facing strings in components should be props with French defaults (e.g., `loadingLabel: 'Chargement en cours...'`), overridable by consumers.
+- **i18n:** User-facing strings are optional props **without** a default, resolved as `props.x ?? t('namespace.key')` via `useLocale()`. Add every new message to `SurgeMessages` (`src/locales/types.ts`) and to both `fr.ts` and `en.ts`. Never hardcode French text in templates or announcements.
+- **Form controls:** call `useFormField(props, { labelable, focus, idPrefix })` and use its effective `id`, `state`, `size`, `disabled`, `required`, `describedBy`, `labelledBy` instead of the raw props, so the control links itself to `SuFormField`.
+- **Overlays & lists:** close floating elements with `useDismiss` (never ad-hoc document listeners), trap focus with `useFocusTrap` (menus must not trap), navigate lists with `useListNavigation` (never re-implement arrow/typeahead handling).
+- **Announcements:** use `useAnnouncer()` (never create ad-hoc `aria-live` nodes); do not announce what assistive tech already reads (native checked state, `aria-valuetext`).
 - **Path alias:** `@/` maps to `package/src/` in both Vite and TypeScript configs.
 - **CSS:** SCSS in components with a single import: `@use '../../styles/abstracts' as *;`. Use design tokens (`--su-*`), spacing (`$spacing-*`) and the functions/mixins from `styles/abstracts/` (`token()`, `with-alpha()`, `@include transition(...)`, `@include focus-ring`, `@include control-surface`). See `package/CLAUDE.md`.
 

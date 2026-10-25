@@ -3,6 +3,7 @@ import { computed, ref, watch, onMounted, onBeforeUnmount, nextTick, useAttrs, u
 import Button from '../atoms/Button.vue'
 import { XMarkIcon } from '@heroicons/vue/24/outline'
 import type { DialogProps } from '@/types'
+import { useLocale } from '@/composables/useLocale'
 
 // ============================================================
 // Dialog sur l'élément natif <dialog> ouvert avec showModal() :
@@ -17,9 +18,12 @@ const props = withDefaults(defineProps<DialogProps>(), {
   closeOnOverlayClick: true,
   closeOnEscape: true,
   zIndex: 1000,
-  disableScroll: true,
-  closeLabel: 'Fermer'
+  disableScroll: true
 })
+
+// Textes par défaut : prop explicite, sinon locale courante
+const { t } = useLocale()
+const closeLabelText = computed(() => props.closeLabel ?? t('common.close'))
 
 const emit = defineEmits<{
   'update:modelValue': [value: boolean]
@@ -189,7 +193,7 @@ defineExpose({
         size="sm"
         :icon="XMarkIcon"
         icon-display="only"
-        :aria-label="closeLabel"
+        :aria-label="closeLabelText"
         @click="closeDialog"
       />
 

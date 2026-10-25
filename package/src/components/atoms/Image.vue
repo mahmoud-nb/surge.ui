@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, onMounted, useAttrs, useId } from 'vue'
 import type { ImageProps } from '@/types'
+import { useLocale } from '@/composables/useLocale'
 
 
 const props = withDefaults(defineProps<ImageProps>(), {
@@ -10,11 +11,14 @@ const props = withDefaults(defineProps<ImageProps>(), {
   lazy: false,
   loading: 'lazy',
   placeholder: true,
-  placeholderColor: '#f3f4f6',
-  loadingAriaLabel: '- Chargement en cours',
-  errorAriaLabel: '- Erreur de chargement',
-  errorText: 'Erreur de chargement'
+  placeholderColor: '#f3f4f6'
 })
+
+// Textes par défaut : prop explicite, sinon locale courante
+const { t } = useLocale()
+const loadingSuffix = computed(() => props.loadingAriaLabel ?? t('image.loading'))
+const errorSuffix = computed(() => props.errorAriaLabel ?? t('image.error'))
+const errorMessage = computed(() => props.errorText ?? t('image.errorText'))
 
 const emit = defineEmits<{
   load: [event: Event]
@@ -139,7 +143,7 @@ onMounted(() => {
       v-if="placeholder && isLoading && !hasError"
       class="su-image-placeholder"
       :style="{ backgroundColor: placeholderColor }"
-      :aria-label="`${alt} ${loadingAriaLabel}`"
+      :aria-label="`${alt} ${loadingSuffix}`"
     >
       <svg 
         class="su-image-placeholder-icon" 
@@ -209,7 +213,7 @@ onMounted(() => {
     <div 
       v-if="hasError"
       class="su-image-error"
-      :aria-label="`${alt} ${errorAriaLabel}`"
+      :aria-label="`${alt} ${errorSuffix}`"
     >
       <svg 
         class="su-image-error-icon" 
@@ -220,7 +224,7 @@ onMounted(() => {
       >
         <path d="m21 21-6-6m0 0L9 9m6 6 6 6M9 9l-6-6m6 6V3m0 6H3" />
       </svg>
-      <span class="su-image-error-text">{{ errorText }}</span>
+      <span class="su-image-error-text">{{ errorMessage }}</span>
     </div>
   </div>
 </template>

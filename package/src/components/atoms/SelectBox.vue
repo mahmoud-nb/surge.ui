@@ -1,9 +1,13 @@
 <script setup lang="ts">
-import { computed, ref, watch, nextTick, onMounted, onUnmounted, useAttrs, useId } from 'vue'
+import { computed, ref, watch, nextTick } from 'vue'
 import { ChevronDownIcon, XMarkIcon, MagnifyingGlassIcon, CheckIcon } from '@heroicons/vue/24/outline'
-import { announceToScreenReader } from '@/utils/accessibility'
 import { useFloatingPosition } from '@/composables/useFloatingPosition'
 import type { SelectOption, SelectBoxProps } from '@/types'
+import { useLocale } from '@/composables/useLocale'
+import { useAnnouncer } from '@/composables/useAnnouncer'
+import { useFormField } from '@/composables/useFormField'
+import { useListNavigation } from '@/composables/useListNavigation'
+import { useDismiss } from '@/composables/useDismiss'
 
 defineOptions({ inheritAttrs: false })
 
@@ -18,16 +22,22 @@ const props = withDefaults(defineProps<SelectBoxProps>(), {
   disabled: false,
   readonly: false,
   required: false,
-  placeholder: 'Sélectionnez une option...',
-  searchPlaceholder: 'Rechercher...',
-  noOptionsText: 'Aucune option disponible',
-  noResultsText: 'Aucun résultat trouvé',
   maxHeight: '200px',
   textAlign: 'left',
   loading: false,
   closeOnSelect: true,
   maxSelectedItems: undefined
 })
+
+// Contexte du SuFormField parent : id, label, message et états du champ
+const { id: controlId, state: fieldState, size: fieldSize, disabled: fieldDisabled, required: fieldRequired, describedBy: fieldDescribedBy, labelledBy: fieldLabelledBy } = useFormField(props, { labelable: false, idPrefix: 'selectbox', focus: () => inputRef.value?.focus() })
+
+// Textes par défaut : prop explicite, sinon locale courante
+const { t } = useLocale()
+const { announce } = useAnnouncer()
+const placeholderText = computed(() => props.placeholder ?? t('selectBox.placeholder'))
+const searchPlaceholderText = computed(() => props.searchPlaceholder ?? t('selectBox.searchPlaceholder'))
+const emptyText = computed(() => searchQuery.value ? (props.noResultsText ?? t('selectBox.noResults')) : (props.noOptionsText ?? t('selectBox.noOptions')))
 
 // Utilisation de defineModel pour v-model
 const modelValue = defineModel<string | number | (string | number)[] | undefined>()
@@ -41,8 +51,6 @@ const emit = defineEmits<{
   blur: [event: FocusEvent]
 }>()
 
-const attrs = useAttrs()
-const fieldId = 'selectbox-' + useId()
 
 // Refs
 const selectRef = ref<HTMLDivElement>()
@@ -53,14 +61,6 @@ const searchInputRef = ref<HTMLInputElement>()
 // État local
 const isOpen = ref(false)
 const searchQuery = ref('')
-// Option mise en avant (clavier ou survol) : le focus DOM reste sur le
-// déclencheur (ou le champ de recherche), l'option est annoncée via
-// aria-activedescendant
-const focusedIndex = ref(-1)
-
-// Saisie rapide : les lettres tapées à la suite forment un préfixe
-let typeaheadBuffer = ''
-let typeaheadTimer: ReturnType<typeof setTimeout> | undefined
 
 // Positionnement de la liste (fixed, retournée s'il manque de place)
 useFloatingPosition(inputRef, dropdownRef, {
@@ -71,7 +71,7 @@ useFloatingPosition(inputRef, dropdownRef, {
 })
 
 // IDs pour l'accessibilité
-const selectId = computed(() => attrs.id as string || fieldId)
+const selectId = computed(() => controlId.value as string)
 const listboxId = computed(() => `${selectId.value}-listbox`)
 const optionId = (index: number) => `${listboxId.value}-option-${index}`
 const activeDescendant = computed(() =>
@@ -124,9 +124,19 @@ const optionSections = computed(() => {
   }))
 })
 
-const navigableOptions = computed(() =>
+const navigableOptions = computed((): SelectOption[] =>
   optionSections.value.flatMap(section => section.options.map(item => item.option))
 )
+
+// Option mise en avant (clavier ou survol) : le focus DOM reste sur le
+// déclencheur (ou le champ de recherche), l'option est annoncée via
+// aria-activedescendant. Options désactivées sautées, saisie rapide.
+const nav = useListNavigation({
+  items: navigableOptions,
+  isDisabled: (option) => !!option.disabled,
+  typeahead: { getLabel: (option) => option.label }
+})
+const focusedIndex = nav.activeIndex
 
 // Valeur sélectionnée normalisée
 const selectedValue = computed({
@@ -162,26 +172,26 @@ const selectedOptions = computed(() => {
 // Texte affiché
 const displayText = computed(() => {
   if (selectedOptions.value.length === 0) {
-    return props.placeholder
+    return placeholderText.value
   }
 
   if (props.multiple) {
     if (selectedOptions.value.length === 1) {
       return selectedOptions.value[0].label
     }
-    return `${selectedOptions.value.length} éléments sélectionnés`
+    return t('selectBox.selectedCount', { count: selectedOptions.value.length })
   }
 
-  return selectedOptions.value[0]?.label || props.placeholder
+  return selectedOptions.value[0]?.label || placeholderText.value
 })
 
 // Classes CSS
 const containerClasses = computed(() => [
   'su-select__container',
-  `su-select__container--${props.size}`,
-  `su-select__container--${props.state}`,
+  `su-select__container--${fieldSize.value}`,
+  `su-select__container--${fieldState.value}`,
   {
-    'su-select__container--disabled': props.disabled,
+    'su-select__container--disabled': fieldDisabled.value,
     'su-select__container--readonly': props.readonly,
     'su-select__container--open': isOpen.value,
     'su-select__container--multiple': props.multiple
@@ -190,11 +200,11 @@ const containerClasses = computed(() => [
 
 const triggerClasses = computed(() => [
   'su-select__trigger',
-  `su-select__trigger--${props.size}`,
-  `su-select__trigger--${props.state}`,
+  `su-select__trigger--${fieldSize.value}`,
+  `su-select__trigger--${fieldState.value}`,
   `su-select__trigger--align-${props.textAlign}`,
   {
-    'su-select__trigger--disabled': props.disabled,
+    'su-select__trigger--disabled': fieldDisabled.value,
     'su-select__trigger--readonly': props.readonly,
     'su-select__trigger--open': isOpen.value,
     'su-select__trigger--has-value': selectedOptions.value.length > 0,
@@ -211,56 +221,35 @@ const ariaAttributes = computed<Record<string, any>>(() => ({
   // Avec recherche, c'est le champ de recherche qui porte l'option active
   'aria-activedescendant': props.searchable ? undefined : activeDescendant.value,
   'aria-label': props.ariaLabel,
-  'aria-labelledby': props.ariaLabelledBy,
-  'aria-describedby': props.ariaDescribedBy,
-  'aria-invalid': props.state === 'error' || props.ariaInvalid ? 'true' : undefined,
-  'aria-required': props.required || props.ariaRequired ? 'true' : undefined,
-  'aria-disabled': props.disabled ? 'true' : undefined,
+  'aria-labelledby': fieldLabelledBy.value,
+  'aria-describedby': fieldDescribedBy.value,
+  'aria-invalid': fieldState.value === 'error' || props.ariaInvalid ? 'true' : undefined,
+  'aria-required': fieldRequired.value || props.ariaRequired ? 'true' : undefined,
+  'aria-disabled': fieldDisabled.value ? 'true' : undefined,
   'aria-readonly': props.readonly ? 'true' : undefined
 }))
 
 // ### Navigation dans la liste (les options désactivées sont sautées)
 
-const findEnabled = (start: number, step: 1 | -1) => {
-  const list = navigableOptions.value
-  for (let i = start; i >= 0 && i < list.length; i += step) {
-    if (!list[i].disabled) return i
-  }
-  return -1
-}
-
+// Aucune option active si la liste filtrée n'en contient pas
 const focusFirst = () => {
-  focusedIndex.value = findEnabled(0, 1)
-}
-
-const focusLast = () => {
-  focusedIndex.value = findEnabled(navigableOptions.value.length - 1, -1)
+  if (nav.first() === -1) nav.setActiveIndex(-1)
 }
 
 const focusSelectedOrFirst = () => {
   const index = navigableOptions.value.findIndex(option => !option.disabled && isSelected(option))
-  if (index !== -1) focusedIndex.value = index
+  if (index !== -1) nav.setActiveIndex(index)
   else focusFirst()
 }
 
-const moveFocus = (step: 1 | -1) => {
-  if (focusedIndex.value === -1) {
-    if (step === 1) focusFirst()
-    else focusLast()
-    return
-  }
-  const next = findEnabled(focusedIndex.value + step, step)
-  if (next !== -1) focusedIndex.value = next
-}
-
 const hoverOption = (index: number) => {
-  if (!navigableOptions.value[index]?.disabled) focusedIndex.value = index
+  if (!navigableOptions.value[index]?.disabled) nav.setActiveIndex(index)
 }
 
 // ### Ouverture et fermeture
 
 const openDropdown = async () => {
-  if (props.disabled || props.readonly || isOpen.value) return
+  if (fieldDisabled.value || props.readonly || isOpen.value) return
 
   isOpen.value = true
   searchQuery.value = ''
@@ -287,14 +276,14 @@ const closeDropdown = (restoreFocus = true) => {
   if (restoreFocus) inputRef.value?.focus()
 
   isOpen.value = false
-  focusedIndex.value = -1
+  nav.reset()
   searchQuery.value = ''
 
   emit('close')
 }
 
 const toggleDropdown = () => {
-  if (props.disabled || props.readonly) return
+  if (fieldDisabled.value || props.readonly) return
 
   if (isOpen.value) {
     closeDropdown()
@@ -313,7 +302,7 @@ const selectOption = (option: SelectOption) => {
     const wasSelected = currentValues.includes(option.value)
 
     if (!wasSelected && props.maxSelectedItems && currentValues.length >= props.maxSelectedItems) {
-      announceToScreenReader(`Maximum ${props.maxSelectedItems} éléments sélectionnables`)
+      announce(t('selectBox.maxReached', { count: props.maxSelectedItems }))
       return
     }
 
@@ -322,7 +311,7 @@ const selectOption = (option: SelectOption) => {
       : [...currentValues, option.value]
 
     // La liste reste ouverte : on annonce le changement
-    announceToScreenReader(`${option.label} ${wasSelected ? 'désélectionné' : 'sélectionné'}`)
+    announce(t(wasSelected ? 'selectBox.deselected' : 'selectBox.selected', { label: option.label }))
     return
   }
 
@@ -343,24 +332,24 @@ const clearSelection = (event: Event) => {
 
   selectedValue.value = props.multiple ? [] : undefined
 
-  announceToScreenReader('Sélection effacée')
+  announce(t('selectBox.cleared'))
   inputRef.value?.focus()
 }
 
 const removeSelectedOption = (option: SelectOption, event?: Event) => {
   event?.stopPropagation()
-  if (!props.multiple || props.disabled || props.readonly) return
+  if (!props.multiple || fieldDisabled.value || props.readonly) return
 
   const currentValues = (selectedValue.value as (string | number)[]) || []
   selectedValue.value = currentValues.filter(v => v !== option.value)
 
-  announceToScreenReader(`${option.label} retiré de la sélection`)
+  announce(t('selectBox.removed', { label: option.label }))
 }
 
 // Retour arrière : retire la dernière étiquette (sélection multiple)
 const removeLastSelected = () => {
   const last = selectedOptions.value[selectedOptions.value.length - 1]
-  if (!props.multiple || !last || props.disabled || props.readonly) return false
+  if (!props.multiple || !last || fieldDisabled.value || props.readonly) return false
   removeSelectedOption(last)
   return true
 }
@@ -380,27 +369,6 @@ watch(searchQuery, (query) => {
   else focusSelectedOrFirst()
 })
 
-const handleTypeahead = (char: string) => {
-  clearTimeout(typeaheadTimer)
-  typeaheadBuffer += char.toLowerCase()
-  typeaheadTimer = setTimeout(() => { typeaheadBuffer = '' }, 500)
-
-  // Même lettre répétée : on passe d'une option à l'autre avec cette initiale
-  const repeated = [...typeaheadBuffer].every(c => c === typeaheadBuffer[0])
-  const query = repeated ? typeaheadBuffer[0] : typeaheadBuffer
-  const list = navigableOptions.value
-  const start = Math.max(focusedIndex.value + (typeaheadBuffer.length === 1 || repeated ? 1 : 0), 0)
-
-  for (let i = 0; i < list.length; i++) {
-    const index = (start + i) % list.length
-    const option = list[index]
-    if (!option.disabled && option.label.toLowerCase().startsWith(query)) {
-      focusedIndex.value = index
-      return
-    }
-  }
-}
-
 // ### Clavier
 
 /** Touches communes au déclencheur et au champ de recherche */
@@ -409,14 +377,14 @@ const handleNavigationKey = (event: KeyboardEvent, editable: boolean) => {
     case 'ArrowDown':
       event.preventDefault()
       if (!isOpen.value) openDropdown()
-      else if (!event.altKey) moveFocus(1)
+      else if (!event.altKey) nav.next()
       return true
 
     case 'ArrowUp':
       event.preventDefault()
       if (!isOpen.value) openDropdown()
       else if (event.altKey) selectFocused()
-      else moveFocus(-1)
+      else nav.previous()
       return true
 
     case 'Home':
@@ -424,8 +392,8 @@ const handleNavigationKey = (event: KeyboardEvent, editable: boolean) => {
       // Dans le champ de recherche, Début/Fin déplacent le curseur
       if (!isOpen.value || editable) return false
       event.preventDefault()
-      if (event.key === 'Home') focusFirst()
-      else focusLast()
+      if (event.key === 'Home') nav.first()
+      else nav.last()
       return true
 
     case 'Enter':
@@ -450,7 +418,7 @@ const handleNavigationKey = (event: KeyboardEvent, editable: boolean) => {
 }
 
 const handleTriggerKeydown = (event: KeyboardEvent) => {
-  if (props.disabled || props.readonly) return
+  if (fieldDisabled.value || props.readonly) return
   if (handleNavigationKey(event, false)) return
 
   if (event.key === 'Backspace' || event.key === 'Delete') {
@@ -462,7 +430,7 @@ const handleTriggerKeydown = (event: KeyboardEvent) => {
   if (!printable) return
 
   // Espace : ouvre ou sélectionne, sauf au milieu d'une saisie rapide
-  if (event.key === ' ' && !typeaheadBuffer) {
+  if (event.key === ' ' && !nav.isTyping()) {
     event.preventDefault()
     if (!isOpen.value) openDropdown()
     else selectFocused()
@@ -482,9 +450,9 @@ const handleTriggerKeydown = (event: KeyboardEvent) => {
   // Liste fermée sans valeur : la recherche part du début, première option incluse
   if (!isOpen.value) {
     openDropdown()
-    if (selectedOptions.value.length === 0) focusedIndex.value = -1
+    if (selectedOptions.value.length === 0) nav.setActiveIndex(-1)
   }
-  handleTypeahead(event.key)
+  nav.searchTypeahead(event.key)
 }
 
 const handleSearchKeydown = (event: KeyboardEvent) => {
@@ -516,12 +484,13 @@ const handleFocusOut = (event: FocusEvent) => {
   emit('blur', event)
 }
 
-// Fermeture au clic extérieur (pointerdown : avant le clic lui-même)
-const handlePointerDownOutside = (event: PointerEvent) => {
-  if (isOpen.value && selectRef.value && !selectRef.value.contains(event.target as Node)) {
-    closeDropdown(false)
-  }
-}
+// Fermeture à l'appui extérieur (avant le clic lui-même). Échap est géré
+// au clavier ci-dessus : il ne ferme que la liste, pas un parent
+useDismiss(selectRef, {
+  enabled: isOpen,
+  escape: false,
+  onDismiss: () => closeDropdown(false)
+})
 
 // L'option mise en avant reste visible dans la liste
 watch(focusedIndex, async (index) => {
@@ -551,16 +520,6 @@ defineExpose({
   selectRef,
   inputRef
 })
-
-// Lifecycle
-onMounted(() => {
-  document.addEventListener('pointerdown', handlePointerDownOutside)
-})
-
-onUnmounted(() => {
-  document.removeEventListener('pointerdown', handlePointerDownOutside)
-  clearTimeout(typeaheadTimer)
-})
 </script>
 
 <template>
@@ -577,7 +536,7 @@ onUnmounted(() => {
         :id="selectId"
         ref="inputRef"
         :class="triggerClasses"
-        :tabindex="disabled ? -1 : 0"
+        :tabindex="fieldDisabled ? -1 : 0"
         v-bind="ariaAttributes"
         @click="toggleDropdown"
         @keydown="handleTriggerKeydown"
@@ -604,11 +563,11 @@ onUnmounted(() => {
               <!-- Hors tabulation : au clavier, Retour arrière retire la
                    dernière étiquette et la liste permet de désélectionner -->
               <button
-                v-if="!disabled && !readonly"
+                v-if="!fieldDisabled && !readonly"
                 type="button"
                 tabindex="-1"
                 class="su-select-tag-remove"
-                :aria-label="`Retirer ${option.label}`"
+                :aria-label="t('selectBox.removeTag', { label: option.label })"
                 @click="removeSelectedOption(option, $event)"
               >
                 <XMarkIcon
@@ -672,10 +631,10 @@ onUnmounted(() => {
 
           <!-- Clear button -->
           <button
-            v-else-if="clearable && selectedOptions.length > 0 && !disabled && !readonly"
+            v-else-if="clearable && selectedOptions.length > 0 && !fieldDisabled && !readonly"
             type="button"
             class="su-select-clear"
-            aria-label="Effacer la sélection"
+            :aria-label="t('selectBox.clear')"
             @click="clearSelection"
           >
             <XMarkIcon
@@ -720,9 +679,9 @@ onUnmounted(() => {
                 aria-expanded="true"
                 :aria-controls="listboxId"
                 :aria-activedescendant="activeDescendant"
-                :aria-label="searchPlaceholder"
+                :aria-label="searchPlaceholderText"
                 autocomplete="off"
-                :placeholder="searchPlaceholder"
+                :placeholder="searchPlaceholderText"
                 :value="searchQuery"
                 @input="handleSearch"
                 @keydown="handleSearchKeydown"
@@ -737,7 +696,7 @@ onUnmounted(() => {
             role="listbox"
             :aria-multiselectable="multiple ? 'true' : undefined"
             :aria-label="ariaLabel"
-            :aria-labelledby="ariaLabelledBy"
+            :aria-labelledby="fieldLabelledBy"
             :style="{ maxHeight: maxHeight }"
           >
             <div
@@ -828,7 +787,7 @@ onUnmounted(() => {
             class="su-select-no-options"
             role="status"
           >
-            {{ searchQuery ? noResultsText : noOptionsText }}
+            {{ emptyText }}
           </div>
         </div>
       </Transition>

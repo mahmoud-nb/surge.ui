@@ -4,14 +4,26 @@ import Image from './Image.vue'
 import Spinner from './Spinner.vue'
 import type { AvatarProps } from '@/types'
 import Badge from './Badge.vue'
+import { useLocale } from '@/composables/useLocale'
 
 const props = withDefaults(defineProps<AvatarProps>(), {
   size: 'md',
   variant: 'circle',
   loading: false,
-  loadingLabel: 'Chargement en cours...',
   clickable: false
 })
+
+// Textes par défaut : prop explicite, sinon locale courante
+const { t } = useLocale()
+const STATUS_KEYS = {
+  online: 'avatar.statusOnline',
+  offline: 'avatar.statusOffline',
+  busy: 'avatar.statusBusy',
+  away: 'avatar.statusAway'
+} as const
+const loadingText = computed(() => props.loadingLabel ?? t('common.loading'))
+const imageAlt = computed(() => props.alt || t('avatar.alt', { name: props.name || t('avatar.anonymous') }))
+const statusLabel = computed(() => props.status && props.status !== 'none' ? t('avatar.status', { status: t(STATUS_KEYS[props.status]) }) : undefined)
 
 const emit = defineEmits<{
   click: [event: MouseEvent]
@@ -134,7 +146,7 @@ defineExpose({
     <Spinner
       v-if="loading"
       class="su-avatar__loading"
-      :label="loadingLabel"
+      :label="loadingText"
       color="#3b82f6"
       size="16"
     />
@@ -144,7 +156,7 @@ defineExpose({
       v-else-if="showImage"
       :src="src || fallback || ''"
       :fallback="fallback"
-      :alt="alt || `Avatar de ${name || 'utilisateur'}`"
+      :alt="imageAlt"
       ratio="1/1"
       fit="cover"
       position="center"
@@ -158,7 +170,8 @@ defineExpose({
     <div 
       v-else-if="showInitials"
       class="su-avatar__initials"
-      :aria-label="`Avatar avec initiales de ${name}`"
+      role="img"
+      :aria-label="t('avatar.initials', { name })"
     >
       {{ initials }}
     </div>
@@ -167,7 +180,8 @@ defineExpose({
     <div 
       v-else
       class="su-avatar__placeholder"
-      aria-label="Avatar par défaut"
+      role="img"
+      :aria-label="t('avatar.placeholder')"
     >
       <svg
         class="su-avatar__placeholder-icon"
@@ -183,7 +197,8 @@ defineExpose({
     <div 
       v-if="status"
       :class="statusClasses"
-      :aria-label="`Statut: ${status}`"
+      role="img"
+      :aria-label="statusLabel"
     />
 
     <!-- Badge de notification -->
@@ -193,7 +208,7 @@ defineExpose({
       size="sm" 
       radius="full" 
       variant="error"
-      :aria-label="`${badge} notification(s)`"
+      :aria-label="t('avatar.notifications', { count: badge })"
       v-bind="badgeProps"
     >
       {{ badge }}

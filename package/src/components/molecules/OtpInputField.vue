@@ -63,12 +63,11 @@ defineExpose({
     :disabled="disabled"
     :required-text="requiredText"
   >
-    <template #default="{ messageId }">
+    <template #default>
       <OtpInput
         ref="otpInputRef"
         v-model="modelValue"
         v-bind="otpInputProps"
-        :aria-described-by="[ariaDescribedBy, messageId].filter(Boolean).join(' ') || undefined"
         @complete="emit('complete', $event)"
         @change="emit('change', $event)"
         @focus="(e: FocusEvent, i: number) => emit('focus', e, i)"

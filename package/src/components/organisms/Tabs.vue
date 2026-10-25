@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onMounted, reactive, ref, watch, useId } from 'vue'
 import type { TabsProps } from '@/types'
+import { useListNavigation } from '@/composables/useListNavigation'
 
 const props = withDefaults(defineProps<TabsProps>(), {
   variant: 'underline',
@@ -21,27 +22,24 @@ const setTabRef = (el: unknown, index: number) => {
   if (el) tabRefs.value[index] = el as HTMLButtonElement
 }
 
-const selectTab = (index: number) => {
-  activeIndex.value = index
-  // Le focus suit l'onglet activé (pattern WAI-ARIA « activation automatique »)
-  nextTick(() => tabRefs.value[index]?.focus())
-}
-
-// Gestion du clavier
-const handleKeydown = (event: KeyboardEvent) => {
-  const total = props.tabs?.length ?? 0
-  if (!total) return
-
-  const targets: Record<string, number> = {
-    ArrowRight: (activeIndex.value + 1) % total,
-    ArrowLeft: (activeIndex.value - 1 + total) % total,
-    Home: 0,
-    End: total - 1
+// Gestion du clavier : flèches gauche / droite (inversées en RTL), Début /
+// Fin, en boucle. Le focus suit l'onglet, qui est activé aussitôt
+// (pattern WAI-ARIA « activation automatique »)
+const tabNav = useListNavigation({
+  items: () => props.tabs ?? [],
+  orientation: 'horizontal',
+  loop: true,
+  mode: 'roving',
+  getElement: (index) => tabRefs.value[index],
+  onActiveChange: (index) => {
+    activeIndex.value = index
   }
-  if (!(event.key in targets)) return
+})
 
-  event.preventDefault()
-  selectTab(targets[event.key])
+const handleKeydown = (event: KeyboardEvent) => {
+  // Point de départ : l'onglet actif (ou l'onglet focalisé, repris par la navigation)
+  tabNav.activeIndex.value = activeIndex.value
+  tabNav.handleKeydown(event)
 }
 
 // ============================================================

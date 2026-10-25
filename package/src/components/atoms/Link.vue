@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import { ArrowTopRightOnSquareIcon } from '@heroicons/vue/24/outline'
 import type { LinkProps } from '@/types'
+import { useLocale } from '@/composables/useLocale'
 
 const props = withDefaults(defineProps<LinkProps>(), {
   variant: 'default',
@@ -10,9 +11,12 @@ const props = withDefaults(defineProps<LinkProps>(), {
   disabled: false,
   iconDisplay: 'left',
   external: false,
-  externalLabel: "(s'ouvre dans un nouvel onglet)",
   tabIndex: 0
 })
+
+// Textes par défaut : prop explicite, sinon locale courante
+const { t } = useLocale()
+const externalText = computed(() => props.externalLabel ?? t('link.external'))
 
 const emit = defineEmits<{
   click: [event: MouseEvent]
@@ -146,7 +150,7 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel) {
     <span
       v-if="isExternalLink && linkAttributes.target === '_blank'"
       class="sr-only"
-    >{{ externalLabel }}</span>
+    >{{ externalText }}</span>
   </component>
 </template>
 

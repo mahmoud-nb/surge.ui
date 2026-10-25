@@ -36,14 +36,12 @@ Composant conteneur pour les champs de formulaire avec gestion du label, des mes
     Default slot here
   </SuFormField>
 
-  <!-- Avec récupération des slot props -->
-  <SuFormField label="Nom d'utilisateur">
-    <template #default="slotProps">
-      <FormControlComponent v-bind="slotProps" />
-    </template>
+  <!-- Contrôle SurgeUI : relié automatiquement (id, label, message, états) -->
+  <SuFormField label="Nom d'utilisateur" message="3 caractères minimum" required>
+    <SuInput v-model="username" />
   </SuFormField>
 
-  <!-- Avec destructuration des slot props -->
+  <!-- Élément natif : avec les slot props -->
   <SuFormField 
     label="Email" 
     message="Utilisé pour la connexion"
@@ -61,6 +59,34 @@ Composant conteneur pour les champs de formulaire avec gestion du label, des mes
 </template>
 ```
 
+### Liaison automatique du contrôle
+
+Les contrôles SurgeUI (SuInput, SuTextarea, SuSelectBox, SuRadioGroup, SuCheckboxGroup, SuSwitch, SuSlider, SuFileUpload, SuOtpInput) placés dans le slot se relient seuls au champ grâce à [useFormField](/composables/useformfield) :
+
+- **id** du contrôle = cible du label ;
+- **aria-describedby** complété par le message ;
+- **aria-labelledby** vers le label pour les contrôles qu'un `<label for>` ne cible pas (SelectBox, groupes de cases, Slider, OtpInput) ; le clic sur le label leur donne alors le focus ;
+- **état**, **taille**, **requis** et **désactivé** hérités du champ ; une valeur explicite du contrôle reste prioritaire.
+
+<div class="component-demo">
+  <div class="demo-section">
+    <h4>Sans slot props</h4>
+    <div class="demo-inputs">
+      <SuFormField label="Pays" message="Pays de résidence" state="error" required>
+        <SuSelectBox :options="[{ value: 'fr', label: 'France' }, { value: 'be', label: 'Belgique' }]" />
+      </SuFormField>
+    </div>
+  </div>
+</div>
+
+```vue
+<SuFormField label="Pays" message="Pays de résidence" state="error" required>
+  <SuSelectBox :options="countries" v-model="country" />
+</SuFormField>
+```
+
+Pour un contrôle maison, utilisez le composable [useFormField](/composables/useformfield).
+
 ### Props exposées dans le slot par défaut
 
 Le slot par défaut expose automatiquement les props suivantes pour faciliter l'accessibilité :
@@ -70,6 +96,7 @@ Le slot par défaut expose automatiquement les props suivantes pour faciliter l'
   <SuFormField label="Champ exemple" message="Message d'aide">
     <template #default="slotProps">
       <!-- fieldId : ID unique du champ (ex: "field-123") -->
+      <!-- labelId : ID du label (si un label est fourni) -->
       <!-- messageId : ID du message d'aide (ex: "message-123") -->
       <!-- state : État actuel ('default' | 'error' | 'success' | 'warning') -->
       <!-- size : Taille actuelle ('sm' | 'md' | 'lg') -->

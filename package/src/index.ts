@@ -70,6 +70,10 @@ import FullScreenLayout from './components/templates/FullScreenLayout.vue'
 
 import * as accessibility from './utils/accessibility'
 import { SurgeuiTheme, ThemeSymbol, flattenThemeToCSS } from './plugin/theme'
+import { computed, toValue, type MaybeRefOrGetter } from 'vue'
+import { LocaleKey, defineLocale } from './composables/useLocale'
+import { fr } from './locales/fr'
+import type { SurgeLocale, SurgeLocaleInput } from './locales/types'
 
 // Export des composants et de la fonction d'installation
 export { Icon, Heading, Panel, Image, Avatar, AvatarGroup, Badge, Dialog, Progress, Spinner, Price }
@@ -84,17 +88,25 @@ export { accessibility }
 export interface SurgeUpDSOptions {
   prefix?: string
   theme?: SurgeuiTheme
+  /**
+   * Textes par défaut des composants (français sinon). Locale fournie
+   * (`locales.en`), messages partiels, ou ref pour changer de langue.
+   */
+  locale?: MaybeRefOrGetter<SurgeLocale | SurgeLocaleInput | undefined>
 }
 
 const defaultTheme: SurgeuiTheme = {}
 
 export default {
   install(app: App, options: SurgeUpDSOptions = {}) {
-    const { prefix = 'Su', theme = {} } = options
+    const { prefix = 'Su', theme = {}, locale } = options
     const mergedTheme = { ...defaultTheme, ...theme }
 
     // Injection globale du thème pour accès reactif dans les composants
     app.provide(ThemeSymbol, mergedTheme)
+
+    // Locale des textes par défaut (libellés, annonces)
+    app.provide(LocaleKey, computed(() => defineLocale(fr, toValue(locale))))
 
     // Génération et application des variables CSS personnalisées
     // (côté client uniquement : document n'existe pas en SSR)
@@ -177,4 +189,5 @@ export default {
   }
 }
 export * from './composables'
+export * from './locales'
 export * from './types'

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, useId } from 'vue'
 import type { HolyGrailLayoutProps } from '@/types'
+import { useLocale } from '@/composables/useLocale'
 
 // Mise en page d'application : en-tête, navigation, contenu principal,
 // colonne complémentaire et pied de page.
@@ -16,11 +17,14 @@ const props = withDefaults(defineProps<HolyGrailLayoutProps>(), {
   fullHeight: true,
   landmarks: true,
   skipLink: true,
-  skipLinkLabel: 'Aller au contenu principal',
-  navLabel: 'Navigation principale',
-  asideLabel: 'Informations complémentaires',
   gap: 'lg'
 })
+
+// Textes par défaut : prop explicite, sinon locale courante
+const { t } = useLocale()
+const skipLinkText = computed(() => props.skipLinkLabel ?? t('holyGrailLayout.skipLink'))
+const navLabelText = computed(() => props.navLabel ?? t('holyGrailLayout.nav'))
+const asideLabelText = computed(() => props.asideLabel ?? t('holyGrailLayout.aside'))
 
 const slots = defineSlots<{
   /** Logo, recherche, menu utilisateur… */
@@ -76,7 +80,7 @@ const styles = computed(() => ({
       :href="`#${mainId}`"
       @click.prevent="focusMain"
     >
-      {{ skipLinkLabel }}
+      {{ skipLinkText }}
     </a>
 
     <component
@@ -92,7 +96,7 @@ const styles = computed(() => ({
         :is="tags.nav"
         v-if="$slots.nav"
         class="su-holy-grail-layout__nav"
-        :aria-label="landmarks ? navLabel : undefined"
+        :aria-label="landmarks ? navLabelText : undefined"
       >
         <slot name="nav" />
       </component>
@@ -111,7 +115,7 @@ const styles = computed(() => ({
         :is="tags.aside"
         v-if="$slots.aside"
         class="su-holy-grail-layout__aside"
-        :aria-label="landmarks ? asideLabel : undefined"
+        :aria-label="landmarks ? asideLabelText : undefined"
       >
         <slot name="aside" />
       </component>

@@ -82,13 +82,11 @@ defineExpose({
     :required="required"
     :disabled="disabled"
   >
-    <template #default="{ messageId }">
+    <template #default>
       <Input
-        :id="inputId"
         ref="inputRef"
         v-model="modelValue"
         v-bind="{ ...inputAttrs, ...inputProps }"
-        :aria-described-by="[ariaDescribedBy, messageId].filter(Boolean).join(' ') || undefined"
         @input="handleInput"
         @change="handleChange"
         @focus="handleFocus"
