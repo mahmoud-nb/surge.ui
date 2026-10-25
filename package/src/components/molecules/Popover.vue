@@ -48,6 +48,7 @@
         <!-- Arrow -->
         <div
           v-if="showArrow"
+          ref="arrowRef"
           class="su-popover__arrow"
         />
 
@@ -89,6 +90,7 @@
 import { ref, computed, watch, onMounted, onBeforeUnmount, nextTick, useId } from 'vue'
 import { XMarkIcon } from '@heroicons/vue/24/outline'
 import type { PopoverProps } from '@/types'
+import { useFloatingPosition } from '@/composables/useFloatingPosition'
 
 const props = withDefaults(defineProps<PopoverProps>(), {
   modelValue: undefined,
@@ -117,6 +119,7 @@ const emit = defineEmits<{
 const popoverContainer = ref<HTMLElement>();
 const triggerRef = ref<HTMLElement>();
 const popoverRef = ref<HTMLElement>();
+const arrowRef = ref<HTMLElement>();
 
 // State
 const isOpen = ref(false);
@@ -133,10 +136,18 @@ const popoverClasses = computed(() => ({
   'su-popover--open': isOpen.value,
 }));
 
+// Position fixe calculée contre le déclencheur, retournée s'il manque de place
+const { placement: currentPlacement } = useFloatingPosition(triggerRef, popoverRef, {
+  placement: () => props.placement,
+  open: isOpen,
+  offset: props.showArrow ? 10 : 6,
+  arrow: arrowRef
+});
+
 const contentClasses = computed(() => ({
   'su-popover__content--modal': props.modal,
   'su-popover__content--with-arrow': props.showArrow,
-  [`su-popover__content--${props.placement}`]: true,
+  [`su-popover__content--${currentPlacement.value}`]: true,
 }));
 
 // Watch modelValue
@@ -337,11 +348,9 @@ defineExpose({
 
 // ============================================================
 // POPOVER — surface flottante partagée (popover-surface), flèche
-// optionnelle, placement en `translate` pour que l'animation
-// (`scale`) ne le perturbe pas
+// optionnelle ; la position (fixed) est calculée par
+// useFloatingPosition, l'animation ne joue que sur `scale`
 // ============================================================
-
-$su-popover-gap: 0.5rem;
 
 .su-popover {
   position: relative;
@@ -363,13 +372,16 @@ $su-popover-gap: 0.5rem;
   }
 
   &__content {
-    position: absolute;
+    // Position fixe : left/top calculés par useFloatingPosition
+    position: fixed;
+    top: 0;
+    left: 0;
     min-width: 12.5rem;
     max-width: 20rem;
+
     @include popover-surface;
 
     z-index: var(--su-z-popover);
-
     padding: 0.75rem 1rem;
     font-size: var(--su-font-size-base);
     line-height: var(--su-line-height-normal);
@@ -383,69 +395,36 @@ $su-popover-gap: 0.5rem;
     }
 
     // ### Placements
+    // Position calculée en JS (useFloatingPosition) ; le placement réel
+    // (éventuellement retourné) oriente l'animation et la flèche.
 
     &--top,
     &--top-start,
     &--top-end {
-      bottom: calc(100% + #{$su-popover-gap});
       transform-origin: bottom center;
     }
 
     &--bottom,
     &--bottom-start,
     &--bottom-end {
-      top: calc(100% + #{$su-popover-gap});
       transform-origin: top center;
     }
 
     &--left,
     &--left-start,
     &--left-end {
-      inset-inline-end: calc(100% + #{$su-popover-gap});
       transform-origin: center right;
     }
 
     &--right,
     &--right-start,
     &--right-end {
-      inset-inline-start: calc(100% + #{$su-popover-gap});
       transform-origin: center left;
-    }
-
-    &--top,
-    &--bottom {
-      left: 50%;
-      translate: -50% 0;
-    }
-
-    &--top-start,
-    &--bottom-start {
-      inset-inline-start: 0;
-    }
-
-    &--top-end,
-    &--bottom-end {
-      inset-inline-end: 0;
-    }
-
-    &--left,
-    &--right {
-      top: 50%;
-      translate: 0 -50%;
-    }
-
-    &--left-start,
-    &--right-start {
-      top: 0;
-    }
-
-    &--left-end,
-    &--right-end {
-      bottom: 0;
     }
   }
 
-  // ### Flèche : carré pivoté qui reprend fond et bordure du popover
+  // ### Flèche : carré pivoté qui reprend fond et bordure du popover.
+  // Sa position le long du bord est calculée en JS.
 
   &__arrow {
     position: absolute;
@@ -457,62 +436,24 @@ $su-popover-gap: 0.5rem;
     rotate: 45deg;
 
     // Seuls les deux côtés tournés vers l'extérieur portent la bordure
-    .su-popover__content--top > &,
-    .su-popover__content--top-start > &,
-    .su-popover__content--top-end > & {
+    [class*='su-popover__content--top'] > & {
       bottom: -0.3125rem;
       border-width: 0 1px 1px 0;
     }
 
-    .su-popover__content--bottom > &,
-    .su-popover__content--bottom-start > &,
-    .su-popover__content--bottom-end > & {
+    [class*='su-popover__content--bottom'] > & {
       top: -0.3125rem;
       border-width: 1px 0 0 1px;
     }
 
-    .su-popover__content--top > &,
-    .su-popover__content--bottom > & {
-      left: calc(50% - 0.3125rem);
-    }
-
-    .su-popover__content--top-start > &,
-    .su-popover__content--bottom-start > & {
-      left: 1rem;
-    }
-
-    .su-popover__content--top-end > &,
-    .su-popover__content--bottom-end > & {
-      right: 1rem;
-    }
-
-    .su-popover__content--left > &,
-    .su-popover__content--left-start > &,
-    .su-popover__content--left-end > & {
+    [class*='su-popover__content--left'] > & {
       right: -0.3125rem;
       border-width: 1px 1px 0 0;
     }
 
-    .su-popover__content--right > &,
-    .su-popover__content--right-start > &,
-    .su-popover__content--right-end > & {
+    [class*='su-popover__content--right'] > & {
       left: -0.3125rem;
       border-width: 0 0 1px 1px;
-    }
-
-    .su-popover__content--left > &,
-    .su-popover__content--right > & {
-      top: calc(50% - 0.3125rem);
-    }
-
-    .su-popover__content--left-start > &,
-    .su-popover__content--right-start > & {
-      top: 0.75rem;
-    }
-
-    .su-popover__content--left-end > &,
-    .su-popover__content--right-end > & {
-      bottom: 0.75rem;
     }
   }
 
@@ -533,6 +474,7 @@ $su-popover-gap: 0.5rem;
     background: transparent;
     color: var(--su-text-tertiary);
     cursor: pointer;
+
     @include transition(background-color, color);
 
     &:hover {

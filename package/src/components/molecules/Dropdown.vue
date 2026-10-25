@@ -3,6 +3,7 @@ import { computed, ref, nextTick, onMounted, onUnmounted, useAttrs, useId } from
 import { trapFocus, announceToScreenReader } from '@/utils/accessibility'
 import { ChevronDownIcon } from '@heroicons/vue/24/outline'
 import type { DropdownProps } from '@/types'
+import { useFloatingPosition } from '@/composables/useFloatingPosition'
 
 const props = withDefaults(defineProps<DropdownProps>(), {
   options: () => [],
@@ -36,6 +37,14 @@ const cleanupFocusTrap = ref<(() => void) | null>(null)
 
 // État local
 const isOpen = ref(false)
+
+// Menu positionné contre le déclencheur, au moins aussi large que lui
+const { placement: currentPlacement } = useFloatingPosition(triggerRef, menuRef, {
+  placement: () => props.placement,
+  open: isOpen,
+  offset: 4,
+  matchReferenceWidth: true
+})
 const focusedIndex = ref(-1)
 
 const fieldId = 'dropdown-' + useId()
@@ -72,7 +81,7 @@ const triggerClasses = computed(() => [
 
 const menuClasses = computed(() => [
   'su-dropdown-menu',
-  `su-dropdown-menu--${props.placement}`,
+  `su-dropdown-menu--${currentPlacement.value}`,
   {
     'su-dropdown-menu--open': isOpen.value
   }
@@ -516,6 +525,7 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !props.lab
   @include button-icon;
 
   margin-inline-end: -0.25rem;
+
   @include transition(rotate);
 
   .su-dropdown-trigger--open & {
@@ -536,49 +546,14 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !props.lab
 // ### Menu
 
 .su-dropdown-menu {
-  position: absolute;
-  min-width: max(100%, 12rem);
+  // Position fixe : left/top calculés par useFloatingPosition (retournement
+  // automatique s'il manque de place, jamais coupé par un overflow)
+  position: fixed;
+  top: 0;
+  left: 0;
+  min-width: 12rem;
+
   @include popover-surface;
-
-  &--bottom-start {
-    top: calc(100% + 0.25rem);
-    inset-inline-start: 0;
-  }
-
-  &--bottom-end {
-    top: calc(100% + 0.25rem);
-    inset-inline-end: 0;
-  }
-
-  &--top-start {
-    bottom: calc(100% + 0.25rem);
-    inset-inline-start: 0;
-  }
-
-  &--top-end {
-    bottom: calc(100% + 0.25rem);
-    inset-inline-end: 0;
-  }
-
-  &--left-start {
-    top: 0;
-    inset-inline-end: calc(100% + 0.25rem);
-  }
-
-  &--left-end {
-    bottom: 0;
-    inset-inline-end: calc(100% + 0.25rem);
-  }
-
-  &--right-start {
-    top: 0;
-    inset-inline-start: calc(100% + 0.25rem);
-  }
-
-  &--right-end {
-    bottom: 0;
-    inset-inline-start: calc(100% + 0.25rem);
-  }
 }
 
 .su-dropdown-options {
@@ -614,6 +589,7 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !props.lab
     margin-top: 0.125rem;
     font-size: var(--su-font-size-xs);
     color: var(--su-text-tertiary);
+
     @include truncate;
   }
 }
@@ -634,9 +610,16 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !props.lab
 
 @include popover-transition('su-dropdown');
 
-.su-dropdown-menu--top-start,
-.su-dropdown-menu--top-end {
+[class*='su-dropdown-menu--top'] {
   transform-origin: bottom center;
+}
+
+[class*='su-dropdown-menu--left'] {
+  transform-origin: center right;
+}
+
+[class*='su-dropdown-menu--right'] {
+  transform-origin: center left;
 }
 
 @keyframes su-dropdown-spin {
