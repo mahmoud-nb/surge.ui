@@ -1,3 +1,4 @@
+/// <reference types="vitest/config" />
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import dts from 'vite-plugin-dts'
@@ -37,6 +38,12 @@ export default defineConfig({
       }
     },
     cssCodeSplit: false
+  },
+  // Tests unitaires : composants montés dans un DOM simulé (happy-dom)
+  test: {
+    environment: 'happy-dom',
+    include: ['tests/**/*.spec.ts'],
+    css: false
   },
   resolve: {
     alias: {

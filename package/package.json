@@ -46,26 +46,33 @@
     "build": "vite build",
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build --output-dir storybook-static"
+    "build-storybook": "storybook build --output-dir storybook-static",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^5.0.0",
-    "typescript": "^5.5.3",
-    "@types/node": "^24.10.1",
-    "vite": "^5.4.2",
-    "vite-plugin-dts": "^4.0.3",
-    "vue-tsc": "^2.1.4",
-    "@storybook/cli": "^8.0.0",
-    "@storybook/vue3": "^8.0.0",
-    "@storybook/vue3-vite": "^8.0.0",
+    "@storybook/addon-a11y": "8.6.14",
     "@storybook/addon-essentials": "^8.0.0",
     "@storybook/addon-interactions": "^8.0.0",
     "@storybook/addon-links": "^8.0.0",
     "@storybook/blocks": "^8.0.0",
+    "@storybook/cli": "^8.0.0",
     "@storybook/test": "^8.0.0",
-    "storybook": "^8.0.0"
+    "@storybook/vue3": "^8.0.0",
+    "@storybook/vue3-vite": "^8.0.0",
+    "@types/node": "^24.10.1",
+    "@vitejs/plugin-vue": "^5.0.0",
+    "@vue/test-utils": "^2.5.1",
+    "happy-dom": "^20.14.6",
+    "storybook": "^8.0.0",
+    "typescript": "^5.5.3",
+    "vite": "^5.4.2",
+    "vite-plugin-dts": "^4.0.3",
+    "vitest": "^3.2.7",
+    "vue-tsc": "^2.1.4"
   },
   "dependencies": {
+    "@floating-ui/dom": "^1.8.0",
     "@heroicons/vue": "^2.2.0"
   },
   "peerDependencies": {
