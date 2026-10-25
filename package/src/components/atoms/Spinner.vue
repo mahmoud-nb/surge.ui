@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import type { SpinnerProps } from '@/types'
+import { useLocale } from '@/composables/useLocale'
 
 const props = withDefaults(defineProps<SpinnerProps>(), {
   size: 12,
   fill: 'none',
-  label: 'Chargement…',
   showLabel: false,
   type: 'modern',
   // Hérite de la couleur du texte : suit le thème et le contexte (bouton, alerte…)
@@ -13,6 +13,10 @@ const props = withDefaults(defineProps<SpinnerProps>(), {
   thickness: 2,
   speed: 1
 })
+
+// Textes par défaut : prop explicite, sinon locale courante
+const { t } = useLocale()
+const labelText = computed(() => props.label ?? t('spinner.label'))
 
 const spinnerSize = computed(() => {
   if (typeof props.size === 'number') {
@@ -111,7 +115,7 @@ const spinnerStyles = computed(() => {
     <span
       class="su-spinner__label"
       :class="{ 'sr-only': !showLabel }"
-    >{{ label }}</span>
+    >{{ labelText }}</span>
   </span>
 </template>
 

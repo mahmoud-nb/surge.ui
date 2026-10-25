@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { computed, useAttrs, useId } from 'vue'
+import { computed, useId } from 'vue'
 import type { RadioGroupProps } from '@/types'
+import { useFormField } from '@/composables/useFormField'
 
 defineOptions({ inheritAttrs: false })
 
@@ -15,6 +16,9 @@ const props = withDefaults(defineProps<RadioGroupProps>(), {
   maxHeight: null,
 })
 
+// Contexte du SuFormField parent : id, label, message et états du champ
+const { id: controlId, state: fieldState, size: fieldSize, disabled: fieldDisabled, required: fieldRequired, describedBy: fieldDescribedBy, labelledBy: fieldLabelledBy } = useFormField(props, { labelable: false, idPrefix: 'radio-group', focus: () => focusRadio() })
+
 // Définition du modèle en premier
 const modelValue = defineModel<string | number>('modelValue')
 
@@ -24,34 +28,41 @@ const emit = defineEmits<{
   blur: [event: FocusEvent]
 }>()
 
-const attrs = useAttrs()
 
 // Génération d'IDs uniques
 const fieldId = 'radio-group-' + useId()
-const radioGroupId = computed(() => attrs.id as string || fieldId)
+const radioGroupId = computed(() => controlId.value as string)
+
+// Clic sur le label du champ : focus sur le bouton coché, sinon le premier actif
+const focusRadio = () => {
+  const inputs = props.options
+    .filter((option) => !option.disabled)
+    .map((option) => document.getElementById(`${radioGroupId.value}-${option.value}`) as HTMLInputElement | null)
+  ;(inputs.find((input) => input?.checked) ?? inputs[0])?.focus()
+}
 const radioName = computed(() => props.name || fieldId)
 
 // Classes CSS
 const groupClasses = computed(() => [
   'su-radio-group',
-  `su-radio-group--${props.size}`,
-  `su-radio-group--${props.state}`,
+  `su-radio-group--${fieldSize.value}`,
+  `su-radio-group--${fieldState.value}`,
   `su-radio-group--${props.displayType}`,
   `su-radio-group--${props.direction}`,
   {
-    'su-radio-group--disabled': props.disabled,
+    'su-radio-group--disabled': fieldDisabled.value,
     'su-radio-group--scrollable': props.maxHeight
   }
 ])
 
 const getOptionClasses = (option: any) => [
   'su-radio-option',
-  `su-radio-option--${props.size}`,
-  `su-radio-option--${props.state}`,
+  `su-radio-option--${fieldSize.value}`,
+  `su-radio-option--${fieldState.value}`,
   `su-radio-option--${props.displayType}`,
   {
     'su-radio-option--selected': modelValue.value === option.value,
-    'su-radio-option--disabled': option.disabled || props.disabled
+    'su-radio-option--disabled': option.disabled || fieldDisabled.value
   }
 ]
 
@@ -62,20 +73,20 @@ const ariaAttributes = computed(() => {
   }
   
   if (props.ariaLabel) attrs['aria-label'] = props.ariaLabel
-  if (props.ariaLabelledBy) attrs['aria-labelledby'] = props.ariaLabelledBy
-  if (props.ariaDescribedBy) {
-    const describedBy = [props.ariaDescribedBy].filter(Boolean).join(' ')
+  if (fieldLabelledBy.value) attrs['aria-labelledby'] = fieldLabelledBy.value
+  if (fieldDescribedBy.value) {
+    const describedBy = [fieldDescribedBy.value].filter(Boolean).join(' ')
     attrs['aria-describedby'] = describedBy
   }
-  if (props.required) attrs['aria-required'] = 'true'
-  if (props.state === 'error') attrs['aria-invalid'] = 'true'
+  if (fieldRequired.value) attrs['aria-required'] = 'true'
+  if (fieldState.value === 'error') attrs['aria-invalid'] = 'true'
   
   return attrs
 })
 
 // Gestionnaires d'événements
 const handleChange = (value: string | number) => {
-  if (props.disabled) return
+  if (fieldDisabled.value) return
   
   modelValue.value = value
   emit('change', value)
@@ -121,8 +132,8 @@ const handleBlur = (event: FocusEvent) => {
           :name="radioName"
           :value="option.value"
           :checked="modelValue === option.value"
-          :disabled="option.disabled || disabled"
-          :required="required"
+          :disabled="option.disabled || fieldDisabled"
+          :required="fieldRequired"
           class="su-radio-input"
           @change="handleChange(option.value)"
           @focus="handleFocus"

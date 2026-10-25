@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { computed, ref, watch, nextTick, useAttrs, type HTMLAttributes, type StyleValue } from 'vue'
 import type { TextareaProps } from '@/types'
+import { useLocale } from '@/composables/useLocale'
+import { useFormField } from '@/composables/useFormField'
 
 defineOptions({ inheritAttrs: false }) // name: 'Textarea'
 
@@ -19,6 +21,13 @@ const props = withDefaults(defineProps<TextareaProps>(), {
   wrap: 'soft'
 })
 
+// Contexte du SuFormField parent : id, label, message et états du champ
+const { id: controlId, state: fieldState, size: fieldSize, disabled: fieldDisabled, required: fieldRequired, describedBy: fieldDescribedBy, labelledBy: fieldLabelledBy } = useFormField(props, {})
+
+// Textes par défaut : prop explicite, sinon locale courante
+const { t } = useLocale()
+const counterLabel = computed(() => isOverLimit.value ? t('textarea.overLimit') : t('textarea.remaining'))
+
 const modelValue = defineModel<string>({ default: '' })
 
 const emit = defineEmits<{
@@ -33,7 +42,7 @@ const emit = defineEmits<{
 const attrs = useAttrs()
 
 const textareaRef = ref<HTMLTextAreaElement>()
-const textareaId = computed(() => attrs.id as string || undefined)
+const textareaId = computed(() => controlId.value)
 
 // class et style décorent le conteneur ; tous les autres attributs
 // (id, name, data-*, écouteurs non déclarés…) vont sur le textarea.
@@ -69,10 +78,10 @@ const isOverLimit = computed(() => {
 // Classes CSS
 const containerClasses = computed(() => [
   'su-textarea-container',
-  `su-textarea-container--${props.size}`,
-  `su-textarea-container--${props.state}`,
+  `su-textarea-container--${fieldSize.value}`,
+  `su-textarea-container--${fieldState.value}`,
   {
-    'su-textarea-container--disabled': props.disabled,
+    'su-textarea-container--disabled': fieldDisabled.value,
     'su-textarea-container--readonly': props.readonly,
     'su-textarea-container--auto-resize': props.autoResize,
     'su-textarea-container--over-limit': isOverLimit.value
@@ -81,10 +90,10 @@ const containerClasses = computed(() => [
 
 const textareaClasses = computed(() => [
   'su-textarea',
-  `su-textarea--${props.size}`,
-  `su-textarea--${props.state}`,
+  `su-textarea--${fieldSize.value}`,
+  `su-textarea--${fieldState.value}`,
   {
-    'su-textarea--disabled': props.disabled,
+    'su-textarea--disabled': fieldDisabled.value,
     'su-textarea--readonly': props.readonly,
     'su-textarea--auto-resize': props.autoResize,
     'su-textarea--over-limit': isOverLimit.value
@@ -104,15 +113,15 @@ const ariaAttributes = computed(() => {
   const attrs: Record<string, any> = {}
   
   if (props.ariaLabel) attrs['aria-label'] = props.ariaLabel
-  if (props.ariaLabelledBy) attrs['aria-labelledby'] = props.ariaLabelledBy
+  if (fieldLabelledBy.value) attrs['aria-labelledby'] = fieldLabelledBy.value
   if (props.ariaInvalid !== undefined) attrs['aria-invalid'] = props.ariaInvalid
   if (props.ariaRequired !== undefined) attrs['aria-required'] = props.ariaRequired
-  if (props.required) attrs['aria-required'] = 'true'
-  if (props.state === 'error' || isOverLimit.value) attrs['aria-invalid'] = 'true'
+  if (fieldRequired.value) attrs['aria-required'] = 'true'
+  if (fieldState.value === 'error' || isOverLimit.value) attrs['aria-invalid'] = 'true'
 
   // Message du champ + compteur de caractères
   const describedBy = [
-    props.ariaDescribedBy,
+    fieldDescribedBy.value,
     props.showCounter && props.maxLength && textareaId.value ? `${textareaId.value}-counter` : undefined
   ].filter(Boolean).join(' ')
   if (describedBy) attrs['aria-describedby'] = describedBy
@@ -232,12 +241,12 @@ watch(() => props.autoResize, (newValue) => {
         :class="textareaClasses"
         :value="modelValue"
         :placeholder="placeholder"
-        :disabled="disabled"
+        :disabled="fieldDisabled"
         :readonly="readonly"
-        :required="required"
+        :required="fieldRequired"
         :rows="autoResize ? minRows : rows"
         :style="autoResizeStyle"
-        v-bind="{ ...passthroughAttrs, ...nativeAttributes, ...ariaAttributes }"
+        v-bind="{ ...passthroughAttrs, id: controlId, ...nativeAttributes, ...ariaAttributes }"
         @input="handleInput"
         @change="handleChange"
         @focus="handleFocus"
@@ -259,7 +268,7 @@ watch(() => props.autoResize, (newValue) => {
         :aria-live="isNearLimit || isOverLimit ? 'polite' : 'off'"
       >
         <span class="sr-only">
-          {{ isOverLimit ? 'Limite de caractères dépassée' : 'Caractères restants' }}:
+          {{ counterLabel }}
         </span>
         {{ characterCount }}/{{ maxLength }}
       </div>

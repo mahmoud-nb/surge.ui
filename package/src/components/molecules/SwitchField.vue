@@ -44,12 +44,10 @@ const switchProps = computed(() => {
     :required="required"
     :disabled="disabled"
   >
-    <template #default="{ fieldId: id, messageId }">
+    <template #default>
       <Switch
-        :id="id"
         v-model="modelValue"
         v-bind="{ ...switchProps }"
-        :aria-described-by="[ariaDescribedBy, messageId].filter(Boolean).join(' ') || undefined"
         @change="(value) => emit('change', value)"
         @focus="(event) => emit('focus', event)"
         @blur="(event) => emit('blur', event)"

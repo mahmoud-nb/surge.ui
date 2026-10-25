@@ -5,6 +5,7 @@ import { EyeIcon, EyeSlashIcon } from '@heroicons/vue/24/outline'
 import Input from '../atoms/Input.vue';
 import Progress from '../atoms/Progress.vue'
 import type { PasswordFieldProps, PasswordValidation } from '@/types'
+import { useLocale } from '@/composables/useLocale'
 
 const props = withDefaults(defineProps<PasswordFieldProps>(), {
   size: 'md',
@@ -22,6 +23,10 @@ const props = withDefaults(defineProps<PasswordFieldProps>(), {
     minSpecialChars: 1
   })
 })
+
+// Textes par défaut : prop explicite, sinon locale courante
+const { t } = useLocale()
+const strengthLabel = computed(() => t('password.strength', { score: validation.value.score }))
 
 const emit = defineEmits<{
   validation: [validation: PasswordValidation]
@@ -243,7 +248,7 @@ watch(validation, (newValidation) => {
           v-model="validation.score" 
           size="sm" 
           :color="progressColor" 
-          :aria-label="`Force du mot de passe : ${validation.score}%`"
+          :aria-label="strengthLabel"
         />
 
         <slot 

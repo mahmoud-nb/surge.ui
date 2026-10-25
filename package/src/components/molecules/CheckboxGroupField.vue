@@ -49,13 +49,10 @@ const checkboxGroupProps = computed(() => {
     :required="required"
     :disabled="disabled"
   >
-    <template #default="{ fieldId: id, labelId, messageId }">
+    <template #default>
       <CheckboxGroup 
-        :id="id"
         v-model="modelValue"
         v-bind="checkboxGroupProps"
-        :aria-labelled-by="ariaLabelledBy || labelId"
-        :aria-described-by="[ariaDescribedBy, messageId].filter(Boolean).join(' ') || undefined"
         @change="$emit('change', $event)"
         @focus="$emit('focus', $event)"
         @blur="$emit('blur', $event)"

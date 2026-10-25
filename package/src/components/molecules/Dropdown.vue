@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { computed, ref, nextTick, onMounted, onUnmounted, useAttrs, useId } from 'vue'
-import { trapFocus, announceToScreenReader } from '@/utils/accessibility'
+import { trapFocus } from '@/utils/accessibility'
 import { ChevronDownIcon } from '@heroicons/vue/24/outline'
 import type { DropdownProps } from '@/types'
 import { useFloatingPosition } from '@/composables/useFloatingPosition'
+import { useLocale } from '@/composables/useLocale'
 
 const props = withDefaults(defineProps<DropdownProps>(), {
   options: () => [],
@@ -13,11 +14,14 @@ const props = withDefaults(defineProps<DropdownProps>(), {
   variant: 'outline',
   disabled: false,
   loading: false,
-  loadingLabel: 'Chargement en cours...',
   iconDisplay: 'left',
   closeOnSelect: true,
   maxHeight: '300px'
 })
+
+// Textes par défaut : prop explicite, sinon locale courante
+const { t } = useLocale()
+const loadingText = computed(() => props.loadingLabel ?? t('common.loading'))
 
 const emit = defineEmits<{
   select: [option: any]
@@ -152,9 +156,7 @@ const selectOption = (option: any) => {
   if (option.disabled || option.separator) return
   
   emit('select', option)
-  
-  // Annonce pour les lecteurs d'écran
-  announceToScreenReader(`${option.label} sélectionné`)
+
   
   if (props.closeOnSelect) {
     closeDropdown()
@@ -335,7 +337,7 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !props.lab
             stroke-linecap="round"
           />
         </svg>
-        <span class="sr-only">{{ loadingLabel }}</span>
+        <span class="sr-only">{{ loadingText }}</span>
       </span>
       
       <template v-else>

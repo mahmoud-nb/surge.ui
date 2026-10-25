@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import { ref, computed, useAttrs } from 'vue'
+import { ref, computed } from 'vue'
 import { CloudArrowUpIcon, DocumentIcon, PhotoIcon, XMarkIcon, CheckCircleIcon, ExclamationCircleIcon } from '@heroicons/vue/24/outline'
 import type { BaseFileUploadProps, UploadedFile } from '@/types'
-import { announceToScreenReader } from '@/utils/accessibility'
+import { useLocale } from '@/composables/useLocale'
+import { useAnnouncer } from '@/composables/useAnnouncer'
+import { useFormField } from '@/composables/useFormField'
 
 const props = withDefaults(defineProps<BaseFileUploadProps>(), {
   multiple: false,
@@ -14,16 +16,21 @@ const props = withDefaults(defineProps<BaseFileUploadProps>(), {
   disabled: false,
   readonly: false,
   required: false,
-  placeholder: 'Sélectionnez des fichiers ou glissez-les ici',
-  dragText: 'Relâchez pour déposer les fichiers',
-  browseText: 'Parcourir',
-  loadingText: 'Chargement...',
-  loadingSubText: 'Veuillez patienter',
   allowPreview: true,
   showFileList: true,
   showProgress: false,
   loading: false
 })
+
+// Contexte du SuFormField parent : id, label, message et états du champ
+const { id: controlId, state: fieldState, size: fieldSize, disabled: fieldDisabled, required: fieldRequired, describedBy: fieldDescribedBy } = useFormField(props, {})
+
+// Textes par défaut : prop explicite, sinon locale courante
+const { t, formatBytes } = useLocale()
+const { announce } = useAnnouncer()
+const placeholderText = computed(() => props.placeholder ?? t('fileUpload.placeholder'))
+const dropzoneTitle = computed(() => props.loading ? (props.loadingText ?? t('fileUpload.loading')) : (isDragging.value ? (props.dragText ?? t('fileUpload.drop')) : placeholderText.value))
+const dropzoneHint = computed(() => props.loading ? (props.loadingSubText ?? t('fileUpload.loadingHint')) : (props.browseText ?? t('fileUpload.browse')))
 
 // Utilisation de defineModel pour v-model
 const modelValue = defineModel<UploadedFile[]>({ default: () => [] })
@@ -37,7 +44,6 @@ const emit = defineEmits<{
   blur: [event: FocusEvent]
 }>()
 
-const attrs = useAttrs()
 
 // Refs
 const fileInputRef = ref<HTMLInputElement>()
@@ -46,7 +52,7 @@ const isDragging = ref(false)
 const dragCounter = ref(0)
 
 // IDs pour l'accessibilité
-const uploadId = computed(() => attrs.id as string || undefined)
+const uploadId = computed(() => controlId.value)
 
 // Valeur normalisée
 const uploadedFiles = computed(() => Array.isArray(modelValue.value) ? modelValue.value : [])
@@ -55,10 +61,10 @@ const uploadedFiles = computed(() => Array.isArray(modelValue.value) ? modelValu
 const containerClasses = computed(() => [
   'su-file-upload-container',
   `su-file-upload-container--${props.variant}`,
-  `su-file-upload-container--${props.size}`,
-  `su-file-upload-container--${props.state}`,
+  `su-file-upload-container--${fieldSize.value}`,
+  `su-file-upload-container--${fieldState.value}`,
   {
-    'su-file-upload-container--disabled': props.disabled,
+    'su-file-upload-container--disabled': fieldDisabled.value,
     'su-file-upload-container--readonly': props.readonly,
     'su-file-upload-container--dragging': isDragging.value,
     'su-file-upload-container--has-files': uploadedFiles.value.length > 0
@@ -68,10 +74,10 @@ const containerClasses = computed(() => [
 const dropZoneClasses = computed(() => [
   'su-file-upload-dropzone',
   `su-file-upload-dropzone--${props.variant}`,
-  `su-file-upload-dropzone--${props.size}`,
-  `su-file-upload-dropzone--${props.state}`,
+  `su-file-upload-dropzone--${fieldSize.value}`,
+  `su-file-upload-dropzone--${fieldState.value}`,
   {
-    'su-file-upload-dropzone--disabled': props.disabled,
+    'su-file-upload-dropzone--disabled': fieldDisabled.value,
     'su-file-upload-dropzone--readonly': props.readonly,
     'su-file-upload-dropzone--dragging': isDragging.value
   }
@@ -82,26 +88,20 @@ const ariaAttributes = computed(() => {
   const attrs: Record<string, any> = {}
   
   if (props.ariaLabel) attrs['aria-label'] = props.ariaLabel
-  if (props.ariaDescribedBy) {
-    const describedBy = [props.ariaDescribedBy].filter(Boolean).join(' ')
+  if (fieldDescribedBy.value) {
+    const describedBy = [fieldDescribedBy.value].filter(Boolean).join(' ')
     attrs['aria-describedby'] = describedBy
   }
   if (props.ariaInvalid !== undefined) attrs['aria-invalid'] = props.ariaInvalid
   if (props.ariaRequired !== undefined) attrs['aria-required'] = props.ariaRequired
-  if (props.required) attrs['aria-required'] = 'true'
-  if (props.state === 'error') attrs['aria-invalid'] = 'true'
+  if (fieldRequired.value) attrs['aria-required'] = 'true'
+  if (fieldState.value === 'error') attrs['aria-invalid'] = 'true'
   
   return attrs
 })
 
 // Utilitaires
-const formatFileSize = (bytes: number): string => {
-  if (bytes === 0) return '0 B'
-  const k = 1024
-  const sizes = ['B', 'KB', 'MB', 'GB']
-  const i = Math.floor(Math.log(bytes) / Math.log(k))
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i]
-}
+const formatFileSize = (bytes: number): string => formatBytes(bytes)
 
 const getFileIcon = (file: File) => {
   if (file.type.startsWith('image/')) return PhotoIcon
@@ -133,7 +133,7 @@ const createFilePreview = (file: File): Promise<string> => {
 const validateFile = (file: File): string | null => {
   // Vérifier la taille
   if (props.maxSize && file.size > props.maxSize) {
-    return `Le fichier "${file.name}" est trop volumineux (${formatFileSize(file.size)}). Taille maximale : ${formatFileSize(props.maxSize)}`
+    return t('fileUpload.tooLarge', { name: file.name, size: formatFileSize(file.size), max: formatFileSize(props.maxSize) })
   }
   
   // Vérifier le type
@@ -151,7 +151,7 @@ const validateFile = (file: File): string | null => {
     })
     
     if (!isAccepted) {
-      return `Le type de fichier "${file.type}" n'est pas accepté pour "${file.name}"`
+      return t('fileUpload.invalidType', { type: file.type, name: file.name })
     }
   }
   
@@ -160,16 +160,16 @@ const validateFile = (file: File): string | null => {
 
 // Gestion des fichiers
 const processFiles = async (files: FileList | File[]) => {
-  if (props.disabled || props.readonly) return
+  if (fieldDisabled.value || props.readonly) return
   
   const fileArray = Array.from(files)
   const currentFiles = uploadedFiles.value
   
   // Vérifier le nombre maximum de fichiers
   if (props.maxFiles && currentFiles.length + fileArray.length > props.maxFiles) {
-    const error = `Nombre maximum de fichiers dépassé (${props.maxFiles})`
+    const error = t('fileUpload.maxFiles', { max: props.maxFiles })
     emit('error', error)
-    announceToScreenReader(error, 'assertive')
+    announce(error, { priority: 'assertive' })
     return
   }
   
@@ -180,7 +180,7 @@ const processFiles = async (files: FileList | File[]) => {
     
     if (validationError) {
       emit('error', validationError, file)
-      announceToScreenReader(validationError, 'assertive')
+      announce(validationError, { priority: 'assertive' })
       continue
     }
     
@@ -211,10 +211,7 @@ const processFiles = async (files: FileList | File[]) => {
     emit('change', updatedFiles)
     
     // Annoncer le succès
-    const message = newFiles.length === 1 
-      ? `Fichier "${newFiles[0].name}" ajouté`
-      : `${newFiles.length} fichiers ajoutés`
-    announceToScreenReader(message)
+    announce(t('fileUpload.added', { count: newFiles.length, name: newFiles[0].name }))
     
     // Émettre l'événement upload pour chaque fichier
     newFiles.forEach(file => emit('upload', file))
@@ -222,14 +219,14 @@ const processFiles = async (files: FileList | File[]) => {
 }
 
 const removeFile = (fileToRemove: UploadedFile) => {
-  if (props.disabled || props.readonly) return
+  if (fieldDisabled.value || props.readonly) return
   
   const updatedFiles = uploadedFiles.value.filter(file => file.id !== fileToRemove.id)
   modelValue.value = updatedFiles
   emit('change', updatedFiles)
   emit('remove', fileToRemove)
   
-  announceToScreenReader(`Fichier "${fileToRemove.name}" supprimé`)
+  announce(t('fileUpload.removed', { name: fileToRemove.name }))
 }
 
 // Gestionnaires d'événements
@@ -243,7 +240,7 @@ const handleFileSelect = (event: Event) => {
 }
 
 const handleBrowseClick = () => {
-  if (props.disabled || props.readonly) return
+  if (fieldDisabled.value || props.readonly) return
   fileInputRef.value?.click()
 }
 
@@ -267,7 +264,7 @@ const handleDragEnter = (event: DragEvent) => {
   event.preventDefault()
   event.stopPropagation()
   
-  if (props.disabled || props.readonly) return
+  if (fieldDisabled.value || props.readonly) return
   
   dragCounter.value++
   if (dragCounter.value === 1) {
@@ -279,7 +276,7 @@ const handleDragLeave = (event: DragEvent) => {
   event.preventDefault()
   event.stopPropagation()
   
-  if (props.disabled || props.readonly) return
+  if (fieldDisabled.value || props.readonly) return
   
   dragCounter.value--
   if (dragCounter.value === 0) {
@@ -291,7 +288,7 @@ const handleDragOver = (event: DragEvent) => {
   event.preventDefault()
   event.stopPropagation()
   
-  if (props.disabled || props.readonly) return
+  if (fieldDisabled.value || props.readonly) return
   
   if (event.dataTransfer) {
     event.dataTransfer.dropEffect = 'copy'
@@ -302,7 +299,7 @@ const handleDrop = (event: DragEvent) => {
   event.preventDefault()
   event.stopPropagation()
   
-  if (props.disabled || props.readonly) return
+  if (fieldDisabled.value || props.readonly) return
   
   isDragging.value = false
   dragCounter.value = 0
@@ -319,10 +316,10 @@ const focus = () => {
 }
 
 const clear = () => {
-  if (props.disabled || props.readonly) return
+  if (fieldDisabled.value || props.readonly) return
   modelValue.value = []
   emit('change', [])
-  announceToScreenReader('Tous les fichiers ont été supprimés')
+  announce(t('fileUpload.cleared'))
 }
 
 defineExpose({
@@ -342,8 +339,8 @@ defineExpose({
       type="file"
       :accept="accept"
       :multiple="multiple"
-      :disabled="disabled"
-      :required="required"
+      :disabled="fieldDisabled"
+      :required="fieldRequired"
       class="su-file-upload-input"
       v-bind="ariaAttributes"
       @change="handleFileSelect"
@@ -355,9 +352,9 @@ defineExpose({
     <div
       ref="dropZoneRef"
       :class="dropZoneClasses"
-      :tabindex="disabled ? -1 : 0"
+      :tabindex="fieldDisabled ? -1 : 0"
       role="button"
-      :aria-label="placeholder"
+      :aria-label="placeholderText"
       :aria-busy="loading"
       @click="handleBrowseClick"
       @keydown="handleKeydown"
@@ -404,13 +401,13 @@ defineExpose({
       <!-- Texte principal -->
       <div class="su-file-upload-text">
         <p class="su-file-upload-primary-text">
-          {{ loading ? loadingText : (isDragging ? dragText : placeholder) }}
+          {{ dropzoneTitle }}
         </p>
         <p class="su-file-upload-secondary-text">
-          {{ loading ? loadingSubText : browseText }}
+          {{ dropzoneHint }}
           <span v-if="accept || maxSize">
             <span v-if="accept"> • {{ accept }}</span>
-            <span v-if="maxSize"> • Max {{ formatFileSize(maxSize) }}</span>
+            <span v-if="maxSize"> • {{ t('fileUpload.maxSize', { max: formatFileSize(maxSize) }) }}</span>
           </span>
         </p>
       </div>
@@ -421,7 +418,7 @@ defineExpose({
       v-if="showFileList && uploadedFiles.length > 0" 
       class="su-file-upload-list"
       role="list"
-      :aria-label="`${uploadedFiles.length} fichier(s) sélectionné(s)`"
+      :aria-label="t('fileUpload.selectedCount', { count: uploadedFiles.length })"
     >
       <div
         v-for="file in uploadedFiles"
@@ -435,7 +432,7 @@ defineExpose({
           <img
             v-if="file.preview"
             :src="file.preview"
-            :alt="`Aperçu de ${file.name}`"
+            :alt="t('fileUpload.preview', { name: file.name })"
             class="su-file-upload-preview-image"
           >
           <component
@@ -508,10 +505,10 @@ defineExpose({
 
         <!-- Bouton de suppression -->
         <button
-          v-if="!disabled && !readonly"
+          v-if="!fieldDisabled && !readonly"
           type="button"
           class="su-file-upload-remove-button"
-          :aria-label="`Supprimer ${file.name}`"
+          :aria-label="t('fileUpload.remove', { name: file.name })"
           @click="removeFile(file)"
         >
           <XMarkIcon
@@ -528,7 +525,7 @@ defineExpose({
           :aria-valuenow="file.progress || 0"
           aria-valuemin="0"
           aria-valuemax="100"
-          :aria-label="`Upload de ${file.name}: ${file.progress || 0}%`"
+          :aria-label="t('fileUpload.progress', { name: file.name, progress: file.progress || 0 })"
         >
           <div 
             class="su-file-upload-progress-fill"

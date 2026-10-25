@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import { computed, ref, useAttrs, useId, onBeforeUnmount } from 'vue'
-import { announceToScreenReader } from '@/utils/accessibility'
+import { computed, ref, onBeforeUnmount } from 'vue'
 import type { SliderProps } from '@/types'
+import { useLocale } from '@/composables/useLocale'
+import { mergeIds } from '@/composables/useFormField'
+import { useFormField } from '@/composables/useFormField'
 
 const props = withDefaults(defineProps<SliderProps>(), {
   min: 0,
@@ -20,6 +22,12 @@ const props = withDefaults(defineProps<SliderProps>(), {
   showLabels: false
 })
 
+// Contexte du SuFormField parent : id, label, message et états du champ
+const { id: controlId, state: fieldState, size: fieldSize, disabled: fieldDisabled, required: fieldRequired, describedBy: fieldDescribedBy, labelledBy: fieldLabelledBy } = useFormField(props, { labelable: false, idPrefix: 'slider', focus: () => thumb1Ref.value?.focus() })
+
+// Textes par défaut : locale courante
+const { t } = useLocale()
+
 const modelValue = defineModel<number | [number, number]>()
 
 const emit = defineEmits<{
@@ -30,7 +38,6 @@ const emit = defineEmits<{
   keydown: [event: KeyboardEvent]
 }>()
 
-const attrs = useAttrs()
 
 // Refs
 const sliderRef = ref<HTMLDivElement>()
@@ -42,8 +49,7 @@ const activeThumb = ref<'min' | 'max' | null>(null)
 const showTooltip1 = ref(false)
 const showTooltip2 = ref(false)
 
-const fieldId = 'slider-' + useId()
-const sliderId = computed(() => attrs.id as string || fieldId)
+const sliderId = computed(() => controlId.value as string)
 const messageId = computed(() => props.message ? `${sliderId.value}-message` : undefined)
 
 // Détection automatique du mode dual-range
@@ -93,11 +99,11 @@ const maxPercent = computed(() =>
 // Classes CSS
 const containerClasses = computed(() => [
   'su-slider-container',
-  `su-slider-container--${props.size}`,
-  `su-slider-container--${props.state}`,
+  `su-slider-container--${fieldSize.value}`,
+  `su-slider-container--${fieldState.value}`,
   `su-slider-container--${props.orientation}`,
   {
-    'su-slider-container--disabled': props.disabled,
+    'su-slider-container--disabled': fieldDisabled.value,
     'su-slider-container--readonly': props.readonly,
     'su-slider-container--dual': isDualRange.value,
     'su-slider-container--dragging': isDragging.value
@@ -106,18 +112,18 @@ const containerClasses = computed(() => [
 
 const trackClasses = computed(() => [
   'su-slider-track',
-  `su-slider-track--${props.size}`,
-  `su-slider-track--${props.state}`,
+  `su-slider-track--${fieldSize.value}`,
+  `su-slider-track--${fieldState.value}`,
   `su-slider-track--${props.orientation}`
 ])
 
 const getThumbClasses = (thumbType: 'min' | 'max') => [
   'su-slider-thumb',
-  `su-slider-thumb--${props.size}`,
-  `su-slider-thumb--${props.state}`,
+  `su-slider-thumb--${fieldSize.value}`,
+  `su-slider-thumb--${fieldState.value}`,
   `su-slider-thumb--${props.orientation}`,
   {
-    'su-slider-thumb--disabled': props.disabled,
+    'su-slider-thumb--disabled': fieldDisabled.value,
     'su-slider-thumb--readonly': props.readonly,
     'su-slider-thumb--active': activeThumb.value === thumbType
   }
@@ -137,15 +143,15 @@ const getAriaAttributes = (thumbType: 'min' | 'max'): Record<string, string | nu
   
   if (props.ariaLabel) {
     baseAttrs['aria-label'] = isDualRange.value 
-      ? `${props.ariaLabel} ${thumbType === 'min' ? 'minimum' : 'maximum'}` 
+      ? `${props.ariaLabel} ${t(thumbType === 'min' ? 'slider.min' : 'slider.max')}` 
       : props.ariaLabel
   }
-  if (props.ariaLabelledBy) baseAttrs['aria-labelledby'] = props.ariaLabelledBy
-  if (messageId.value) baseAttrs['aria-describedby'] = messageId.value
-  if (props.ariaDescribedBy) baseAttrs['aria-describedby'] = props.ariaDescribedBy
+  if (fieldLabelledBy.value) baseAttrs['aria-labelledby'] = fieldLabelledBy.value
+  const describedBy = mergeIds(messageId.value, fieldDescribedBy.value)
+  if (describedBy) baseAttrs['aria-describedby'] = describedBy
   if (props.ariaInvalid !== undefined) baseAttrs['aria-invalid'] = props.ariaInvalid
-  if (props.ariaRequired !== undefined || props.required) baseAttrs['aria-required'] = true
-  if (props.state === 'error') baseAttrs['aria-invalid'] = true
+  if (props.ariaRequired || fieldRequired.value) baseAttrs['aria-required'] = true
+  if (fieldState.value === 'error') baseAttrs['aria-invalid'] = true
   
   return baseAttrs
 }
@@ -176,7 +182,7 @@ const getValueFromPosition = (clientX: number, clientY: number): number => {
 let cleanupDrag: (() => void) | null = null
 
 const updateValue = (newValue: number, thumbType: 'min' | 'max' = 'min') => {
-  if (props.disabled || props.readonly) return
+  if (fieldDisabled.value || props.readonly) return
   
   const clampedValue = clampValue(snapToStep(newValue))
   
@@ -188,17 +194,12 @@ const updateValue = (newValue: number, thumbType: 'min' | 'max' = 'min') => {
   } else {
     currentValue.value = clampedValue
   }
-  
-  // Annonce pour les lecteurs d'écran
-  const announcement = isDualRange.value 
-    ? `${thumbType === 'min' ? 'Minimum' : 'Maximum'} : ${formatValue(clampedValue)}`
-    : formatValue(clampedValue)
-  announceToScreenReader(announcement)
+
 }
 
 // Support souris ET tactile
 const handlePointerDown = (event: PointerEvent, thumbType: 'min' | 'max' = 'min') => {
-  if (props.disabled || props.readonly) return
+  if (fieldDisabled.value || props.readonly) return
   
   event.preventDefault()
   isDragging.value = true
@@ -235,7 +236,7 @@ const handlePointerDown = (event: PointerEvent, thumbType: 'min' | 'max' = 'min'
 }
 
 const handleTrackClick = (event: MouseEvent) => {
-  if (props.disabled || props.readonly || isDragging.value) return
+  if (fieldDisabled.value || props.readonly || isDragging.value) return
   
   const newValue = getValueFromPosition(event.clientX, event.clientY)
   
@@ -251,7 +252,7 @@ const handleTrackClick = (event: MouseEvent) => {
 }
 
 const handleKeyDown = (event: KeyboardEvent, thumbType: 'min' | 'max' = 'min') => {
-  if (props.disabled || props.readonly) return
+  if (fieldDisabled.value || props.readonly) return
   
   const currentVal = thumbType === 'min' ? minValue.value : maxValue.value
   let newValue = currentVal
@@ -307,7 +308,7 @@ const handleBlur = (event: FocusEvent, thumbType: 'min' | 'max' = 'min') => {
 }
 
 const handlePointerEnter = (thumbType: 'min' | 'max' = 'min') => {
-  if (props.tooltip !== 'none' && !props.disabled) {
+  if (props.tooltip !== 'none' && !fieldDisabled.value) {
     thumbType === 'min' ? showTooltip1.value = true : showTooltip2.value = true
   }
 }
@@ -468,7 +469,7 @@ defineExpose({
             :style="{
               [orientation === 'horizontal' ? 'left' : 'bottom']: `${minPercent}%`
             }"
-            :tabindex="disabled ? -1 : 0"
+            :tabindex="fieldDisabled ? -1 : 0"
             v-bind="getAriaAttributes('min')"
             @pointerdown="handlePointerDown($event, 'min')"
             @keydown="handleKeyDown($event, 'min')"
@@ -498,7 +499,7 @@ defineExpose({
             :style="{
               [orientation === 'horizontal' ? 'left' : 'bottom']: `${maxPercent}%`
             }"
-            :tabindex="disabled ? -1 : 0"
+            :tabindex="fieldDisabled ? -1 : 0"
             v-bind="getAriaAttributes('max')"
             @pointerdown="handlePointerDown($event, 'max')"
             @keydown="handleKeyDown($event, 'max')"
@@ -535,7 +536,7 @@ defineExpose({
       v-if="message"
       :id="messageId"
       class="su-slider-message"
-      :class="`su-slider-message--${state}`"
+      :class="`su-slider-message--${fieldState}`"
     >
       {{ message }}
     </div>

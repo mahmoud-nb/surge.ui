@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import type { ButtonProps } from '@/types'
 import Spinner from './Spinner.vue'
+import { useLocale } from '@/composables/useLocale'
 
 const props = withDefaults(defineProps<ButtonProps>(), {
   type: 'button',
@@ -9,11 +10,14 @@ const props = withDefaults(defineProps<ButtonProps>(), {
   size: 'md',
   disabled: false,
   loading: false,
-  loadingLabel: 'Chargement en cours...',
   block: false,
   iconDisplay: 'left',
   tabIndex: 0
 })
+
+// Textes par défaut : prop explicite, sinon locale courante
+const { t } = useLocale()
+const loadingText = computed(() => props.loadingLabel ?? t('common.loading'))
 
 const emit = defineEmits<{
   click: [event: MouseEvent]
@@ -120,7 +124,7 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !props.ari
     <Spinner
       v-if="loading"
       class="su-button__spinner"
-      :label="loadingLabel"
+      :label="loadingText"
       color="currentColor"
       :size="16"
     />

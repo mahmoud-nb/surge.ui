@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { computed, ref, useAttrs, useId } from 'vue'
 import { CloudArrowUpIcon, DocumentIcon, PhotoIcon, XMarkIcon, CheckCircleIcon, ExclamationCircleIcon } from '@heroicons/vue/24/outline'
-import { announceToScreenReader } from '@/utils/accessibility'
 import FormField from '@/components/atoms/FormField.vue'
 import type { FileUploadFieldProps, UploadedFile } from '@/types'
+import { useLocale } from '@/composables/useLocale'
+import { useAnnouncer } from '@/composables/useAnnouncer'
 
 interface Props extends Omit<FileUploadFieldProps, 'value'> {}
 
@@ -17,16 +18,18 @@ const props = withDefaults(defineProps<Props>(), {
   disabled: false,
   readonly: false,
   required: false,
-  placeholder: 'Sélectionnez des fichiers ou glissez-les ici',
-  dragText: 'Relâchez pour déposer les fichiers',
-  browseText: 'Parcourir',
-  loadingText: 'Chargement...',
-  loadingSubText: 'Veuillez patienter',
   allowPreview: true,
   showFileList: true,
   showProgress: false,
   loading: false
 })
+
+// Textes par défaut : prop explicite, sinon locale courante
+const { t, formatBytes } = useLocale()
+const { announce } = useAnnouncer()
+const placeholderText = computed(() => props.placeholder ?? t('fileUpload.placeholder'))
+const dropzoneTitle = computed(() => props.loading ? (props.loadingText ?? t('fileUpload.loading')) : (isDragging.value ? (props.dragText ?? t('fileUpload.drop')) : placeholderText.value))
+const dropzoneHint = computed(() => props.loading ? (props.loadingSubText ?? t('fileUpload.loadingHint')) : (props.browseText ?? t('fileUpload.browse')))
 
 // Utilisation de defineModel pour v-model
 const modelValue = defineModel<UploadedFile[]>({ default: () => [] })
@@ -99,13 +102,7 @@ const ariaAttributes = computed(() => {
 })
 
 // Utilitaires
-const formatFileSize = (bytes: number): string => {
-  if (bytes === 0) return '0 B'
-  const k = 1024
-  const sizes = ['B', 'KB', 'MB', 'GB']
-  const i = Math.floor(Math.log(bytes) / Math.log(k))
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i]
-}
+const formatFileSize = (bytes: number): string => formatBytes(bytes)
 
 const getFileIcon = (file: File) => {
   if (file.type.startsWith('image/')) return PhotoIcon
@@ -137,7 +134,7 @@ const createFilePreview = (file: File): Promise<string> => {
 const validateFile = (file: File): string | null => {
   // Vérifier la taille
   if (props.maxSize && file.size > props.maxSize) {
-    return `Le fichier "${file.name}" est trop volumineux (${formatFileSize(file.size)}). Taille maximale : ${formatFileSize(props.maxSize)}`
+    return t('fileUpload.tooLarge', { name: file.name, size: formatFileSize(file.size), max: formatFileSize(props.maxSize) })
   }
   
   // Vérifier le type
@@ -155,7 +152,7 @@ const validateFile = (file: File): string | null => {
     })
     
     if (!isAccepted) {
-      return `Le type de fichier "${file.type}" n'est pas accepté pour "${file.name}"`
+      return t('fileUpload.invalidType', { type: file.type, name: file.name })
     }
   }
   
@@ -171,9 +168,9 @@ const processFiles = async (files: FileList | File[]) => {
   
   // Vérifier le nombre maximum de fichiers
   if (props.maxFiles && currentFiles.length + fileArray.length > props.maxFiles) {
-    const error = `Nombre maximum de fichiers dépassé (${props.maxFiles})`
+    const error = t('fileUpload.maxFiles', { max: props.maxFiles })
     emit('error', error)
-    announceToScreenReader(error, 'assertive')
+    announce(error, { priority: 'assertive' })
     return
   }
   
@@ -184,7 +181,7 @@ const processFiles = async (files: FileList | File[]) => {
     
     if (validationError) {
       emit('error', validationError, file)
-      announceToScreenReader(validationError, 'assertive')
+      announce(validationError, { priority: 'assertive' })
       continue
     }
     
@@ -215,10 +212,7 @@ const processFiles = async (files: FileList | File[]) => {
     emit('change', updatedFiles)
     
     // Annoncer le succès
-    const message = newFiles.length === 1 
-      ? `Fichier "${newFiles[0].name}" ajouté`
-      : `${newFiles.length} fichiers ajoutés`
-    announceToScreenReader(message)
+    announce(t('fileUpload.added', { count: newFiles.length, name: newFiles[0].name }))
     
     // Émettre l'événement upload pour chaque fichier
     newFiles.forEach(file => emit('upload', file))
@@ -233,7 +227,7 @@ const removeFile = (fileToRemove: UploadedFile) => {
   emit('change', updatedFiles)
   emit('remove', fileToRemove)
   
-  announceToScreenReader(`Fichier "${fileToRemove.name}" supprimé`)
+  announce(t('fileUpload.removed', { name: fileToRemove.name }))
 }
 
 // Gestionnaires d'événements
@@ -326,7 +320,7 @@ const clear = () => {
   if (props.disabled || props.readonly) return
   modelValue.value = []
   emit('change', [])
-  announceToScreenReader('Tous les fichiers ont été supprimés')
+  announce(t('fileUpload.cleared'))
 }
 
 defineExpose({
@@ -372,7 +366,7 @@ defineExpose({
           :class="dropZoneClasses"
           :tabindex="disabled ? -1 : 0"
           role="button"
-          :aria-label="placeholder"
+          :aria-label="placeholderText"
           :aria-busy="loading"
           @click="handleBrowseClick"
           @keydown="handleKeydown"
@@ -419,13 +413,13 @@ defineExpose({
           <!-- Texte principal -->
           <div class="su-file-upload-text">
             <p class="su-file-upload-primary-text">
-              {{ loading ? loadingText : (isDragging ? dragText : placeholder) }}
+              {{ dropzoneTitle }}
             </p>
             <p class="su-file-upload-secondary-text">
-              {{ loading ? loadingSubText : browseText }}
+              {{ dropzoneHint }}
               <span v-if="accept || maxSize">
                 <span v-if="accept"> • {{ accept }}</span>
-                <span v-if="maxSize"> • Max {{ formatFileSize(maxSize) }}</span>
+                <span v-if="maxSize"> • {{ t('fileUpload.maxSize', { max: formatFileSize(maxSize) }) }}</span>
               </span>
             </p>
           </div>
@@ -436,7 +430,7 @@ defineExpose({
           v-if="showFileList && uploadedFiles.length > 0" 
           class="su-file-upload-list"
           role="list"
-          :aria-label="`${uploadedFiles.length} fichier(s) sélectionné(s)`"
+          :aria-label="t('fileUpload.selectedCount', { count: uploadedFiles.length })"
         >
           <div
             v-for="file in uploadedFiles"
@@ -450,7 +444,7 @@ defineExpose({
               <img
                 v-if="file.preview"
                 :src="file.preview"
-                :alt="`Aperçu de ${file.name}`"
+                :alt="t('fileUpload.preview', { name: file.name })"
                 class="su-file-upload-preview-image"
               >
               <component
@@ -526,7 +520,7 @@ defineExpose({
               v-if="!disabled && !readonly"
               type="button"
               class="su-file-upload-remove-button"
-              :aria-label="`Supprimer ${file.name}`"
+              :aria-label="t('fileUpload.remove', { name: file.name })"
               @click="removeFile(file)"
             >
               <XMarkIcon
@@ -543,7 +537,7 @@ defineExpose({
               :aria-valuenow="file.progress || 0"
               aria-valuemin="0"
               aria-valuemax="100"
-              :aria-label="`Upload de ${file.name}: ${file.progress || 0}%`"
+              :aria-label="t('fileUpload.progress', { name: file.name, progress: file.progress || 0 })"
             >
               <div 
                 class="su-file-upload-progress-fill"

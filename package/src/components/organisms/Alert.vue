@@ -8,15 +8,19 @@ import {
   XMarkIcon
 } from '@heroicons/vue/24/outline'
 import type { AlertProps } from '@/types'
+import { useLocale } from '@/composables/useLocale'
 
 const props = withDefaults(defineProps<AlertProps>(), {
   type: 'info',
   dismissible: false,
-  dismissLabel: 'Fermer la notification',
   ariaLive: 'polite',
   ariaAtomic: true,
   size: 'md'
 })
+
+// Textes par défaut : prop explicite, sinon locale courante
+const { t } = useLocale()
+const dismissLabelText = computed(() => props.dismissLabel ?? t('alert.dismiss'))
 
 // Emits
 const emit = defineEmits<{
@@ -125,7 +129,7 @@ defineExpose({
       v-if="dismissible"
       type="button"
       :class="dismissButtonClasses"
-      :aria-label="dismissLabel"
+      :aria-label="dismissLabelText"
       @click="handleDismiss"
     >
       <XMarkIcon class="su-alert__dismiss-icon" />

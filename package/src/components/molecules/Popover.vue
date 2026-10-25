@@ -57,7 +57,7 @@
           v-if="closable"
           type="button"
           class="su-popover__close"
-          :aria-label="closeAriaLabel"
+          :aria-label="closeLabelText"
           @click="close"
         >
           <XMarkIcon class="su-popover__close-icon" />
@@ -91,6 +91,7 @@ import { ref, computed, watch, onMounted, onBeforeUnmount, nextTick, useId } fro
 import { XMarkIcon } from '@heroicons/vue/24/outline'
 import type { PopoverProps } from '@/types'
 import { useFloatingPosition } from '@/composables/useFloatingPosition'
+import { useLocale } from '@/composables/useLocale'
 
 const props = withDefaults(defineProps<PopoverProps>(), {
   modelValue: undefined,
@@ -104,9 +105,12 @@ const props = withDefaults(defineProps<PopoverProps>(), {
   closeOnBackdropClick: true,
   disabled: false,
   openDelay: 0,
-  closeDelay: 0,
-  closeAriaLabel: 'Fermer',
-});
+  closeDelay: 0
+})
+
+// Textes par défaut : prop explicite, sinon locale courante
+const { t } = useLocale()
+const closeLabelText = computed(() => props.closeAriaLabel ?? t('common.close'));
 
 const emit = defineEmits<{
   'update:modelValue': [value: boolean];

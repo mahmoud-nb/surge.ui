@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { computed, useAttrs, useId } from 'vue'
+import { computed, shallowRef, useAttrs, useId, useSlots } from 'vue'
 import type { FormFieldProps } from '@/types'
+import { useLocale } from '@/composables/useLocale'
+import { provideFormField, type FormFieldControl } from '@/composables/useFormField'
 
 // L'id du consommateur identifie le contrôle, pas le conteneur : on ne le rend
 // pas sur la racine pour éviter les ID dupliqués.
@@ -11,9 +13,12 @@ const props = withDefaults(defineProps<FormFieldProps>(), {
   size: 'md',
   required: false,
   disabled: false,
-  message: '',
-  requiredText: 'requis'
+  message: ''
 })
+
+// Textes par défaut : prop explicite, sinon locale courante
+const { t } = useLocale()
+const requiredTitle = computed(() => props.requiredText ?? t('formField.required'))
 
 const attrs = useAttrs()
 const uniqueId = 'su-form-field-' + useId()
@@ -28,6 +33,37 @@ const rootAttrs = computed(() => {
 
 // Génération de l'ID du message si nécessaire
 const messageId = computed(() => props.message ? `${formFieldId.value}-message` : undefined)
+
+// Contexte du champ : le contrôle placé dans le slot s'y relie seul
+// (id, label, message, états) grâce à useFormField
+const slots = useSlots()
+const control = shallowRef<FormFieldControl | null>(null)
+
+provideFormField({
+  id: formFieldId,
+  labelId: computed(() => (props.label || slots.label) ? labelId.value : undefined),
+  messageId,
+  state: computed(() => props.state),
+  size: computed(() => props.size),
+  required: computed(() => props.required),
+  disabled: computed(() => props.disabled),
+  registerControl(registered) {
+    control.value = registered
+    return () => {
+      if (control.value === registered) control.value = null
+    }
+  }
+})
+
+// Un <label for> ne cible pas un contrôle non natif (combobox en div,
+// groupe de cases) : le clic lui donne le focus à la place
+const handleLabelClick = (event: MouseEvent) => {
+  const current = control.value
+  if (current && !current.labelable && current.focus) {
+    event.preventDefault()
+    current.focus()
+  }
+}
 
 // Une erreur est annoncée dès son apparition ; les autres messages sont lus
 // via aria-describedby lorsque le champ reçoit le focus.
@@ -79,6 +115,7 @@ const labelClasses = computed(() => [
         :id="labelId"
         :for="formFieldId"
         :class="labelClasses"
+        @click="handleLabelClick"
       >
         {{ label }}
         <!-- L'état requis est annoncé par aria-required sur le contrôle -->
@@ -86,7 +123,7 @@ const labelClasses = computed(() => [
           v-if="required"
           class="su-indicator-required"
           aria-hidden="true"
-          :title="requiredText"
+          :title="requiredTitle"
         >*</span>
       </label>
     </slot>

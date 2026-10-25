@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import type { GridLayoutProps, GridLayoutView } from '@/types'
 import { columnVars } from '@/utils/layout'
+import { useLocale } from '@/composables/useLocale'
 
 // Grille de cellules de même importance (produits, galeries, tableaux de
 // bord), lues ligne par ligne. Colonnes par largeur de conteneur, ou
@@ -14,11 +15,12 @@ const props = withDefaults(defineProps<GridLayoutProps>(), {
   align: 'stretch',
   itemsTag: 'div',
   viewToggle: false,
-  viewToggleLabel: 'Affichage',
-  gridLabel: 'Grille',
-  listLabel: 'Liste',
   gap: 'md'
 })
+
+// Textes par défaut : prop explicite, sinon locale courante
+const { t } = useLocale()
+const viewToggleText = computed(() => props.viewToggleLabel ?? t('gridLayout.viewToggle'))
 
 /** Affichage : en grille, ou en liste */
 const view = defineModel<GridLayoutView>('view', { default: 'grid' })
@@ -31,8 +33,8 @@ defineSlots<{
 }>()
 
 const viewOptions = computed<{ value: GridLayoutView, label: string }[]>(() => [
-  { value: 'grid', label: props.gridLabel },
-  { value: 'list', label: props.listLabel }
+  { value: 'grid', label: props.gridLabel ?? t('gridLayout.grid') },
+  { value: 'list', label: props.listLabel ?? t('gridLayout.list') }
 ])
 
 const classes = computed(() => [
@@ -67,7 +69,7 @@ const styles = computed(() => props.minItemWidth
         v-if="viewToggle"
         class="su-grid-layout__view-toggle"
         role="group"
-        :aria-label="viewToggleLabel"
+        :aria-label="viewToggleText"
       >
         <button
           v-for="option in viewOptions"

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, useAttrs, ref } from 'vue'
 import type { SwitchProps } from '@/types'
+import { useFormField } from '@/composables/useFormField'
 
 defineOptions({ inheritAttrs: false })
 
@@ -13,6 +14,9 @@ const props = withDefaults(defineProps<SwitchProps>(), {
   required: false
 })
 
+// Contexte du SuFormField parent : id, label, message et états du champ
+const { id: controlId, state: fieldState, size: fieldSize, disabled: fieldDisabled, required: fieldRequired, describedBy: fieldDescribedBy, labelledBy: fieldLabelledBy } = useFormField(props, {})
+
 const modelValue = defineModel<boolean>({ default: false })
 
 const emit = defineEmits<{
@@ -24,7 +28,7 @@ const emit = defineEmits<{
 }>()
 
 const attrs = useAttrs()
-const switchId = computed(() => attrs.id as string || undefined)
+const switchId = computed(() => controlId.value)
 // Transmet tous les attrs sauf id (id est appliqué sur l'élément interactif via switchId)
 const containerAttrs = computed(() => {
   const { id: _id, ...rest } = attrs as Record<string, unknown>
@@ -35,10 +39,10 @@ const switchRef = ref<HTMLButtonElement>()
 // Classes CSS - reste identique
 const containerClasses = computed(() => [
   'su-switch-container',
-  `su-switch-container--${props.size}`,
-  `su-switch-container--${props.state}`,
+  `su-switch-container--${fieldSize.value}`,
+  `su-switch-container--${fieldState.value}`,
   {
-    'su-switch-container--disabled': props.disabled,
+    'su-switch-container--disabled': fieldDisabled.value,
     'su-switch-container--readonly': props.readonly,
     'su-switch-container--has-labels': props.leftLabel || props.rightLabel,
     'su-switch-container--centered': props.leftLabel && props.rightLabel
@@ -47,12 +51,12 @@ const containerClasses = computed(() => [
 
 const switchClasses = computed(() => [
   'su-switch',
-  `su-switch--${props.size}`,
-  `su-switch--${props.state}`,
+  `su-switch--${fieldSize.value}`,
+  `su-switch--${fieldState.value}`,
   {
     'su-switch--checked': modelValue.value,
     'su-switch--flush': !props.padded,
-    'su-switch--disabled': props.disabled,
+    'su-switch--disabled': fieldDisabled.value,
     'su-switch--readonly': props.readonly
   }
 ])
@@ -65,20 +69,20 @@ const ariaAttributes = computed(() => {
   }
   
   if (props.ariaLabel) attrs['aria-label'] = props.ariaLabel
-  if (props.ariaLabelledBy) attrs['aria-labelledby'] = props.ariaLabelledBy
-  if (props.ariaDescribedBy) attrs['aria-describedby'] = props.ariaDescribedBy
+  if (fieldLabelledBy.value) attrs['aria-labelledby'] = fieldLabelledBy.value
+  if (fieldDescribedBy.value) attrs['aria-describedby'] = fieldDescribedBy.value
   if (props.readonly) attrs['aria-readonly'] = 'true'
   if (props.ariaInvalid !== undefined) attrs['aria-invalid'] = props.ariaInvalid
   if (props.ariaRequired !== undefined) attrs['aria-required'] = props.ariaRequired
-  if (props.required) attrs['aria-required'] = 'true'
-  if (props.state === 'error') attrs['aria-invalid'] = 'true'
+  if (fieldRequired.value) attrs['aria-required'] = 'true'
+  if (fieldState.value === 'error') attrs['aria-invalid'] = 'true'
   
   return attrs
 })
 
 // Gestionnaires d'événements - reste identique
 const handleToggle = () => {
-  if (props.disabled || props.readonly) return
+  if (fieldDisabled.value || props.readonly) return
   
   const newValue = !modelValue.value
   modelValue.value = newValue
@@ -107,7 +111,7 @@ defineExpose({
       class="su-switch-side-label su-switch-side-label--left"
       :class="{
         'su-switch-side-label--active': !modelValue,
-        'su-switch-side-label--disabled': disabled
+        'su-switch-side-label--disabled': fieldDisabled
       }"
     >
       {{ leftLabel }}
@@ -118,7 +122,7 @@ defineExpose({
       ref="switchRef"
       type="button"
       :class="switchClasses"
-      :disabled="disabled"
+      :disabled="fieldDisabled"
       v-bind="ariaAttributes"
       @click="handleToggle"
       @keydown="handleKeydown"
@@ -151,7 +155,7 @@ defineExpose({
       class="su-switch-side-label su-switch-side-label--right"
       :class="{
         'su-switch-side-label--active': modelValue,
-        'su-switch-side-label--disabled': disabled
+        'su-switch-side-label--disabled': fieldDisabled
       }"
     >
       {{ rightLabel }}

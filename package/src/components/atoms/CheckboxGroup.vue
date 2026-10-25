@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import { computed, useAttrs, useId } from 'vue'
+import { computed } from 'vue'
 import { CheckIcon } from '@heroicons/vue/24/outline'
-import { announceToScreenReader } from '@/utils/accessibility'
 import type { CheckboxGroupProps } from '@/types'
+import { useLocale } from '@/composables/useLocale'
+import { useAnnouncer } from '@/composables/useAnnouncer'
+import { useFormField } from '@/composables/useFormField'
 
 defineOptions({ inheritAttrs: false })
 
@@ -16,6 +18,13 @@ const props = withDefaults(defineProps<CheckboxGroupProps>(), {
   direction: 'vertical'
 })
 
+// Contexte du SuFormField parent : id, label, message et états du champ
+const { id: controlId, state: fieldState, size: fieldSize, disabled: fieldDisabled, required: fieldRequired, describedBy: fieldDescribedBy, labelledBy: fieldLabelledBy } = useFormField(props, { labelable: false, idPrefix: 'checkbox-group', focus: () => focusFirstCheckbox() })
+
+// Textes par défaut et annonces dans la locale courante
+const { t } = useLocale()
+const { announce } = useAnnouncer()
+
 // Utilisation de defineModel pour v-model
 const modelValue = defineModel<(string | number)[]>({ default: () => [] })
 
@@ -25,11 +34,15 @@ const emit = defineEmits<{
   blur: [event: FocusEvent]
 }>()
 
-const attrs = useAttrs()
 
 // Génération d'IDs uniques
-const fieldId = 'checkbox-group-' + useId()
-const checkboxGroupId = computed(() => attrs.id as string || fieldId)
+const checkboxGroupId = computed(() => controlId.value as string)
+
+// Clic sur le label du champ : focus sur la première case active
+const focusFirstCheckbox = () => {
+  const first = props.options.find((option) => !option.disabled)
+  if (first) (document.getElementById(`${checkboxGroupId.value}-${first.value}`) as HTMLInputElement | null)?.focus()
+}
 
 // Valeur normalisée
 const selectedValues = computed({
@@ -45,24 +58,24 @@ const selectedValues = computed({
 // Classes CSS
 const groupClasses = computed(() => [
   'su-checkbox-group',
-  `su-checkbox-group--${props.size}`,
-  `su-checkbox-group--${props.state}`,
+  `su-checkbox-group--${fieldSize.value}`,
+  `su-checkbox-group--${fieldState.value}`,
   `su-checkbox-group--${props.displayType}`,
   `su-checkbox-group--${props.direction}`,
   {
-    'su-checkbox-group--disabled': props.disabled,
+    'su-checkbox-group--disabled': fieldDisabled.value,
     'su-checkbox-group--scrollable': props.maxHeight
   }
 ])
 
 const getOptionClasses = (option: any) => [
   'su-checkbox__option',
-  `su-checkbox__option--${props.size}`,
-  `su-checkbox__option--${props.state}`,
+  `su-checkbox__option--${fieldSize.value}`,
+  `su-checkbox__option--${fieldState.value}`,
   `su-checkbox__option--${props.displayType}`,
   {
     'su-checkbox__option--selected': selectedValues.value.includes(option.value),
-    'su-checkbox__option--disabled': option.disabled || props.disabled
+    'su-checkbox__option--disabled': option.disabled || fieldDisabled.value
   }
 ]
 
@@ -73,27 +86,27 @@ const ariaAttributes = computed(() => {
   }
   
   if (props.ariaLabel) attrs['aria-label'] = props.ariaLabel
-  if (props.ariaLabelledBy) attrs['aria-labelledby'] = props.ariaLabelledBy
-  if (props.ariaDescribedBy) {
-    const describedBy = [props.ariaDescribedBy].filter(Boolean).join(' ')
+  if (fieldLabelledBy.value) attrs['aria-labelledby'] = fieldLabelledBy.value
+  if (fieldDescribedBy.value) {
+    const describedBy = [fieldDescribedBy.value].filter(Boolean).join(' ')
     attrs['aria-describedby'] = describedBy
   }
-  if (props.required) attrs['aria-required'] = 'true'
-  if (props.state === 'error') attrs['aria-invalid'] = 'true'
+  if (fieldRequired.value) attrs['aria-required'] = 'true'
+  if (fieldState.value === 'error') attrs['aria-invalid'] = 'true'
   
   return attrs
 })
 
 // Gestionnaires d'événements
 const handleChange = (optionValue: string | number, checked: boolean) => {
-  if (props.disabled) return
+  if (fieldDisabled.value) return
   
   let newValue: (string | number)[]
   
   if (checked) {
     // Vérifier la limite de sélections
     if (props.maxSelections && selectedValues.value.length >= props.maxSelections) {
-      announceToScreenReader(`Maximum ${props.maxSelections} sélections autorisées`)
+      announce(t('checkboxGroup.maxReached', { count: props.maxSelections }))
       return
     }
     newValue = [...selectedValues.value, optionValue]
@@ -102,11 +115,7 @@ const handleChange = (optionValue: string | number, checked: boolean) => {
   }
   
   selectedValues.value = newValue
-  
-  // Annonce pour les lecteurs d'écran
-  const option = props.options.find(opt => opt.value === optionValue)
-  const action = checked ? 'sélectionné' : 'désélectionné'
-  announceToScreenReader(`${option?.label} ${action}`)
+
 }
 
 const handleFocus = (event: FocusEvent) => {
@@ -122,7 +131,7 @@ const isChecked = (value: string | number) => {
 }
 
 const isDisabled = (option: any) => {
-  return option.disabled || props.disabled
+  return option.disabled || fieldDisabled.value
 }
 </script>
 
@@ -158,7 +167,7 @@ const isDisabled = (option: any) => {
           :value="option.value"
           :checked="isChecked(option.value)"
           :disabled="isDisabled(option)"
-          :required="required && selectedValues.length === 0"
+          :required="fieldRequired && selectedValues.length === 0"
           class="su-checkbox__input"
           @change="handleChange(option.value, ($event.target as HTMLInputElement).checked)"
           @focus="handleFocus"

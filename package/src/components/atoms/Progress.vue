@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import type { ProgressProps } from '@/types'
+import { useLocale } from '@/composables/useLocale'
 
 /**
  * SuProgress
@@ -21,9 +22,12 @@ const props = withDefaults(defineProps<ProgressProps>(), {
   state: 'default',
   showLabel: false,
   formatValue: (value: number) => `${value}%`,
-  indeterminate: false,
-  indeterminateLabel: 'En cours…',
+  indeterminate: false
 })
+
+// Textes par défaut : prop explicite, sinon locale courante
+const { t } = useLocale()
+const indeterminateText = computed(() => props.indeterminateLabel ?? t('progress.indeterminate'))
 
 /* clamp determinate value between min and max */
 const clampedValue = computed(() =>
@@ -62,7 +66,7 @@ const trackStyle = computed(() => ({
     :aria-valuemin="!indeterminate ? min : undefined"
     :aria-valuemax="!indeterminate ? max : undefined"
     :aria-valuenow="!indeterminate ? clampedValue : undefined"
-    :aria-valuetext="!indeterminate ? formattedValue : indeterminateLabel"
+    :aria-valuetext="!indeterminate ? formattedValue : indeterminateText"
     :aria-busy="indeterminate ? 'true' : undefined"
   >
     <div
@@ -94,7 +98,7 @@ const trackStyle = computed(() => ({
       v-else-if="showLabel && indeterminate"
       class="su-progress__label"
     >
-      {{ indeterminateLabel }}
+      {{ indeterminateText }}
     </span>
   </div>
 </template>

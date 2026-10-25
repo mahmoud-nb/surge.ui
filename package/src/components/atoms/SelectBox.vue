@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import { computed, ref, watch, nextTick, onMounted, onUnmounted, useAttrs, useId } from 'vue'
+import { computed, ref, watch, nextTick, onMounted, onUnmounted } from 'vue'
 import { ChevronDownIcon, XMarkIcon, MagnifyingGlassIcon, CheckIcon } from '@heroicons/vue/24/outline'
-import { announceToScreenReader } from '@/utils/accessibility'
 import { useFloatingPosition } from '@/composables/useFloatingPosition'
 import type { SelectOption, SelectBoxProps } from '@/types'
+import { useLocale } from '@/composables/useLocale'
+import { useAnnouncer } from '@/composables/useAnnouncer'
+import { useFormField } from '@/composables/useFormField'
 
 defineOptions({ inheritAttrs: false })
 
@@ -18,16 +20,22 @@ const props = withDefaults(defineProps<SelectBoxProps>(), {
   disabled: false,
   readonly: false,
   required: false,
-  placeholder: 'Sélectionnez une option...',
-  searchPlaceholder: 'Rechercher...',
-  noOptionsText: 'Aucune option disponible',
-  noResultsText: 'Aucun résultat trouvé',
   maxHeight: '200px',
   textAlign: 'left',
   loading: false,
   closeOnSelect: true,
   maxSelectedItems: undefined
 })
+
+// Contexte du SuFormField parent : id, label, message et états du champ
+const { id: controlId, state: fieldState, size: fieldSize, disabled: fieldDisabled, required: fieldRequired, describedBy: fieldDescribedBy, labelledBy: fieldLabelledBy } = useFormField(props, { labelable: false, idPrefix: 'selectbox', focus: () => inputRef.value?.focus() })
+
+// Textes par défaut : prop explicite, sinon locale courante
+const { t } = useLocale()
+const { announce } = useAnnouncer()
+const placeholderText = computed(() => props.placeholder ?? t('selectBox.placeholder'))
+const searchPlaceholderText = computed(() => props.searchPlaceholder ?? t('selectBox.searchPlaceholder'))
+const emptyText = computed(() => searchQuery.value ? (props.noResultsText ?? t('selectBox.noResults')) : (props.noOptionsText ?? t('selectBox.noOptions')))
 
 // Utilisation de defineModel pour v-model
 const modelValue = defineModel<string | number | (string | number)[] | undefined>()
@@ -41,8 +49,6 @@ const emit = defineEmits<{
   blur: [event: FocusEvent]
 }>()
 
-const attrs = useAttrs()
-const fieldId = 'selectbox-' + useId()
 
 // Refs
 const selectRef = ref<HTMLDivElement>()
@@ -71,7 +77,7 @@ useFloatingPosition(inputRef, dropdownRef, {
 })
 
 // IDs pour l'accessibilité
-const selectId = computed(() => attrs.id as string || fieldId)
+const selectId = computed(() => controlId.value as string)
 const listboxId = computed(() => `${selectId.value}-listbox`)
 const optionId = (index: number) => `${listboxId.value}-option-${index}`
 const activeDescendant = computed(() =>
@@ -162,26 +168,26 @@ const selectedOptions = computed(() => {
 // Texte affiché
 const displayText = computed(() => {
   if (selectedOptions.value.length === 0) {
-    return props.placeholder
+    return placeholderText.value
   }
 
   if (props.multiple) {
     if (selectedOptions.value.length === 1) {
       return selectedOptions.value[0].label
     }
-    return `${selectedOptions.value.length} éléments sélectionnés`
+    return t('selectBox.selectedCount', { count: selectedOptions.value.length })
   }
 
-  return selectedOptions.value[0]?.label || props.placeholder
+  return selectedOptions.value[0]?.label || placeholderText.value
 })
 
 // Classes CSS
 const containerClasses = computed(() => [
   'su-select__container',
-  `su-select__container--${props.size}`,
-  `su-select__container--${props.state}`,
+  `su-select__container--${fieldSize.value}`,
+  `su-select__container--${fieldState.value}`,
   {
-    'su-select__container--disabled': props.disabled,
+    'su-select__container--disabled': fieldDisabled.value,
     'su-select__container--readonly': props.readonly,
     'su-select__container--open': isOpen.value,
     'su-select__container--multiple': props.multiple
@@ -190,11 +196,11 @@ const containerClasses = computed(() => [
 
 const triggerClasses = computed(() => [
   'su-select__trigger',
-  `su-select__trigger--${props.size}`,
-  `su-select__trigger--${props.state}`,
+  `su-select__trigger--${fieldSize.value}`,
+  `su-select__trigger--${fieldState.value}`,
   `su-select__trigger--align-${props.textAlign}`,
   {
-    'su-select__trigger--disabled': props.disabled,
+    'su-select__trigger--disabled': fieldDisabled.value,
     'su-select__trigger--readonly': props.readonly,
     'su-select__trigger--open': isOpen.value,
     'su-select__trigger--has-value': selectedOptions.value.length > 0,
@@ -211,11 +217,11 @@ const ariaAttributes = computed<Record<string, any>>(() => ({
   // Avec recherche, c'est le champ de recherche qui porte l'option active
   'aria-activedescendant': props.searchable ? undefined : activeDescendant.value,
   'aria-label': props.ariaLabel,
-  'aria-labelledby': props.ariaLabelledBy,
-  'aria-describedby': props.ariaDescribedBy,
-  'aria-invalid': props.state === 'error' || props.ariaInvalid ? 'true' : undefined,
-  'aria-required': props.required || props.ariaRequired ? 'true' : undefined,
-  'aria-disabled': props.disabled ? 'true' : undefined,
+  'aria-labelledby': fieldLabelledBy.value,
+  'aria-describedby': fieldDescribedBy.value,
+  'aria-invalid': fieldState.value === 'error' || props.ariaInvalid ? 'true' : undefined,
+  'aria-required': fieldRequired.value || props.ariaRequired ? 'true' : undefined,
+  'aria-disabled': fieldDisabled.value ? 'true' : undefined,
   'aria-readonly': props.readonly ? 'true' : undefined
 }))
 
@@ -260,7 +266,7 @@ const hoverOption = (index: number) => {
 // ### Ouverture et fermeture
 
 const openDropdown = async () => {
-  if (props.disabled || props.readonly || isOpen.value) return
+  if (fieldDisabled.value || props.readonly || isOpen.value) return
 
   isOpen.value = true
   searchQuery.value = ''
@@ -294,7 +300,7 @@ const closeDropdown = (restoreFocus = true) => {
 }
 
 const toggleDropdown = () => {
-  if (props.disabled || props.readonly) return
+  if (fieldDisabled.value || props.readonly) return
 
   if (isOpen.value) {
     closeDropdown()
@@ -313,7 +319,7 @@ const selectOption = (option: SelectOption) => {
     const wasSelected = currentValues.includes(option.value)
 
     if (!wasSelected && props.maxSelectedItems && currentValues.length >= props.maxSelectedItems) {
-      announceToScreenReader(`Maximum ${props.maxSelectedItems} éléments sélectionnables`)
+      announce(t('selectBox.maxReached', { count: props.maxSelectedItems }))
       return
     }
 
@@ -322,7 +328,7 @@ const selectOption = (option: SelectOption) => {
       : [...currentValues, option.value]
 
     // La liste reste ouverte : on annonce le changement
-    announceToScreenReader(`${option.label} ${wasSelected ? 'désélectionné' : 'sélectionné'}`)
+    announce(t(wasSelected ? 'selectBox.deselected' : 'selectBox.selected', { label: option.label }))
     return
   }
 
@@ -343,24 +349,24 @@ const clearSelection = (event: Event) => {
 
   selectedValue.value = props.multiple ? [] : undefined
 
-  announceToScreenReader('Sélection effacée')
+  announce(t('selectBox.cleared'))
   inputRef.value?.focus()
 }
 
 const removeSelectedOption = (option: SelectOption, event?: Event) => {
   event?.stopPropagation()
-  if (!props.multiple || props.disabled || props.readonly) return
+  if (!props.multiple || fieldDisabled.value || props.readonly) return
 
   const currentValues = (selectedValue.value as (string | number)[]) || []
   selectedValue.value = currentValues.filter(v => v !== option.value)
 
-  announceToScreenReader(`${option.label} retiré de la sélection`)
+  announce(t('selectBox.removed', { label: option.label }))
 }
 
 // Retour arrière : retire la dernière étiquette (sélection multiple)
 const removeLastSelected = () => {
   const last = selectedOptions.value[selectedOptions.value.length - 1]
-  if (!props.multiple || !last || props.disabled || props.readonly) return false
+  if (!props.multiple || !last || fieldDisabled.value || props.readonly) return false
   removeSelectedOption(last)
   return true
 }
@@ -450,7 +456,7 @@ const handleNavigationKey = (event: KeyboardEvent, editable: boolean) => {
 }
 
 const handleTriggerKeydown = (event: KeyboardEvent) => {
-  if (props.disabled || props.readonly) return
+  if (fieldDisabled.value || props.readonly) return
   if (handleNavigationKey(event, false)) return
 
   if (event.key === 'Backspace' || event.key === 'Delete') {
@@ -577,7 +583,7 @@ onUnmounted(() => {
         :id="selectId"
         ref="inputRef"
         :class="triggerClasses"
-        :tabindex="disabled ? -1 : 0"
+        :tabindex="fieldDisabled ? -1 : 0"
         v-bind="ariaAttributes"
         @click="toggleDropdown"
         @keydown="handleTriggerKeydown"
@@ -604,11 +610,11 @@ onUnmounted(() => {
               <!-- Hors tabulation : au clavier, Retour arrière retire la
                    dernière étiquette et la liste permet de désélectionner -->
               <button
-                v-if="!disabled && !readonly"
+                v-if="!fieldDisabled && !readonly"
                 type="button"
                 tabindex="-1"
                 class="su-select-tag-remove"
-                :aria-label="`Retirer ${option.label}`"
+                :aria-label="t('selectBox.removeTag', { label: option.label })"
                 @click="removeSelectedOption(option, $event)"
               >
                 <XMarkIcon
@@ -672,10 +678,10 @@ onUnmounted(() => {
 
           <!-- Clear button -->
           <button
-            v-else-if="clearable && selectedOptions.length > 0 && !disabled && !readonly"
+            v-else-if="clearable && selectedOptions.length > 0 && !fieldDisabled && !readonly"
             type="button"
             class="su-select-clear"
-            aria-label="Effacer la sélection"
+            :aria-label="t('selectBox.clear')"
             @click="clearSelection"
           >
             <XMarkIcon
@@ -720,9 +726,9 @@ onUnmounted(() => {
                 aria-expanded="true"
                 :aria-controls="listboxId"
                 :aria-activedescendant="activeDescendant"
-                :aria-label="searchPlaceholder"
+                :aria-label="searchPlaceholderText"
                 autocomplete="off"
-                :placeholder="searchPlaceholder"
+                :placeholder="searchPlaceholderText"
                 :value="searchQuery"
                 @input="handleSearch"
                 @keydown="handleSearchKeydown"
@@ -737,7 +743,7 @@ onUnmounted(() => {
             role="listbox"
             :aria-multiselectable="multiple ? 'true' : undefined"
             :aria-label="ariaLabel"
-            :aria-labelledby="ariaLabelledBy"
+            :aria-labelledby="fieldLabelledBy"
             :style="{ maxHeight: maxHeight }"
           >
             <div
@@ -828,7 +834,7 @@ onUnmounted(() => {
             class="su-select-no-options"
             role="status"
           >
-            {{ searchQuery ? noResultsText : noOptionsText }}
+            {{ emptyText }}
           </div>
         </div>
       </Transition>
