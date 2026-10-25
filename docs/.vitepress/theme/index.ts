@@ -3,6 +3,9 @@ import { inBrowser } from 'vitepress'
 import SurgeUpDS from '@surgeui/ds-vue'
 import '@surgeui/ds-vue/style.css'
 import './custom.css'
+// Démos des layouts (cadre à largeur réglable, zones)
+import LayoutFrame from './components/LayoutFrame.vue'
+import LayoutBox from './components/LayoutBox.vue'
 
 // Import global des icônes Heroicons les plus courantes
 import {
@@ -35,6 +38,8 @@ export default {
   async enhanceApp({ app }: { app: import('vue').App }) {
     if (inBrowser) {
       app.use(SurgeUpDS)
+      app.component('LayoutFrame', LayoutFrame)
+      app.component('LayoutBox', LayoutBox)
 
       // Enregistrement global des icônes courantes
       app.component('PlusIcon', PlusIcon)

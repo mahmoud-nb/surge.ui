@@ -73,6 +73,17 @@ const getNavItems = (section: string = 'display', lang: string = 'fr') => {
       { text: 'FormField', link: `${langPrefix}/components/formfield` },
       { text: 'FormFieldGroup', link: `${langPrefix}/components/formfieldgroup` },
     ],
+    layouts:[
+      { text: lang === 'fr' ? "Vue d'ensemble" : 'Overview', link: `${langPrefix}/components/layouts` },
+      { text: 'SingleColumnLayout', link: `${langPrefix}/components/singlecolumnlayout`, badge: NEW_BADGE },
+      { text: 'SidebarLayout', link: `${langPrefix}/components/sidebarlayout`, badge: NEW_BADGE },
+      { text: 'SplitLayout', link: `${langPrefix}/components/splitlayout`, badge: NEW_BADGE },
+      { text: 'HolyGrailLayout', link: `${langPrefix}/components/holygraillayout`, badge: NEW_BADGE },
+      { text: 'MagazineLayout', link: `${langPrefix}/components/magazinelayout`, badge: NEW_BADGE },
+      { text: 'MasonryLayout', link: `${langPrefix}/components/masonrylayout`, badge: NEW_BADGE },
+      { text: 'HeroLayout', link: `${langPrefix}/components/herolayout`, badge: NEW_BADGE },
+      { text: 'FullScreenLayout', link: `${langPrefix}/components/fullscreenlayout`, badge: NEW_BADGE },
+    ],
     composables:[
       { text: 'useTheme', link: `${langPrefix}/composables/usetheme` },
       { text: 'useCustomTheme', link: `${langPrefix}/composables/usecustomtheme` },
@@ -152,6 +163,10 @@ export default defineConfig({
               {
                 text: '# Formulaires',
                 items: getNavItems('forms', 'fr')
+              },
+              {
+                text: '# Mise en page',
+                items: getNavItems('layouts', 'fr')
               }
             ]
           },
@@ -207,6 +222,10 @@ export default defineConfig({
               {
                 text: '# Forms',
                 items: getNavItems('forms', 'en')
+              },
+              {
+                text: '# Layouts',
+                items: getNavItems('layouts', 'en')
               }
             ]
           },
