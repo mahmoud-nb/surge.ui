@@ -2,6 +2,72 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.0.0](https://mahmoud-nb.github.io/surge.ui/compare/v2.3.0...v3.0.0) (2026-10-25)
+
+
+### ⚠ BREAKING CHANGES
+
+* **Dialog:** la prop `zIndex` est sans effet (le dialog s'ouvre dans la couche supérieure du navigateur) et l'overlay en `div` est remplacé par `::backdrop`.
+* **ui:** SuButton a désormais `type="button"` par défaut : passer `type="submit"` pour soumettre un formulaire.
+* **ui:** SuSwitch est rendu dans un `<button>` au lieu d'un `<div>`.
+* **ui:** peer dependency `vue ^3.5.0` (utilisation de `useId`).
+* **ui:** `styles/_main.scss` n'existe plus : importer `styles/abstracts`.
+
+
+### 🗑️ Deprecations
+
+* `accessibility.announceToScreenReader()` : utiliser `announce()` ou `useAnnouncer()` (l'ancienne fonction délègue au nouveau mécanisme).
+* `accessibility.trapFocus()` : utiliser `useFocusTrap()` ou `createFocusTrap()` (l'ancienne fonction délègue au nouveau piège).
+
+### ♻️ Code Refactoring
+
+* **Slider,FileUpload:** nouveau style et suppression des styles dupliqués ([ff2ad4b](https://mahmoud-nb.github.io/surge.ui/commit/ff2ad4ba7ad770dc95eade5dd63fed4a24a22b10))
+* **styles:** ajoute des motifs SCSS partagés pour boutons, popovers et menus ([949a159](https://mahmoud-nb.github.io/surge.ui/commit/949a159a87c39e462258864b0c2d2fcdf6afaabf))
+* **ui:** centralise le SCSS, ajoute des tokens de surface et corrige les formulaires ([8237d89](https://mahmoud-nb.github.io/surge.ui/commit/8237d89b79d878b991e19789d3f18432bd06af5e))
+
+
+### 🐛 Bug Fixes
+
+* **FloatButton:** la prop offset s'applique à toutes les largeurs ([811748a](https://mahmoud-nb.github.io/surge.ui/commit/811748a13602bae32e98ea5e01cdf5b4890fffaf))
+* **Popover:** déclenchement au focus, mode contrôlé et superposition modale ([23cf483](https://mahmoud-nb.github.io/surge.ui/commit/23cf4835e19cc48f69e7bb656c01328aa8423ee4))
+
+
+### 📚 Documentation
+
+* **CLAUDE:** tests, addon a11y et useFloatingPosition ([9fb434d](https://mahmoud-nb.github.io/surge.ui/commit/9fb434d3b2e4e58eca1dbce222a750b617749c1d))
+* **composables:** useFocusTrap, useDismiss et useListNavigation ([46c874e](https://mahmoud-nb.github.io/surge.ui/commit/46c874e47955a237ff6bca30340baa6e171399a0))
+* **composables:** useLocale, useFormField et useAnnouncer ([b5d966f](https://mahmoud-nb.github.io/surge.ui/commit/b5d966f6aafa46916f3d8dee73acdafd215c6b21))
+* **layouts:** page GridLayout ([ebe072c](https://mahmoud-nb.github.io/surge.ui/commit/ebe072c15842c8f89cf83d178c0d107327d185d8))
+* **layouts:** pages des layouts et cadre de démonstration ([6d1d90e](https://mahmoud-nb.github.io/surge.ui/commit/6d1d90eb00de989513b1c2dc890795002b05fe6c))
+* **storybook:** stories des layouts ([a963c47](https://mahmoud-nb.github.io/surge.ui/commit/a963c47371c6dd5c5ded6ea980a8716ae656090a))
+* **storybook:** story du GridLayout ([b0b3cd1](https://mahmoud-nb.github.io/surge.ui/commit/b0b3cd1b39b9edc257ad7e8eef8246a03114bd5c))
+
+
+### ✨ Features
+
+* **Accordion:** ajoute le mode attaché et revoit le style ([27453e7](https://mahmoud-nb.github.io/surge.ui/commit/27453e77d06fe3fed228a833c55c893e8c7dfa1f))
+* **actions:** nouveau style de Dropdown, FloatButton et OtpInput ([b792264](https://mahmoud-nb.github.io/surge.ui/commit/b7922647508058e122790f347c0b4d1cdb462767))
+* **Avatar,Progress:** nouveau style des avatars et barres de progression ([b1e6a4c](https://mahmoud-nb.github.io/surge.ui/commit/b1e6a4cd642d38dc7f2909fdbcd7a23d58d4a636))
+* **Badge,Alert:** nouveau style des étiquettes et des alertes ([cf86a33](https://mahmoud-nb.github.io/surge.ui/commit/cf86a33c8d03f4631e6a9bbfd3bcc3019faad502))
+* **Card,Dialog:** nouveau style des conteneurs ([328b61f](https://mahmoud-nb.github.io/surge.ui/commit/328b61f80af5192de5c8d031b35891923ad82aad))
+* **components:** libellés traduisibles et liaison automatique aux champs ([a740099](https://mahmoud-nb.github.io/surge.ui/commit/a7400992c8aeae3c9c319d7517f98c98d3d85ea2))
+* **components:** navigation clavier et fermeture unifiées ([5452894](https://mahmoud-nb.github.io/surge.ui/commit/545289416d2a4fb5f04137e28041f7232659b2fc))
+* **composables:** ajout de useFloatingPosition ([f3c2c79](https://mahmoud-nb.github.io/surge.ui/commit/f3c2c79f5fd53a2dd76466b8d7d312b51b2c676a))
+* **composables:** annonces, locale et contexte de champ ([84d22b6](https://mahmoud-nb.github.io/surge.ui/commit/84d22b610f075966c61c8cd55911e30c541097de))
+* **composables:** piège à focus, fermeture par couches et navigation clavier ([9eb5163](https://mahmoud-nb.github.io/surge.ui/commit/9eb5163d8c0a137d92c38fbb3ed2fe9c0bc5a4ca))
+* **Dialog:** passage à l'élément natif <dialog> ([81fd4c8](https://mahmoud-nb.github.io/surge.ui/commit/81fd4c81ce5656dce24e55ae6315631e2cf8d2e2))
+* **display:** alignement de Image, Heading, Panel, Price et Spinner sur les tokens ([57386c8](https://mahmoud-nb.github.io/surge.ui/commit/57386c8a6150da479d381d399242055b67f02ee7))
+* **forms:** nouveau style des boutons, champs et listes de sélection ([83ee376](https://mahmoud-nb.github.io/surge.ui/commit/83ee376f1c6cf96e8ef26115cc56e390df8f967e))
+* **forms:** nouveau style des cases à cocher et boutons radio ([30ef1a9](https://mahmoud-nb.github.io/surge.ui/commit/30ef1a93b0be1c02ca5d4a6ee339d8d2345b7d23))
+* **Link,LinkGroup:** nouveau style et annonce des liens externes ([0d85699](https://mahmoud-nb.github.io/surge.ui/commit/0d85699b24e3b76333588369ec62180d7dd80c7c))
+* **Popover,Dropdown:** positionnement flottant avec retournement automatique ([63c546f](https://mahmoud-nb.github.io/surge.ui/commit/63c546f7d829f1acd5539f9a2bb7828d06d26e0c))
+* **SelectBox:** motif combobox accessible, saisie rapide et liste flottante ([0324d19](https://mahmoud-nb.github.io/surge.ui/commit/0324d19ecef87b49aab7570bb7a7ae9eea58a30c))
+* **styles:** requêtes de conteneur et motifs communs des layouts ([55fdafe](https://mahmoud-nb.github.io/surge.ui/commit/55fdafe224c96c29f3dc75d34aada91eddec42a9))
+* **Switch,Toggle:** nouveau style et option de marge du Switch ([f714489](https://mahmoud-nb.github.io/surge.ui/commit/f7144895022728774af1f5b3f0cd306bb153ffeb))
+* **Tabs:** indicateur animé et variantes revues ([17ea0ce](https://mahmoud-nb.github.io/surge.ui/commit/17ea0ce89c9cd2e216a2f38edabd3ff28af36a89))
+* **templates:** ajout de huit layouts mobile first ([b19d3e3](https://mahmoud-nb.github.io/surge.ui/commit/b19d3e39a2c709ddd68f515a0bb210ec44f614f9))
+* **templates:** GridLayout remplace l'ancien Grid ([45b1a7c](https://mahmoud-nb.github.io/surge.ui/commit/45b1a7c0b0be0554f565db93d1427cbd23e5d447))
+
 ## [2.3.0](https://mahmoud-nb.github.io/surge.ui/compare/v2.2.0...v2.3.0) (2026-06-09)
 
 
