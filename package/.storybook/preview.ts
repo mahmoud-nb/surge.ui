@@ -1,6 +1,6 @@
 import type { Preview } from '@storybook/vue3'
 import '../src/styles/storybook.scss'
-import SurgeUpDS from '../src/index'
+import SurgeUpDS, { locales, provideLocale } from '../src/index'
 import { computed } from 'vue'
 
 // Import de la police Nunito Sans depuis Google Fonts
@@ -88,6 +88,19 @@ const preview: Preview = {
           { value: 'rtl', title: 'RTL' },
         ],
       },
+    },
+    locale: {
+      name: 'Langue',
+      description: 'Langue des textes par défaut des composants',
+      defaultValue: 'fr',
+      toolbar: {
+        icon: 'globe',
+        items: [
+          { value: 'fr', title: 'Français' },
+          { value: 'en', title: 'English' },
+        ],
+        dynamicTitle: true
+      },
     }
   },
   decorators: [
@@ -103,6 +116,8 @@ const preview: Preview = {
           const theme = computed(() => context.globals.theme)
           const themeMode = computed(() => context.globals.thememode)
           const dir = computed(() => context.globals.direction)
+          // Textes par défaut des composants dans la langue choisie
+          provideLocale(() => locales[context.globals.locale as keyof typeof locales] ?? locales.fr)
           return { theme, themeMode, dir }
         },
       }
