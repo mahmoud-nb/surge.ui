@@ -268,6 +268,7 @@ defineExpose({
     background: transparent;
     color: var(--su-text-tertiary);
     cursor: pointer;
+
     @include transition(background-color, color);
     @include touch-target-overlay;
 

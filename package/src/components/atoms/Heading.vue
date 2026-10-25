@@ -55,7 +55,6 @@ const tag = computed(() => (props.level === 'div' ? 'div' : `h${props.level}`))
 
 <style lang="scss" scoped>
 @use '../../styles/abstracts' as *;
-
 @use 'sass:map';
 
 // Titres : interlignage serré et léger resserrement des grands corps
@@ -105,6 +104,7 @@ $heading-level: (
 
   &--truncate {
     display: block;
+
     @include truncate;
   }
 

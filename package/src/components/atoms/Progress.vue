@@ -124,6 +124,7 @@ const trackStyle = computed(() => ({
     overflow: hidden;
     border-radius: var(--su-radius-full);
     background-color: var(--su-bg-muted);
+
     // Liseré pour garder la piste visible sur fond clair
     box-shadow: inset 0 0 0 1px var(--su-border-alpha);
   }
@@ -132,6 +133,7 @@ const trackStyle = computed(() => ({
     height: 100%;
     border-radius: inherit;
     background-color: var(--su-primary-default);
+
     @include transition(width, background-color);
   }
 

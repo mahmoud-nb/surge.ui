@@ -586,6 +586,7 @@ defineExpose({
   text-align: center;
   cursor: pointer;
   outline: none;
+
   @include transition(border-color, background-color, box-shadow);
 
   &:hover:not(&--disabled, &--readonly) {
@@ -671,6 +672,7 @@ defineExpose({
   height: 2rem;
   flex-shrink: 0;
   color: var(--su-text-tertiary);
+
   @include transition(color, translate);
 
   &--dragging {
@@ -773,6 +775,7 @@ defineExpose({
     font-size: var(--su-font-size-sm);
     font-weight: var(--su-font-weight-medium);
     color: var(--su-text-primary);
+
     @include truncate;
   }
 
@@ -833,6 +836,7 @@ defineExpose({
   background: transparent;
   color: var(--su-text-tertiary);
   cursor: pointer;
+
   @include transition(background-color, color);
   @include touch-target-overlay;
 
@@ -864,6 +868,7 @@ defineExpose({
 .su-file-upload-progress-fill {
   height: 100%;
   background-color: var(--su-primary-default);
+
   @include transition(width);
 }
 

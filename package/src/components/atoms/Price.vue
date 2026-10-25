@@ -198,6 +198,7 @@ const priceClasses = computed(() => [
   gap: 0.25rem;
   font-family: inherit;
   color: var(--su-text-primary);
+
   @include transition(color);
 
   // ========================================

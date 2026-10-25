@@ -192,6 +192,7 @@ onUnmounted(() => {
     text-align: start;
     cursor: pointer;
     outline: none;
+
     @include transition(background-color);
 
     @include up('sm') {
@@ -224,6 +225,7 @@ onUnmounted(() => {
     height: 1rem;
     flex-shrink: 0;
     opacity: 0.8;
+
     @include transition(rotate);
 
     // Enfant direct uniquement : un accordéon imbriqué garde ses propres chevrons

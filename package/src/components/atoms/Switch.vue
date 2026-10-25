@@ -182,6 +182,7 @@ defineExpose({
   font-weight: var(--su-font-weight-medium);
   color: var(--su-text-tertiary);
   user-select: none;
+
   @include transition(color);
 
   @include up('sm') {
@@ -205,6 +206,7 @@ defineExpose({
   display: inline-flex;
   flex-shrink: 0;
   box-sizing: border-box;
+
   // --_su-switch-pad : marge entre la pastille et le bord de la piste
   --_su-switch-pad: 2px;
 
@@ -219,6 +221,7 @@ defineExpose({
   color: inherit;
   cursor: pointer;
   outline: none;
+
   @include touch-target-overlay;
 
   // Tailles : 20px sur mobile puis 16px dès `sm` (md)
@@ -273,8 +276,10 @@ defineExpose({
   width: 100%;
   height: 100%;
   border-radius: inherit;
+
   // Piste décochée assez marquée pour rester lisible sur tous les fonds
   background-color: var(--su-border-strong);
+
   @include transition(background-color);
 
   .su-switch--checked & {
@@ -295,6 +300,7 @@ defineExpose({
   background-color: var(--su-bg-surface);
   box-shadow: 0 1px 2px rgb(0 0 0 / 10%), 0 0 0 0.5px rgb(0 0 0 / 4%);
   transform-origin: left center;
+
   @include transition(translate, scale, transform-origin);
 
   .su-switch--checked & {

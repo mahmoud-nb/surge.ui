@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
-import { h, ref } from 'vue'
+import { ref } from 'vue'
 import { BoldIcon, ItalicIcon, UnderlineIcon, HeartIcon, BookmarkIcon, StarIcon } from '@heroicons/vue/24/outline'
 import { HeartIcon as HeartIconSolid, BookmarkIcon as BookmarkIconSolid, StarIcon as StarIconSolid } from '@heroicons/vue/24/solid'
 import Toggle from '../Toggle.vue'

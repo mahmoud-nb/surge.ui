@@ -194,6 +194,7 @@ const handleBlur = (event: FocusEvent) => {
   border-radius: var(--su-radius-full);
   background-color: currentcolor;
   scale: 0;
+
   @include transition(scale);
 }
 

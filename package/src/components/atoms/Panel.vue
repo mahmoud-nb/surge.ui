@@ -59,6 +59,7 @@ withDefaults(defineProps<PanelProps>(), {
   background-color: var(--su-bg-canvas);
   background-clip: padding-box;
   color: var(--su-text-primary);
+
   @include transition(background-color, border-color, box-shadow);
 
   &--bordered {

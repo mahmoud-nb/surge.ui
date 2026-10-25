@@ -183,6 +183,7 @@ const handleMoreClick = (event: MouseEvent) => {
   color: var(--su-text-secondary);
   font-weight: var(--su-font-weight-medium);
   font-variant-numeric: tabular-nums;
+
   @include transition(background-color, color);
 
   &:hover {

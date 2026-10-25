@@ -206,6 +206,7 @@ const tabClasses = (index: number) => [
   white-space: nowrap;
   cursor: pointer;
   outline: none;
+
   @include transition(color, background-color, box-shadow);
 
   @include up('sm') {
@@ -246,6 +247,7 @@ const tabClasses = (index: number) => [
 
   &--ready {
     opacity: 1;
+
     @include transition(translate, width, height);
   }
 }

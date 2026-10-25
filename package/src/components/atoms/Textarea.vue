@@ -287,8 +287,10 @@ watch(() => props.autoResize, (newValue) => {
 .su-textarea-container {
   display: flex;
   color: var(--su-text-primary);
+
   // 16px sur mobile (pas de zoom iOS), 14px dès `sm`
   font-size: var(--su-font-size-base);
+
   @include control-surface;
 
   @include up('sm') {

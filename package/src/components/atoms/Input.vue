@@ -314,8 +314,10 @@ defineExpose({ focus, select, inputRef })
   align-items: stretch;
   width: 100%;
   color: var(--su-text-primary);
+
   // 16px sur mobile (pas de zoom iOS), 14px dès `sm`
   font-size: var(--su-font-size-base);
+
   @include control-surface;
 
   @include up('sm') {
@@ -441,6 +443,7 @@ defineExpose({ focus, select, inputRef })
       padding: 0.25rem;
       border-radius: var(--su-radius-sm);
       cursor: pointer;
+
       @include transition(background-color, color);
 
       &:hover {

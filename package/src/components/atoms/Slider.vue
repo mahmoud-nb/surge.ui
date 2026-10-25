@@ -557,6 +557,7 @@ defineExpose({
   flex-direction: column;
   gap: 0.5rem;
   width: 100%;
+
   // Largeur utile même dans un conteneur qui s'ajuste au contenu
   min-width: 12rem;
 
@@ -809,6 +810,7 @@ defineExpose({
   height: var(--_su-slider-thumb);
   cursor: grab;
   outline: none;
+
   @include touch-target-overlay;
 
   &--horizontal {
@@ -856,6 +858,7 @@ defineExpose({
   border-radius: var(--su-radius-full);
   background-color: var(--su-bg-surface);
   box-shadow: 0 1px 2px rgb(0 0 0 / 15%);
+
   @include transition(box-shadow);
 }
 

@@ -45,8 +45,8 @@ const customStyles = computed(() => {
   background-color: var(--su-bg-surface);
   background-clip: padding-box;
   color: var(--su-text-primary);
-  @include transition(border-color, box-shadow);
 
+  @include transition(border-color, box-shadow);
   @include use-border-radius;
 
   &--bordered {

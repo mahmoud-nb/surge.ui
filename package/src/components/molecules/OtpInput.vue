@@ -467,6 +467,7 @@ defineExpose({
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
+
   // 16px sur mobile (pas de zoom iOS), 14px dès `sm`
   font-size: var(--su-font-size-base);
 
@@ -517,8 +518,10 @@ defineExpose({
     text-align: center;
     color: var(--su-text-primary);
     caret-color: var(--su-ring);
+
     // Masquer les flèches de spin (numeric)
     appearance: textfield;
+
     @include transition(border-color, box-shadow, background-color);
 
     &::placeholder {
@@ -528,6 +531,7 @@ defineExpose({
 
     &:focus {
       z-index: 1;
+
       @include focus-ring-field;
     }
 
@@ -542,6 +546,7 @@ defineExpose({
 
   &--underline &__field {
     border-width: 0 0 2px;
+
     // Trait seul : couleur pleine pour rester visible sur fond sombre
     border-color: var(--su-border-default);
     border-radius: 0;

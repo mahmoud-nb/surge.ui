@@ -241,6 +241,7 @@ const handleKeydown = (event: KeyboardEvent) => {
   background-color: var(--su-bg-surface);
   background-clip: padding-box;
   text-decoration: none;
+
   @include transition(box-shadow, border-color, background-color);
 
   // ### Variantes

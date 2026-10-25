@@ -215,7 +215,6 @@ $su-avatar-shapes: (
   'rounded': 'lg',
   'square': 'sm'
 );
-
 $su-avatar-sizes: (
   'xs': (1.5rem, 0.625rem, 0.375rem),
   'sm': (2rem, 0.75rem, 0.5rem),
@@ -238,6 +237,7 @@ $su-avatar-sizes: (
   color: var(--su-text-secondary);
   font-size: var(--_su-avatar-font);
   font-weight: var(--su-font-weight-medium);
+
   @include transition(box-shadow, opacity);
 
   // Liseré interne au-dessus de l'image (détache l'avatar du fond)
@@ -339,6 +339,7 @@ $su-avatar-sizes: (
   width: var(--_su-avatar-status);
   height: var(--_su-avatar-status);
   border-radius: var(--su-radius-full);
+
   // Anneau de la couleur du fond pour détacher la pastille
   box-shadow: 0 0 0 2px var(--su-bg-canvas);
 

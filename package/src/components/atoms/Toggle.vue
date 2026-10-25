@@ -62,12 +62,15 @@ const ariaAttributes = computed(() => {
     @click="handleToggle"
   >
     <component
-      v-if="currentIcon"
       :is="currentIcon"
+      v-if="currentIcon"
       class="su-toggle__icon"
       aria-hidden="true"
     />
-    <span v-if="label" class="su-toggle__label">{{ label }}</span>
+    <span
+      v-if="label"
+      class="su-toggle__label"
+    >{{ label }}</span>
   </button>
 </template>
 

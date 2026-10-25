@@ -175,6 +175,7 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel) {
   text-underline-offset: 0.25em;
   cursor: pointer;
   outline: none;
+
   @include transition(color, background-color, text-decoration-color);
 
   &:focus-visible {
@@ -205,12 +206,14 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel) {
   &--sm {
     font-size: var(--su-font-size-sm);
     line-height: var(--su-line-height-tight);
+
     --_su-link-icon: 0.875rem;
   }
 
   &--md {
     font-size: var(--su-font-size-base);
     line-height: var(--su-line-height-normal);
+
     --_su-link-icon: 1rem;
 
     @include up('sm') {
@@ -221,6 +224,7 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel) {
   &--lg {
     font-size: var(--su-font-size-base);
     line-height: var(--su-line-height-normal);
+
     --_su-link-icon: 1.125rem;
   }
 
