@@ -223,7 +223,7 @@ The tooltip automatically adapts:
 
 ### 📱 Responsive behavior
 
-- **Mobile**: Automatically reduced offsets (16px instead of 24px)
+- **Position**: The `offset` prop applies at every screen width (pass a smaller offset on mobile if needed)
 - **Safe areas**: Support for notches and navigation bars
 - **Slot**: Maximum width adapted to screen
 

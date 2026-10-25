@@ -409,7 +409,7 @@ Le tooltip s'adapte automatiquement :
 
 ### 📱 Comportement responsive
 
-- **Mobile** : Offsets réduits automatiquement (16px au lieu de 24px)
+- **Position** : La prop `offset` s'applique à toutes les largeurs d'écran (passez un offset plus petit sur mobile si besoin)
 - **Zones sûres** : Support des encoches et barres de navigation
 - **Slot** : Largeur maximale adaptée à l'écran
 

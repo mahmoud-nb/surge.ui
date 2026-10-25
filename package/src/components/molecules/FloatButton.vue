@@ -243,6 +243,7 @@ defineExpose({
   flex-direction: column;
   align-items: flex-end;
   gap: $spacing-3;
+
   @include transition(opacity, translate);
 
   &--left {
@@ -263,18 +264,8 @@ defineExpose({
     gap: $spacing-4;
   }
 
-  // Sur mobile, le bouton se rapproche des bords
-  @include down('md') {
-    bottom: max(1rem, env(safe-area-inset-bottom)) !important;
-
-    &--right {
-      right: max(1rem, env(safe-area-inset-right)) !important;
-    }
-
-    &--left {
-      left: max(1rem, env(safe-area-inset-left)) !important;
-    }
-  }
+  // La position (prop `offset` + zones sûres) est appliquée en style inline :
+  // aucune règle CSS ne doit l'écraser, quelle que soit la largeur d'écran.
 }
 
 // Panneau de contenu additionnel (LinkGroup, ButtonGroup…)
@@ -283,6 +274,7 @@ defineExpose({
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+
   @include popover-surface;
 
   animation: su-float-button-in var(--su-duration-normal) var(--su-ease-out);
@@ -363,6 +355,7 @@ defineExpose({
   font-size: var(--su-font-size-xs);
   font-weight: var(--su-font-weight-semibold);
   font-variant-numeric: tabular-nums;
+
   // Anneau de la couleur du fond pour détacher la pastille du bouton
   box-shadow: 0 0 0 2px var(--su-bg-canvas);
   pointer-events: none;
@@ -387,6 +380,7 @@ defineExpose({
   pointer-events: none;
   opacity: 0;
   scale: 0.98;
+
   @include transition(opacity, scale);
 
   &--visible {
