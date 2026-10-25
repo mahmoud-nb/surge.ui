@@ -25,3 +25,8 @@ Boutons, liens, toggles, menus déroulants, bouton flottant.
 
 Champs de saisie, sélecteurs, interrupteurs, upload de fichiers, validation.
 [Voir tous les composants de formulaire &rarr;](/components/form)
+
+### Mise en page -  9 composants
+
+Une colonne, barre latérale, écran partagé, Holy Grail, magazine, grille, masonry, hero, plein écran. Mobile first, selon la largeur du conteneur.
+[Voir tous les layouts &rarr;](/components/layouts)

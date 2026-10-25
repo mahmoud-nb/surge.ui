@@ -36,6 +36,26 @@ $breakpoints: (
   }
 }
 
+/// Largeur du conteneur supérieure ou égale au point de rupture (container query).
+/// Le conteneur est l'ancêtre le plus proche portant `container-type: inline-size`
+/// (voir le mixin `layout-container`) ; `$container` cible un conteneur nommé.
+/// @example @include container-up(md, su-split-layout) { … }
+@mixin container-up($name, $container: null) {
+  @if not map.has-key($breakpoints, $name) {
+    @error "Point de rupture inconnu : '#{$name}'. Valeurs : #{map.keys($breakpoints)}";
+  }
+
+  @if $container {
+    @container #{$container} (width >= #{map.get($breakpoints, $name)}) {
+      @content;
+    }
+  } @else {
+    @container (width >= #{map.get($breakpoints, $name)}) {
+      @content;
+    }
+  }
+}
+
 /// Pointeur imprécis (écran tactile)
 @mixin pointer-coarse {
   @media (pointer: coarse) {

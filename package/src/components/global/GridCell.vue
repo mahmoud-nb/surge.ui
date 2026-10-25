@@ -2,6 +2,9 @@
 import { computed } from 'vue'
 import { GridCellProps } from '@/types'
 
+// Cellule des vitrines Storybook (Actions, Display, Form), placée dans un
+// GridLayout : surface, rayon et couleur de fond
+
 const props = withDefaults(defineProps<GridCellProps>(), {
   bordered: false,
   radius: 'none'
@@ -26,8 +29,7 @@ const customStyles = computed(() => {
       'su-grid-cell', 
       bordered && 'su-grid-cell--bordered',
       radius && `su-grid-cell--radius-${radius}`
-    ]" 
-    role="listitem"
+    ]"
     :style="customStyles"
   >
     <slot />

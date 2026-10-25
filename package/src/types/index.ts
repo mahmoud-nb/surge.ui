@@ -900,23 +900,149 @@ export interface CardProps extends AccessibilityProps {
 
 // --- TEMPLATES ---
 
-interface GridBreakpoints {
-  mobile?: number
-  tablet?: number
-  miniDesktop?: number
-  desktop?: number
-}
-
-export interface GridProps {
-  columns?: GridBreakpoints
-  gap?: string | number
-  viewMode?: 'grid' | 'list'
-  responsive?: boolean
-}
-
+// GridCell.vue (vitrines Storybook)
 export interface GridCellProps {
   bordered?: boolean
   radius?: Radius
   backgroundColor?: string
   borderColor?: string
+}
+
+// Layouts : mobile first. Les colonnes apparaissent selon la largeur du
+// conteneur (container queries), pas celle de l'écran.
+
+/** Écart entre les zones d'un layout (sm 8px, md 16px, lg 24px, xl 32px) */
+export type LayoutGap = 'none' | 'sm' | 'md' | 'lg' | 'xl'
+/** Largeur de conteneur à partir de laquelle un layout passe en colonnes (sm 640, md 768, lg 1024, xl 1280) */
+export type LayoutBreakpoint = 'sm' | 'md' | 'lg' | 'xl'
+
+export interface SingleColumnLayoutProps {
+  /** Largeur maximale de la colonne : `prose` ≈ 65 caractères par ligne */
+  width?: 'prose' | 'narrow' | 'medium' | 'wide' | 'full'
+  /** Écart entre en-tête, contenu et pied */
+  gap?: LayoutGap
+  /** Marges latérales (16px, puis 24px dès `md`) */
+  padded?: boolean
+  /** Élément racine (`article`, `main`, `section`…) */
+  as?: string
+}
+
+export interface SidebarLayoutProps {
+  /** Côté de la barre latérale (l'ordre du DOM suit l'ordre visuel) */
+  sidebarPosition?: 'start' | 'end'
+  /** Largeur de la barre latérale en colonnes (longueur CSS) */
+  sidebarWidth?: string
+  /** Largeur de conteneur à partir de laquelle les deux colonnes apparaissent */
+  breakpoint?: LayoutBreakpoint
+  /** Barre latérale collante (en colonnes uniquement) */
+  stickySidebar?: boolean
+  /** Distance au haut de l'écran de la barre collante (hauteur d'un en-tête fixe…) */
+  stickyOffset?: string
+  /** Élément de la barre latérale */
+  sidebarTag?: 'aside' | 'nav' | 'div'
+  /** Nom accessible de la barre latérale (aside, nav) */
+  sidebarLabel?: string
+  gap?: LayoutGap
+}
+
+export interface SplitLayoutProps {
+  /** Proportions des deux zones en colonnes (`2:1` : la première zone prend 2/3) */
+  ratio?: '1:1' | '2:1' | '1:2' | '3:2' | '2:3'
+  /** Largeur de conteneur à partir de laquelle les zones sont côte à côte */
+  breakpoint?: LayoutBreakpoint
+  /** En colonnes, affiche la zone `end` à gauche (l'ordre du DOM ne change pas) */
+  reverse?: boolean
+  /** Alignement vertical des zones en colonnes */
+  align?: 'start' | 'center' | 'end' | 'stretch'
+  /** Hauteur minimale de l'écran en colonnes (écran partagé) */
+  fullHeight?: boolean
+  gap?: LayoutGap
+}
+
+export interface HolyGrailLayoutProps {
+  /** Largeur de la navigation (dès `md`) */
+  navWidth?: string
+  /** Largeur de la colonne complémentaire (dès `lg`) */
+  asideWidth?: string
+  /** En-tête collant en haut de l'écran */
+  stickyHeader?: boolean
+  /** Navigation et colonne complémentaire collantes (en colonnes) */
+  stickySidebars?: boolean
+  /** Distance au haut de l'écran des colonnes collantes (hauteur de l'en-tête collant…) */
+  stickyOffset?: string
+  /** Occupe au moins la hauteur de l'écran (pied de page en bas) */
+  fullHeight?: boolean
+  /** Régions sémantiques (header, nav, main, aside, footer). `false` : de simples div, pour un layout imbriqué dans une page qui a déjà ses régions */
+  landmarks?: boolean
+  /** Lien d'évitement vers le contenu principal (avec `landmarks`) */
+  skipLink?: boolean
+  skipLinkLabel?: string
+  navLabel?: string
+  asideLabel?: string
+  gap?: LayoutGap
+}
+
+export interface MagazineLayoutProps {
+  /** Colonnes de la grille d'articles en grand format (1, puis 2 dès `sm`) */
+  columns?: 2 | 3 | 4
+  gap?: LayoutGap
+}
+
+/** Nombre de colonnes : fixe, ou par largeur de conteneur (mobile first) */
+export type LayoutColumns = number | Partial<Record<'base' | LayoutBreakpoint, number>>
+
+/** Affichage des cellules du GridLayout : en grille, ou empilées en liste */
+export type GridLayoutView = 'grid' | 'list'
+
+// L'affichage (GridLayoutView) passe par `v-model:view` (defineModel)
+export interface GridLayoutProps {
+  /** Colonnes par largeur de conteneur (défaut : 1, 2 dès `sm`, 3 dès `lg`) */
+  columns?: LayoutColumns
+  /** Largeur minimale d'une cellule (longueur CSS) : grille auto-fill, le nombre de colonnes s'adapte seul et remplace `columns` */
+  minItemWidth?: string
+  /** Alignement vertical des cellules d'une rangée (`stretch` : même hauteur) */
+  align?: 'start' | 'center' | 'end' | 'stretch'
+  /** Élément qui contient les cellules : `ul` ou `ol` pour une liste (cellules `li`) */
+  itemsTag?: 'div' | 'ul' | 'ol'
+  /** Affiche le sélecteur grille / liste dans l'en-tête */
+  viewToggle?: boolean
+  /** Nom accessible du sélecteur grille / liste */
+  viewToggleLabel?: string
+  /** Libellé du bouton « grille » */
+  gridLabel?: string
+  /** Libellé du bouton « liste » */
+  listLabel?: string
+  gap?: LayoutGap
+}
+
+export type MasonryColumns = LayoutColumns
+
+export interface MasonryLayoutProps {
+  /** Colonnes par largeur de conteneur (défaut : 1, 2 dès `sm`, 3 dès `lg`) */
+  columns?: MasonryColumns
+  /** Largeur idéale d'une colonne (longueur CSS) : le nombre de colonnes s'adapte seul et remplace `columns` */
+  columnWidth?: string
+  gap?: LayoutGap
+}
+
+export interface HeroLayoutProps {
+  /** Alignement du texte de l'accroche */
+  align?: 'center' | 'start'
+  /** Visuel sous le texte, ou à côté dès `lg` */
+  mediaPosition?: 'bottom' | 'end'
+  /** L'accroche occupe au moins la hauteur de l'écran */
+  fullHeight?: boolean
+  /** Niveau du titre de l'accroche */
+  titleTag?: 'h1' | 'h2' | 'h3'
+  /** Écart entre l'accroche et les sections suivantes */
+  gap?: LayoutGap
+}
+
+export interface FullScreenLayoutProps {
+  /** Aimantation du défilement sur chaque écran */
+  snap?: 'mandatory' | 'proximity' | 'none'
+  /** Hauteur de la zone de défilement (un écran = cette hauteur) */
+  height?: string
+  /** Nom accessible de la zone de défilement */
+  label?: string
 }

@@ -21,8 +21,8 @@ import {
   PrinterIcon,
   BellIcon
 } from '@heroicons/vue/24/outline'
-import Grid from '../templates/Grid.vue'
-import GridCell from '../templates/GridCell.vue'
+import GridLayout from '../templates/GridLayout.vue'
+import GridCell from './GridCell.vue'
 import Preview from './Preview.vue'
 import GlobalPreview from './GlobalPreview.vue'
 import { ref } from 'vue'
@@ -66,7 +66,10 @@ const handleSelectAction = (option: any) => {
       <!-- BARRE D'ACTIONS / TOOLBAR -->
       <div class="section">
         <h3>Barre d'actions (Toolbar)</h3>
-        <Grid view-mode="list">
+        <GridLayout
+          view="list"
+          view-toggle
+        >
           <GridCell
             radius="md"
             background-color="#F9F9F9"
@@ -128,13 +131,16 @@ const handleSelectAction = (option: any) => {
               </Panel>
             </Preview>
           </GridCell>
-        </Grid>
+        </GridLayout>
       </div>
 
       <!-- ACTIONS DE FORMULAIRE -->
       <div class="section">
         <h3>Actions de formulaire</h3>
-        <Grid view-mode="list">
+        <GridLayout
+          view="list"
+          view-toggle
+        >
           <GridCell
             radius="md"
             background-color="#F9F9F9"
@@ -183,13 +189,16 @@ const handleSelectAction = (option: any) => {
               </Panel>
             </Preview>
           </GridCell>
-        </Grid>
+        </GridLayout>
       </div>
 
       <!-- MENU UTILISATEUR / PROFIL -->
       <div class="section">
         <h3>Menu utilisateur (User Menu)</h3>
-        <Grid view-mode="list">
+        <GridLayout
+          view="list"
+          view-toggle
+        >
           <GridCell
             radius="md"
             background-color="#F9F9F9"
@@ -221,13 +230,16 @@ const handleSelectAction = (option: any) => {
               </div>
             </Preview>
           </GridCell>
-        </Grid>
+        </GridLayout>
       </div>
 
       <!-- MENU DE DOCUMENT -->
       <div class="section">
         <h3>Menu de document (Document Menu)</h3>
-        <Grid view-mode="list">
+        <GridLayout
+          view="list"
+          view-toggle
+        >
           <GridCell
             radius="md"
             background-color="#F9F9F9"
@@ -242,13 +254,16 @@ const handleSelectAction = (option: any) => {
               />
             </Preview>
           </GridCell>
-        </Grid>
+        </GridLayout>
       </div>
 
       <!-- NAVIGATION PAR LIENS -->
       <div class="section">
         <h3>Navigation par liens (Navigation Links)</h3>
-        <Grid view-mode="list">
+        <GridLayout
+          view="list"
+          view-toggle
+        >
           <GridCell
             radius="md"
             background-color="#F9F9F9"
@@ -303,13 +318,16 @@ const handleSelectAction = (option: any) => {
               </LinkGroup>
             </Preview>
           </GridCell>
-        </Grid>
+        </GridLayout>
       </div>
 
       <!-- ACTIONS DE LIGNE (ROW ACTIONS) -->
       <div class="section">
         <h3>Actions de ligne (Row Actions)</h3>
-        <Grid view-mode="list">
+        <GridLayout
+          view="list"
+          view-toggle
+        >
           <GridCell
             radius="md"
             background-color="#F9F9F9"
@@ -347,13 +365,16 @@ const handleSelectAction = (option: any) => {
               </div>
             </Preview>
           </GridCell>
-        </Grid>
+        </GridLayout>
       </div>
 
       <!-- GROUPE D'ACTIONS PAR CATÉGORIE -->
       <div class="section">
         <h3>Actions groupées par contexte</h3>
-        <Grid view-mode="list">
+        <GridLayout
+          view="list"
+          view-toggle
+        >
           <GridCell
             radius="md"
             background-color="#F9F9F9"
@@ -433,13 +454,16 @@ const handleSelectAction = (option: any) => {
               </div>
             </Preview>
           </GridCell>
-        </Grid>
+        </GridLayout>
       </div>
 
       <!-- ACTIONS FLOTTANTES -->
       <div class="section">
         <h3>Boutons flottants (Floating Actions)</h3>
-        <Grid view-mode="list">
+        <GridLayout
+          view="list"
+          view-toggle
+        >
           <GridCell
             radius="md"
             background-color="#F9F9F9"
@@ -479,13 +503,16 @@ const handleSelectAction = (option: any) => {
               </div>
             </Preview>
           </GridCell>
-        </Grid>
+        </GridLayout>
       </div>
 
       <!-- ACTIONS CONTEXTUELLES -->
       <div class="section">
         <h3>Barre d'actions contextuelle</h3>
-        <Grid view-mode="list">
+        <GridLayout
+          view="list"
+          view-toggle
+        >
           <GridCell
             radius="md"
             background-color="#F9F9F9"
@@ -523,7 +550,7 @@ const handleSelectAction = (option: any) => {
               </Panel>
             </Preview>
           </GridCell>
-        </Grid>
+        </GridLayout>
       </div>
     </div>
   </GlobalPreview>
