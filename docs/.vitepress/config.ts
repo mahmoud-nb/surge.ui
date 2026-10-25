@@ -80,6 +80,7 @@ const getNavItems = (section: string = 'display', lang: string = 'fr') => {
       { text: 'SplitLayout', link: `${langPrefix}/components/splitlayout`, badge: NEW_BADGE },
       { text: 'HolyGrailLayout', link: `${langPrefix}/components/holygraillayout`, badge: NEW_BADGE },
       { text: 'MagazineLayout', link: `${langPrefix}/components/magazinelayout`, badge: NEW_BADGE },
+      { text: 'GridLayout', link: `${langPrefix}/components/gridlayout`, badge: NEW_BADGE },
       { text: 'MasonryLayout', link: `${langPrefix}/components/masonrylayout`, badge: NEW_BADGE },
       { text: 'HeroLayout', link: `${langPrefix}/components/herolayout`, badge: NEW_BADGE },
       { text: 'FullScreenLayout', link: `${langPrefix}/components/fullscreenlayout`, badge: NEW_BADGE },

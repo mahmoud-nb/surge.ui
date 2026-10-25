@@ -12,7 +12,7 @@ Les layouts (couche *templates* de l'Atomic Design) structurent une page ou une 
 | Asymétrique | Portfolios, campagnes | [SplitLayout](/components/splitlayout#asymetrique) avec `ratio="3:2"` ou `"2:1"` |
 | Holy Grail | Applications : navigation, contenu, compléments | [HolyGrailLayout](/components/holygraillayout) |
 | Magazine | Sites d'actualité, hiérarchie d'articles | [MagazineLayout](/components/magazinelayout) |
-| Grille | Listes de produits, galeries | Grille d'articles du [MagazineLayout](/components/magazinelayout) (slot `default`) |
+| Grille | Listes de produits, galeries, tableaux de bord | [GridLayout](/components/gridlayout) |
 | Masonry | Fils de médias de hauteurs variables | [MasonryLayout](/components/masonrylayout) |
 | Hero | Lancements de produit, inscriptions | [HeroLayout](/components/herolayout) |
 | Plein écran | Récits, une idée par écran | [FullScreenLayout](/components/fullscreenlayout) |

@@ -83,5 +83,5 @@ Chaque valeur s'applique jusqu'au seuil suivant (mobile first). Un nombre seul f
 
 ## Accessibilité
 
-- **Ordre de lecture** : les éléments se lisent **colonne par colonne** (de haut en bas, puis colonne suivante), comme la tabulation. Pour un contenu dont l'ordre compte (fil chronologique, résultats triés), préférez une grille comme celle du [MagazineLayout](/components/magazinelayout).
+- **Ordre de lecture** : les éléments se lisent **colonne par colonne** (de haut en bas, puis colonne suivante), comme la tabulation. Pour un contenu dont l'ordre compte (fil chronologique, résultats triés), préférez le [GridLayout](/components/gridlayout).
 - **Images** : donnez un `alt` à chaque média porteur de sens, et des dimensions (`width`, `height`) pour éviter les sauts de mise en page au chargement.

@@ -50,7 +50,7 @@ Editorial hierarchy for news sites and blogs: a featured story, a column of seco
 
 ### Grid only (products, gallery)
 
-Without `featured` or `aside`, only the grid remains: 1 column, 2 from 640px, then `columns` from 1024px.
+Without `featured` or `aside`, only the grid remains: 1 column, 2 from 640px, then `columns` from 1024px. For a grid with no hierarchy (columns by width, automatic columns, list mode), prefer the [GridLayout](/en/components/gridlayout).
 
 ```vue
 <SuMagazineLayout :columns="4" gap="md">

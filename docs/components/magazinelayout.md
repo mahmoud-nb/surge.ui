@@ -50,7 +50,7 @@ Hiérarchie éditoriale des sites d'actualité et des blogs : un article à la u
 
 ### Grille seule (produits, galerie)
 
-Sans `featured` ni `aside`, il ne reste que la grille : 1 colonne, 2 dès 640px, puis `columns` dès 1024px.
+Sans `featured` ni `aside`, il ne reste que la grille : 1 colonne, 2 dès 640px, puis `columns` dès 1024px. Pour une grille sans hiérarchie (colonnes par largeur, colonnes automatiques, mode liste), préférez le [GridLayout](/components/gridlayout).
 
 ```vue
 <SuMagazineLayout :columns="4" gap="md">

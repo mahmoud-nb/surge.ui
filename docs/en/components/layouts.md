@@ -12,7 +12,7 @@ Layouts (the *templates* layer of Atomic Design) structure a page or a section: 
 | Asymmetrical | Portfolios, bold campaigns | [SplitLayout](/en/components/splitlayout#asymmetrical) with `ratio="3:2"` or `"2:1"` |
 | Holy Grail | Apps: nav, content, extras | [HolyGrailLayout](/en/components/holygraillayout) |
 | Magazine | News sites ranking stories | [MagazineLayout](/en/components/magazinelayout) |
-| Grid | Product lists, galleries | The [MagazineLayout](/en/components/magazinelayout) story grid (`default` slot) |
+| Grid | Product lists, galleries, dashboards | [GridLayout](/en/components/gridlayout) |
 | Masonry | Mixed-height media feeds | [MasonryLayout](/en/components/masonrylayout) |
 | Hero | Product launches, signups | [HeroLayout](/en/components/herolayout) |
 | Full screen | Stories, one idea per screen | [FullScreenLayout](/en/components/fullscreenlayout) |

@@ -26,7 +26,7 @@ Buttons, links, toggles, dropdown menus, floating button.
 Input fields, selectors, switches, file uploads, validation.
 [See all form components &rarr;](/en/components/form)
 
-### Layouts -  8 components
+### Layouts -  9 components
 
-Single column, sidebar, split screen, Holy Grail, magazine, masonry, hero, full screen. Mobile first, driven by container width.
+Single column, sidebar, split screen, Holy Grail, magazine, grid, masonry, hero, full screen. Mobile first, driven by container width.
 [See all layouts &rarr;](/en/components/layouts)

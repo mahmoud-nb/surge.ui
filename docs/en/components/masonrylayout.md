@@ -83,5 +83,5 @@ Each value applies up to the next threshold (mobile first). A single number fixe
 
 ## Accessibility
 
-- **Reading order**: items read **column by column** (top to bottom, then the next column), and so does tabbing. For content whose order matters (chronological feed, sorted results), prefer a grid such as the [MagazineLayout](/en/components/magazinelayout) one.
+- **Reading order**: items read **column by column** (top to bottom, then the next column), and so does tabbing. For content whose order matters (chronological feed, sorted results), prefer the [GridLayout](/en/components/gridlayout).
 - **Images**: give every meaningful media an `alt`, and dimensions (`width`, `height`) to avoid layout shifts while loading.
