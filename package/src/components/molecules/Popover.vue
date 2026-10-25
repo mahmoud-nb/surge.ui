@@ -42,7 +42,6 @@
         :aria-label="ariaLabel"
         @mouseenter="trigger === 'hover' && handleContentMouseEnter()"
         @mouseleave="trigger === 'hover' && handleContentMouseLeave()"
-        @keydown="handleContentKeydown"
         @focusout="trigger === 'focus' && handleBlur($event)"
       >
         <!-- Arrow -->
@@ -79,7 +78,6 @@
         <div
           v-if="isOpen && modal"
           class="su-popover__backdrop"
-          @click="closeOnBackdropClick && close()"
         />
       </Transition>
     </Teleport>
@@ -87,11 +85,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted, onBeforeUnmount, nextTick, useId } from 'vue'
+import { ref, computed, watch, onMounted, onBeforeUnmount, useId } from 'vue'
 import { XMarkIcon } from '@heroicons/vue/24/outline'
 import type { PopoverProps } from '@/types'
 import { useFloatingPosition } from '@/composables/useFloatingPosition'
 import { useLocale } from '@/composables/useLocale'
+import { useFocusTrap, getTabbableElements } from '@/composables/useFocusTrap'
+import { useDismiss } from '@/composables/useDismiss'
 
 const props = withDefaults(defineProps<PopoverProps>(), {
   modelValue: undefined,
@@ -168,11 +168,6 @@ watch(isOpen, (newValue) => {
   
   if (newValue) {
     emit('open');
-    nextTick(() => {
-      if (props.modal) {
-        trapFocus();
-      }
-    });
   } else {
     emit('close');
   }
@@ -203,6 +198,14 @@ const close = () => {
   } else {
     isOpen.value = false;
   }
+};
+
+// Fermeture immédiate (Échap, appui extérieur) : sans le délai du survol
+const closeNow = () => {
+  if (hoverTimeout.value) {
+    clearTimeout(hoverTimeout.value);
+  }
+  isOpen.value = false;
 };
 
 const toggle = () => {
@@ -259,81 +262,43 @@ const handleBlur = (event: FocusEvent) => {
   close();
 };
 
-const handleContentKeydown = (event: KeyboardEvent) => {
-  if (event.key === 'Escape' && props.closeOnEscape) {
-    event.preventDefault();
-    close();
-    triggerRef.value?.focus();
-  }
-
-  if (event.key === 'Tab' && props.modal) {
-    handleTabKey(event);
-  }
-};
-
-const handleClickOutside = (event: PointerEvent) => {
-  if (!props.closeOnClickOutside || !isOpen.value) return;
-
-  const target = event.target as Node;
-  if (
-    popoverRef.value &&
-    !popoverRef.value.contains(target) &&
-    triggerRef.value &&
-    !triggerRef.value.contains(target)
-  ) {
-    close();
-  }
-};
-
 const handleAfterLeave = () => {
   emit('after-leave');
 };
 
 // Focus Management
-const trapFocus = () => {
-  const focusableElements = popoverRef.value?.querySelectorAll(
-    'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-  );
-  
-  if (focusableElements && focusableElements.length > 0) {
-    (focusableElements[0] as HTMLElement).focus();
-  }
+
+// Mode modal : focus gardé dans le popover, rendu au déclencheur à la fermeture
+useFocusTrap(popoverRef, { active: () => isOpen.value && props.modal });
+
+// Le conteneur du slot n'est pas focalisable : on vise son premier élément
+const focusTrigger = () => {
+  const trigger = triggerRef.value;
+  if (!trigger) return;
+  (getTabbableElements(trigger)[0] ?? trigger).focus();
 };
 
-const handleTabKey = (event: KeyboardEvent) => {
-  const focusableElements = popoverRef.value?.querySelectorAll(
-    'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-  ) as NodeListOf<HTMLElement>;
-
-  if (!focusableElements || focusableElements.length === 0) return;
-
-  const firstElement = focusableElements[0];
-  const lastElement = focusableElements[focusableElements.length - 1];
-
-  if (event.shiftKey) {
-    if (document.activeElement === firstElement) {
-      event.preventDefault();
-      lastElement.focus();
-    }
-  } else {
-    if (document.activeElement === lastElement) {
-      event.preventDefault();
-      firstElement.focus();
-    }
+// Échap et appui extérieur (le fond en mode modal) ferment le popover ;
+// Échap rend le focus au déclencheur s'il était dans le contenu
+useDismiss([triggerRef, popoverRef], {
+  enabled: isOpen,
+  escape: () => props.closeOnEscape,
+  outside: () => (props.modal ? props.closeOnBackdropClick : props.closeOnClickOutside),
+  onDismiss: (reason) => {
+    const focusInside = !!popoverRef.value?.contains(document.activeElement);
+    closeNow();
+    if (reason === 'escape' && focusInside && !props.modal) focusTrigger();
   }
-};
+});
 
 // Lifecycle
 onMounted(() => {
-  document.addEventListener('pointerdown', handleClickOutside);
-  
   if (props.modelValue) {
     isOpen.value = true;
   }
 });
 
 onBeforeUnmount(() => {
-  document.removeEventListener('pointerdown', handleClickOutside);
   if (hoverTimeout.value) {
     clearTimeout(hoverTimeout.value);
   }

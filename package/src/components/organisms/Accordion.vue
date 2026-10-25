@@ -2,6 +2,7 @@
 import { ref, computed, provide, watch, useId } from 'vue'
 
 import AccordionItem from '../molecules/AccordionItem.vue'
+import { useListNavigation } from '@/composables/useListNavigation'
 import type { AccordionContext, AccordionItemData, AccordionProps } from '@/types'
 
 const props = withDefaults(defineProps<AccordionProps>(), {
@@ -122,17 +123,16 @@ const handleKeydown = (event: KeyboardEvent) => {
     return
   }
 
-  const targets: Record<string, number> = {
-    ArrowDown: (current + 1) % headers.length,
-    ArrowUp: (current - 1 + headers.length) % headers.length,
-    Home: 0,
-    End: headers.length - 1
-  }
-  if (!(event.key in targets)) return
-
-  event.preventDefault()
-  headers[targets[event.key]]?.focus()
+  headerNav.handleKeydown(event)
 }
+
+// Flèches haut / bas en boucle, Début / Fin entre les en-têtes actifs
+const headerNav = useListNavigation({
+  items: getHeaders,
+  loop: true,
+  mode: 'roving',
+  getElement: (index) => getHeaders()[index]
+})
 </script>
 
 <template>

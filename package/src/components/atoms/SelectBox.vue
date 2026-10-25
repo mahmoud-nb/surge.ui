@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { computed, ref, watch, nextTick, onMounted, onUnmounted } from 'vue'
+import { computed, ref, watch, nextTick } from 'vue'
 import { ChevronDownIcon, XMarkIcon, MagnifyingGlassIcon, CheckIcon } from '@heroicons/vue/24/outline'
 import { useFloatingPosition } from '@/composables/useFloatingPosition'
 import type { SelectOption, SelectBoxProps } from '@/types'
 import { useLocale } from '@/composables/useLocale'
 import { useAnnouncer } from '@/composables/useAnnouncer'
 import { useFormField } from '@/composables/useFormField'
+import { useListNavigation } from '@/composables/useListNavigation'
+import { useDismiss } from '@/composables/useDismiss'
 
 defineOptions({ inheritAttrs: false })
 
@@ -59,14 +61,6 @@ const searchInputRef = ref<HTMLInputElement>()
 // État local
 const isOpen = ref(false)
 const searchQuery = ref('')
-// Option mise en avant (clavier ou survol) : le focus DOM reste sur le
-// déclencheur (ou le champ de recherche), l'option est annoncée via
-// aria-activedescendant
-const focusedIndex = ref(-1)
-
-// Saisie rapide : les lettres tapées à la suite forment un préfixe
-let typeaheadBuffer = ''
-let typeaheadTimer: ReturnType<typeof setTimeout> | undefined
 
 // Positionnement de la liste (fixed, retournée s'il manque de place)
 useFloatingPosition(inputRef, dropdownRef, {
@@ -130,9 +124,19 @@ const optionSections = computed(() => {
   }))
 })
 
-const navigableOptions = computed(() =>
+const navigableOptions = computed((): SelectOption[] =>
   optionSections.value.flatMap(section => section.options.map(item => item.option))
 )
+
+// Option mise en avant (clavier ou survol) : le focus DOM reste sur le
+// déclencheur (ou le champ de recherche), l'option est annoncée via
+// aria-activedescendant. Options désactivées sautées, saisie rapide.
+const nav = useListNavigation({
+  items: navigableOptions,
+  isDisabled: (option) => !!option.disabled,
+  typeahead: { getLabel: (option) => option.label }
+})
+const focusedIndex = nav.activeIndex
 
 // Valeur sélectionnée normalisée
 const selectedValue = computed({
@@ -227,40 +231,19 @@ const ariaAttributes = computed<Record<string, any>>(() => ({
 
 // ### Navigation dans la liste (les options désactivées sont sautées)
 
-const findEnabled = (start: number, step: 1 | -1) => {
-  const list = navigableOptions.value
-  for (let i = start; i >= 0 && i < list.length; i += step) {
-    if (!list[i].disabled) return i
-  }
-  return -1
-}
-
+// Aucune option active si la liste filtrée n'en contient pas
 const focusFirst = () => {
-  focusedIndex.value = findEnabled(0, 1)
-}
-
-const focusLast = () => {
-  focusedIndex.value = findEnabled(navigableOptions.value.length - 1, -1)
+  if (nav.first() === -1) nav.setActiveIndex(-1)
 }
 
 const focusSelectedOrFirst = () => {
   const index = navigableOptions.value.findIndex(option => !option.disabled && isSelected(option))
-  if (index !== -1) focusedIndex.value = index
+  if (index !== -1) nav.setActiveIndex(index)
   else focusFirst()
 }
 
-const moveFocus = (step: 1 | -1) => {
-  if (focusedIndex.value === -1) {
-    if (step === 1) focusFirst()
-    else focusLast()
-    return
-  }
-  const next = findEnabled(focusedIndex.value + step, step)
-  if (next !== -1) focusedIndex.value = next
-}
-
 const hoverOption = (index: number) => {
-  if (!navigableOptions.value[index]?.disabled) focusedIndex.value = index
+  if (!navigableOptions.value[index]?.disabled) nav.setActiveIndex(index)
 }
 
 // ### Ouverture et fermeture
@@ -293,7 +276,7 @@ const closeDropdown = (restoreFocus = true) => {
   if (restoreFocus) inputRef.value?.focus()
 
   isOpen.value = false
-  focusedIndex.value = -1
+  nav.reset()
   searchQuery.value = ''
 
   emit('close')
@@ -386,27 +369,6 @@ watch(searchQuery, (query) => {
   else focusSelectedOrFirst()
 })
 
-const handleTypeahead = (char: string) => {
-  clearTimeout(typeaheadTimer)
-  typeaheadBuffer += char.toLowerCase()
-  typeaheadTimer = setTimeout(() => { typeaheadBuffer = '' }, 500)
-
-  // Même lettre répétée : on passe d'une option à l'autre avec cette initiale
-  const repeated = [...typeaheadBuffer].every(c => c === typeaheadBuffer[0])
-  const query = repeated ? typeaheadBuffer[0] : typeaheadBuffer
-  const list = navigableOptions.value
-  const start = Math.max(focusedIndex.value + (typeaheadBuffer.length === 1 || repeated ? 1 : 0), 0)
-
-  for (let i = 0; i < list.length; i++) {
-    const index = (start + i) % list.length
-    const option = list[index]
-    if (!option.disabled && option.label.toLowerCase().startsWith(query)) {
-      focusedIndex.value = index
-      return
-    }
-  }
-}
-
 // ### Clavier
 
 /** Touches communes au déclencheur et au champ de recherche */
@@ -415,14 +377,14 @@ const handleNavigationKey = (event: KeyboardEvent, editable: boolean) => {
     case 'ArrowDown':
       event.preventDefault()
       if (!isOpen.value) openDropdown()
-      else if (!event.altKey) moveFocus(1)
+      else if (!event.altKey) nav.next()
       return true
 
     case 'ArrowUp':
       event.preventDefault()
       if (!isOpen.value) openDropdown()
       else if (event.altKey) selectFocused()
-      else moveFocus(-1)
+      else nav.previous()
       return true
 
     case 'Home':
@@ -430,8 +392,8 @@ const handleNavigationKey = (event: KeyboardEvent, editable: boolean) => {
       // Dans le champ de recherche, Début/Fin déplacent le curseur
       if (!isOpen.value || editable) return false
       event.preventDefault()
-      if (event.key === 'Home') focusFirst()
-      else focusLast()
+      if (event.key === 'Home') nav.first()
+      else nav.last()
       return true
 
     case 'Enter':
@@ -468,7 +430,7 @@ const handleTriggerKeydown = (event: KeyboardEvent) => {
   if (!printable) return
 
   // Espace : ouvre ou sélectionne, sauf au milieu d'une saisie rapide
-  if (event.key === ' ' && !typeaheadBuffer) {
+  if (event.key === ' ' && !nav.isTyping()) {
     event.preventDefault()
     if (!isOpen.value) openDropdown()
     else selectFocused()
@@ -488,9 +450,9 @@ const handleTriggerKeydown = (event: KeyboardEvent) => {
   // Liste fermée sans valeur : la recherche part du début, première option incluse
   if (!isOpen.value) {
     openDropdown()
-    if (selectedOptions.value.length === 0) focusedIndex.value = -1
+    if (selectedOptions.value.length === 0) nav.setActiveIndex(-1)
   }
-  handleTypeahead(event.key)
+  nav.searchTypeahead(event.key)
 }
 
 const handleSearchKeydown = (event: KeyboardEvent) => {
@@ -522,12 +484,13 @@ const handleFocusOut = (event: FocusEvent) => {
   emit('blur', event)
 }
 
-// Fermeture au clic extérieur (pointerdown : avant le clic lui-même)
-const handlePointerDownOutside = (event: PointerEvent) => {
-  if (isOpen.value && selectRef.value && !selectRef.value.contains(event.target as Node)) {
-    closeDropdown(false)
-  }
-}
+// Fermeture à l'appui extérieur (avant le clic lui-même). Échap est géré
+// au clavier ci-dessus : il ne ferme que la liste, pas un parent
+useDismiss(selectRef, {
+  enabled: isOpen,
+  escape: false,
+  onDismiss: () => closeDropdown(false)
+})
 
 // L'option mise en avant reste visible dans la liste
 watch(focusedIndex, async (index) => {
@@ -556,16 +519,6 @@ defineExpose({
   close,
   selectRef,
   inputRef
-})
-
-// Lifecycle
-onMounted(() => {
-  document.addEventListener('pointerdown', handlePointerDownOutside)
-})
-
-onUnmounted(() => {
-  document.removeEventListener('pointerdown', handlePointerDownOutside)
-  clearTimeout(typeaheadTimer)
 })
 </script>
 
