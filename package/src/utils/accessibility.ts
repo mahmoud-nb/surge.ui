@@ -1,6 +1,7 @@
 /**
  * Utilitaires pour l'accessibilité
  */
+import { announce } from '@/composables/useAnnouncer'
 
 /**
  * Génère un ID unique pour les éléments
@@ -66,20 +67,11 @@ export function trapFocus(container: HTMLElement): () => void {
 
 /**
  * Annonce un message aux lecteurs d'écran
+ * @deprecated Utiliser `announce()` ou `useAnnouncer()` (composables) : régions live
+ * persistantes, annonces fiables et compatibles avec les dialogs modaux.
  */
 export function announceToScreenReader(message: string, priority: 'polite' | 'assertive' = 'polite'): void {
-  const announcement = document.createElement('div')
-  announcement.setAttribute('aria-live', priority)
-  announcement.setAttribute('aria-atomic', 'true')
-  announcement.className = 'sr-only'
-  announcement.textContent = message
-  
-  document.body.appendChild(announcement)
-  
-  // Supprime l'élément après l'annonce
-  setTimeout(() => {
-    document.body.removeChild(announcement)
-  }, 1000)
+  announce(message, { priority })
 }
 
 /**
