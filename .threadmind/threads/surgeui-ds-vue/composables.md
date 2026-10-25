@@ -4,8 +4,8 @@ title: composables
 parentId: main
 author: mahmoud-b73a
 createdAt: 2026-05-19T18:34:09.162Z
-updatedAt: 2026-10-25T20:56:53.884Z
-commit: 85a2691eb8f59051cc0f813ca00835fd7ef3b32c
+updatedAt: 2026-10-25T21:03:28.684Z
+commit: 0be5823183241251f0fa6a59d695a6821d9c6fdb
 ---
 
 ## Composables — Session du 07/06/2026
@@ -102,6 +102,16 @@ commit: 85a2691eb8f59051cc0f813ca00835fd7ef3b32c
 - Accordion : boucle et en-tête désactivé sauté.
 
 **Contrôles** : ESLint 0, types et builds OK.
+- 2026-10-25 : **release 3.0.0 publiée sur GitHub** (commit 0be5823 `chore(release): 3.0.0`, tag `v3.0.0`, poussés sur origin/main avec `--follow-tags`).
+- Version **majeure** à cause de deux BREAKING CHANGE : `feat(Dialog)!` et `refactor(ui)!`.
+- Les tags manquants v2.1.0, v2.2.0 et v2.3.0 ont été recréés (annotés) sur les commits de release existants ; sans eux, standard-version serait reparti de v2.0.0.
+- CHANGELOG :
+  - section 3.0.0 générée, notes de rupture nettoyées (trailers retirés, une puce par rupture) ;
+  - section Deprecations ajoutée (`announceToScreenReader`, `trapFocus`) ;
+  - commit 9d35fad de l'utilisateur (notes ThreadMind) écarté de la liste ;
+  - historique conservé octet pour octet (standard-version supprimait la section manuelle 1.0.0).
+- package-lock synchronisé : seules les versions changent.
+- **Non fait** : publication npm (`npm run release:publish`) ; branches locales fusionnées encore présentes.
 
 ## Open questions
 ### Étude des composables à ajouter (2026-10-25)
