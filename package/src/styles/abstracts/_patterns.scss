@@ -412,3 +412,35 @@
     @include disabled-state;
   }
 }
+
+// ### Layouts (templates)
+
+/// Écarts des layouts, exposés par les modificateurs `--gap-*`
+$layout-gaps: (
+  'none': 0,
+  'sm': var(--su-spacing-2),
+  'md': var(--su-spacing-4),
+  'lg': var(--su-spacing-6),
+  'xl': var(--su-spacing-8)
+);
+
+/// Racine d'un layout : conteneur de requête nommé (les colonnes suivent la
+/// largeur disponible, pas celle de l'écran : un layout imbriqué dans un
+/// panneau étroit reste empilé) et modificateurs d'écart → `--su-layout-gap`
+@mixin layout-container($name) {
+  container: #{$name} / inline-size;
+  box-sizing: border-box;
+  inline-size: 100%;
+
+  @each $gap, $value in $layout-gaps {
+    &--gap-#{$gap} {
+      --su-layout-gap: #{$value};
+    }
+  }
+}
+
+/// Zone d'un layout : ne déborde jamais de sa colonne (mots longs, médias)
+@mixin layout-region {
+  box-sizing: border-box;
+  min-inline-size: 0;
+}
