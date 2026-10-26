@@ -6,6 +6,7 @@
   "module": "./dist/index.es.js",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/index.es.js",
       "require": "./dist/index.umd.js"
     },
@@ -25,7 +26,8 @@
   "homepage": "https://surgeui.com/",
   "repository": {
     "type": "git",
-    "url": "git@github.com:mahmoud-nb/surge.ui.git"
+    "url": "git+https://github.com/mahmoud-nb/surge.ui.git",
+    "directory": "package"
   },
   "keywords": [
     "Vue",
