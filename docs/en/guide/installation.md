@@ -2,8 +2,7 @@
 
 ## Prerequisites
 
-- Vue.js 3.3+
-- Node.js 16+
+- Vue.js 3.5+
 
 ## Installation
 
@@ -42,9 +41,9 @@ app.mount('#app')
 ### Selective import
 
 ```vue
-<script setup>
+<script setup lang="ts">
 import '@surgeui/ds-vue/style.css'
-import { SuButton } from '@surgeui/ds-vue'
+import { Button as SuButton } from '@surgeui/ds-vue'
 import type { ButtonProps } from '@surgeui/ds-vue/types'
 </script>
 
@@ -120,7 +119,7 @@ The design system includes complete TypeScript types. No additional configuratio
 
 ```vue
 <script setup lang="ts">
-import { SuButton } from '@surgeui/ds-vue'
+import { Button as SuButton } from '@surgeui/ds-vue'
 import type { ButtonVariant } from '@surgeui/ds-vue'
 
 const variant: ButtonVariant = 'primary'

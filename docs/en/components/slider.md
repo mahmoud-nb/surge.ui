@@ -2,12 +2,6 @@
 
 Slider component for selecting numeric values with automatic dual-range support, vertical/horizontal orientation, tooltips, custom marks, and full W3C accessibility compliance.
 
-## Installation
-
-```vue
-import { SuSlider } from '@/components'
-```
-
 ## Simple Usage
 
 The `SuSlider` component can be used standalone without the `SuFormField` wrapper.

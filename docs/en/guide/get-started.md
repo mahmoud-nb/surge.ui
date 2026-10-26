@@ -39,7 +39,7 @@ npm install @surgeui/ds-vue
 
 ```vue
 <script setup>
-import { SuButton } from '@surgeui/ds-vue'
+import { Button as SuButton } from '@surgeui/ds-vue'
 import '@surgeui/ds-vue/style.css'
 </script>
 

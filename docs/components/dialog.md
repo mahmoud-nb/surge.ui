@@ -85,7 +85,6 @@ const showCenterModal = ref(false)
 ```vue
 <script setup>
 import { ref } from 'vue'
-import { SuDialog, SuButton, SuLinkGroup, SuLink } from '@surgeui/ds-vue'
 
 const showLeftDrawer = ref(false)
 </script>
@@ -132,7 +131,6 @@ const showLeftDrawer = ref(false)
 ```vue
 <script setup>
 import { ref } from 'vue'
-import { SuDialog, SuButton } from '@surgeui/ds-vue'
 
 const showRightDrawer = ref(false)
 </script>
@@ -174,7 +172,6 @@ const showRightDrawer = ref(false)
 ```vue
 <script setup>
 import { ref } from 'vue'
-import { SuDialog, SuButton } from '@surgeui/ds-vue'
 
 const showTopDrawer = ref(false)
 </script>
@@ -218,7 +215,6 @@ const showTopDrawer = ref(false)
 ```vue
 <script setup>
 import { ref } from 'vue'
-import { SuDialog, SuButton, SuButtonGroup } from '@surgeui/ds-vue'
 
 const showBottomDrawer = ref(false)
 </script>
@@ -269,7 +265,6 @@ const showBottomDrawer = ref(false)
 ```vue
 <script setup>
 import { ref } from 'vue'
-import { SuDialog, SuButton, SuFormFields, SuInput, SuPassword, SuTextarea, SuFileUpload } from '@surgeui/ds-vue'
 
 const showFullScreen = ref(false)
 </script>
