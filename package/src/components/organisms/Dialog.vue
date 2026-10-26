@@ -480,16 +480,22 @@ defineExpose({
   padding: 1.5rem 3.5rem 0.5rem 1.5rem;
 }
 
-.su-dialog-title {
+// Préfixés par .su-dialog : la page hôte stylise souvent h2 et p
+// (documentation, CMS) avec une spécificité supérieure à une classe seule
+.su-dialog .su-dialog-title {
   margin: 0;
+  padding: 0;
+  border: 0;
+  letter-spacing: normal;
   font-size: var(--su-font-size-xl);
   font-weight: var(--su-font-weight-semibold);
   line-height: var(--su-line-height-tight);
   color: var(--su-text-primary);
 }
 
-.su-dialog-description {
+.su-dialog .su-dialog-description {
   margin: 0;
+  padding: 0;
   font-size: var(--su-font-size-sm);
   line-height: var(--su-line-height-normal);
   color: var(--su-text-tertiary);
