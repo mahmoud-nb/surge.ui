@@ -828,12 +828,15 @@ defineExpose({
     z-index: 2;
   }
 
-  // Halo au survol, au focus et pendant le déplacement
-  &:hover .su-slider-thumb-handle,
-  &--active .su-slider-thumb-handle {
-    box-shadow:
-      0 1px 2px rgb(0 0 0 / 15%),
-      0 0 0 4px with-alpha(var(--_su-slider-color), 20%);
+  // Halo au survol et pendant le déplacement, sauf poignée désactivée ou en lecture seule
+  // (:where garde la spécificité basse : l'anneau de focus, déclaré après, l'emporte)
+  &:where(:not(.su-slider-thumb--disabled, .su-slider-thumb--readonly)) {
+    &:hover .su-slider-thumb-handle,
+    &.su-slider-thumb--active .su-slider-thumb-handle {
+      box-shadow:
+        0 1px 2px rgb(0 0 0 / 15%),
+        0 0 0 4px with-alpha(var(--_su-slider-color), 20%);
+    }
   }
 
   &:focus-visible .su-slider-thumb-handle {
@@ -841,13 +844,6 @@ defineExpose({
       0 1px 2px rgb(0 0 0 / 15%),
       0 0 0 2px var(--su-bg-surface),
       0 0 0 4px var(--su-ring);
-  }
-
-  &--disabled,
-  &--readonly {
-    .su-slider-thumb-handle {
-      box-shadow: 0 1px 2px rgb(0 0 0 / 15%);
-    }
   }
 }
 
