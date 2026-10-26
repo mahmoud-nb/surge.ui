@@ -254,6 +254,10 @@ defineExpose({
     opacity: 0;
     visibility: hidden;
     translate: 0 1.5rem;
+
+    @include motion-reduce {
+      translate: none;
+    }
   }
 
   &--disabled {
@@ -278,6 +282,10 @@ defineExpose({
   @include popover-surface;
 
   animation: su-float-button-in var(--su-duration-normal) var(--su-ease-out);
+
+  @include motion-reduce {
+    animation: none;
+  }
 
   &--left {
     align-items: flex-start;
@@ -438,18 +446,6 @@ defineExpose({
   to {
     opacity: 1;
     translate: 0 0;
-  }
-}
-
-.su-float-button-slot {
-  @include motion-reduce {
-    animation: none;
-  }
-}
-
-.su-float-button-container--hidden {
-  @include motion-reduce {
-    translate: none;
   }
 }
 </style>

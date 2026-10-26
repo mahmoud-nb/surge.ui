@@ -518,6 +518,10 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !props.lab
     width: 1rem;
     height: 1rem;
     animation: su-dropdown-spin 0.8s linear infinite;
+
+    @include motion-reduce {
+      animation-duration: 2.4s;
+    }
   }
 }
 
@@ -603,12 +607,6 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !props.lab
 @keyframes su-dropdown-spin {
   to {
     rotate: 360deg;
-  }
-}
-
-.su-dropdown-spinner-icon {
-  @include motion-reduce {
-    animation-duration: 2.4s;
   }
 }
 </style>

@@ -248,6 +248,10 @@ const tabClasses = (index: number) => [
 
     @include transition(translate, width, height);
   }
+
+  @include high-contrast {
+    outline: 1px solid currentcolor;
+  }
 }
 
 // ### Underline
@@ -357,12 +361,6 @@ const tabClasses = (index: number) => [
 
   to {
     opacity: 1;
-  }
-}
-
-.su-tabs-indicator {
-  @include high-contrast {
-    outline: 1px solid currentcolor;
   }
 }
 </style>

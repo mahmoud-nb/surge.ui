@@ -978,6 +978,11 @@ defineExpose({
     height: 1.25rem;
   }
 
+  // Contraste élevé : bordures pleines
+  @include high-contrast {
+    border-width: 2px;
+  }
+
   &--more {
     padding-inline: 0.375rem;
     color: var(--su-text-secondary);
@@ -1031,6 +1036,10 @@ defineExpose({
     @include su-select-icon;
 
     animation: su-select-spin 0.8s linear infinite;
+
+    @include motion-reduce {
+      animation-duration: 2.4s;
+    }
   }
 }
 
@@ -1242,16 +1251,4 @@ defineExpose({
   }
 }
 
-// Contraste élevé : bordures pleines
-.su-select-tag {
-  @include high-contrast {
-    border-width: 2px;
-  }
-}
-
-.su-select-spinner-icon {
-  @include motion-reduce {
-    animation-duration: 2.4s;
-  }
-}
 </style>
