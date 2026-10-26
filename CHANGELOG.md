@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
+### [3.0.1](https://mahmoud-nb.github.io/surge.ui/compare/v3.0.0...v3.0.1) (2026-10-26)
+
+
+### 📚 Documentation
+
+* **CLAUDE:** procédure de release et publication automatique ([5ec1684](https://mahmoud-nb.github.io/surge.ui/commit/5ec1684781d70fb8d100de41c742d2ca004760f6))
+* **Dialog:** déclare l'état des démos pour qu'elles s'ouvrent ([df91fb8](https://mahmoud-nb.github.io/surge.ui/commit/df91fb826e653d16d95f2708018167368a021cdd))
+* imports et prérequis corrigés dans les guides et exemples ([d0eb010](https://mahmoud-nb.github.io/surge.ui/commit/d0eb010f4c1cadc90230da578553b41a757ede57))
+* **readme:** README de la librairie et du dépôt à jour pour la 3.0 ([2f43c66](https://mahmoud-nb.github.io/surge.ui/commit/2f43c66c6cceb870826f62839de695aac15007c4))
+
+
+### 🐛 Bug Fixes
+
+* **Dialog:** titre et description protégés des styles de la page hôte ([ce50d98](https://mahmoud-nb.github.io/surge.ui/commit/ce50d9853d2b7452c900ebe449adbeba3d802bb9))
+* **package:** types TypeScript résolus via le champ exports ([0b9606f](https://mahmoud-nb.github.io/surge.ui/commit/0b9606f618a2a636c1841cc2bd4d6baf8bc03d01))
+* **Price:** décimales en exposant réduites et alignées en haut ([b9cc9c6](https://mahmoud-nb.github.io/surge.ui/commit/b9cc9c6dbc3b9979b6008642e5647c5f3a4c167a))
+* **Slider:** pas de halo au survol d'une poignée désactivée ou en lecture seule ([d9cd09a](https://mahmoud-nb.github.io/surge.ui/commit/d9cd09a1e74cb2ecd6cc1be76a41db884334bd73))
+
 ## [3.0.0](https://mahmoud-nb.github.io/surge.ui/compare/v2.3.0...v3.0.0) (2026-10-25)
 
 
