@@ -228,13 +228,13 @@ Vous pouvez configurer les valeurs par défaut des liens lors de l'installation 
 ```js
 // main.js
 import { createApp } from 'vue'
-import SurgeUpDS from '@surgeui/ds-vue'
+import SurgeUI from '@surgeui/ds-vue'
 import '@surgeui/ds-vue/style.css'
 
 const app = createApp(App)
 
 // Configuration des valeurs par défaut
-app.use(SurgeUpDS, {
+app.use(SurgeUI, {
   linkVariant: 'primary',  // Tous les liens seront primary par défaut
   linkSize: 'lg',         // Tous les liens seront grands par défaut
   linkUnderline: 'never'  // Tous les liens ne seront jamais soulignés par défaut

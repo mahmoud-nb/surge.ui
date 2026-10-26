@@ -1,6 +1,6 @@
 import type { Preview } from '@storybook/vue3'
 import '../src/styles/storybook.scss'
-import SurgeUpDS, { locales, provideLocale } from '../src/index'
+import SurgeUI, { locales, provideLocale } from '../src/index'
 import { computed } from 'vue'
 
 // Import de la police Nunito Sans depuis Google Fonts
@@ -127,7 +127,7 @@ const preview: Preview = {
 
 export const setup = (app) => {
   // Installer le plugin globalement pour Storybook
-  app.use(SurgeUpDS)
+  app.use(SurgeUI)
 }
 
 export default preview

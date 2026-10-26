@@ -330,13 +330,13 @@ You can configure default button values when installing the design system:
 ```js
 // main.js
 import { createApp } from 'vue'
-import SurgeUpDS from '@surgeui/ds-vue'
+import SurgeUI from '@surgeui/ds-vue'
 import '@surgeui/ds-vue/style.css'
 
 const app = createApp(App)
 
 // Configure default values
-app.use(SurgeUpDS, {
+app.use(SurgeUI, {
   buttonRadius: 'lg',     // All buttons will have large radius by default
   buttonVariant: 'outline', // All buttons will be outline by default
   buttonSize: 'lg'        // All buttons will be large by default

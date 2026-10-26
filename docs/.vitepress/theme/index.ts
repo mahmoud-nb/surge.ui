@@ -1,6 +1,6 @@
 import DefaultTheme from 'vitepress/theme'
 import { inBrowser } from 'vitepress'
-import SurgeUpDS from '@surgeui/ds-vue'
+import SurgeUI from '@surgeui/ds-vue'
 import '@surgeui/ds-vue/style.css'
 import './custom.css'
 // Démos des layouts (cadre à largeur réglable, zones)
@@ -37,7 +37,7 @@ export default {
   extends: DefaultTheme,
   async enhanceApp({ app }: { app: import('vue').App }) {
     if (inBrowser) {
-      app.use(SurgeUpDS)
+      app.use(SurgeUI)
       app.component('LayoutFrame', LayoutFrame)
       app.component('LayoutBox', LayoutBox)
 

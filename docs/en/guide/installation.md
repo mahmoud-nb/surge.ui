@@ -29,12 +29,12 @@ pnpm add @surgeui/ds-vue
 ```ts
 // main.ts
 import { createApp } from 'vue'
-import SurgeUpDS from '@surgeui/ds-vue'
+import SurgeUI from '@surgeui/ds-vue'
 import '@surgeui/ds-vue/style.css'
 import App from './App.vue'
 
 const app = createApp(App)
-app.use(SurgeUpDS)
+app.use(SurgeUI)
 app.mount('#app')
 ```
 
@@ -59,12 +59,12 @@ import type { ButtonProps } from '@surgeui/ds-vue/types'
 ```js
 // main.js
 import { createApp } from 'vue'
-import SurgeUpDS from '@surgeui/ds-vue'
+import SurgeUI from '@surgeui/ds-vue'
 
 const app = createApp(App)
 
 // Customize component prefix
-app.use(SurgeUpDS, {
+app.use(SurgeUI, {
   prefix: 'My', // Components will be MyButton, MyInput, etc.
   
   // custom text color

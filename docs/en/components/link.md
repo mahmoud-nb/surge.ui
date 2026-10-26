@@ -161,13 +161,13 @@ You can configure default link values when installing the design system:
 ```js
 // main.js
 import { createApp } from 'vue'
-import SurgeUpDS from '@surgeui/ds-vue'
+import SurgeUI from '@surgeui/ds-vue'
 import '@surgeui/ds-vue/style.css'
 
 const app = createApp(App)
 
 // Configure default values
-app.use(SurgeUpDS, {
+app.use(SurgeUI, {
   linkVariant: 'primary',  // All links will be primary by default
   linkSize: 'lg',         // All links will be large by default
   linkUnderline: 'never'  // All links will never be underlined by default

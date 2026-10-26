@@ -85,7 +85,7 @@ export { FormField, FormFieldGroup }
 export { SingleColumnLayout, SidebarLayout, SplitLayout, HolyGrailLayout, MagazineLayout, GridLayout, MasonryLayout, HeroLayout, FullScreenLayout }
 export { accessibility }
 
-export interface SurgeUpDSOptions {
+export interface SurgeUIOptions {
   prefix?: string
   theme?: SurgeuiTheme
   /**
@@ -98,7 +98,7 @@ export interface SurgeUpDSOptions {
 const defaultTheme: SurgeuiTheme = {}
 
 export default {
-  install(app: App, options: SurgeUpDSOptions = {}) {
+  install(app: App, options: SurgeUIOptions = {}) {
     const { prefix = 'Su', theme = {}, locale } = options
     const mergedTheme = { ...defaultTheme, ...theme }
 
