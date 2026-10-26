@@ -193,6 +193,12 @@ const priceClasses = computed(() => [
 @use '../../styles/abstracts' as *;
 
 .su-price {
+  // Tailles : lues par les éléments (md par défaut)
+  --_su-price-integer-size: 1.25rem;
+  --_su-price-integer-weight: 700;
+  --_su-price-detail-size: 0.875rem; // décimales et devise
+  --_su-price-aside-size: 0.875rem; // prix barré, préfixe et suffixe
+
   display: inline-flex;
   align-items: baseline;
   gap: 0.25rem;
@@ -206,66 +212,16 @@ const priceClasses = computed(() => [
   // ========================================
 
   &--sm {
-    .su-price__integer {
-      font-size: 0.875rem;
-      font-weight: 600;
-    }
-
-    .su-price__decimal,
-    .su-price__currency {
-      font-size: 0.75rem;
-    }
-
-    .su-price__original {
-      font-size: 0.75rem;
-    }
-
-    .su-price__prefix,
-    .su-price__suffix {
-      font-size: 0.75rem;
-    }
-  }
-
-  &--md {
-    .su-price__integer {
-      font-size: 1.25rem;
-      font-weight: 700;
-    }
-
-    .su-price__decimal,
-    .su-price__currency {
-      font-size: 0.875rem;
-    }
-
-    .su-price__original {
-      font-size: 0.875rem;
-    }
-
-    .su-price__prefix,
-    .su-price__suffix {
-      font-size: 0.875rem;
-    }
+    --_su-price-integer-size: 0.875rem;
+    --_su-price-integer-weight: 600;
+    --_su-price-detail-size: 0.75rem;
+    --_su-price-aside-size: 0.75rem;
   }
 
   &--lg {
-    .su-price__integer {
-      font-size: 1.875rem;
-      font-weight: 700;
-    }
-
-    .su-price__decimal,
-    .su-price__currency {
-      font-size: 1.125rem;
-    }
-
-    .su-price__original {
-      font-size: 1rem;
-    }
-
-    .su-price__prefix,
-    .su-price__suffix {
-      font-size: 1rem;
-    }
+    --_su-price-integer-size: 1.875rem;
+    --_su-price-detail-size: 1.125rem;
+    --_su-price-aside-size: 1rem;
   }
 
   // ========================================
@@ -285,28 +241,20 @@ const priceClasses = computed(() => [
   }
 
   // ========================================
-  // Mode promotionnel (prix barré + nouveau prix)
-  // ========================================
-
-  &--has-original {
-    .su-price__value {
-      color: var(--su-state-error-fg);
-    }
-  }
-
-  // ========================================
   // Éléments
   // ========================================
 
   &__prefix {
     color: var(--su-text-secondary);
     margin-right: 0.125rem;
+    font-size: var(--_su-price-aside-size);
   }
 
   &__original {
     text-decoration: line-through;
     color: var(--su-text-tertiary);
     margin-right: 0.25rem;
+    font-size: var(--_su-price-aside-size);
     font-weight: 400;
   }
 
@@ -316,20 +264,25 @@ const priceClasses = computed(() => [
   }
 
   &__integer {
+    font-size: var(--_su-price-integer-size);
+    font-weight: var(--_su-price-integer-weight);
     font-variant-numeric: tabular-nums;
   }
 
   &__decimal {
+    font-size: var(--_su-price-detail-size);
     font-variant-numeric: tabular-nums;
 
+    // Exposant : aligné en haut du prix (vertical-align est sans effet dans un conteneur flex)
     &--sup {
-      font-size: 0.65em;
-      vertical-align: super;
+      align-self: flex-start;
+      font-size: calc(var(--_su-price-integer-size) * 0.55);
       line-height: 1;
     }
   }
 
   &__currency {
+    font-size: var(--_su-price-detail-size);
     font-weight: 400;
     margin: 0 0.125rem;
   }
@@ -337,6 +290,15 @@ const priceClasses = computed(() => [
   &__suffix {
     color: var(--su-text-secondary);
     margin-left: 0.125rem;
+    font-size: var(--_su-price-aside-size);
+  }
+
+  // ========================================
+  // Mode promotionnel (prix barré + nouveau prix)
+  // ========================================
+
+  &--has-original &__value {
+    color: var(--su-state-error-fg);
   }
 }
 
