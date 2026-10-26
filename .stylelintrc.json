@@ -6,11 +6,9 @@
     "custom-property-pattern": null,
     "scss/dollar-variable-pattern": null,
     "scss/at-mixin-pattern": null,
-    "no-empty-source": null
+    "no-empty-source": null,
+    "no-descending-specificity": null,
+    "selector-pseudo-class-no-unknown": [true, { "ignorePseudoClasses": ["deep", "global", "slotted"] }]
   },
-  "ignoreFiles": [
-    "**/node_modules/**",
-    "**/dist/**",
-    "**/.vitepress/**"
-  ]
+  "ignoreFiles": ["**/node_modules/**", "**/dist/**", "**/.vitepress/**"]
 }

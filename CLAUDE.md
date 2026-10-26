@@ -35,7 +35,7 @@ npm run release            # standard-version (auto semver bump)
 npm run release:publish    # build lib + npm publish -w package (manual fallback)
 ```
 
-Tests live in `package/tests/*.spec.ts` (Vitest, `happy-dom` environment, configured in `package/vite.config.ts`, CSS disabled). Validate changes with `npm test`, `npm run build:lib` and `npm run lint`. Stylelint still reports pre-existing `no-descending-specificity` / `no-duplicate-selectors` errors.
+Tests live in `package/tests/*.spec.ts` (Vitest, `happy-dom` environment, configured in `package/vite.config.ts`, CSS disabled). Validate changes with `npm test`, `npm run build:lib` and `npm run lint`. `no-descending-specificity` is disabled in `.stylelintrc.json`: it flags every BEM parent modifier (`.su-x--mod .su-x__el`) declared before the element's base rule. When a lower-specificity rule must override (disabled state, superscript…), check the cascade yourself (`:where()` keeps specificity low, local custom properties avoid the conflict). Put `@include motion-reduce` / `high-contrast` inside the original rule, never in a second block with the same selector.
 
 Release flow: `npm run release:dry` → `npm run release` (bumps package.json + package/package.json, CHANGELOG, tag `vX.Y.Z`) → `npm install --package-lock-only` → `git push --follow-tags origin main`. Pushing the tag triggers `.github/workflows/release.yml`: checks tag = package version, lint, tests, build, `npm publish -w package --provenance` (secret `NPM_TOKEN`, skipped if the version is already on npm) and a GitHub release from the CHANGELOG section. Always push tags: `standard-version` computes the next changelog from the latest tag.
 
