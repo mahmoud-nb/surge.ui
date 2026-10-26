@@ -1,3 +1,15 @@
+<script setup>
+import { ref } from 'vue'
+
+// État des démos de la page
+const showCenterModal = ref(false)
+const showLeftDrawer = ref(false)
+const showRightDrawer = ref(false)
+const showTopDrawer = ref(false)
+const showBottomDrawer = ref(false)
+const showFullScreen = ref(false)
+</script>
+
 # Dialog
 
 Versatile Dialog component for displaying modals (centered) or drawers (side, top/bottom, full screen). It is built on the native `<dialog>` element opened with `showModal()`: the browser handles the top layer, the backdrop (`::backdrop`), making the rest of the page inert and keeping focus inside. It offers customization options to adapt to various use cases.

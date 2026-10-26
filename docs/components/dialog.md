@@ -1,3 +1,15 @@
+<script setup>
+import { ref } from 'vue'
+
+// État des démos de la page
+const showCenterModal = ref(false)
+const showLeftDrawer = ref(false)
+const showRightDrawer = ref(false)
+const showTopDrawer = ref(false)
+const showBottomDrawer = ref(false)
+const showFullScreen = ref(false)
+</script>
+
 # Dialog
 
 Composant Dialog polyvalent pour afficher des modales (centrées) ou des tiroirs (latéraux, haut/bas, plein écran). Il repose sur l'élément natif `<dialog>` ouvert avec `showModal()` : le navigateur gère la couche supérieure, le fond (`::backdrop`), l'inertie du reste de la page et le maintien du focus. Il offre des options de personnalisation pour s'adapter à divers cas d'usage.
