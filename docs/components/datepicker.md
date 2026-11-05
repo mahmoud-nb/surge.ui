@@ -93,4 +93,5 @@ const departure = ref(null)
 - Le champ texte reste la voie principale : la date est validée à la sortie du champ ou avec `Entrée`. Une date illisible, inexistante (31/02) ou hors bornes rend la valeur précédente.
 - Le bouton est nommé avec la date choisie (« Changer la date, 5 novembre 2026 ») et annonce une boîte de dialogue (`aria-haspopup="dialog"`, `aria-expanded`).
 - Calendrier dans un `role="dialog"` : focus sur le jour actif à l'ouverture, `Tab` piégé, `Échap` ou appui extérieur ferme ; choisir un jour ferme et rend le focus au bouton. `Alt` + `↓` ouvre le calendrier depuis le champ.
+- Le mois et l'année du titre du calendrier ouvrent le choix du mois et de l'année (pratique pour une date de naissance) ; `Échap` y revient d'abord aux jours, puis ferme le calendrier.
 - Clavier du calendrier : voir [Calendar](/components/calendar).

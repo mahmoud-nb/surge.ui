@@ -140,7 +140,13 @@ export const fr: SurgeLocale = {
     },
     calendar: {
       previousMonth: 'Mois précédent',
-      nextMonth: 'Mois suivant'
+      nextMonth: 'Mois suivant',
+      previousYear: 'Année précédente',
+      nextYear: 'Année suivante',
+      previousYears: 'Années précédentes',
+      nextYears: 'Années suivantes',
+      chooseMonth: '{month}, choisir le mois',
+      chooseYear: '{year}, choisir l’année'
     },
     datePicker: {
       open: 'Choisir une date',

@@ -20,6 +20,8 @@ import { getDateFormatPattern, isOutOfRange, isSameDay, isValidDate, parseDateIn
 //   une boîte de dialogue : focus sur le jour actif, Tab piégé, Échap
 //   ou appui extérieur ferme ; choisir un jour ferme et rend le focus
 //   au bouton. Alt + ↓ ouvre depuis le champ.
+// - Le titre du calendrier ouvre les vues mois et années ; Échap y
+//   revient d'abord aux jours (le calendrier empêche la fermeture).
 // ============================================================
 
 defineOptions({ inheritAttrs: false })

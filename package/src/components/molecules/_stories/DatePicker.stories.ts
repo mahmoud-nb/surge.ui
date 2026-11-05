@@ -11,7 +11,7 @@ const meta: Meta<typeof DatePicker> = {
     docs: {
       description: {
         component:
-          'Champ date : saisie au format de la langue (validée à la sortie du champ) et calendrier dans une boîte de dialogue (focus sur le jour actif, Tab piégé, Échap ferme, choisir un jour rend le focus au bouton). Alt + ↓ ouvre depuis le champ. Le bouton est nommé avec la date choisie.'
+          'Champ date : saisie au format de la langue (validée à la sortie du champ) et calendrier dans une boîte de dialogue (focus sur le jour actif, Tab piégé, Échap ferme, choisir un jour rend le focus au bouton). Alt + ↓ ouvre depuis le champ. Le bouton est nommé avec la date choisie. Le mois et l’année du titre du calendrier ouvrent le choix du mois et de l’année.'
       }
     }
   },

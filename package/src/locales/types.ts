@@ -193,6 +193,15 @@ export interface SurgeMessages {
   calendar: {
     previousMonth: LocaleMessage
     nextMonth: LocaleMessage
+    previousYear: LocaleMessage
+    nextYear: LocaleMessage
+    /** Page de 12 années précédente / suivante */
+    previousYears: LocaleMessage
+    nextYears: LocaleMessage
+    /** Bouton du mois affiché : {month} */
+    chooseMonth: LocaleMessage
+    /** Bouton de l'année affichée : {year} */
+    chooseYear: LocaleMessage
   }
   datePicker: {
     open: LocaleMessage

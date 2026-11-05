@@ -142,7 +142,7 @@ const size = formatBytes(1536) // "1.5 kB" (en), "1,5 ko" (fr)
 | `confirm` | ConfirmDialog, useConfirm | `title`, `confirm`, `cancel` |
 | `autocomplete` | Autocomplete | `noResults`, `loading`, `results`, `clear` |
 | `dataTable` | DataTable | `selectAll`, `selectRow`, `sortAscending`, `sortDescending`, `sortCleared`, `empty` |
-| `calendar` | Calendar | `previousMonth`, `nextMonth` |
+| `calendar` | Calendar | `previousMonth`, `nextMonth`, `previousYear`, `nextYear`, `previousYears`, `nextYears`, `chooseMonth`, `chooseYear` |
 | `datePicker` | DatePicker | `open`, `openSelected`, `dialog`, `day`, `month`, `year` |
 | `commandPalette` | CommandPalette | `label`, `placeholder`, `empty`, `results` |
 | `gridLayout` | GridLayout | `viewToggle`, `grid`, `list` |

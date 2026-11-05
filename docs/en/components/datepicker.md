@@ -93,4 +93,5 @@ const departure = ref(null)
 - The text field stays the main path: the date is committed when leaving the field or with `Enter`. An unreadable, non-existent (02/31) or out-of-range date restores the previous value.
 - The button is named with the selected date ("Change date, November 5, 2026") and announces a dialog (`aria-haspopup="dialog"`, `aria-expanded`).
 - Calendar in a `role="dialog"`: focus on the active day when opening, `Tab` trapped, `Escape` or an outside press closes; picking a day closes and returns focus to the button. `Alt` + `↓` opens the calendar from the field.
+- The month and year in the calendar title open month and year selection (handy for a date of birth); `Escape` first goes back to the days, then closes the calendar.
 - Calendar keyboard: see [Calendar](/en/components/calendar).
