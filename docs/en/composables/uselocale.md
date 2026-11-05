@@ -133,7 +133,19 @@ const size = formatBytes(1536) // "1.5 kB" (en), "1,5 ko" (fr)
 | `fileUpload` | FileUpload | `placeholder`, `drop`, `browse`, `loading`, `loadingHint`, `tooLarge`, `invalidType`, `maxFiles`, `added`, `removed`, `cleared`, `selectedCount`, `preview`, `remove`, `progress`, `maxSize` |
 | `otpInput` | OtpInput | `label`, `progress`, `character` |
 | `password` | Password | `strength` |
+| `toast` | Toast, Toaster | `region`, `dismiss` |
+| `breadcrumb` | Breadcrumb | `label`, `expand` |
+| `pagination` | Pagination | `label`, `page`, `previous`, `next`, `first`, `last` |
+| `tag` | Tag | `remove` |
+| `numberInput` | NumberInput | `increment`, `decrement` |
+| `stepper` | Stepper | `label`, `complete`, `error` |
+| `confirm` | ConfirmDialog, useConfirm | `title`, `confirm`, `cancel` |
+| `autocomplete` | Autocomplete | `noResults`, `loading`, `results`, `clear` |
+| `dataTable` | DataTable | `selectAll`, `selectRow`, `sortAscending`, `sortDescending`, `sortCleared`, `empty` |
+| `calendar` | Calendar | `previousMonth`, `nextMonth` |
+| `datePicker` | DatePicker | `open`, `openSelected`, `dialog`, `day`, `month`, `year` |
+| `commandPalette` | CommandPalette | `label`, `placeholder`, `empty`, `results` |
 | `gridLayout` | GridLayout | `viewToggle`, `grid`, `list` |
 | `holyGrailLayout` | HolyGrailLayout | `skipLink`, `nav`, `aside` |
 
-Default values shown on component pages are those of the French locale.
+Default values shown on component pages are those of the French locale, except values marked "(locale)", which are the English ones. The demos on the English pages of this documentation use `locales.en`.

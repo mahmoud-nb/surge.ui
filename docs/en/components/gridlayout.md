@@ -66,7 +66,7 @@ Each value applies up to the next threshold (mobile first). A single number fixe
 
 `v-model:view` switches to a list (`'list'`): cells stack in a single column. `view-toggle` adds a grid / list switcher to the header; the `header` slot holds the title, result count or filters. The `default` slot receives `view` so cells can adapt.
 
-The switcher labels default to French: translate them with `view-toggle-label`, `grid-label` and `list-label`.
+The switcher labels come from the component locale (see [useLocale](/en/composables/uselocale)); `view-toggle-label`, `grid-label` and `list-label` replace them.
 
 <div class="component-demo">
   <LayoutFrame lang="en" width="tablet">

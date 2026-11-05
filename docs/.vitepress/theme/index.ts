@@ -1,6 +1,7 @@
 import DefaultTheme from 'vitepress/theme'
 import { inBrowser } from 'vitepress'
-import SurgeUI from '@surgeui/ds-vue'
+import SurgeUI, { locales } from '@surgeui/ds-vue'
+import type { Router } from 'vitepress'
 import '@surgeui/ds-vue/style.css'
 import './custom.css'
 // Démos des layouts (cadre à largeur réglable, zones)
@@ -35,9 +36,14 @@ import {
 
 export default {
   extends: DefaultTheme,
-  async enhanceApp({ app }: { app: import('vue').App }) {
+  async enhanceApp({ app, router }: { app: import('vue').App; router: Router }) {
     if (inBrowser) {
-      app.use(SurgeUI)
+      // Textes par défaut des composants dans la langue de la page :
+      // anglais sous /en, français ailleurs. La route est réactive, la
+      // locale suit donc le changement de langue sans rechargement.
+      app.use(SurgeUI, {
+        locale: () => (router.route.data.relativePath.startsWith('en/') ? locales.en : undefined)
+      })
       app.component('LayoutFrame', LayoutFrame)
       app.component('LayoutBox', LayoutBox)
 

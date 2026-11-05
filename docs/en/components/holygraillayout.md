@@ -93,7 +93,7 @@ Missing slots reserve no space: without `aside`, the content takes the full widt
 | `asideLabel` | `string` | `'Informations complémentaires'` | Accessible name of the complementary column |
 | `gap` | `'none' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'lg'` | Gap between areas |
 
-Default labels are in French: pass `skip-link-label`, `nav-label` and `aside-label` for other languages.
+Default labels come from the component locale (see [useLocale](/en/composables/uselocale)); `skip-link-label`, `nav-label` and `aside-label` replace them.
 
 ### Slots
 
