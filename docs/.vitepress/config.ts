@@ -33,11 +33,14 @@ const getNavItems = (section: string = 'display', lang: string = 'fr') => {
       { text: 'Dialog', link: `${langPrefix}/components/dialog` },
       { text: 'Popover', link: `${langPrefix}/components/popover` },
       { text: 'Alert', link: `${langPrefix}/components/alert`},
+      { text: 'Toast', link: `${langPrefix}/components/toast`, badge: NEW_BADGE },
+      { text: 'Tooltip', link: `${langPrefix}/components/tooltip`, badge: NEW_BADGE },
       { text: 'Tabs', link: `${langPrefix}/components/tabs` },
       { text: 'Accordion', link: `${langPrefix}/components/accordion` },
       { text: 'Collapse', link: `${langPrefix}/components/collapse` },
       { text: 'Progress', link: `${langPrefix}/components/progress` },
       { text: 'Spinner', link: `${langPrefix}/components/spinner`},
+      { text: 'Skeleton', link: `${langPrefix}/components/skeleton`, badge: NEW_BADGE },
       { text: 'Price', link: `${langPrefix}/components/price`, badge: NEW_BADGE },
       { text: 'Card', link: `${langPrefix}/components/card`, badge: NEW_BADGE }
     ],
@@ -49,7 +52,9 @@ const getNavItems = (section: string = 'display', lang: string = 'fr') => {
       { text: 'Toggle', link: `${langPrefix}/components/toggle`, badge: NEW_BADGE },
       { text: 'ToggleGroup', link: `${langPrefix}/components/togglegroup`, badge: NEW_BADGE },
       { text: 'FloatButton', link: `${langPrefix}/components/floatbutton` },
-      { text: 'Dropdown', link: `${langPrefix}/components/dropdown` }
+      { text: 'Dropdown', link: `${langPrefix}/components/dropdown` },
+      { text: 'Breadcrumb', link: `${langPrefix}/components/breadcrumb`, badge: NEW_BADGE },
+      { text: 'Pagination', link: `${langPrefix}/components/pagination`, badge: NEW_BADGE }
     ],
     forms:[
       { text: 'Input', link: `${langPrefix}/components/input` },
@@ -57,6 +62,7 @@ const getNavItems = (section: string = 'display', lang: string = 'fr') => {
       { text: 'FileUpload', link: `${langPrefix}/components/fileupload` },
       { text: 'SelectBox', link: `${langPrefix}/components/selectbox` },
       { text: 'RadioGroup', link: `${langPrefix}/components/radio-group` },
+      { text: 'Checkbox', link: `${langPrefix}/components/checkbox`, badge: NEW_BADGE },
       { text: 'CheckboxGroup', link: `${langPrefix}/components/checkbox-group` },
       { text: 'Switch', link: `${langPrefix}/components/switch` },
       { text: 'Slider', link: `${langPrefix}/components/slider` },

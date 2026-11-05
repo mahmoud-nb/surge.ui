@@ -132,6 +132,27 @@ export interface SurgeMessages {
     /** {score} */
     strength: LocaleMessage
   }
+  toast: {
+    /** Nom de la zone des notifications */
+    region: LocaleMessage
+    dismiss: LocaleMessage
+  }
+  breadcrumb: {
+    /** Nom de la navigation */
+    label: LocaleMessage
+    /** Bouton qui déplie le chemin replié */
+    expand: LocaleMessage
+  }
+  pagination: {
+    /** Nom de la navigation */
+    label: LocaleMessage
+    /** Bouton de page : {page} */
+    page: LocaleMessage
+    previous: LocaleMessage
+    next: LocaleMessage
+    first: LocaleMessage
+    last: LocaleMessage
+  }
   gridLayout: {
     viewToggle: LocaleMessage
     grid: LocaleMessage

@@ -91,6 +91,22 @@ export const fr: SurgeLocale = {
     password: {
       strength: 'Force du mot de passe : {score} %'
     },
+    toast: {
+      region: 'Notifications',
+      dismiss: 'Fermer la notification'
+    },
+    breadcrumb: {
+      label: 'Fil d\'Ariane',
+      expand: 'Afficher le chemin complet'
+    },
+    pagination: {
+      label: 'Pagination',
+      page: 'Page {page}',
+      previous: 'Page précédente',
+      next: 'Page suivante',
+      first: 'Première page',
+      last: 'Dernière page'
+    },
     gridLayout: {
       viewToggle: 'Affichage',
       grid: 'Grille',

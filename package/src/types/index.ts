@@ -407,6 +407,38 @@ export interface PriceProps extends AccessibilityProps {
   superscriptDecimals?: boolean
 }
 
+// Checkbox.vue
+// La valeur cochée passe par v-model (defineModel), l'état mixte par v-model:indeterminate
+export interface CheckboxProps extends AccessibilityProps {
+  /** Libellé affiché à côté de la case (ou slot par défaut) */
+  label?: string;
+  /** Texte d'aide sous le libellé (ou slot `description`) */
+  description?: string;
+  /** Valeur envoyée avec le formulaire quand la case est cochée */
+  value?: string | number;
+  name?: string;
+  size?: Size;
+  state?: State;
+  displayType?: CheckboxDisplayType;
+  disabled?: boolean;
+  required?: boolean;
+}
+
+// Skeleton.vue
+export type SkeletonVariant = 'text' | 'circle' | 'rect';
+export interface SkeletonProps {
+  variant?: SkeletonVariant;
+  /** Largeur CSS (ex. '12rem', '60%') ; diamètre pour `circle` */
+  width?: string;
+  /** Hauteur CSS ; par défaut une ligne de texte, ou la largeur pour `circle` */
+  height?: string;
+  /** Nombre de lignes (variante `text`) : la dernière est plus courte */
+  lines?: number;
+  /** Pulsation (désactivée avec prefers-reduced-motion) */
+  animated?: boolean;
+  radius?: Radius;
+}
+
 // Toggle.vue
 export type ToggleVariant = 'default' | 'outline' | 'ghost'
 export interface ToggleProps extends AccessibilityProps {
@@ -605,6 +637,83 @@ export interface PopoverProps {
   ariaLabelledby?: string;
   ariaDescribedby?: string;
   closeAriaLabel?: string;
+}
+
+// Tooltip.vue
+// L'ouverture passe par v-model (defineModel), facultatif
+export interface TooltipProps {
+  /** Texte de l'infobulle (ou slot `content`) */
+  content?: string;
+  placement?: PopoverPlacement;
+  /** Délai avant l'ouverture au survol (ms) ; immédiate au focus clavier */
+  openDelay?: number;
+  /** Délai avant la fermeture (ms) : laisse le temps d'amener le pointeur sur l'infobulle */
+  closeDelay?: number;
+  showArrow?: boolean;
+  disabled?: boolean;
+}
+
+// Breadcrumb.vue
+export interface BreadcrumbItem {
+  label: string;
+  href?: string;
+  target?: LinkTarget;
+  icon?: Component;
+  /** Icône seule : le libellé reste lu par les lecteurs d'écran */
+  iconOnly?: boolean;
+}
+export type BreadcrumbSeparator = 'chevron' | 'slash' | 'dot';
+export interface BreadcrumbProps extends AccessibilityProps {
+  items?: BreadcrumbItem[];
+  separator?: BreadcrumbSeparator;
+  /** Au-delà, les éléments du milieu sont repliés derrière un bouton « … » */
+  maxItems?: number;
+  size?: Size;
+  /** Nom du bouton qui déplie le chemin */
+  expandLabel?: string;
+}
+
+// Pagination.vue
+// La page courante (1 à n) passe par v-model (defineModel)
+export interface PaginationProps extends AccessibilityProps {
+  /** Nombre total d'éléments (avec pageSize) */
+  total?: number;
+  pageSize?: number;
+  /** Nombre de pages, prioritaire sur total / pageSize */
+  pageCount?: number;
+  /** Pages affichées de part et d'autre de la page courante */
+  siblings?: number;
+  /** Pages toujours affichées au début et à la fin */
+  boundaries?: number;
+  /** Boutons première / dernière page */
+  showEdges?: boolean;
+  size?: Size;
+  disabled?: boolean;
+  previousLabel?: string;
+  nextLabel?: string;
+  firstLabel?: string;
+  lastLabel?: string;
+  /** Nom accessible d'un bouton de page (défaut : « Page {page} ») */
+  pageLabel?: (page: number) => string;
+}
+
+// Toast.vue
+export type ToastType = 'success' | 'warning' | 'error' | 'info' | 'neutral';
+export interface ToastAction {
+  label: string;
+  onClick: () => void;
+}
+export interface ToastProps {
+  type?: ToastType;
+  title?: string;
+  description?: string;
+  dismissible?: boolean;
+  /** Durée d'affichage (ms) ; 0 = jusqu'à fermeture */
+  duration?: number;
+  /** Suspend le compte à rebours (survol, focus, onglet masqué) */
+  paused?: boolean;
+  action?: ToastAction;
+  dismissLabel?: string;
 }
 
 // FileUploadField.vue — mirrors BaseFileUploadProps for the field wrapper variant
@@ -818,6 +927,17 @@ export interface AlertProps {
   ariaLive?: 'assertive' | 'polite' | 'off';
   ariaAtomic?: boolean;
   size?: 'sm' | 'md' | 'lg';
+}
+
+// Toaster.vue
+export type ToasterPosition = 'top-left' | 'top-center' | 'top-right' | 'bottom-left' | 'bottom-center' | 'bottom-right';
+export interface ToasterProps {
+  position?: ToasterPosition;
+  /** Nombre de toasts visibles ; les suivants attendent leur tour */
+  max?: number;
+  /** Durée par défaut (ms) des toasts qui n'en précisent pas */
+  duration?: number;
+  ariaLabel?: string;
 }
 
 // Dialog.vue

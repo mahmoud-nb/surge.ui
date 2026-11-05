@@ -19,6 +19,10 @@ import Spinner from './components/atoms/Spinner.vue'
 import Price from './components/atoms/Price.vue'
 import Alert from './components/organisms/Alert.vue'
 import Card from './components/organisms/Card.vue'
+import Skeleton from './components/atoms/Skeleton.vue'
+import Tooltip from './components/molecules/Tooltip.vue'
+import Toast from './components/molecules/Toast.vue'
+import Toaster from './components/organisms/Toaster.vue'
 
 // ## Action Components .................................................
 import Link from './components/atoms/Link.vue'
@@ -29,6 +33,8 @@ import ButtonGroup from './components/molecules/ButtonGroup.vue'
 import Toggle from './components/atoms/Toggle.vue'
 import FloatButton from './components/molecules/FloatButton.vue'
 import ToggleGroup from './components/molecules/ToggleGroup.vue'
+import Breadcrumb from './components/molecules/Breadcrumb.vue'
+import Pagination from './components/molecules/Pagination.vue'
 
 // ## Form Components ..................................................
 import Input from './components/atoms/Input.vue'
@@ -36,6 +42,7 @@ import Textarea from './components/atoms/Textarea.vue'
 import SelectBox from './components/atoms/SelectBox.vue'
 import RadioGroup from './components/atoms/RadioGroup.vue'
 import CheckboxGroup from './components/atoms/CheckboxGroup.vue'
+import Checkbox from './components/atoms/Checkbox.vue'
 import FileUpload from './components/atoms/FileUpload.vue'
 import Switch from './components/atoms/Switch.vue'
 import Slider from './components/atoms/Slider.vue'
@@ -72,18 +79,21 @@ import * as accessibility from './utils/accessibility'
 import { SurgeuiTheme, ThemeSymbol, flattenThemeToCSS } from './plugin/theme'
 import { computed, toValue, type MaybeRefOrGetter } from 'vue'
 import { LocaleKey, defineLocale } from './composables/useLocale'
+import { ToasterKey, createToaster } from './composables/useToast'
 import { fr } from './locales/fr'
 import type { SurgeLocale, SurgeLocaleInput } from './locales/types'
 
 // Export des composants et de la fonction d'installation
 export { Icon, Heading, Panel, Image, Avatar, AvatarGroup, Badge, Dialog, Progress, Spinner, Price }
-export { Tabs, Accordion, AccordionItem, Alert, Card }
-export { Link, LinkGroup, Button, ButtonGroup, Toggle, ToggleGroup, FloatButton, Dropdown }
-export { Input, Textarea, SelectBox, RadioGroup, CheckboxGroup, FileUpload, Switch, Slider, Password, OtpInput }
+export { Tabs, Accordion, AccordionItem, Alert, Card, Skeleton, Tooltip, Toast, Toaster }
+export { Link, LinkGroup, Button, ButtonGroup, Toggle, ToggleGroup, FloatButton, Dropdown, Breadcrumb, Pagination }
+export { Input, Textarea, SelectBox, RadioGroup, Checkbox, CheckboxGroup, FileUpload, Switch, Slider, Password, OtpInput }
 export { InputField, SelectBoxField, RadioGroupField, CheckboxGroupField, PasswordField, SwitchField, FileUploadField, TextareaField, SliderField, OtpInputField }
 export { FormField, FormFieldGroup }
 export { SingleColumnLayout, SidebarLayout, SplitLayout, HolyGrailLayout, MagazineLayout, GridLayout, MasonryLayout, HeroLayout, FullScreenLayout }
 export { accessibility }
+export { getPaginationItems } from './utils/pagination'
+export type { PaginationItem, PaginationRangeOptions } from './utils/pagination'
 
 export interface SurgeUIOptions {
   prefix?: string
@@ -107,6 +117,9 @@ export default {
 
     // Locale des textes par défaut (libellés, annonces)
     app.provide(LocaleKey, computed(() => defineLocale(fr, toValue(locale))))
+
+    // File des toasts (useToast) : une par application
+    app.provide(ToasterKey, createToaster())
 
     // Génération et application des variables CSS personnalisées
     // (côté client uniquement : document n'existe pas en SSR)
@@ -135,6 +148,10 @@ export default {
     app.component(`${prefix}Price`, Price)
     app.component(`${prefix}Alert`, Alert)
     app.component(`${prefix}Card`, Card)
+    app.component(`${prefix}Skeleton`, Skeleton)
+    app.component(`${prefix}Tooltip`, Tooltip)
+    app.component(`${prefix}Toast`, Toast)
+    app.component(`${prefix}Toaster`, Toaster)
 
     // ## Action Components
     app.component(`${prefix}Button`, Button)
@@ -145,12 +162,15 @@ export default {
     app.component(`${prefix}Toggle`, Toggle)
     app.component(`${prefix}ToggleGroup`, ToggleGroup)
     app.component(`${prefix}Dropdown`, Dropdown)
+    app.component(`${prefix}Breadcrumb`, Breadcrumb)
+    app.component(`${prefix}Pagination`, Pagination)
 
     // ## Form Components ...... Base fields
     app.component(`${prefix}Input`, Input)
     app.component(`${prefix}Textarea`, Textarea)
     app.component(`${prefix}SelectBox`, SelectBox)
     app.component(`${prefix}RadioGroup`, RadioGroup)
+    app.component(`${prefix}Checkbox`, Checkbox)
     app.component(`${prefix}CheckboxGroup`, CheckboxGroup)
     app.component(`${prefix}FileUpload`, FileUpload)
     app.component(`${prefix}Switch`, Switch)

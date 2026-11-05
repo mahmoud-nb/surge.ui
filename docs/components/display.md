@@ -25,7 +25,9 @@ Les composants d'affichage servent à présenter du contenu visuel : titres, ima
 |-----------|-------------|
 | [Dialog](/components/dialog) | Modale/tiroir polyvalent (center, left, right, top, bottom, full) |
 | [Popover](/components/popover) | Bulle contextuelle avec placement intelligent |
+| [Tooltip](/components/tooltip) | Infobulle au survol et au focus clavier |
 | [Alert](/components/alert) | Alerte informative avec types success, warning, error, info |
+| [Toast](/components/toast) | Notifications éphémères avec useToast() et SuToaster |
 | [Tabs](/components/tabs) | Onglets avec variantes underline, contained et pills |
 | [Accordion](/components/accordion) | Panneaux dépliables avec ouverture simple ou multiple |
 | [Collapse](/components/collapse) | Zone dépliable individuelle |
@@ -36,3 +38,4 @@ Les composants d'affichage servent à présenter du contenu visuel : titres, ima
 |-----------|-------------|
 | [Progress](/components/progress) | Barre de progression avec états et mode indéterminé |
 | [Spinner](/components/spinner) | Indicateur de chargement avec 5 styles d'animation |
+| [Skeleton](/components/skeleton) | Silhouette de contenu en cours de chargement |

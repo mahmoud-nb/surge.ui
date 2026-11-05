@@ -16,6 +16,7 @@ Les composants de formulaire permettent la saisie et la validation de données :
 |-----------|-------------|
 | [SelectBox](/components/selectbox) | Liste déroulante avec sélection simple ou multiple |
 | [RadioGroup](/components/radio-group) | Groupe radio pour sélection unique avec modes d'affichage |
+| [Checkbox](/components/checkbox) | Case à cocher seule avec état mixte |
 | [CheckboxGroup](/components/checkbox-group) | Groupe checkbox pour sélection multiple avec modes d'affichage |
 | [Switch](/components/switch) | Interrupteur on/off avec labels optionnels |
 

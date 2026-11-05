@@ -29,3 +29,10 @@ Les composants d'actions permettent à l'utilisateur d'interagir : boutons, lien
 | Composant | Description |
 |-----------|-------------|
 | [Dropdown](/components/dropdown) | Menu déroulant avec options, icônes et liens |
+
+## Navigation
+
+| Composant | Description |
+|-----------|-------------|
+| [Breadcrumb](/components/breadcrumb) | Fil d'Ariane avec repli des chemins longs |
+| [Pagination](/components/pagination) | Navigation entre les pages d'une liste |

@@ -11,6 +11,7 @@ import { useFocusTrap, createFocusTrap, getTabbableElements } from './useFocusTr
 import { useDismiss } from './useDismiss'
 import { useListNavigation } from './useListNavigation'
 import { useTypeahead } from './useTypeahead'
+import { useToast, createToaster, ToasterKey } from './useToast'
 
 export {
   useTheme,
@@ -37,6 +38,9 @@ export {
   useDismiss,
   useListNavigation,
   useTypeahead,
+  useToast,
+  createToaster,
+  ToasterKey,
 }
 
 export type { FloatingPositionOptions } from './useFloatingPosition'
@@ -52,3 +56,4 @@ export type { FocusTrapOptions } from './useFocusTrap'
 export type { DismissOptions, DismissReason } from './useDismiss'
 export type { ListNavigationOptions, ListOrientation } from './useListNavigation'
 export type { TypeaheadOptions } from './useTypeahead'
+export type { Toaster, ToastItem, ToastOptions } from './useToast'

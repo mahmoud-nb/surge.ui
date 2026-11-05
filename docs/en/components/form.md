@@ -16,6 +16,7 @@ Form components handle data input and validation: text fields, selectors, switch
 |-----------|-------------|
 | [SelectBox](/en/components/selectbox) | Dropdown list with single or multiple selection |
 | [RadioGroup](/en/components/radio-group) | Radio group for single selection with display modes |
+| [Checkbox](/en/components/checkbox) | Single checkbox with a mixed state |
 | [CheckboxGroup](/en/components/checkbox-group) | Checkbox group for multiple selection with display modes |
 | [Switch](/en/components/switch) | On/off switch with optional labels |
 

@@ -29,3 +29,10 @@ Action components enable user interaction: buttons, links, toggles, dropdown men
 | Component | Description |
 |-----------|-------------|
 | [Dropdown](/en/components/dropdown) | Dropdown menu with options, icons and links |
+
+## Navigation
+
+| Component | Description |
+|-----------|-------------|
+| [Breadcrumb](/en/components/breadcrumb) | Breadcrumb trail with collapsible long paths |
+| [Pagination](/en/components/pagination) | Navigation between the pages of a list |

@@ -25,7 +25,9 @@ Display components present visual content: headings, images, badges, modals, pro
 |-----------|-------------|
 | [Dialog](/en/components/dialog) | Versatile modal/drawer (center, left, right, top, bottom, full) |
 | [Popover](/en/components/popover) | Contextual popover with smart placement |
+| [Tooltip](/en/components/tooltip) | Tooltip on hover and keyboard focus |
 | [Alert](/en/components/alert) | Informational alert with success, warning, error, info types |
+| [Toast](/en/components/toast) | Short-lived notifications with useToast() and SuToaster |
 | [Tabs](/en/components/tabs) | Tabs with underline, contained and pills variants |
 | [Accordion](/en/components/accordion) | Collapsible panels with single or multiple open mode |
 | [Collapse](/en/components/collapse) | Individual collapsible section |
@@ -36,3 +38,4 @@ Display components present visual content: headings, images, badges, modals, pro
 |-----------|-------------|
 | [Progress](/en/components/progress) | Progress bar with states and indeterminate mode |
 | [Spinner](/en/components/spinner) | Loading indicator with 5 animation styles |
+| [Skeleton](/en/components/skeleton) | Placeholder for loading content |

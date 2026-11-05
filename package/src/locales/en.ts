@@ -91,6 +91,22 @@ export const en: SurgeLocale = {
     password: {
       strength: 'Password strength: {score}%'
     },
+    toast: {
+      region: 'Notifications',
+      dismiss: 'Dismiss notification'
+    },
+    breadcrumb: {
+      label: 'Breadcrumb',
+      expand: 'Show full path'
+    },
+    pagination: {
+      label: 'Pagination',
+      page: 'Page {page}',
+      previous: 'Previous page',
+      next: 'Next page',
+      first: 'First page',
+      last: 'Last page'
+    },
     gridLayout: {
       viewToggle: 'View',
       grid: 'Grid',
