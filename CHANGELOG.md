@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.1.0](https://mahmoud-nb.github.io/surge.ui/compare/v3.0.2...v3.1.0) (2026-11-05)
+
+
+### 🐛 Bug Fixes
+
+* **Dialog:** applique la prop role sur l'élément <dialog> ([fc7da53](https://mahmoud-nb.github.io/surge.ui/commit/fc7da53bbdb43ccf89ad00a0be0a8b2b29451844))
+
+
+### 📚 Documentation
+
+* affiche les démos des pages /en avec la locale anglaise ([4a8894e](https://mahmoud-nb.github.io/surge.ui/commit/4a8894e3cc2bac03bef2a14c8542f2ce4c0cb4bd))
+
+
+### ✨ Features
+
+* ajoute Checkbox, Tooltip, Toast, Skeleton, Breadcrumb et Pagination ([b83ac51](https://mahmoud-nb.github.io/surge.ui/commit/b83ac51d7b9e5babb6bd70d995e03948c74ae6c8))
+* ajoute DataTable, Calendar, DatePicker, TreeView et CommandPalette ([4700583](https://mahmoud-nb.github.io/surge.ui/commit/47005837e28e779eeb6ca7c021a12a0724bceac8))
+* ajoute NumberInput, Autocomplete, Stepper, ConfirmDialog, Tag et utilitaires ([0d12305](https://mahmoud-nb.github.io/surge.ui/commit/0d1230536ecd9adc09e775d4c9c02ac2e43c63c7))
+* **Calendar:** choix du mois et de l'année depuis le titre ([7b8979e](https://mahmoud-nb.github.io/surge.ui/commit/7b8979e020e772776ab88262874e0f8ca6bfa109))
+
 ### [3.0.2](https://mahmoud-nb.github.io/surge.ui/compare/v3.0.1...v3.0.2) (2026-10-26)
 
 
