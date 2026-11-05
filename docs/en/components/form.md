@@ -7,6 +7,8 @@ Form components handle data input and validation: text fields, selectors, switch
 | Component | Description |
 |-----------|-------------|
 | [Input](/en/components/input) | Text field with prefix, suffix and icons |
+| [NumberInput](/en/components/numberinput) | Numeric field with buttons, bounds and format |
+| [Autocomplete](/en/components/autocomplete) | Free text with suggestions |
 | [Textarea](/en/components/textarea) | Text area with counter and auto-resize |
 | [Password](/en/components/password) | Password field with validation and progress bar |
 

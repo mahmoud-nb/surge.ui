@@ -74,6 +74,7 @@ Release flow: `npm run release:dry` → `npm run release` (bumps package.json + 
 - `useFocusTrap` / `createFocusTrap()` — stacked focus traps (Tab cycling, focus brought back, focus returned on deactivate); used by Popover modal. Not needed for `Dialog` (native `showModal()`)
 - `useDismiss` — layered dismissal: Escape closes only the top layer (and cancels a parent `<dialog>` close), `pointerdown` outside closes each layer it is outside of (layers opened above count as inside), optional focus-outside; used by Popover, Dropdown, SelectBox
 - `useToast` / `createToaster()` — toast queue provided by the plugin (`ToasterKey`, one per app, SSR-safe; browser fallback store without the plugin); `show/success/error/warning/info/update/dismiss`, each toast announced through `useAnnouncer`; rendered by `SuToaster` (top layer `popover="manual"`, timers paused on hover/focus/hidden tab)
+- `useConfirm` / `createConfirmer()` — promise-based confirmations provided by the plugin (`ConfirmerKey`); rendered one at a time by `SuConfirmDialog` (`role="alertdialog"`, autofocus on Cancel for `tone: 'danger'`); falls back to `window.confirm()` when no dialog is mounted
 - `useListNavigation` / `useTypeahead` — arrows, Home/End, typeahead, disabled items skipped, RTL-aware horizontal arrows; `virtual` mode (aria-activedescendant: SelectBox) or `roving` mode (DOM focus: Dropdown menu, Tabs, Accordion)
 
 **Styles** (`styles/`):

@@ -12,6 +12,7 @@ import { useDismiss } from './useDismiss'
 import { useListNavigation } from './useListNavigation'
 import { useTypeahead } from './useTypeahead'
 import { useToast, createToaster, ToasterKey } from './useToast'
+import { useConfirm, createConfirmer, ConfirmerKey } from './useConfirm'
 
 export {
   useTheme,
@@ -41,6 +42,9 @@ export {
   useToast,
   createToaster,
   ToasterKey,
+  useConfirm,
+  createConfirmer,
+  ConfirmerKey,
 }
 
 export type { FloatingPositionOptions } from './useFloatingPosition'
@@ -57,3 +61,4 @@ export type { DismissOptions, DismissReason } from './useDismiss'
 export type { ListNavigationOptions, ListOrientation } from './useListNavigation'
 export type { TypeaheadOptions } from './useTypeahead'
 export type { Toaster, ToastItem, ToastOptions } from './useToast'
+export type { Confirmer, ConfirmOptions, ConfirmRequest, ConfirmTone } from './useConfirm'

@@ -23,6 +23,13 @@ import Skeleton from './components/atoms/Skeleton.vue'
 import Tooltip from './components/molecules/Tooltip.vue'
 import Toast from './components/molecules/Toast.vue'
 import Toaster from './components/organisms/Toaster.vue'
+import Divider from './components/atoms/Divider.vue'
+import Kbd from './components/atoms/Kbd.vue'
+import VisuallyHidden from './components/atoms/VisuallyHidden.vue'
+import Tag from './components/atoms/Tag.vue'
+import EmptyState from './components/molecules/EmptyState.vue'
+import Stepper from './components/molecules/Stepper.vue'
+import ConfirmDialog from './components/organisms/ConfirmDialog.vue'
 
 // ## Action Components .................................................
 import Link from './components/atoms/Link.vue'
@@ -43,6 +50,8 @@ import SelectBox from './components/atoms/SelectBox.vue'
 import RadioGroup from './components/atoms/RadioGroup.vue'
 import CheckboxGroup from './components/atoms/CheckboxGroup.vue'
 import Checkbox from './components/atoms/Checkbox.vue'
+import NumberInput from './components/atoms/NumberInput.vue'
+import Autocomplete from './components/molecules/Autocomplete.vue'
 import FileUpload from './components/atoms/FileUpload.vue'
 import Switch from './components/atoms/Switch.vue'
 import Slider from './components/atoms/Slider.vue'
@@ -61,6 +70,7 @@ import SwitchField from './components/molecules/SwitchField.vue'
 import SliderField from './components/molecules/SliderField.vue'
 import FileUploadField from './components/molecules/FileUploadField.vue'
 import OtpInputField from './components/molecules/OtpInputField.vue'
+import NumberInputField from './components/molecules/NumberInputField.vue'
 
 import FormFieldGroup from './components/molecules/FormFieldGroup.vue'
 
@@ -80,15 +90,17 @@ import { SurgeuiTheme, ThemeSymbol, flattenThemeToCSS } from './plugin/theme'
 import { computed, toValue, type MaybeRefOrGetter } from 'vue'
 import { LocaleKey, defineLocale } from './composables/useLocale'
 import { ToasterKey, createToaster } from './composables/useToast'
+import { ConfirmerKey, createConfirmer } from './composables/useConfirm'
 import { fr } from './locales/fr'
 import type { SurgeLocale, SurgeLocaleInput } from './locales/types'
 
 // Export des composants et de la fonction d'installation
 export { Icon, Heading, Panel, Image, Avatar, AvatarGroup, Badge, Dialog, Progress, Spinner, Price }
 export { Tabs, Accordion, AccordionItem, Alert, Card, Skeleton, Tooltip, Toast, Toaster }
+export { Divider, Kbd, VisuallyHidden, Tag, EmptyState, Stepper, ConfirmDialog }
 export { Link, LinkGroup, Button, ButtonGroup, Toggle, ToggleGroup, FloatButton, Dropdown, Breadcrumb, Pagination }
-export { Input, Textarea, SelectBox, RadioGroup, Checkbox, CheckboxGroup, FileUpload, Switch, Slider, Password, OtpInput }
-export { InputField, SelectBoxField, RadioGroupField, CheckboxGroupField, PasswordField, SwitchField, FileUploadField, TextareaField, SliderField, OtpInputField }
+export { Input, Textarea, SelectBox, RadioGroup, Checkbox, CheckboxGroup, NumberInput, Autocomplete, FileUpload, Switch, Slider, Password, OtpInput }
+export { InputField, SelectBoxField, RadioGroupField, CheckboxGroupField, PasswordField, SwitchField, FileUploadField, TextareaField, SliderField, OtpInputField, NumberInputField }
 export { FormField, FormFieldGroup }
 export { SingleColumnLayout, SidebarLayout, SplitLayout, HolyGrailLayout, MagazineLayout, GridLayout, MasonryLayout, HeroLayout, FullScreenLayout }
 export { accessibility }
@@ -121,6 +133,9 @@ export default {
     // File des toasts (useToast) : une par application
     app.provide(ToasterKey, createToaster())
 
+    // Confirmations (useConfirm) : une file par application
+    app.provide(ConfirmerKey, createConfirmer())
+
     // Génération et application des variables CSS personnalisées
     // (côté client uniquement : document n'existe pas en SSR)
     if (typeof document !== 'undefined') {
@@ -152,6 +167,13 @@ export default {
     app.component(`${prefix}Tooltip`, Tooltip)
     app.component(`${prefix}Toast`, Toast)
     app.component(`${prefix}Toaster`, Toaster)
+    app.component(`${prefix}Divider`, Divider)
+    app.component(`${prefix}Kbd`, Kbd)
+    app.component(`${prefix}VisuallyHidden`, VisuallyHidden)
+    app.component(`${prefix}Tag`, Tag)
+    app.component(`${prefix}EmptyState`, EmptyState)
+    app.component(`${prefix}Stepper`, Stepper)
+    app.component(`${prefix}ConfirmDialog`, ConfirmDialog)
 
     // ## Action Components
     app.component(`${prefix}Button`, Button)
@@ -172,6 +194,8 @@ export default {
     app.component(`${prefix}RadioGroup`, RadioGroup)
     app.component(`${prefix}Checkbox`, Checkbox)
     app.component(`${prefix}CheckboxGroup`, CheckboxGroup)
+    app.component(`${prefix}NumberInput`, NumberInput)
+    app.component(`${prefix}Autocomplete`, Autocomplete)
     app.component(`${prefix}FileUpload`, FileUpload)
     app.component(`${prefix}Switch`, Switch)
     app.component(`${prefix}Slider`, Slider)
@@ -192,6 +216,7 @@ export default {
     app.component(`${prefix}SliderField`, SliderField)
     app.component(`${prefix}FileUploadField`, FileUploadField)
     app.component(`${prefix}OtpInputField`, OtpInputField)
+    app.component(`${prefix}NumberInputField`, NumberInputField)
 
     // ...... FormFieldGroup container
     app.component(`${prefix}FormFieldGroup`, FormFieldGroup)

@@ -7,6 +7,8 @@ Les composants de formulaire permettent la saisie et la validation de données :
 | Composant | Description |
 |-----------|-------------|
 | [Input](/components/input) | Champ texte avec préfixe, suffixe et icônes |
+| [NumberInput](/components/numberinput) | Champ numérique avec boutons, bornes et format |
+| [Autocomplete](/components/autocomplete) | Saisie libre avec suggestions |
 | [Textarea](/components/textarea) | Zone de texte avec compteur et auto-resize |
 | [Password](/components/password) | Champ mot de passe avec validation et barre de progression |
 

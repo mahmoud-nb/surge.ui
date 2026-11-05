@@ -25,12 +25,17 @@ const getNavItems = (section: string = 'display', lang: string = 'fr') => {
     display:[
       { text: 'Heading', link: `${langPrefix}/components/heading` },
       { text: 'Panel', link: `${langPrefix}/components/panel` },
+      { text: 'Divider', link: `${langPrefix}/components/divider`, badge: NEW_BADGE },
+      { text: 'Kbd', link: `${langPrefix}/components/kbd`, badge: NEW_BADGE },
+      { text: 'VisuallyHidden', link: `${langPrefix}/components/visuallyhidden`, badge: NEW_BADGE },
       { text: 'Icon', link: `${langPrefix}/components/icon` },
       { text: 'Image', link: `${langPrefix}/components/image` },
       { text: 'Avatar', link: `${langPrefix}/components/avatar` },
       { text: 'AvatarGroup', link: `${langPrefix}/components/avatargroup` },
       { text: 'Badge', link: `${langPrefix}/components/badge` },
+      { text: 'Tag', link: `${langPrefix}/components/tag`, badge: NEW_BADGE },
       { text: 'Dialog', link: `${langPrefix}/components/dialog` },
+      { text: 'ConfirmDialog', link: `${langPrefix}/components/confirmdialog`, badge: NEW_BADGE },
       { text: 'Popover', link: `${langPrefix}/components/popover` },
       { text: 'Alert', link: `${langPrefix}/components/alert`},
       { text: 'Toast', link: `${langPrefix}/components/toast`, badge: NEW_BADGE },
@@ -41,6 +46,7 @@ const getNavItems = (section: string = 'display', lang: string = 'fr') => {
       { text: 'Progress', link: `${langPrefix}/components/progress` },
       { text: 'Spinner', link: `${langPrefix}/components/spinner`},
       { text: 'Skeleton', link: `${langPrefix}/components/skeleton`, badge: NEW_BADGE },
+      { text: 'EmptyState', link: `${langPrefix}/components/emptystate`, badge: NEW_BADGE },
       { text: 'Price', link: `${langPrefix}/components/price`, badge: NEW_BADGE },
       { text: 'Card', link: `${langPrefix}/components/card`, badge: NEW_BADGE }
     ],
@@ -54,11 +60,14 @@ const getNavItems = (section: string = 'display', lang: string = 'fr') => {
       { text: 'FloatButton', link: `${langPrefix}/components/floatbutton` },
       { text: 'Dropdown', link: `${langPrefix}/components/dropdown` },
       { text: 'Breadcrumb', link: `${langPrefix}/components/breadcrumb`, badge: NEW_BADGE },
-      { text: 'Pagination', link: `${langPrefix}/components/pagination`, badge: NEW_BADGE }
+      { text: 'Pagination', link: `${langPrefix}/components/pagination`, badge: NEW_BADGE },
+      { text: 'Stepper', link: `${langPrefix}/components/stepper`, badge: NEW_BADGE }
     ],
     forms:[
       { text: 'Input', link: `${langPrefix}/components/input` },
       { text: 'Textarea', link: `${langPrefix}/components/textarea` },
+      { text: 'NumberInput', link: `${langPrefix}/components/numberinput`, badge: NEW_BADGE },
+      { text: 'Autocomplete', link: `${langPrefix}/components/autocomplete`, badge: NEW_BADGE },
       { text: 'FileUpload', link: `${langPrefix}/components/fileupload` },
       { text: 'SelectBox', link: `${langPrefix}/components/selectbox` },
       { text: 'RadioGroup', link: `${langPrefix}/components/radio-group` },

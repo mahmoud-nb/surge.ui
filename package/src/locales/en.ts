@@ -107,6 +107,29 @@ export const en: SurgeLocale = {
       first: 'First page',
       last: 'Last page'
     },
+    tag: {
+      remove: 'Remove {label}'
+    },
+    numberInput: {
+      increment: 'Increase',
+      decrement: 'Decrease'
+    },
+    stepper: {
+      label: 'Steps',
+      complete: 'completed',
+      error: 'needs attention'
+    },
+    confirm: {
+      title: 'Confirm this action?',
+      confirm: 'Confirm',
+      cancel: 'Cancel'
+    },
+    autocomplete: {
+      noResults: 'No suggestions',
+      loading: 'Searching…',
+      results: { one: '{count} suggestion', other: '{count} suggestions' },
+      clear: 'Clear'
+    },
     gridLayout: {
       viewToggle: 'View',
       grid: 'Grid',

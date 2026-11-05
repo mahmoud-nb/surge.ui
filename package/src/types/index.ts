@@ -439,6 +439,78 @@ export interface SkeletonProps {
   radius?: Radius;
 }
 
+// Divider.vue
+export type DividerVariant = 'solid' | 'dashed';
+export interface DividerProps {
+  orientation?: Orientation;
+  variant?: DividerVariant;
+  /** Texte au milieu du trait (ou slot par défaut), horizontal seulement */
+  label?: string;
+  labelAlign?: 'start' | 'center' | 'end';
+  /** Espace autour du trait */
+  spacing?: 'none' | 'sm' | 'md' | 'lg';
+  /** Trait purement visuel : pas de role="separator" */
+  decorative?: boolean;
+}
+
+// Kbd.vue
+export interface KbdProps {
+  /** Touches d'un raccourci (ex. ['Ctrl', 'K']) ; sinon slot par défaut */
+  keys?: string[];
+  /** Séparateur affiché entre les touches */
+  separator?: string;
+  size?: Size;
+}
+
+// VisuallyHidden.vue
+export interface VisuallyHiddenProps {
+  /** Élément rendu (défaut : span) */
+  as?: string;
+  /** Redevient visible quand il reçoit le focus (lien d'évitement) */
+  focusable?: boolean;
+}
+
+// Tag.vue
+export type TagVariant = 'default' | 'primary' | 'success' | 'warning' | 'error' | 'info';
+export interface TagProps {
+  label?: string;
+  variant?: TagVariant;
+  size?: Size;
+  icon?: Component;
+  /** Bouton de retrait (événement `remove`) */
+  removable?: boolean;
+  /** Nom du bouton de retrait (défaut : « Retirer {label} ») */
+  removeLabel?: string;
+  disabled?: boolean;
+}
+
+// NumberInput.vue
+// La valeur (number | null) passe par v-model (defineModel)
+export interface NumberInputProps extends AccessibilityProps {
+  min?: number;
+  max?: number;
+  step?: number;
+  /** Pas de Page précédente / suivante (défaut : 10 × step) */
+  largeStep?: number;
+  /** Décimales conservées (défaut : celles de `step`) */
+  precision?: number;
+  /** Format d'affichage Intl.NumberFormat (devise, unité, pourcentage…) */
+  formatOptions?: Intl.NumberFormatOptions;
+  /** Langue du format (défaut : locale des composants) */
+  locale?: string;
+  /** Boutons − / + (défaut : true) */
+  controls?: boolean;
+  name?: string;
+  placeholder?: string;
+  size?: Size;
+  state?: State;
+  disabled?: boolean;
+  readonly?: boolean;
+  required?: boolean;
+  incrementLabel?: string;
+  decrementLabel?: string;
+}
+
 // Toggle.vue
 export type ToggleVariant = 'default' | 'outline' | 'ghost'
 export interface ToggleProps extends AccessibilityProps {
@@ -716,6 +788,73 @@ export interface ToastProps {
   dismissLabel?: string;
 }
 
+// EmptyState.vue
+export interface EmptyStateProps {
+  title?: string;
+  description?: string;
+  icon?: Component;
+  /** Niveau du titre dans la page (défaut : 3) */
+  headingLevel?: 2 | 3 | 4 | 5 | 6;
+  size?: Size;
+  /** Cadre en pointillés (zone vide à remplir) */
+  bordered?: boolean;
+}
+
+// Stepper.vue
+// L'étape courante (index à partir de 0) passe par v-model (defineModel)
+export type StepStatus = 'complete' | 'current' | 'upcoming' | 'error';
+export interface StepItem {
+  label: string;
+  description?: string;
+  /** Étape en erreur (à corriger) */
+  error?: boolean;
+  disabled?: boolean;
+  icon?: Component;
+}
+export interface StepperProps extends AccessibilityProps {
+  steps?: StepItem[];
+  orientation?: Orientation;
+  /** Étapes franchies cliquables (retour en arrière) */
+  clickable?: boolean;
+  /** Avec `clickable`, false rend aussi les étapes suivantes cliquables */
+  linear?: boolean;
+  size?: Size;
+}
+
+// Autocomplete.vue
+// Le texte saisi passe par v-model (defineModel)
+export interface AutocompleteOption {
+  label: string;
+  value?: string | number;
+  description?: string;
+  icon?: Component;
+  disabled?: boolean;
+}
+export interface AutocompleteProps extends AccessibilityProps {
+  /** Suggestions (un texte seul devient le libellé) */
+  options?: (string | AutocompleteOption)[];
+  /** Filtre local selon la saisie (défaut) ; false pour des suggestions déjà filtrées (serveur) */
+  filter?: boolean | ((option: AutocompleteOption, query: string) => boolean);
+  /** Caractères saisis avant d'ouvrir la liste */
+  minChars?: number;
+  /** Ouvre la liste au focus */
+  openOnFocus?: boolean;
+  /** Recherche en cours (suggestions asynchrones) */
+  loading?: boolean;
+  clearable?: boolean;
+  name?: string;
+  placeholder?: string;
+  size?: Size;
+  state?: State;
+  disabled?: boolean;
+  readonly?: boolean;
+  required?: boolean;
+  maxHeight?: string;
+  noResultsText?: string;
+  loadingText?: string;
+  clearLabel?: string;
+}
+
 // FileUploadField.vue — mirrors BaseFileUploadProps for the field wrapper variant
 export interface FileUploadFieldProps extends AccessibilityProps {
   value?: UploadedFile[];
@@ -896,6 +1035,9 @@ export type SwitchFieldProps = FormFieldProps & SwitchProps
 
 // TextareaField.vue
 export type TextareaFieldProps = FormFieldProps & TextareaProps
+
+// NumberInputField.vue
+export type NumberInputFieldProps = FormFieldProps & NumberInputProps
 
 // --- ORGANISMS ---
 

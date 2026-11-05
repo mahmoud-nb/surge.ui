@@ -153,6 +153,33 @@ export interface SurgeMessages {
     first: LocaleMessage
     last: LocaleMessage
   }
+  tag: {
+    /** Bouton de retrait : {label} */
+    remove: LocaleMessage
+  }
+  numberInput: {
+    increment: LocaleMessage
+    decrement: LocaleMessage
+  }
+  stepper: {
+    /** Nom de la liste des étapes */
+    label: LocaleMessage
+    /** Statuts lus après le libellé d'une étape */
+    complete: LocaleMessage
+    error: LocaleMessage
+  }
+  confirm: {
+    title: LocaleMessage
+    confirm: LocaleMessage
+    cancel: LocaleMessage
+  }
+  autocomplete: {
+    noResults: LocaleMessage
+    loading: LocaleMessage
+    /** Annonce du nombre de suggestions : {count} */
+    results: LocaleMessage
+    clear: LocaleMessage
+  }
   gridLayout: {
     viewToggle: LocaleMessage
     grid: LocaleMessage
