@@ -180,6 +180,37 @@ export interface SurgeMessages {
     results: LocaleMessage
     clear: LocaleMessage
   }
+  dataTable: {
+    selectAll: LocaleMessage
+    /** Case d'une ligne : {label} */
+    selectRow: LocaleMessage
+    /** Annonces de tri : {column} */
+    sortAscending: LocaleMessage
+    sortDescending: LocaleMessage
+    sortCleared: LocaleMessage
+    empty: LocaleMessage
+  }
+  calendar: {
+    previousMonth: LocaleMessage
+    nextMonth: LocaleMessage
+  }
+  datePicker: {
+    open: LocaleMessage
+    /** Bouton quand une date est choisie : {date} */
+    openSelected: LocaleMessage
+    dialog: LocaleMessage
+    /** Lettres du format attendu (placeholder) */
+    day: LocaleMessage
+    month: LocaleMessage
+    year: LocaleMessage
+  }
+  commandPalette: {
+    label: LocaleMessage
+    placeholder: LocaleMessage
+    empty: LocaleMessage
+    /** {count} */
+    results: LocaleMessage
+  }
   gridLayout: {
     viewToggle: LocaleMessage
     grid: LocaleMessage

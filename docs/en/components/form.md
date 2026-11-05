@@ -9,6 +9,8 @@ Form components handle data input and validation: text fields, selectors, switch
 | [Input](/en/components/input) | Text field with prefix, suffix and icons |
 | [NumberInput](/en/components/numberinput) | Numeric field with buttons, bounds and format |
 | [Autocomplete](/en/components/autocomplete) | Free text with suggestions |
+| [DatePicker](/en/components/datepicker) | Date field with a calendar |
+| [Calendar](/en/components/calendar) | Month grid to pick a day |
 | [Textarea](/en/components/textarea) | Text area with counter and auto-resize |
 | [Password](/en/components/password) | Password field with validation and progress bar |
 

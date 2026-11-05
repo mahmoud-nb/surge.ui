@@ -33,6 +33,8 @@ Les composants d'affichage servent à présenter du contenu visuel : titres, ima
 | [Tooltip](/components/tooltip) | Infobulle au survol et au focus clavier |
 | [Alert](/components/alert) | Alerte informative avec types success, warning, error, info |
 | [Toast](/components/toast) | Notifications éphémères avec useToast() et SuToaster |
+| [DataTable](/components/datatable) | Tableau de données : tri, sélection, pagination |
+| [TreeView](/components/treeview) | Arborescence dépliable au clavier |
 | [Tabs](/components/tabs) | Onglets avec variantes underline, contained et pills |
 | [Accordion](/components/accordion) | Panneaux dépliables avec ouverture simple ou multiple |
 | [Collapse](/components/collapse) | Zone dépliable individuelle |

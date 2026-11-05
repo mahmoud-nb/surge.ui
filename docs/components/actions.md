@@ -37,3 +37,4 @@ Les composants d'actions permettent à l'utilisateur d'interagir : boutons, lien
 | [Breadcrumb](/components/breadcrumb) | Fil d'Ariane avec repli des chemins longs |
 | [Pagination](/components/pagination) | Navigation entre les pages d'une liste |
 | [Stepper](/components/stepper) | Progression d'un parcours en étapes |
+| [CommandPalette](/components/commandpalette) | Recherche de commandes au clavier (Ctrl + K) |

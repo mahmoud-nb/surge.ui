@@ -130,6 +130,32 @@ export const fr: SurgeLocale = {
       results: { one: '{count} suggestion', other: '{count} suggestions' },
       clear: 'Effacer'
     },
+    dataTable: {
+      selectAll: 'Tout sélectionner',
+      selectRow: 'Sélectionner {label}',
+      sortAscending: 'Trié par {column}, ordre croissant',
+      sortDescending: 'Trié par {column}, ordre décroissant',
+      sortCleared: 'Tri retiré',
+      empty: 'Aucune donnée'
+    },
+    calendar: {
+      previousMonth: 'Mois précédent',
+      nextMonth: 'Mois suivant'
+    },
+    datePicker: {
+      open: 'Choisir une date',
+      openSelected: 'Changer la date, {date}',
+      dialog: 'Calendrier',
+      day: 'jj',
+      month: 'mm',
+      year: 'aaaa'
+    },
+    commandPalette: {
+      label: 'Palette de commandes',
+      placeholder: 'Rechercher une commande…',
+      empty: 'Aucun résultat',
+      results: { one: '{count} commande', other: '{count} commandes' }
+    },
     gridLayout: {
       viewToggle: 'Affichage',
       grid: 'Grille',

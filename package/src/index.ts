@@ -30,6 +30,9 @@ import Tag from './components/atoms/Tag.vue'
 import EmptyState from './components/molecules/EmptyState.vue'
 import Stepper from './components/molecules/Stepper.vue'
 import ConfirmDialog from './components/organisms/ConfirmDialog.vue'
+import DataTable from './components/organisms/DataTable.vue'
+import TreeView from './components/molecules/TreeView.vue'
+import CommandPalette from './components/organisms/CommandPalette.vue'
 
 // ## Action Components .................................................
 import Link from './components/atoms/Link.vue'
@@ -52,6 +55,8 @@ import CheckboxGroup from './components/atoms/CheckboxGroup.vue'
 import Checkbox from './components/atoms/Checkbox.vue'
 import NumberInput from './components/atoms/NumberInput.vue'
 import Autocomplete from './components/molecules/Autocomplete.vue'
+import Calendar from './components/molecules/Calendar.vue'
+import DatePicker from './components/molecules/DatePicker.vue'
 import FileUpload from './components/atoms/FileUpload.vue'
 import Switch from './components/atoms/Switch.vue'
 import Slider from './components/atoms/Slider.vue'
@@ -97,15 +102,16 @@ import type { SurgeLocale, SurgeLocaleInput } from './locales/types'
 // Export des composants et de la fonction d'installation
 export { Icon, Heading, Panel, Image, Avatar, AvatarGroup, Badge, Dialog, Progress, Spinner, Price }
 export { Tabs, Accordion, AccordionItem, Alert, Card, Skeleton, Tooltip, Toast, Toaster }
-export { Divider, Kbd, VisuallyHidden, Tag, EmptyState, Stepper, ConfirmDialog }
+export { Divider, Kbd, VisuallyHidden, Tag, EmptyState, Stepper, ConfirmDialog, DataTable, TreeView, CommandPalette }
 export { Link, LinkGroup, Button, ButtonGroup, Toggle, ToggleGroup, FloatButton, Dropdown, Breadcrumb, Pagination }
-export { Input, Textarea, SelectBox, RadioGroup, Checkbox, CheckboxGroup, NumberInput, Autocomplete, FileUpload, Switch, Slider, Password, OtpInput }
+export { Input, Textarea, SelectBox, RadioGroup, Checkbox, CheckboxGroup, NumberInput, Autocomplete, Calendar, DatePicker, FileUpload, Switch, Slider, Password, OtpInput }
 export { InputField, SelectBoxField, RadioGroupField, CheckboxGroupField, PasswordField, SwitchField, FileUploadField, TextareaField, SliderField, OtpInputField, NumberInputField }
 export { FormField, FormFieldGroup }
 export { SingleColumnLayout, SidebarLayout, SplitLayout, HolyGrailLayout, MagazineLayout, GridLayout, MasonryLayout, HeroLayout, FullScreenLayout }
 export { accessibility }
 export { getPaginationItems } from './utils/pagination'
 export type { PaginationItem, PaginationRangeOptions } from './utils/pagination'
+export { parseDateInput, getFirstDayOfWeek } from './utils/date'
 
 export interface SurgeUIOptions {
   prefix?: string
@@ -174,6 +180,9 @@ export default {
     app.component(`${prefix}EmptyState`, EmptyState)
     app.component(`${prefix}Stepper`, Stepper)
     app.component(`${prefix}ConfirmDialog`, ConfirmDialog)
+    app.component(`${prefix}DataTable`, DataTable)
+    app.component(`${prefix}TreeView`, TreeView)
+    app.component(`${prefix}CommandPalette`, CommandPalette)
 
     // ## Action Components
     app.component(`${prefix}Button`, Button)
@@ -196,6 +205,8 @@ export default {
     app.component(`${prefix}CheckboxGroup`, CheckboxGroup)
     app.component(`${prefix}NumberInput`, NumberInput)
     app.component(`${prefix}Autocomplete`, Autocomplete)
+    app.component(`${prefix}Calendar`, Calendar)
+    app.component(`${prefix}DatePicker`, DatePicker)
     app.component(`${prefix}FileUpload`, FileUpload)
     app.component(`${prefix}Switch`, Switch)
     app.component(`${prefix}Slider`, Slider)

@@ -37,3 +37,4 @@ Action components enable user interaction: buttons, links, toggles, dropdown men
 | [Breadcrumb](/en/components/breadcrumb) | Breadcrumb trail with collapsible long paths |
 | [Pagination](/en/components/pagination) | Navigation between the pages of a list |
 | [Stepper](/en/components/stepper) | Progress through a multi-step flow |
+| [CommandPalette](/en/components/commandpalette) | Keyboard command search (Ctrl + K) |

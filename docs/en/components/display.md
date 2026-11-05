@@ -33,6 +33,8 @@ Display components present visual content: headings, images, badges, modals, pro
 | [Tooltip](/en/components/tooltip) | Tooltip on hover and keyboard focus |
 | [Alert](/en/components/alert) | Informational alert with success, warning, error, info types |
 | [Toast](/en/components/toast) | Short-lived notifications with useToast() and SuToaster |
+| [DataTable](/en/components/datatable) | Data table: sorting, selection, pagination |
+| [TreeView](/en/components/treeview) | Keyboard-navigable tree |
 | [Tabs](/en/components/tabs) | Tabs with underline, contained and pills variants |
 | [Accordion](/en/components/accordion) | Collapsible panels with single or multiple open mode |
 | [Collapse](/en/components/collapse) | Individual collapsible section |

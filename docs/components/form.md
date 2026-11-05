@@ -9,6 +9,8 @@ Les composants de formulaire permettent la saisie et la validation de données :
 | [Input](/components/input) | Champ texte avec préfixe, suffixe et icônes |
 | [NumberInput](/components/numberinput) | Champ numérique avec boutons, bornes et format |
 | [Autocomplete](/components/autocomplete) | Saisie libre avec suggestions |
+| [DatePicker](/components/datepicker) | Champ date avec calendrier |
+| [Calendar](/components/calendar) | Grille d'un mois pour choisir un jour |
 | [Textarea](/components/textarea) | Zone de texte avec compteur et auto-resize |
 | [Password](/components/password) | Champ mot de passe avec validation et barre de progression |
 

@@ -855,6 +855,82 @@ export interface AutocompleteProps extends AccessibilityProps {
   clearLabel?: string;
 }
 
+// Calendar.vue
+// Le jour choisi (Date | null) passe par v-model (defineModel)
+export interface CalendarProps {
+  min?: Date;
+  max?: Date;
+  /** Jours non sélectionnables (week-ends, jours fériés…) */
+  isDateDisabled?: (date: Date) => boolean;
+  /** Langue des noms de mois et de jours (défaut : locale des composants) */
+  locale?: string;
+  /** Premier jour de la semaine, 0 = dimanche (défaut : selon la langue) */
+  weekStartsOn?: number;
+  previousMonthLabel?: string;
+  nextMonthLabel?: string;
+}
+
+// DatePicker.vue
+// La date (Date | null) passe par v-model (defineModel)
+export interface DatePickerProps extends AccessibilityProps {
+  min?: Date;
+  max?: Date;
+  isDateDisabled?: (date: Date) => boolean;
+  locale?: string;
+  weekStartsOn?: number;
+  name?: string;
+  /** Défaut : format attendu (« jj/mm/aaaa ») */
+  placeholder?: string;
+  size?: Size;
+  state?: State;
+  disabled?: boolean;
+  readonly?: boolean;
+  required?: boolean;
+  /** Nom du bouton qui ouvre le calendrier */
+  openLabel?: string;
+}
+
+// TreeView.vue
+// Éléments dépliés (v-model:expanded) et élément choisi (v-model:selected)
+export interface TreeItem {
+  id: string | number;
+  label: string;
+  children?: TreeItem[];
+  icon?: Component;
+  disabled?: boolean;
+}
+export interface TreeViewProps extends AccessibilityProps {
+  items?: TreeItem[];
+  /** Un élément peut être choisi (aria-selected) ; false : arbre de navigation */
+  selectable?: boolean;
+  size?: Size;
+}
+
+// CommandPalette.vue
+// L'ouverture passe par v-model:open (defineModel)
+export interface CommandItem {
+  id: string;
+  label: string;
+  /** Groupe d'affichage (« Navigation », « Actions »…) */
+  group?: string;
+  description?: string;
+  icon?: Component;
+  /** Raccourci affiché (ex. ['Ctrl', 'N']) */
+  shortcut?: string[];
+  /** Termes de recherche supplémentaires */
+  keywords?: string[];
+  disabled?: boolean;
+  onSelect?: () => void;
+}
+export interface CommandPaletteProps {
+  commands?: CommandItem[];
+  placeholder?: string;
+  /** Touche du raccourci global avec Ctrl / ⌘ (défaut : 'k') ; false : aucun */
+  hotkey?: string | false;
+  emptyText?: string;
+  ariaLabel?: string;
+}
+
 // FileUploadField.vue — mirrors BaseFileUploadProps for the field wrapper variant
 export interface FileUploadFieldProps extends AccessibilityProps {
   value?: UploadedFile[];
@@ -1069,6 +1145,58 @@ export interface AlertProps {
   ariaLive?: 'assertive' | 'polite' | 'off';
   ariaAtomic?: boolean;
   size?: 'sm' | 'md' | 'lg';
+}
+
+// DataTable.vue
+// Tri (v-model:sort), page (v-model:page) et lignes cochées (v-model:selected)
+export type DataTableAlign = 'start' | 'center' | 'end';
+export type SortDirection = 'asc' | 'desc';
+export interface DataTableSort {
+  key: string;
+  direction: SortDirection;
+}
+export interface DataTableColumn {
+  /** Propriété de la ligne affichée dans la colonne */
+  key: string;
+  label: string;
+  sortable?: boolean;
+  align?: DataTableAlign;
+  width?: string;
+  /** Texte affiché ; la valeur brute sert au tri */
+  format?: (value: any, row: Record<string, any>) => string;
+  /** Comparaison personnalisée pour le tri */
+  sortFn?: (a: Record<string, any>, b: Record<string, any>) => number;
+  /** Libellé masqué visuellement (colonne d'actions) mais lu */
+  hideLabel?: boolean;
+}
+export interface DataTableProps {
+  columns?: DataTableColumn[];
+  rows?: Record<string, any>[];
+  /** Identifiant d'une ligne : nom de propriété ou fonction (défaut : 'id') */
+  rowKey?: string | ((row: Record<string, any>) => string | number);
+  /** Titre du tableau (nom accessible), ou slot `caption` */
+  caption?: string;
+  /** Titre lu mais masqué visuellement */
+  captionHidden?: boolean;
+  /** Cases à cocher de sélection */
+  selectable?: boolean;
+  /** Nom d'une ligne pour sa case (défaut : valeur de la première colonne) */
+  rowLabel?: (row: Record<string, any>) => string;
+  /** Pagination : lignes par page */
+  pageSize?: number;
+  /** Lignes déjà triées et paginées (serveur) : ni tri ni découpage local */
+  manual?: boolean;
+  /** Nombre total de lignes en mode manual */
+  total?: number;
+  loading?: boolean;
+  emptyText?: string;
+  striped?: boolean;
+  size?: Size;
+  stickyHeader?: boolean;
+  /** Hauteur maximale (défilement vertical, en-tête collant conseillé) */
+  maxHeight?: string;
+  /** Langue du tri alphabétique (défaut : locale des composants) */
+  locale?: string;
 }
 
 // Toaster.vue

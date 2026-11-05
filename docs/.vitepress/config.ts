@@ -40,6 +40,8 @@ const getNavItems = (section: string = 'display', lang: string = 'fr') => {
       { text: 'Alert', link: `${langPrefix}/components/alert`},
       { text: 'Toast', link: `${langPrefix}/components/toast`, badge: NEW_BADGE },
       { text: 'Tooltip', link: `${langPrefix}/components/tooltip`, badge: NEW_BADGE },
+      { text: 'DataTable', link: `${langPrefix}/components/datatable`, badge: NEW_BADGE },
+      { text: 'TreeView', link: `${langPrefix}/components/treeview`, badge: NEW_BADGE },
       { text: 'Tabs', link: `${langPrefix}/components/tabs` },
       { text: 'Accordion', link: `${langPrefix}/components/accordion` },
       { text: 'Collapse', link: `${langPrefix}/components/collapse` },
@@ -61,13 +63,16 @@ const getNavItems = (section: string = 'display', lang: string = 'fr') => {
       { text: 'Dropdown', link: `${langPrefix}/components/dropdown` },
       { text: 'Breadcrumb', link: `${langPrefix}/components/breadcrumb`, badge: NEW_BADGE },
       { text: 'Pagination', link: `${langPrefix}/components/pagination`, badge: NEW_BADGE },
-      { text: 'Stepper', link: `${langPrefix}/components/stepper`, badge: NEW_BADGE }
+      { text: 'Stepper', link: `${langPrefix}/components/stepper`, badge: NEW_BADGE },
+      { text: 'CommandPalette', link: `${langPrefix}/components/commandpalette`, badge: NEW_BADGE }
     ],
     forms:[
       { text: 'Input', link: `${langPrefix}/components/input` },
       { text: 'Textarea', link: `${langPrefix}/components/textarea` },
       { text: 'NumberInput', link: `${langPrefix}/components/numberinput`, badge: NEW_BADGE },
       { text: 'Autocomplete', link: `${langPrefix}/components/autocomplete`, badge: NEW_BADGE },
+      { text: 'DatePicker', link: `${langPrefix}/components/datepicker`, badge: NEW_BADGE },
+      { text: 'Calendar', link: `${langPrefix}/components/calendar`, badge: NEW_BADGE },
       { text: 'FileUpload', link: `${langPrefix}/components/fileupload` },
       { text: 'SelectBox', link: `${langPrefix}/components/selectbox` },
       { text: 'RadioGroup', link: `${langPrefix}/components/radio-group` },
