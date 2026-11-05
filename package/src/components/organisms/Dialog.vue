@@ -61,6 +61,9 @@ const dialogClasses = computed(() => [
 const ariaAttributes = computed(() => {
   const attrs: Record<string, string> = {}
 
+  // role="alertdialog" pour une confirmation ou une alerte bloquante
+  if (props.role) attrs.role = props.role
+
   if (props.ariaLabelledBy) {
     attrs['aria-labelledby'] = props.ariaLabelledBy
   } else if (props.ariaLabel) {
