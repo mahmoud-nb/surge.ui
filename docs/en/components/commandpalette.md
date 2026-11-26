@@ -67,7 +67,7 @@ The demo on this page disables the shortcut (`:hotkey="false"`) so it does not i
 | `hotkey` | `string \| false` | `'k'` | Shortcut key with `Ctrl` / `⌘`; `false`: none |
 | `emptyText` | `string` | `'No results'` (locale) | Text without results |
 | `ariaLabel` | `string` | `'Command palette'` (locale) | Dialog and list name |
-| `teleport` | `string | HTMLElement | boolean` | `'body'` | Where to render the `<dialog>`; `false` to keep it in place. See [SuDialog](/en/components/dialog#rendering-in-body) |
+| `teleport` | `string \| HTMLElement \| boolean` | `'body'` | Where to render the `<dialog>`; `false` to keep it in place. See [SuDialog](/en/components/dialog#rendering-in-body) |
 
 ### CommandItem
 
@@ -82,6 +82,7 @@ The demo on this page disables the shortcut (`:hotkey="false"`) so it does not i
 | `keywords` | `string[]` | Extra search terms |
 | `disabled` | `boolean` | Unavailable command |
 | `onSelect` | `() => void` | Action, called after closing |
+| `to` | `string \| RouteLocationRaw` | Page opened on selection (`router.push`, otherwise a page load) |
 
 ### Events
 

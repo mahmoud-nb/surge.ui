@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, type Component } from 'vue'
 import type { ButtonProps } from '@/types'
 import Spinner from './Spinner.vue'
 import { useLocale } from '@/composables/useLocale'
+import { useLinkComponent } from '@/composables/useLinkComponent'
 
 const props = withDefaults(defineProps<ButtonProps>(), {
   // undefined : sans la prop, l'attribut ARIA reste absent (Vue changerait l'absence en false)
@@ -21,6 +22,26 @@ const props = withDefaults(defineProps<ButtonProps>(), {
 // Textes par défaut : prop explicite, sinon locale courante
 const { t } = useLocale()
 const loadingText = computed(() => props.loadingLabel ?? t('common.loading'))
+
+// Élément rendu : <button>, ou lien avec `to` (routeur) ou `href`.
+// Un lien désactivé ou en chargement perd sa destination : ni focus ni
+// navigation (un clic sur RouterLink naviguerait avant tout autre écouteur).
+const { linkFor } = useLinkComponent()
+const isLink = computed(() => props.to !== undefined || props.href !== undefined)
+const element = computed<{ is: Component | string; attrs: Record<string, unknown> }>(() => {
+  if (!isLink.value) {
+    return { is: 'button', attrs: { type: props.type, disabled: props.disabled || props.loading } }
+  }
+  if (props.disabled || props.loading) return { is: 'a', attrs: { role: 'link' } }
+
+  const target = props.target
+  const rel = props.rel ?? (target === '_blank' ? 'noopener noreferrer' : undefined)
+  if (props.to !== undefined) {
+    const link = linkFor(props.to)
+    return { is: link.is, attrs: { ...link.attrs, target, rel } }
+  }
+  return { is: 'a', attrs: { href: props.href, target, rel } }
+})
 
 const emit = defineEmits<{
   click: [event: MouseEvent]
@@ -97,12 +118,11 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !props.ari
 </script>
 
 <template>
-  <button
-    :type="type"
+  <component
+    :is="element.is"
+    v-bind="{ ...element.attrs, ...ariaAttributes }"
     :class="classes"
-    :disabled="disabled || loading"
     :tabindex="disabled ? -1 : tabIndex"
-    v-bind="ariaAttributes"
     @click="handleClick"
     @keydown="handleKeydown"
     @focus="handleFocus"
@@ -131,7 +151,7 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !props.ari
       color="currentColor"
       :size="16"
     />
-  </button>
+  </component>
 </template>
 
 <style lang="scss">

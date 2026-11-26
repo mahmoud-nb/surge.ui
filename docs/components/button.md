@@ -174,6 +174,32 @@ import { PlusIcon, ArrowRightIcon, HeartIcon, TrashIcon } from '@heroicons/vue/2
 </template>
 ```
 
+## Bouton lien
+
+Avec `to` (lien du routeur) ou `href` (lien classique), le bouton est rendu comme un lien, avec la même apparence. Un lien vers une page reste un lien pour les lecteurs d'écran, le clic du milieu ou « ouvrir dans un nouvel onglet ».
+
+<div class="component-demo">
+  <div class="demo-section">
+    <h4>Liens</h4>
+    <div class="demo-buttons">
+      <SuButton to="/components/link">Composant Link</SuButton>
+      <SuButton href="https://github.com/mahmoud-nb/surge.ui" target="_blank" variant="outline">GitHub</SuButton>
+      <SuButton to="/components/link" disabled variant="secondary">Désactivé</SuButton>
+    </div>
+  </div>
+</div>
+
+```vue
+<!-- Lien du routeur : RouterLink, ou le linkComponent du plugin (NuxtLink) -->
+<SuButton to="/projets">Projets</SuButton>
+<SuButton :to="{ name: 'projet', params: { id: 42 } }">Projet 42</SuButton>
+
+<!-- Lien classique ; rel="noopener noreferrer" ajouté avec target="_blank" -->
+<SuButton href="https://example.com" target="_blank">Site externe</SuButton>
+```
+
+Désactivé ou en chargement, le lien perd sa destination : il n'est plus atteignable au clavier et ne navigue pas. Sans routeur, `to` donne un simple `<a href>`.
+
 ## API
 
 ### Props
@@ -189,6 +215,10 @@ import { PlusIcon, ArrowRightIcon, HeartIcon, TrashIcon } from '@heroicons/vue/2
 | `block` | `boolean` | `false` | Prend toute la largeur disponible |
 | `icon` | `Component` | `undefined` | Icône à afficher |
 | `iconDisplay` | `'left' \| 'right' \| 'only'` | `'left'` | Position de l'icône |
+| `to` | `string \| RouteLocationRaw` | `undefined` | Lien du routeur : rendu par RouterLink (ou le [`linkComponent`](/guide/installation#liens-du-routeur) du plugin) |
+| `href` | `string` | `undefined` | Lien classique : rendu par `<a href>` |
+| `target` | `'_blank' \| '_self' \| '_parent' \| '_top'` | `undefined` | Cible d'un lien (`to` ou `href`) |
+| `rel` | `string` | `undefined` | `rel` d'un lien ; `noopener noreferrer` par défaut avec `target="_blank"` |
 | `ariaLabel` | `string` | `undefined` | Label accessible pour les lecteurs d'écran |
 | `ariaDescribedBy` | `string` | `undefined` | ID de l'élément qui décrit le bouton |
 | `ariaExpanded` | `boolean` | `undefined` | Indique si un élément contrôlé est étendu |

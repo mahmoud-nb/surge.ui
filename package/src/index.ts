@@ -1,4 +1,4 @@
-import type { App } from 'vue'
+import type { App, Component } from 'vue'
 // Styles globaux (tokens, thèmes, contraste, utilitaires) — émis une seule fois
 import './styles/index.scss'
 
@@ -95,6 +95,7 @@ import * as accessibility from './utils/accessibility'
 import { SurgeuiTheme, ThemeSymbol, flattenThemeToCSS } from './plugin/theme'
 import { computed, toValue, type MaybeRefOrGetter } from 'vue'
 import { LocaleKey, createDocumentLocale, defineLocale } from './composables/useLocale'
+import { LinkComponentKey } from './composables/useLinkComponent'
 import { ToasterKey, createToaster } from './composables/useToast'
 import { ConfirmerKey, createConfirmer } from './composables/useConfirm'
 import { fr } from './locales/fr'
@@ -238,13 +239,19 @@ export interface SurgeUIOptions {
    * langues et en rendu serveur).
    */
   locale?: 'auto' | MaybeRefOrGetter<SurgeLocale | SurgeLocaleInput | undefined>
+  /**
+   * Composant des liens `to` (Button, Link, Breadcrumb, Dropdown, Tabs) :
+   * NuxtLink ou un composant maison. Par défaut : RouterLink s'il est
+   * enregistré, sinon un simple <a href>.
+   */
+  linkComponent?: Component | string
 }
 
 const defaultTheme: SurgeuiTheme = {}
 
 export default {
   install(app: App, options: SurgeUIOptions = {}) {
-    const { prefix = 'Su', theme = {}, locale } = options
+    const { prefix = 'Su', theme = {}, locale, linkComponent } = options
     const mergedTheme = { ...defaultTheme, ...theme }
 
     // Injection globale du thème pour accès reactif dans les composants
@@ -258,6 +265,9 @@ export default {
     } else {
       app.provide(LocaleKey, computed(() => defineLocale(fr, toValue(locale))))
     }
+
+    // Composant des liens `to` (RouterLink par défaut)
+    if (linkComponent) app.provide(LinkComponentKey, linkComponent)
 
     // File des toasts (useToast) : une par application
     app.provide(ToasterKey, createToaster())

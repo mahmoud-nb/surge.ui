@@ -16,7 +16,7 @@ import { useLocale } from '@/composables/useLocale'
 // ============================================================
 
 const props = withDefaults(defineProps<ToasterProps>(), {
-  position: 'bottom-right',
+  position: 'bottom-end',
   max: 3,
   duration: 5000
 })
@@ -35,9 +35,15 @@ const label = computed(() => props.ariaLabel ?? t('toast.region'))
 const regionRef = ref<HTMLElement>()
 const visibleToasts = computed(() => toaster.toasts.value.slice(-Math.max(1, props.max)))
 
+// Position logique : left / right sont des alias de start / end (le côté
+// suit le sens de lecture). L'ancienne classe reste posée pour les styles
+// des applications.
+const logicalPosition = computed(() => props.position.replace(/-left$/, '-start').replace(/-right$/, '-end'))
+
 const classes = computed(() => [
   'su-toaster',
-  `su-toaster--${props.position}`,
+  `su-toaster--${logicalPosition.value}`,
+  logicalPosition.value !== props.position && `su-toaster--${props.position}`,
   { 'su-toaster--top': props.position.startsWith('top') }
 ])
 
@@ -176,25 +182,25 @@ onBeforeUnmount(() => {
   // La zone vide ne bloque pas les clics de la page
   pointer-events: none;
 
-  &--top-left,
+  &--top-start,
   &--top-center,
-  &--top-right {
-    top: 0;
+  &--top-end {
+    inset-block-start: 0;
   }
 
-  &--bottom-left,
+  &--bottom-start,
   &--bottom-center,
-  &--bottom-right {
-    bottom: 0;
+  &--bottom-end {
+    inset-block-end: 0;
   }
 
-  &--top-left,
-  &--bottom-left {
+  &--top-start,
+  &--bottom-start {
     inset-inline-start: 0;
   }
 
-  &--top-right,
-  &--bottom-right {
+  &--top-end,
+  &--bottom-end {
     inset-inline-end: 0;
   }
 

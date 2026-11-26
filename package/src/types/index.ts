@@ -8,6 +8,8 @@ export type Gap = 'none' | 'sm' | 'md' | 'lg'
 export type Orientation = 'horizontal' | 'vertical'
 export type TextAlign = 'default' | 'left' | 'center' | 'right'
 export type LinkTarget = '_blank' | '_self' | '_parent' | '_top'
+/** Destination d'un lien du routeur : chemin, ou objet de route (RouteLocationRaw) */
+export type LinkTo = string | object
 
 // HTML natifs attributes
 export type HTMLNativeProps = {
@@ -65,6 +67,10 @@ export interface BadgeProps extends AccessibilityProps {
   iconDisplay?: 'left' | 'right' | 'only';
   color?: string;
   backgroundColor?: string;
+  /** Pastille de statut avant le libellé ; seule sans libellé (ariaLabel requis) */
+  dot?: boolean;
+  /** Pastille pulsée, pour un statut en direct (« en cours ») ; implique `dot` */
+  pulse?: boolean;
 }
 
 // Button.vue
@@ -86,6 +92,14 @@ export interface ButtonProps extends AccessibilityProps {
   iconDisplay?: 'left' | 'right' | 'only';
   ariaExpanded?: boolean;
   ariaPressed?: boolean;
+  /** Lien du routeur : rendu par RouterLink (ou `linkComponent` du plugin) */
+  to?: LinkTo;
+  /** Lien classique : rendu par <a href> */
+  href?: string;
+  /** Cible d'un lien (`to` ou `href`) */
+  target?: LinkTarget;
+  /** rel d'un lien ; `noopener noreferrer` par défaut avec target="_blank" */
+  rel?: string;
 }
 
 // CheckboxGroup.vue
@@ -250,7 +264,7 @@ export type LinkSize = 'sm' | 'md' | 'lg';
 export type LinkUnderline = 'default' | 'always' | 'hover' | 'never';
 export interface LinkProps extends AccessibilityProps {
   href?: string;
-  to?: string | object;
+  to?: LinkTo;
   target?: LinkTarget;
   rel?: string;
   variant?: LinkVariant;
@@ -639,6 +653,8 @@ export interface DropdownItemOption {
   value: string | number;
   label: string;
   href?: string;
+  /** Lien du routeur (RouterLink ou `linkComponent` du plugin) */
+  to?: LinkTo;
   target?: LinkTarget;
   rel?: string;
   disabled?: boolean;
@@ -678,7 +694,8 @@ export interface FloatButtonOffset {
   x?: number;
   y?: number;
 }
-export type FloatButtonPosition = 'left' | 'right';
+/** Côté du bouton : start / end suivent le sens de lecture ; left / right en sont des alias */
+export type FloatButtonPosition = 'start' | 'end' | 'left' | 'right';
 export type FloatButtonSize = 'sm' | 'md' | 'lg';
 export interface FloatButtonProps extends AccessibilityProps {
   position?: FloatButtonPosition;
@@ -739,6 +756,8 @@ export interface TooltipProps {
 export interface BreadcrumbItem {
   label: string;
   href?: string;
+  /** Lien du routeur (RouterLink ou `linkComponent` du plugin) */
+  to?: LinkTo;
   target?: LinkTarget;
   icon?: Component;
   /** Icône seule : le libellé reste lu par les lecteurs d'écran */
@@ -931,6 +950,8 @@ export interface CommandItem {
   keywords?: string[];
   disabled?: boolean;
   onSelect?: () => void;
+  /** Destination ouverte à la sélection (router.push, sinon location) */
+  to?: LinkTo;
 }
 export interface CommandPaletteProps {
   commands?: CommandItem[];
@@ -1212,7 +1233,14 @@ export interface DataTableProps {
 }
 
 // Toaster.vue
-export type ToasterPosition = 'top-left' | 'top-center' | 'top-right' | 'bottom-left' | 'bottom-center' | 'bottom-right';
+/**
+ * Position du Toaster. start / end suivent le sens de lecture (end : à droite
+ * en LTR, à gauche en RTL). left / right sont des alias de start / end.
+ */
+export type ToasterPosition =
+  | 'top-start' | 'top-center' | 'top-end'
+  | 'bottom-start' | 'bottom-center' | 'bottom-end'
+  | 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
 export interface ToasterProps {
   position?: ToasterPosition;
   /** Nombre de toasts visibles ; les suivants attendent leur tour */
@@ -1249,8 +1277,12 @@ export interface DialogProps extends AccessibilityProps {
 export type DialogTeleport = string | HTMLElement | boolean
 
 // Tabs.vue
-export interface TabItem {
+export interface TabItem<T extends string | number = string | number> {
   label: string;
+  /** Identifiant de l'onglet pour le v-model (sinon : son indice) */
+  value?: T;
+  /** Onglet de navigation : lien du routeur (les onglets forment alors une <nav>) */
+  to?: LinkTo;
   content?: string;
   icon?: Component | string;
   badge?: number | string;
@@ -1258,10 +1290,13 @@ export interface TabItem {
   description?: string;
   component?: Component;
 }
-export interface TabsProps {
-  tabs?: TabItem[];
-  modelValue?: number;
+export interface TabsProps<T extends string | number = number> {
+  tabs?: TabItem<T>[];
+  /** Onglet actif : sa `value`, ou son indice si les onglets n'en ont pas */
+  modelValue?: T;
   variant?: 'underline' | 'contained' | 'pills';
+  /** Nom accessible de la liste d'onglets ou de la navigation */
+  label?: string;
 }
 
 // Card.vue

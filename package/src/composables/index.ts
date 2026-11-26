@@ -13,6 +13,7 @@ import { useListNavigation } from './useListNavigation'
 import { useTypeahead } from './useTypeahead'
 import { useToast, createToaster, ToasterKey } from './useToast'
 import { useConfirm, createConfirmer, ConfirmerKey } from './useConfirm'
+import { useLinkComponent, LinkComponentKey } from './useLinkComponent'
 
 export {
   useTheme,
@@ -47,6 +48,8 @@ export {
   useConfirm,
   createConfirmer,
   ConfirmerKey,
+  useLinkComponent,
+  LinkComponentKey,
 }
 
 export type { FloatingPositionOptions } from './useFloatingPosition'

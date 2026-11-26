@@ -127,52 +127,38 @@ import { CheckIcon, XMarkIcon, ExclamationTriangleIcon, StarIcon } from '@heroic
 </template>
 ```
 
-### Dot variant
+### Status dot (dot, pulse)
+
+`dot` adds a dot before the label: in the state color for `success`, `warning` and `error`, in the text color otherwise. `pulse` animates it for a live status ("in progress"); the animation stops when the user reduces motion.
 
 <div class="component-demo">
   <div class="demo-section">
-    <h4>Simple dots</h4>
+    <h4>Statuses</h4>
     <div class="demo-buttons">
-      <SuBadge variant="dot" />
-      <SuBadge variant="dot" backgroundColor="#10b981" />
-      <SuBadge variant="dot" backgroundColor="#f59e0b" />
-      <SuBadge variant="dot" backgroundColor="#ef4444" />
+      <SuBadge variant="success" dot>Online</SuBadge>
+      <SuBadge variant="warning" dot>Away</SuBadge>
+      <SuBadge variant="error" dot>Down</SuBadge>
+      <SuBadge dot>Draft</SuBadge>
+      <SuBadge variant="success" pulse>In progress</SuBadge>
     </div>
   </div>
-</div>
-
-```vue
-<template>
-  <!-- Simple dot -->
-  <SuBadge variant="dot" />
-  
-  <!-- Dots with custom colors -->
-  <SuBadge variant="dot" backgroundColor="#10b981" />
-  <SuBadge variant="dot" backgroundColor="#f59e0b" />
-  <SuBadge variant="dot" backgroundColor="#ef4444" />
-</template>
-```
-
-### Dots with text
-
-<div class="component-demo">
   <div class="demo-section">
-    <h4>Dots with text</h4>
-    <div class="demo-buttons-vertical">
-      <SuBadge variant="dot" dotText="Online" backgroundColor="#10b981" />
-      <SuBadge variant="dot" dotText="Away" backgroundColor="#f59e0b" />
-      <SuBadge variant="dot" dotText="Busy" backgroundColor="#ef4444" />
-      <SuBadge variant="dot" dotText="Offline" backgroundColor="#6b7280" />
+    <h4>Dots alone</h4>
+    <div class="demo-buttons">
+      <SuBadge variant="success" dot aria-label="Online" />
+      <SuBadge variant="warning" dot aria-label="Away" />
+      <SuBadge variant="error" pulse aria-label="Recording" />
     </div>
   </div>
 </div>
 
 ```vue
 <template>
-  <SuBadge variant="dot" dotText="Online" backgroundColor="#10b981" />
-  <SuBadge variant="dot" dotText="Away" backgroundColor="#f59e0b" />
-  <SuBadge variant="dot" dotText="Busy" backgroundColor="#ef4444" />
-  <SuBadge variant="dot" dotText="Offline" backgroundColor="#6b7280" />
+  <SuBadge variant="success" dot>Online</SuBadge>
+  <SuBadge variant="success" pulse>In progress</SuBadge>
+
+  <!-- Dot alone: ariaLabel required -->
+  <SuBadge variant="error" pulse aria-label="Recording" />
 </template>
 ```
 
@@ -182,12 +168,13 @@ import { CheckIcon, XMarkIcon, ExclamationTriangleIcon, StarIcon } from '@heroic
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `variant` | `'default' \| 'primary' \| 'secondary' \| 'success' \| 'warning' \| 'error' \| 'dot'` | `'default'` | Badge visual variant |
+| `variant` | `'default' \| 'primary' \| 'secondary' \| 'success' \| 'warning' \| 'error'` | `'default'` | Badge visual variant |
 | `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Badge size |
 | `radius` | `'none' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| 'full'` | `'md'` | Badge border radius |
 | `icon` | `Component` | `undefined` | Icon to display |
 | `iconDisplay` | `'left' \| 'right' \| 'only'` | `'left'` | Icon position |
-| `dotText` | `string` | `undefined` | Text displayed next to dot (dot variant only) |
+| `dot` | `boolean` | `false` | Status dot before the label; alone without a label (`ariaLabel` required) |
+| `pulse` | `boolean` | `false` | Pulsing dot for a live status; implies `dot` |
 | `color` | `string` | `undefined` | Custom text color |
 | `backgroundColor` | `string` | `undefined` | Custom background color |
 
@@ -206,35 +193,11 @@ import { CheckIcon, XMarkIcon, ExclamationTriangleIcon, StarIcon } from '@heroic
 |------|-------------|
 | `default` | Badge content |
 
-## Dot variant
+## Status dot
 
-The `dot` variant is special and offers two display modes:
-
-### 🔴 Simple dot
-
-A simple colored dot, ideal for status indicators:
-
-```vue
-<!-- Default dot -->
-<SuBadge variant="dot" />
-
-<!-- Dot with custom color -->
-<SuBadge variant="dot" backgroundColor="#10b981" />
-```
-
-### 🔴 Dot with text
-
-A colored dot followed by text, perfect for statuses with description:
-
-```vue
-<!-- With dotText prop -->
-<SuBadge variant="dot" dotText="Online" backgroundColor="#10b981" />
-
-<!-- With slot -->
-<SuBadge variant="dot" backgroundColor="#f59e0b">
-  Away for 5 min
-</SuBadge>
-```
+- With a label, the dot is decorative (`aria-hidden`): the text carries the status.
+- Without a label, the badge becomes an image (`role="img"`) named by `ariaLabel`. Without `ariaLabel`, a console warning is shown, unless the badge itself is decorative (`aria-hidden="true"`).
+- Color alone does not convey a status (WCAG 1.4.1): keep a visible label or a tooltip.
 
 ## Accessibility
 
@@ -260,7 +223,7 @@ The Badge component follows WCAG 2.1 AA standards:
 <SuBadge variant="primary" aria-label="Premium user">Premium</SuBadge>
 
 <!-- Decorative badge (hidden from screen readers) -->
-<SuBadge variant="dot" backgroundColor="#10b981" aria-hidden="true" />
+<SuBadge variant="success" dot aria-hidden="true" />
 
 <!-- Badge with description -->
 <SuBadge variant="warning" aria-describedby="warning-description">
@@ -307,7 +270,7 @@ import { CheckIcon, ClockIcon, XMarkIcon, TruckIcon } from '@heroicons/vue/24/ou
         <span>John Doe</span>
       </div>
       <div class="user-status">
-        <SuBadge variant="dot" dotText="Online" backgroundColor="#10b981" />
+        <SuBadge variant="success" dot>Online</SuBadge>
         <SuBadge variant="primary" size="sm" icon="StarIcon" iconDisplay="only" aria-label="Premium user" />
       </div>
     </div>
@@ -342,7 +305,7 @@ import { CheckIcon, ClockIcon, XMarkIcon, TruckIcon } from '@heroicons/vue/24/ou
 ### ✅ Do
 - Use consistent colors for the same types of status
 - Provide `aria-label` for badges with icon only
-- Use `dot` variant for discrete status indicators
+- Use `dot` (or `pulse` for a live status) for discreet status indicators
 - Limit text to a few words maximum
 - Use `radius="max"` for notification counters
 

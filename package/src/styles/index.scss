@@ -5,7 +5,7 @@
 //   - tokens statiques (:root) et reduced-motion
 //   - thèmes (data-theme + data-theme-mode)
 //   - surcouche contraste élevé
-//   - utilitaires globaux (.sr-only)
+//   - utilitaires globaux (.sr-only, .su-flip-rtl)
 //
 // Les composants n'importent JAMAIS ce fichier : ils utilisent
 // `@use '../../styles/abstracts' as *;` (aucune sortie CSS).
@@ -14,6 +14,7 @@
 @use 'core/variables';
 @use 'core/theme-loader' as loader;
 @use 'base/a11y';
+@use 'base/rtl';
 
 // ------------------------------------------------------------
 // Sélection des thèmes

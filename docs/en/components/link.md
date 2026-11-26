@@ -94,17 +94,17 @@ import { HomeIcon, ArrowRightIcon, UserIcon, ArrowTopRightOnSquareIcon } from '@
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `href` | `string` | `undefined` | Destination URL (native HTML links) |
-| `to` | `string \\| object` | `undefined` | Destination route (Vue Router) |
-| `target` | `'_blank' \\| '_self' \\| '_parent' \\| '_top'` | `undefined` | Link target |
+| `to` | `string \| RouteLocationRaw` | `undefined` | Router link: RouterLink, or the plugin's `linkComponent`; `<a href>` without a router |
+| `target` | `'_blank' \| '_self' \| '_parent' \| '_top'` | `undefined` | Link target |
 | `rel` | `string` | `undefined` | Link relationship |
-| `variant` | `'default' \\| 'primary' \\| 'secondary' \\| 'muted'` | `'default'` | Visual variant of the link |
-| `size` | `'sm' \\| 'md' \\| 'lg'` | `'md'` | Link size |
-| `underline` | `'always' \\| 'hover' \\| 'never'` | `'hover'` | Underline behavior |
+| `variant` | `'default' \| 'primary' \| 'secondary' \| 'muted'` | `'default'` | Visual variant of the link |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Link size |
+| `underline` | `'always' \| 'hover' \| 'never'` | `'hover'` | Underline behavior |
 | `disabled` | `boolean` | `false` | Disables the link |
 | `external` | `boolean` | `false` | Marks the link as external |
 | `externalLabel` | `string` | `"(s'ouvre dans un nouvel onglet)"` | Text read by screen readers when the link opens in a new tab |
 | `icon` | `Component` | `undefined` | Icon to display |
-| `iconDisplay` | `'top' \\| 'left' \\| 'right' \\| 'only'` | `'left'` | Icon position |
+| `iconDisplay` | `'top' \| 'left' \| 'right' \| 'only'` | `'left'` | Icon position |
 
 ### Accessibility Attributes
 
@@ -193,9 +193,9 @@ app.use(SurgeUI, {
 
 | Option | Type | Description |
 |--------|------|-------------|
-| `linkVariant` | `'default' \\| 'primary' \\| 'secondary' \\| 'muted'` | Default variant |
-| `linkSize` | `'sm' \\| 'md' \\| 'lg'` | Default size |
-| `linkUnderline` | `'always' \\| 'hover' \\| 'never'` | Default underline |
+| `linkVariant` | `'default' \| 'primary' \| 'secondary' \| 'muted'` | Default variant |
+| `linkSize` | `'sm' \| 'md' \| 'lg'` | Default size |
+| `linkUnderline` | `'always' \| 'hover' \| 'never'` | Default underline |
 
 ## Accessibility
 
@@ -346,19 +346,21 @@ const handleExternalClick = (event) => {
 | `Enter` | Activate the link |
 | `Space` | Activate the link |
 
-## Vue Router Compatibility
+## Router links
 
-The component automatically detects if the `to` prop is provided and uses `<router-link>` instead of `<a>`:
+With `to`, the link is rendered by the router's link component: the plugin's [`linkComponent`](/en/guide/installation#router-links) (NuxtLink…), otherwise RouterLink when registered (Vue Router, Nuxt). Without a router, `to` gives a plain `<a href>`.
 
 ```vue
-<!-- Uses <router-link> -->
+<!-- RouterLink -->
 <SuLink to="/dashboard">Dashboard</SuLink>
 <SuLink :to="{ name: 'user', params: { id: 123 } }">User profile</SuLink>
 
-<!-- Uses <a> -->
+<!-- <a> -->
 <SuLink href="/static-page">Static page</SuLink>
 <SuLink href="https://external.com" external>External site</SuLink>
 ```
+
+When disabled, a `to` link loses its destination: it does not navigate.
 
 ## External Link Security
 

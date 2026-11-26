@@ -161,7 +161,7 @@ import { HomeIcon, ArrowRightIcon, UserIcon, ArrowTopRightOnSquareIcon } from '@
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `href` | `string` | `undefined` | URL de destination (liens HTML natifs) |
-| `to` | `string \| object` | `undefined` | Route de destination (Vue Router) |
+| `to` | `string \| RouteLocationRaw` | `undefined` | Lien du routeur : RouterLink, ou le `linkComponent` du plugin ; `<a href>` sans routeur |
 | `target` | `'_blank' \| '_self' \| '_parent' \| '_top'` | `undefined` | Cible du lien |
 | `rel` | `string` | `undefined` | Relation du lien |
 | `variant` | `'default' \| 'primary' \| 'secondary' \| 'muted'` | `'default'` | Variante visuelle du lien |
@@ -413,19 +413,21 @@ const handleExternalClick = (event) => {
 | `Entrée` | Activer le lien |
 | `Espace` | Activer le lien |
 
-## Compatibilité Vue Router
+## Liens du routeur
 
-Le composant détecte automatiquement si la prop `to` est fournie et utilise `<router-link>` au lieu de `<a>` :
+Avec `to`, le lien est rendu par le composant de lien du routeur : le [`linkComponent`](/guide/installation#liens-du-routeur) du plugin (NuxtLink…), sinon RouterLink s'il est enregistré (Vue Router, Nuxt). Sans routeur, `to` donne un simple `<a href>`.
 
 ```vue
-<!-- Utilise <router-link> -->
+<!-- RouterLink -->
 <SuLink to="/dashboard">Tableau de bord</SuLink>
 <SuLink :to="{ name: 'user', params: { id: 123 } }">Profil utilisateur</SuLink>
 
-<!-- Utilise <a> -->
+<!-- <a> -->
 <SuLink href="/static-page">Page statique</SuLink>
 <SuLink href="https://external.com" external>Site externe</SuLink>
 ```
+
+Désactivé, un lien `to` perd sa destination : il ne navigue pas.
 
 ## Sécurité des liens externes
 

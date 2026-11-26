@@ -67,7 +67,7 @@ La démo de cette page désactive le raccourci (`:hotkey="false"`) pour ne pas g
 | `hotkey` | `string \| false` | `'k'` | Touche du raccourci avec `Ctrl` / `⌘` ; `false` : aucun |
 | `emptyText` | `string` | `'Aucun résultat'` | Texte sans résultat |
 | `ariaLabel` | `string` | `'Palette de commandes'` | Nom du dialog et de la liste |
-| `teleport` | `string | HTMLElement | boolean` | `'body'` | Où rendre le `<dialog>` ; `false` pour le laisser sur place. Voir [SuDialog](/components/dialog#rendu-dans-body) |
+| `teleport` | `string \| HTMLElement \| boolean` | `'body'` | Où rendre le `<dialog>` ; `false` pour le laisser sur place. Voir [SuDialog](/components/dialog#rendu-dans-body) |
 
 ### CommandItem
 
@@ -82,6 +82,7 @@ La démo de cette page désactive le raccourci (`:hotkey="false"`) pour ne pas g
 | `keywords` | `string[]` | Termes de recherche supplémentaires |
 | `disabled` | `boolean` | Commande indisponible |
 | `onSelect` | `() => void` | Action, appelée après la fermeture |
+| `to` | `string \| RouteLocationRaw` | Page ouverte à la sélection (`router.push`, sinon changement de page) |
 
 ### Événements
 

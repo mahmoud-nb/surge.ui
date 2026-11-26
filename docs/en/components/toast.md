@@ -131,7 +131,7 @@ toast.update(id, { title: 'Export complete', type: 'success', duration: 4000, di
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `position` | `'top-left' \| 'top-center' \| 'top-right' \| 'bottom-left' \| 'bottom-center' \| 'bottom-right'` | `'bottom-right'` | Screen corner (full width on mobile) |
+| `position` | `'top-start' \| 'top-center' \| 'top-end' \| 'bottom-start' \| 'bottom-center' \| 'bottom-end'` | `'bottom-end'` | Screen corner (full width on mobile). `start` and `end` follow the reading direction (`end`: right in LTR, left in RTL); `left` and `right` are aliases |
 | `max` | `number` | `3` | Visible toasts; the next ones wait their turn |
 | `duration` | `number` | `5000` | Default duration (ms) |
 | `ariaLabel` | `string` | `'Notifications'` | Region name |

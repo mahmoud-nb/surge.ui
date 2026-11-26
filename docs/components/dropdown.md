@@ -425,6 +425,7 @@ interface DropdownOption {
   value: string | number
   label: string
   href?: string                    // Si présent, l'option devient un lien
+  to?: string | RouteLocationRaw   // Lien du routeur (RouterLink) ; désactivée, l'option ne navigue pas
   target?: '_blank' | '_self' | '_parent' | '_top'
   rel?: string
   disabled?: boolean

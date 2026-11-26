@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { computed, ref, nextTick, useAttrs, useId, watch, type StyleValue } from 'vue'
+import { computed, ref, nextTick, useAttrs, useId, watch, type Component, type StyleValue } from 'vue'
 import { ChevronDownIcon } from '@heroicons/vue/24/outline'
 import type { DropdownItemOption, DropdownOption, DropdownProps, DropdownSeparatorOption } from '@/types'
 import { useFloatingPosition } from '@/composables/useFloatingPosition'
 import { useLocale } from '@/composables/useLocale'
 import { useListNavigation } from '@/composables/useListNavigation'
 import { useDismiss } from '@/composables/useDismiss'
+import { useLinkComponent } from '@/composables/useLinkComponent'
 
 // Attributs du parent : class et style sur le conteneur, le reste (id,
 // aria-*, data-*, écouteurs) sur le bouton déclencheur. Hérités par défaut,
@@ -78,6 +79,22 @@ watch(() => props.options, (options) => {
     console.warn(`[SuDropdown] L'option « ${hidden.label} » a separator: true : elle est rendue comme un séparateur et n'apparaît pas. Utiliser separatorBefore: true pour tracer un trait avant elle, ou { type: 'separator' } pour un séparateur seul.`)
   }
 }, { immediate: true })
+
+// Élément d'une option : lien du routeur (`to`), lien (`href`) ou bouton.
+// Désactivée, une option n'est jamais un lien (elle ne doit pas naviguer).
+const { linkFor } = useLinkComponent()
+const optionElement = (option: DropdownOption): { is: Component | string; attrs: Record<string, unknown> } => {
+  if (option.disabled || (option.to === undefined && !option.href)) {
+    return { is: 'button', attrs: { type: 'button' } }
+  }
+  const target = option.target
+  const rel = option.rel ?? (target === '_blank' ? 'noopener noreferrer' : undefined)
+  if (option.to !== undefined) {
+    const link = linkFor(option.to)
+    return { is: link.is, attrs: { ...link.attrs, target, rel } }
+  }
+  return { is: 'a', attrs: { href: option.href, target, rel } }
+}
 
 // Items du menu (sans les séparateurs) et leurs éléments DOM
 const menuItems = computed(() => props.options.filter((option): option is DropdownItemOption => !isSeparator(option)))
@@ -391,12 +408,10 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !props.lab
 
             <!-- Option normale -->
             <component
-              :is="option.href ? 'a' : 'button'"
+              :is="optionElement(option).is"
               v-if="!isSeparator(option)"
+              v-bind="optionElement(option).attrs"
               :ref="(el: unknown) => setItemRef(el, option)"
-              :href="option.href"
-              :target="option.target"
-              :rel="option.rel"
               class="su-dropdown-option"
               :class="{
                 'su-dropdown-option--disabled': option.disabled,

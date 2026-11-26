@@ -1,0 +1,8 @@
+// ============================================================
+// UTILITAIRES RTL GLOBAUX
+// ============================================================
+
+/* Icône directionnelle (flèche, chevron « suivant ») retournée en RTL */
+[dir='rtl'] .su-flip-rtl {
+  scale: -1 1;
+}

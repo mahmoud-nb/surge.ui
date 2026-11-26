@@ -17,7 +17,8 @@
       "types": "./global.d.ts"
     },
     "./style.css": "./dist/style.css",
-    "./style.layer.css": "./dist/style.layer.css"
+    "./style.layer.css": "./dist/style.layer.css",
+    "./tailwind.css": "./dist/tailwind.css"
   },
   "types": "./dist/index.d.ts",
   "sideEffects": [

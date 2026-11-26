@@ -15,6 +15,9 @@ const env = loadEnv(mode, process.cwd(), 'VITE_')
 const ROOT_URL = env.VITE_APP_ROOT_URL || pkg.config.rootUrl
 const BASE_URL = env.VITE_APP_BASE_URL || pkg.config.baseUrl
 
+// Badge « New » des entrées récentes (navigation et sidebar)
+const NEW_BADGE = { text: 'New', type: 'tip' as const }
+
 // Version publiée (mise à jour par standard-version) et notes de version
 const REPO_URL = 'https://github.com/mahmoud-nb/surge.ui'
 const versionNav = (changelog: string) => ({
@@ -29,7 +32,6 @@ const getNavItems = (section: string = 'display', lang: string = 'fr') => {
 
   const langPrefix = lang === 'fr' ? '' : '/en'
 
-  const NEW_BADGE = { text: 'New', type: 'tip' as const }
 
   const componentsItems = {
     display:[
@@ -174,7 +176,9 @@ export default defineConfig({
             text: 'Guide',
             items: [
               { text: 'Démarrage rapide', link: '/guide/get-started' },
-              { text: 'Installation', link: '/guide/installation' }
+              { text: 'Installation', link: '/guide/installation' },
+              { text: 'Nuxt', link: '/guide/nuxt', badge: NEW_BADGE },
+              { text: 'RTL (droite à gauche)', link: '/guide/rtl', badge: NEW_BADGE }
             ]
           },
           {
@@ -234,7 +238,9 @@ export default defineConfig({
             text: 'Guide',
             items: [
               { text: 'Getting Started', link: '/en/guide/get-started' },
-              { text: 'Installation', link: '/en/guide/installation' }
+              { text: 'Installation', link: '/en/guide/installation' },
+              { text: 'Nuxt', link: '/en/guide/nuxt', badge: NEW_BADGE },
+              { text: 'RTL (right to left)', link: '/en/guide/rtl', badge: NEW_BADGE }
             ]
           },
           {

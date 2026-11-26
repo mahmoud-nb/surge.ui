@@ -2,7 +2,7 @@
 import { defineConfig, type Plugin } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import dts from 'vite-plugin-dts'
-import { existsSync, readFileSync, writeFileSync } from 'fs'
+import { copyFileSync, existsSync, readFileSync, writeFileSync } from 'fs'
 import { resolve, dirname } from 'path'
 import { fileURLToPath } from 'url'
 const __filename = fileURLToPath(import.meta.url)
@@ -12,7 +12,9 @@ const __dirname = dirname(__filename)
 // couche, elle l'emporterait sur toutes les couches (utilitaires Tailwind 4
 // compris) ; en couche, l'application choisit sa place dans l'ordre :
 //   @layer theme, base, surgeui, components, utilities;
-// @charset reste en tête : il n'est valide qu'au tout début du fichier.
+// Sans @charset : ce fichier est fait pour être importé (@import), et
+// l'import le placerait au milieu de la feuille finale, où il est invalide
+// (esbuild l'y signale). L'encodage est celui du document (UTF-8).
 const cssLayer = (layer = 'surgeui'): Plugin => ({
   name: 'surgeui-css-layer',
   apply: 'build',
@@ -20,7 +22,17 @@ const cssLayer = (layer = 'surgeui'): Plugin => ({
     const source = resolve(__dirname, 'dist/style.css')
     if (!existsSync(source)) return
     const css = readFileSync(source, 'utf8').replace(/^@charset "UTF-8";\s*/, '')
-    writeFileSync(resolve(__dirname, 'dist/style.layer.css'), `@charset "UTF-8";\n@layer ${layer} {\n${css}\n}\n`)
+    writeFileSync(resolve(__dirname, 'dist/style.layer.css'), `@layer ${layer} {\n${css}\n}\n`)
+  }
+})
+
+// dist/tailwind.css : préréglage Tailwind 4 (@theme inline), copié tel quel
+// (Tailwind le lit dans le CSS de l'application, il ne passe pas par Sass)
+const tailwindPreset = (): Plugin => ({
+  name: 'surgeui-tailwind-preset',
+  apply: 'build',
+  closeBundle() {
+    copyFileSync(resolve(__dirname, 'src/styles/tailwind.css'), resolve(__dirname, 'dist/tailwind.css'))
   }
 })
 
@@ -31,7 +43,8 @@ export default defineConfig({
       insertTypesEntry: false,
       rollupTypes: false
     }),
-    cssLayer()
+    cssLayer(),
+    tailwindPreset()
   ],
   css: {
     preprocessorOptions: {

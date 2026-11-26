@@ -145,10 +145,10 @@ onMounted(() => nextTick(() => (headers.value = Array.from(document.querySelecto
     justify-content: space-between;
     align-items: center;
     padding: $spacing-4 $spacing-6;
-    background: white;
+    background: var(--su-bg-surface);
     color: var(--su-text-primary);
     font-size: $font-size-base;
-    text-align: left;
+    text-align: start;
     cursor: pointer;
     border: none;
     outline: none;

@@ -7,6 +7,7 @@ import type { CommandItem, CommandPaletteProps } from '@/types'
 import { useLocale } from '@/composables/useLocale'
 import { useAnnouncer } from '@/composables/useAnnouncer'
 import { useListNavigation } from '@/composables/useListNavigation'
+import { useLinkComponent } from '@/composables/useLinkComponent'
 
 // ============================================================
 // COMMAND PALETTE — recherche et exécution de commandes au clavier,
@@ -110,6 +111,9 @@ watch(open, (value) => {
   nav.first()
 }, { immediate: true })
 
+// Commande avec `to` : navigation par le routeur (ou location sans routeur)
+const { navigate } = useLinkComponent()
+
 const run = async (command: CommandItem) => {
   if (command.disabled) return
   open.value = false
@@ -117,6 +121,7 @@ const run = async (command: CommandItem) => {
   // Après la fermeture : le focus est revenu au déclencheur
   await nextTick()
   command.onSelect?.()
+  if (command.to !== undefined) await navigate(command.to)
 }
 
 // ### Annonce du nombre de résultats

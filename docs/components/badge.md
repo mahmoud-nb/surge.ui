@@ -155,52 +155,38 @@ import { CheckIcon, XMarkIcon, ExclamationTriangleIcon, StarIcon } from '@heroic
 </template>
 ```
 
-### Variante dot
+### Pastille de statut (dot, pulse)
+
+`dot` ajoute une pastille avant le libellé : de la couleur de l'état pour `success`, `warning` et `error`, de la couleur du texte sinon. `pulse` l'anime pour un statut en direct (« en cours ») ; l'animation s'arrête quand l'utilisateur réduit les animations.
 
 <div class="component-demo">
   <div class="demo-section">
-    <h4>Dots simples</h4>
+    <h4>Statuts</h4>
     <div class="demo-buttons">
-      <SuBadge variant="dot" />
-      <SuBadge variant="dot" backgroundColor="#10b981" />
-      <SuBadge variant="dot" backgroundColor="#f59e0b" />
-      <SuBadge variant="dot" backgroundColor="#ef4444" />
+      <SuBadge variant="success" dot>En ligne</SuBadge>
+      <SuBadge variant="warning" dot>Absent</SuBadge>
+      <SuBadge variant="error" dot>Hors service</SuBadge>
+      <SuBadge dot>Brouillon</SuBadge>
+      <SuBadge variant="success" pulse>En cours</SuBadge>
     </div>
   </div>
-</div>
-
-```vue
-<template>
-  <!-- Dot simple -->
-  <SuBadge variant="dot" />
-  
-  <!-- Dots avec couleurs personnalisées -->
-  <SuBadge variant="dot" backgroundColor="#10b981" />
-  <SuBadge variant="dot" backgroundColor="#f59e0b" />
-  <SuBadge variant="dot" backgroundColor="#ef4444" />
-</template>
-```
-
-### Dots avec texte
-
-<div class="component-demo">
   <div class="demo-section">
-    <h4>Dots avec texte</h4>
-    <div class="demo-buttons-vertical">
-      <SuBadge variant="dot" dotText="En ligne" backgroundColor="#10b981" />
-      <SuBadge variant="dot" dotText="Absent" backgroundColor="#f59e0b" />
-      <SuBadge variant="dot" dotText="Occupé" backgroundColor="#ef4444" />
-      <SuBadge variant="dot" dotText="Hors ligne" backgroundColor="#6b7280" />
+    <h4>Pastilles seules</h4>
+    <div class="demo-buttons">
+      <SuBadge variant="success" dot aria-label="En ligne" />
+      <SuBadge variant="warning" dot aria-label="Absent" />
+      <SuBadge variant="error" pulse aria-label="Enregistrement en cours" />
     </div>
   </div>
 </div>
 
 ```vue
 <template>
-  <SuBadge variant="dot" dotText="En ligne" backgroundColor="#10b981" />
-  <SuBadge variant="dot" dotText="Absent" backgroundColor="#f59e0b" />
-  <SuBadge variant="dot" dotText="Occupé" backgroundColor="#ef4444" />
-  <SuBadge variant="dot" dotText="Hors ligne" backgroundColor="#6b7280" />
+  <SuBadge variant="success" dot>En ligne</SuBadge>
+  <SuBadge variant="success" pulse>En cours</SuBadge>
+
+  <!-- Pastille seule : ariaLabel obligatoire -->
+  <SuBadge variant="error" pulse aria-label="Enregistrement en cours" />
 </template>
 ```
 
@@ -233,12 +219,13 @@ import { CheckIcon, XMarkIcon, ExclamationTriangleIcon, StarIcon } from '@heroic
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `variant` | `'default' \| 'primary' \| 'secondary' \| 'success' \| 'warning' \| 'error' \| 'dot'` | `'default'` | Variante visuelle du badge |
+| `variant` | `'default' \| 'primary' \| 'secondary' \| 'success' \| 'warning' \| 'error'` | `'default'` | Variante visuelle du badge |
 | `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Taille du badge |
 | `radius` | `'none' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| 'full'` | `'md'` | Rayon de bordure du badge |
 | `icon` | `Component` | `undefined` | Icône à afficher |
 | `iconDisplay` | `'left' \| 'right' \| 'only'` | `'left'` | Position de l'icône |
-| `dotText` | `string` | `undefined` | Texte affiché à côté du dot (variante dot uniquement) |
+| `dot` | `boolean` | `false` | Pastille de statut avant le libellé ; seule sans libellé (`ariaLabel` requis) |
+| `pulse` | `boolean` | `false` | Pastille pulsée pour un statut en direct ; implique `dot` |
 | `color` | `string` | `undefined` | Couleur personnalisée du texte |
 | `backgroundColor` | `string` | `undefined` | Couleur personnalisée de l'arrière-plan |
 
@@ -257,35 +244,11 @@ import { CheckIcon, XMarkIcon, ExclamationTriangleIcon, StarIcon } from '@heroic
 |------|-------------|
 | `default` | Contenu du badge |
 
-## Variante dot
+## Pastille de statut
 
-La variante `dot` est spéciale et offre deux modes d'affichage :
-
-### 🔴 Dot simple
-
-Un simple point coloré, idéal pour les indicateurs de statut :
-
-```vue
-<!-- Dot par défaut -->
-<SuBadge variant="dot" />
-
-<!-- Dot avec couleur personnalisée -->
-<SuBadge variant="dot" backgroundColor="#10b981" />
-```
-
-### 🔴 Dot avec texte
-
-Un point coloré suivi d'un texte, parfait pour les statuts avec description :
-
-```vue
-<!-- Avec prop dotText -->
-<SuBadge variant="dot" dotText="En ligne" backgroundColor="#10b981" />
-
-<!-- Avec slot -->
-<SuBadge variant="dot" backgroundColor="#f59e0b">
-  Absent depuis 5 min
-</SuBadge>
-```
+- Avec un libellé, la pastille est décorative (`aria-hidden`) : le texte porte le statut.
+- Sans libellé, le badge devient une image (`role="img"`) nommée par `ariaLabel`. Sans `ariaLabel`, un avertissement s'affiche dans la console, sauf si le badge lui-même est décoratif (`aria-hidden="true"`).
+- La couleur seule ne suffit pas à transmettre un statut (WCAG 1.4.1) : gardez un libellé visible ou une infobulle.
 
 ## Accessibilité
 
@@ -311,7 +274,7 @@ Le composant Badge respecte les normes WCAG 2.1 AA :
 <SuBadge variant="primary" aria-label="Utilisateur premium">Premium</SuBadge>
 
 <!-- Badge décoratif (masqué aux lecteurs d'écran) -->
-<SuBadge variant="dot" backgroundColor="#10b981" aria-hidden="true" />
+<SuBadge variant="success" dot aria-hidden="true" />
 
 <!-- Badge avec description -->
 <SuBadge variant="warning" aria-describedby="warning-description">
@@ -394,7 +357,7 @@ import { CheckIcon, ClockIcon, XMarkIcon, TruckIcon } from '@heroicons/vue/24/ou
         <span>John Doe</span>
       </div>
       <div class="user-status">
-        <SuBadge variant="dot" dotText="En ligne" backgroundColor="#10b981" />
+        <SuBadge variant="success" dot>En ligne</SuBadge>
         <SuBadge variant="primary" size="sm" icon="StarIcon" iconDisplay="only" aria-label="Utilisateur premium" />
       </div>
     </div>
@@ -405,7 +368,7 @@ import { CheckIcon, ClockIcon, XMarkIcon, TruckIcon } from '@heroicons/vue/24/ou
         <span>Marie Dupont</span>
       </div>
       <div class="user-status">
-        <SuBadge variant="dot" dotText="Absent" backgroundColor="#f59e0b" />
+        <SuBadge variant="warning" dot>Absent</SuBadge>
         <SuBadge variant="secondary" size="sm">Admin</SuBadge>
       </div>
     </div>
@@ -519,22 +482,22 @@ import { CheckIcon, ClockIcon, XMarkIcon, TruckIcon } from '@heroicons/vue/24/ou
     <div class="status-list">
       <div class="status-item">
         <span>API Principal</span>
-        <SuBadge variant="dot" dotText="Opérationnel" backgroundColor="#10b981" />
+        <SuBadge variant="success" dot>Opérationnel</SuBadge>
       </div>
       
       <div class="status-item">
         <span>Base de données</span>
-        <SuBadge variant="dot" dotText="Dégradé" backgroundColor="#f59e0b" />
+        <SuBadge variant="warning" dot>Dégradé</SuBadge>
       </div>
       
       <div class="status-item">
         <span>CDN</span>
-        <SuBadge variant="dot" dotText="Panne" backgroundColor="#ef4444" />
+        <SuBadge variant="error" dot>Panne</SuBadge>
       </div>
       
       <div class="status-item">
         <span>Authentification</span>
-        <SuBadge variant="dot" dotText="Maintenance" backgroundColor="#3b82f6" />
+        <SuBadge dot>Maintenance</SuBadge>
       </div>
     </div>
   </div>
@@ -660,7 +623,7 @@ const handleBadgeClick = (type) => {
 ### ✅ À faire
 - Utiliser des couleurs cohérentes pour les mêmes types de statut
 - Fournir un `aria-label` pour les badges avec icône seule
-- Utiliser la variante `dot` pour les indicateurs de statut discrets
+- Utiliser `dot` (ou `pulse` pour un statut en direct) pour les indicateurs de statut discrets
 - Limiter le texte à quelques mots maximum
 - Utiliser `radius="max"` pour les compteurs de notifications
 

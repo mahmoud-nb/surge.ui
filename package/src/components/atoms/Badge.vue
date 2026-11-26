@@ -8,7 +8,9 @@ const props = withDefaults(defineProps<BadgeProps>(), {
   variant: 'default',
   size: 'md',
   radius: 'md',
-  iconDisplay: 'left'
+  iconDisplay: 'left',
+  dot: false,
+  pulse: false
 })
 
 const slots = defineSlots<{
@@ -20,6 +22,10 @@ const hasText = computed(() => {
   return !(props.icon && props.iconDisplay === 'only') && slots.default
 })
 
+// Pastille de statut (pulse l'implique) ; seule, sans libellé ni icône
+const hasDot = computed(() => props.dot || props.pulse)
+const dotOnly = computed(() => hasDot.value && !props.icon && !slots.default)
+
 // Classes CSS
 const badgeClasses = computed(() => [
   'su-badge',
@@ -29,7 +35,9 @@ const badgeClasses = computed(() => [
   {
     'su-badge--icon-only': props.icon && props.iconDisplay === 'only',
     'su-badge--icon-right': props.icon && props.iconDisplay === 'right',
-    'su-badge--has-custom-color': props.color || props.backgroundColor
+    'su-badge--has-custom-color': props.color || props.backgroundColor,
+    'su-badge--dot-only': dotOnly.value,
+    'su-badge--pulse': props.pulse
   }
 ])
 
@@ -61,6 +69,8 @@ const ariaAttributes = computed(() => {
   if (props.ariaDescribedBy) attrs['aria-describedby'] = props.ariaDescribedBy
   if (props.ariaHidden !== undefined) attrs['aria-hidden'] = props.ariaHidden
   if (props.role) attrs['role'] = props.role
+  // Pastille seule : une image nommée par ariaLabel
+  else if (dotOnly.value && props.ariaLabel) attrs['role'] = 'img'
   
   return attrs
 })
@@ -76,6 +86,12 @@ const getContrastColor = (backgroundColor: string): string => {
   return brightness > 128 ? '#000000' : '#ffffff'
 }
 
+// Une pastille seule n'a pas de texte : son statut doit être nommé (sauf
+// pastille décorative, aria-hidden)
+if (dotOnly.value && !props.ariaLabel && !props.ariaLabelledBy && !props.ariaHidden) {
+  console.warn('[SuBadge] Une pastille sans libellé (dot) doit recevoir ariaLabel pour être accessible.')
+}
+
 // Validation pour les badges avec icône seule
 if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !slots.default) {
   console.warn('Badge with icon and iconDisplay="only" should have an ariaLabel for accessibility')
@@ -88,6 +104,13 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !slots.def
     :style="customStyles"
     v-bind="ariaAttributes"
   >
+    <!-- Pastille de statut -->
+    <span
+      v-if="hasDot"
+      class="su-badge__dot"
+      aria-hidden="true"
+    />
+
     <!-- Icône -->
     <component 
       :is="icon" 
@@ -118,6 +141,9 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !slots.def
 // ============================================================
 
 .su-badge {
+  // Couleur de la pastille (dot) : celle du texte, ou de l'état
+  --_su-badge-dot: currentcolor;
+
   position: relative;
   display: inline-flex;
   flex-shrink: 0;
@@ -184,6 +210,8 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !slots.def
   // ### Variantes
 
   &--default {
+    --_su-badge-dot: var(--su-text-tertiary);
+
     border-color: var(--su-border-input);
     background-color: var(--su-bg-control);
     color: var(--su-text-primary);
@@ -201,6 +229,8 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !slots.def
 
   @each $state in ('success', 'warning', 'error') {
     &--#{$state} {
+      --_su-badge-dot: var(--su-state-#{$state});
+
       background-color: with-alpha(state-#{$state}, 8%);
       color: var(--su-state-#{$state}-fg);
 
@@ -241,8 +271,60 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !slots.def
     }
   }
 
+  // ### Pastille de statut (dot, pulse)
+
+  &__dot {
+    position: relative;
+    width: 0.375rem;
+    height: 0.375rem;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background-color: var(--_su-badge-dot);
+  }
+
+  // Halo qui s'étend et s'efface : statut en direct
+  &--pulse &__dot::after {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background-color: inherit;
+    content: '';
+    animation: su-badge-pulse 1.6s var(--su-ease-out, ease-out) infinite;
+
+    @include motion-reduce {
+      animation: none;
+    }
+  }
+
+  // Pastille seule : ni fond, ni bordure, ni marge
+  &--dot-only {
+    width: auto;
+    min-width: 0;
+    height: auto;
+    padding: 0;
+    border-color: transparent;
+    background-color: transparent;
+
+    .su-badge__dot {
+      width: 0.5rem;
+      height: 0.5rem;
+    }
+  }
+
   @include high-contrast {
     border-color: currentcolor;
+  }
+}
+
+@keyframes su-badge-pulse {
+  from {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: scale(2.6);
   }
 }
 </style>
