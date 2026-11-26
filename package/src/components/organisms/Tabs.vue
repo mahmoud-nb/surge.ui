@@ -1,36 +1,74 @@
-<script setup lang="ts">
-import { computed, nextTick, onBeforeUnmount, onMounted, reactive, ref, watch, useId } from 'vue'
-import type { TabsProps } from '@/types'
+<script setup lang="ts" generic="T extends string | number = number">
+import { computed, nextTick, onBeforeUnmount, onMounted, reactive, ref, watch, useId, type Component } from 'vue'
+import type { TabItem, TabsProps } from '@/types'
 import { useListNavigation } from '@/composables/useListNavigation'
+import { useLinkComponent } from '@/composables/useLinkComponent'
 
-const props = withDefaults(defineProps<TabsProps>(), {
-  variant: 'underline',
-  modelValue: 0
+// ============================================================
+// TABS — trois usages :
+//   - un panneau par onglet (slot `panel` ou `content`) ;
+//   - panneau unique : le slot par défaut est le contenu de l'onglet
+//     actif, géré par la page (v-model sur la `value` des onglets) ;
+//   - navigation : des onglets avec `to` forment une <nav> de liens
+//     (aria-current="page") et l'onglet actif suit la route.
+// ============================================================
+
+const props = withDefaults(defineProps<TabsProps<T>>(), {
+  tabs: () => [],
+  variant: 'underline'
 })
 
-const emit = defineEmits<{ (e: 'update:modelValue', value: number): void }>()
+const emit = defineEmits<{ 'update:modelValue': [value: T] }>()
 
-const activeIndex = ref(props.modelValue)
 const tabsId = useId()
+const tabId = (index: number) => `tab-${tabsId}-${index}`
+const panelId = (index: number) => `panel-${tabsId}-${index}`
+const singlePanelId = `panel-${tabsId}`
 
-watch(() => props.modelValue, v => (activeIndex.value = v))
-watch(activeIndex, v => emit('update:modelValue', v))
+// Clé d'un onglet pour le v-model : sa `value`, sinon son indice
+const keyOf = (tab: TabItem<T>, index: number) => (tab.value ?? index) as T
+const indexOf = (key: T | undefined) => {
+  if (key === undefined) return 0
+  const index = props.tabs.findIndex((tab, i) => keyOf(tab, i) === key)
+  return index === -1 ? 0 : index
+}
 
-// Boutons d'onglet, pour déplacer le focus avec l'onglet actif
-const tabRefs = ref<HTMLButtonElement[]>([])
+// Navigation : l'onglet actif vient de la route (détecté après le rendu),
+// sauf si un v-model le fixe
+const isNavigation = computed(() => props.tabs.some((tab) => tab.to !== undefined))
+const followsRoute = () => isNavigation.value && props.modelValue === undefined
+
+const activeIndex = ref(followsRoute() ? -1 : indexOf(props.modelValue))
+const activeTab = computed(() => props.tabs[activeIndex.value])
+
+watch(() => props.modelValue, (key) => {
+  if (!followsRoute()) activeIndex.value = indexOf(key)
+})
+watch(() => props.tabs.map(keyOf).join('|'), () => {
+  if (props.modelValue !== undefined) activeIndex.value = indexOf(props.modelValue)
+})
+watch(activeIndex, (index) => {
+  const tab = props.tabs[index]
+  if (!tab) return
+  const key = keyOf(tab, index)
+  if (key !== props.modelValue) emit('update:modelValue', key)
+})
+
+// Onglets (boutons ou liens), pour le focus et la mesure de l'indicateur
+const tabRefs = ref<(HTMLElement | null)[]>([])
 const setTabRef = (el: unknown, index: number) => {
-  if (el) tabRefs.value[index] = el as HTMLButtonElement
+  tabRefs.value[index] = (el as { $el?: HTMLElement } | null)?.$el ?? (el as HTMLElement | null)
 }
 
 // Gestion du clavier : flèches gauche / droite (inversées en RTL), Début /
 // Fin, en boucle. Le focus suit l'onglet, qui est activé aussitôt
 // (pattern WAI-ARIA « activation automatique »)
 const tabNav = useListNavigation({
-  items: () => props.tabs ?? [],
+  items: () => props.tabs,
   orientation: 'horizontal',
   loop: true,
   mode: 'roving',
-  getElement: (index) => tabRefs.value[index],
+  getElement: (index) => tabRefs.value[index] ?? undefined,
   onActiveChange: (index) => {
     activeIndex.value = index
   }
@@ -40,6 +78,33 @@ const handleKeydown = (event: KeyboardEvent) => {
   // Point de départ : l'onglet actif (ou l'onglet focalisé, repris par la navigation)
   tabNav.activeIndex.value = activeIndex.value
   tabNav.handleKeydown(event)
+}
+
+// ### Navigation
+
+const { component: routerLink, linkFor, toHref } = useLinkComponent()
+
+// Lien d'un onglet de navigation. Sans routeur, aria-current est posé ici ;
+// avec RouterLink, c'est lui qui le pose (un attribut, même vide, l'écraserait).
+const tabLink = (tab: TabItem<T>, index: number): { is: Component | string; attrs: Record<string, unknown> } => {
+  if (tab.to === undefined) return { is: 'span', attrs: {} }
+  const link = linkFor(tab.to)
+  if (!routerLink && index === activeIndex.value) return { is: link.is, attrs: { ...link.attrs, 'aria-current': 'page' } }
+  return link
+}
+
+// Onglet de la route courante : lien exact (aria-current), sinon lien
+// actif (route parente, classe router-link-active), sinon chemin du document
+const detectActive = () => {
+  if (!followsRoute()) return
+  let index = -1
+  if (routerLink) {
+    index = tabRefs.value.findIndex((el) => el?.getAttribute('aria-current') === 'page')
+    if (index === -1) index = tabRefs.value.findIndex((el) => el?.classList.contains('router-link-active'))
+  } else if (typeof window !== 'undefined') {
+    index = props.tabs.findIndex((tab) => tab.to !== undefined && toHref(tab.to) === window.location.pathname)
+  }
+  activeIndex.value = index
 }
 
 // ============================================================
@@ -53,7 +118,10 @@ const indicator = reactive({ left: 0, top: 0, width: 0, height: 0, ready: false 
 
 const updateIndicator = () => {
   const tab = tabRefs.value[activeIndex.value]
-  if (!tab) return
+  if (!tab) {
+    indicator.ready = false
+    return
+  }
   indicator.left = tab.offsetLeft
   indicator.top = tab.offsetTop
   indicator.width = tab.offsetWidth
@@ -70,6 +138,7 @@ const indicatorStyle = computed(() => ({
 
 let resizeObserver: ResizeObserver | undefined
 let dirObserver: MutationObserver | undefined
+let routeObserver: MutationObserver | undefined
 
 // Recalcule si la liste ou un onglet change de taille : police chargée,
 // responsive, libellés traduits (un onglet qui s'élargit décale les suivants)
@@ -80,10 +149,28 @@ const observeSizes = () => {
   tabRefs.value.forEach((tab) => tab && resizeObserver!.observe(tab))
 }
 
-watch([activeIndex, () => props.tabs?.length, () => props.variant], () => nextTick(updateIndicator))
-watch(() => props.tabs?.length, () => nextTick(observeSizes))
+// Navigation : RouterLink met à jour aria-current et ses classes à chaque
+// changement de route ; on suit ces attributs plutôt que le routeur
+const observeRoute = () => {
+  routeObserver?.disconnect()
+  if (!followsRoute() || !listRef.value || typeof MutationObserver === 'undefined') return
+  routeObserver = new MutationObserver(detectActive)
+  routeObserver.observe(listRef.value, { attributes: true, attributeFilter: ['aria-current', 'class'], subtree: true })
+}
+
+watch([activeIndex, () => props.tabs.length, () => props.variant], () => nextTick(updateIndicator))
+watch(() => props.tabs.length, () => nextTick(() => {
+  observeSizes()
+  detectActive()
+}))
+watch(isNavigation, () => nextTick(() => {
+  detectActive()
+  observeRoute()
+}))
 
 onMounted(() => {
+  detectActive()
+  observeRoute()
   updateIndicator()
   if (typeof ResizeObserver !== 'undefined') {
     resizeObserver = new ResizeObserver(updateIndicator)
@@ -100,6 +187,7 @@ onMounted(() => {
 onBeforeUnmount(() => {
   resizeObserver?.disconnect()
   dirObserver?.disconnect()
+  routeObserver?.disconnect()
 })
 
 // Classes
@@ -113,13 +201,52 @@ const tabClasses = (index: number) => [
 <template>
   <div
     class="su-tabs"
-    :class="`su-tabs--${variant}`"
+    :class="[`su-tabs--${variant}`, { 'su-tabs--navigation': isNavigation }]"
   >
-    <!-- Liste des onglets -->
+    <!-- Navigation : liens vers des pages -->
+    <nav
+      v-if="isNavigation"
+      class="su-tabs-nav"
+      :aria-label="label"
+    >
+      <div
+        ref="listRef"
+        class="su-tabs-list"
+        :style="hasIndicator ? indicatorStyle : undefined"
+      >
+        <span
+          v-if="hasIndicator"
+          class="su-tabs-indicator"
+          :class="{ 'su-tabs-indicator--ready': indicator.ready }"
+          aria-hidden="true"
+        />
+
+        <component
+          :is="tabLink(tab, index).is"
+          v-for="(tab, index) in tabs"
+          :key="index"
+          :ref="(el: unknown) => setTabRef(el, index)"
+          v-bind="tabLink(tab, index).attrs"
+          :class="tabClasses(index)"
+        >
+          <slot
+            name="tab"
+            :tab="tab"
+            :index="index"
+          >
+            <span>{{ tab.label }}</span>
+          </slot>
+        </component>
+      </div>
+    </nav>
+
+    <!-- Onglets -->
     <div
+      v-else
       ref="listRef"
       role="tablist"
       class="su-tabs-list"
+      :aria-label="label"
       :style="hasIndicator ? indicatorStyle : undefined"
       @keydown="handleKeydown"
     >
@@ -132,12 +259,12 @@ const tabClasses = (index: number) => [
 
       <button
         v-for="(tab, index) in tabs"
-        :id="`tab-${tabsId}-${index}`"
+        :id="tabId(index)"
         :key="index"
-        :ref="(el) => setTabRef(el, index)"
+        :ref="(el: unknown) => setTabRef(el, index)"
         type="button"
         role="tab"
-        :aria-controls="`panel-${tabsId}-${index}`"
+        :aria-controls="$slots.default ? (index === activeIndex ? singlePanelId : undefined) : panelId(index)"
         :aria-selected="index === activeIndex"
         :tabindex="index === activeIndex ? 0 : -1"
         :class="tabClasses(index)"
@@ -154,25 +281,55 @@ const tabClasses = (index: number) => [
       </button>
     </div>
 
-    <!-- Contenu -->
+    <!-- Navigation : contenu libre sous les liens (ex. RouterView) -->
     <div
-      v-for="(tab, index) in tabs"
-      v-show="index === activeIndex"
-      :id="`panel-${tabsId}-${index}`"
-      :key="index"
+      v-if="isNavigation && $slots.default"
+      class="su-tabs-content"
+    >
+      <slot
+        :tab="activeTab"
+        :index="activeIndex"
+        :value="activeTab ? keyOf(activeTab, activeIndex) : undefined"
+      />
+    </div>
+
+    <!-- Panneau unique : contenu de l'onglet actif, géré par la page -->
+    <div
+      v-else-if="$slots.default"
+      :id="singlePanelId"
       role="tabpanel"
       tabindex="0"
-      :aria-labelledby="`tab-${tabsId}-${index}`"
+      :aria-labelledby="activeTab ? tabId(activeIndex) : undefined"
       class="su-tab-panel"
     >
       <slot
-        name="panel"
-        :tab="tab"
-        :index="index"
-      >
-        <p>{{ tab.content }}</p>
-      </slot>
+        :tab="activeTab"
+        :index="activeIndex"
+        :value="activeTab ? keyOf(activeTab, activeIndex) : undefined"
+      />
     </div>
+
+    <!-- Un panneau par onglet -->
+    <template v-else-if="!isNavigation">
+      <div
+        v-for="(tab, index) in tabs"
+        v-show="index === activeIndex"
+        :id="panelId(index)"
+        :key="index"
+        role="tabpanel"
+        tabindex="0"
+        :aria-labelledby="tabId(index)"
+        class="su-tab-panel"
+      >
+        <slot
+          name="panel"
+          :tab="tab"
+          :index="index"
+        >
+          <p>{{ tab.content }}</p>
+        </slot>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -221,6 +378,7 @@ const tabClasses = (index: number) => [
   font-size: var(--su-font-size-base);
   font-weight: var(--su-font-weight-medium);
   white-space: nowrap;
+  text-decoration: none; // onglets de navigation (liens)
   cursor: pointer;
   outline: none;
 

@@ -1265,8 +1265,12 @@ export interface DialogProps extends AccessibilityProps {
 export type DialogTeleport = string | HTMLElement | boolean
 
 // Tabs.vue
-export interface TabItem {
+export interface TabItem<T extends string | number = string | number> {
   label: string;
+  /** Identifiant de l'onglet pour le v-model (sinon : son indice) */
+  value?: T;
+  /** Onglet de navigation : lien du routeur (les onglets forment alors une <nav>) */
+  to?: LinkTo;
   content?: string;
   icon?: Component | string;
   badge?: number | string;
@@ -1274,10 +1278,13 @@ export interface TabItem {
   description?: string;
   component?: Component;
 }
-export interface TabsProps {
-  tabs?: TabItem[];
-  modelValue?: number;
+export interface TabsProps<T extends string | number = number> {
+  tabs?: TabItem<T>[];
+  /** Onglet actif : sa `value`, ou son indice si les onglets n'en ont pas */
+  modelValue?: T;
   variant?: 'underline' | 'contained' | 'pills';
+  /** Nom accessible de la liste d'onglets ou de la navigation */
+  label?: string;
 }
 
 // Card.vue
