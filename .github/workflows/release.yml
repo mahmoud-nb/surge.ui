@@ -16,6 +16,9 @@ concurrency:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    # Le secret NPM_TOKEN est un secret de l'environnement « npm » : sans
+    # cette ligne, le job ne le reçoit pas (npm publish : ENEEDAUTH)
+    environment: npm
     permissions:
       contents: write   # création de la release GitHub
       id-token: write   # provenance npm (attestation de build)
