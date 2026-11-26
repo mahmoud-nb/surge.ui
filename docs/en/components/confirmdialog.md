@@ -91,6 +91,12 @@ A plain string becomes the title: `await confirm('Leave without saving?')`.
 | `cancelLabel` | `string` | `'Cancel'` (locale) | Cancel button |
 | `tone` | `'default' \| 'danger'` | `'default'` | `danger`: red button, focus on Cancel, backdrop click ignored |
 
+### SuConfirmDialog props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `teleport` | `string \| HTMLElement \| boolean` | `'body'` | Where to render the `<dialog>`; `false` to keep it in place. See [SuDialog](/en/components/dialog#rendering-in-body) |
+
 Without a mounted `SuConfirmDialog`, `confirm()` falls back to `window.confirm()`.
 
 ## Accessibility

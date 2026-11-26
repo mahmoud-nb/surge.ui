@@ -6,12 +6,18 @@
 // THÈME SUNSET — MODE CLAIR + SOMBRE
 // ============================================================
 
+// Sans data-theme-mode : clair, ou sombre avec la classe .dark (convention
+// Tailwind). Tous les sélecteurs ont la même spécificité (0,2,0) : le mode
+// sombre, émis après, l'emporte quand les deux s'appliquent.
+
 // --- Mode clair ---
-[data-theme='sunset'][data-theme-mode='light'] {
+[data-theme='sunset'][data-theme-mode='light'],
+[data-theme='sunset']:not([data-theme-mode]) {
   @include registry.generate-mode-vars($theme-sunset-light, 'light');
 }
 
 // --- Mode sombre ---
-[data-theme='sunset'][data-theme-mode='dark'] {
+[data-theme='sunset'][data-theme-mode='dark'],
+[data-theme='sunset']:where(.dark):not([data-theme-mode]) {
   @include registry.generate-mode-vars($theme-sunset-dark, 'dark');
 }

@@ -8,6 +8,9 @@ import type { PasswordFieldProps, PasswordValidation } from '@/types'
 import { useLocale } from '@/composables/useLocale'
 
 const props = withDefaults(defineProps<PasswordFieldProps>(), {
+  // undefined : sans la prop, l'attribut ARIA reste absent (Vue changerait l'absence en false)
+  ariaInvalid: undefined,
+  ariaRequired: undefined,
   size: 'md',
   state: 'default',
   disabled: false,

@@ -5,6 +5,9 @@ import Textarea from '../atoms/Textarea.vue';
 import type { TextareaFieldProps } from '@/types'
 
 const props = withDefaults(defineProps<TextareaFieldProps>(), {
+  // undefined : sans la prop, l'attribut ARIA reste absent (Vue changerait l'absence en false)
+  ariaInvalid: undefined,
+  ariaRequired: undefined,
   size: 'md',
   state: 'default',
   disabled: false,

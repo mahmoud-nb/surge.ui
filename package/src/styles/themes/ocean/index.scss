@@ -6,12 +6,18 @@
 // THÈME OCEAN — MODE CLAIR + SOMBRE
 // ============================================================
 
+// Sans data-theme-mode : clair, ou sombre avec la classe .dark (convention
+// Tailwind). Tous les sélecteurs ont la même spécificité (0,2,0) : le mode
+// sombre, émis après, l'emporte quand les deux s'appliquent.
+
 // --- Mode clair ---
-[data-theme='ocean'][data-theme-mode='light'] {
+[data-theme='ocean'][data-theme-mode='light'],
+[data-theme='ocean']:not([data-theme-mode]) {
   @include registry.generate-mode-vars($theme-ocean-light, 'light');
 }
 
 // --- Mode sombre ---
-[data-theme='ocean'][data-theme-mode='dark'] {
+[data-theme='ocean'][data-theme-mode='dark'],
+[data-theme='ocean']:where(.dark):not([data-theme-mode]) {
   @include registry.generate-mode-vars($theme-ocean-dark, 'dark');
 }

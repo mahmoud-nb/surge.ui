@@ -387,7 +387,7 @@ export interface PriceProps extends AccessibilityProps {
   originalAmount?: number
   /** Code devise ISO 4217 (ex: 'EUR', 'USD', 'GBP') */
   currency?: string
-  /** Locale BCP 47 (ex: 'fr-FR', 'en-US') */
+  /** Locale BCP 47 (ex: 'fr-FR', 'en-US'). Défaut : la locale des composants (plugin, provideLocale) */
   locale?: string
   /** Variante visuelle */
   variant?: PriceVariant
@@ -634,7 +634,8 @@ export interface AvatarGroupProps extends AccessibilityProps {
 }
 
 // Dropdown.vue
-export interface DropdownOption {
+export interface DropdownItemOption {
+  type?: 'item';
   value: string | number;
   label: string;
   href?: string;
@@ -643,8 +644,17 @@ export interface DropdownOption {
   disabled?: boolean;
   icon?: Component;
   description?: string;
+  /** Trace un séparateur avant cette option */
+  separatorBefore?: boolean;
+  /**
+   * @deprecated L'option devient un séparateur et n'est pas affichée.
+   * Utiliser `{ type: 'separator' }`, ou `separatorBefore: true` pour garder l'option.
+   */
   separator?: boolean;
 }
+/** Trait de séparation entre deux groupes d'options */
+export type DropdownSeparatorOption = { type: 'separator' } & Partial<Omit<DropdownItemOption, 'type'>>;
+export type DropdownOption = DropdownItemOption | DropdownSeparatorOption;
 export type DropdownTrigger = 'click' | 'hover';
 export type DropdownPlacement = 'bottom-start' | 'bottom-end' | 'top-start' | 'top-end' | 'left-start' | 'left-end' | 'right-start' | 'right-end';
 export interface DropdownProps extends AccessibilityProps {
@@ -929,6 +939,8 @@ export interface CommandPaletteProps {
   hotkey?: string | false;
   emptyText?: string;
   ariaLabel?: string;
+  /** Où rendre le `<dialog>` (voir SuDialog) : `'body'` par défaut, `false` sur place */
+  teleport?: DialogTeleport;
 }
 
 // FileUploadField.vue — mirrors BaseFileUploadProps for the field wrapper variant
@@ -1226,7 +1238,15 @@ export interface DialogProps extends AccessibilityProps {
   disableScroll?: boolean;
   /** Nom accessible du bouton de fermeture */
   closeLabel?: string;
+  /**
+   * Où rendre le `<dialog>` : `'body'` par défaut (à l'abri du CSS du parent),
+   * un sélecteur ou un élément, ou `false` pour le laisser sur place.
+   */
+  teleport?: DialogTeleport;
 }
+
+/** Cible du `<dialog>` : sélecteur, élément, `true` (body) ou `false` (sur place) */
+export type DialogTeleport = string | HTMLElement | boolean
 
 // Tabs.vue
 export interface TabItem {

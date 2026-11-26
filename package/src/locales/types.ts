@@ -61,6 +61,10 @@ export interface SurgeMessages {
   spinner: {
     label: LocaleMessage
   }
+  price: {
+    /** Nom accessible d'un montant invalide (NaN, Infinity) */
+    unavailable: LocaleMessage
+  }
   textarea: {
     remaining: LocaleMessage
     overLimit: LocaleMessage

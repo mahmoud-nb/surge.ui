@@ -68,20 +68,39 @@ const indicatorStyle = computed(() => ({
   '--su-tabs-indicator-height': `${indicator.height}px`
 }))
 
-watch([activeIndex, () => props.tabs?.length, () => props.variant], () => nextTick(updateIndicator))
-
 let resizeObserver: ResizeObserver | undefined
+let dirObserver: MutationObserver | undefined
+
+// Recalcule si la liste ou un onglet change de taille : police chargée,
+// responsive, libellés traduits (un onglet qui s'élargit décale les suivants)
+const observeSizes = () => {
+  if (!resizeObserver) return
+  resizeObserver.disconnect()
+  if (listRef.value) resizeObserver.observe(listRef.value)
+  tabRefs.value.forEach((tab) => tab && resizeObserver!.observe(tab))
+}
+
+watch([activeIndex, () => props.tabs?.length, () => props.variant], () => nextTick(updateIndicator))
+watch(() => props.tabs?.length, () => nextTick(observeSizes))
 
 onMounted(() => {
   updateIndicator()
-  if (typeof ResizeObserver !== 'undefined' && listRef.value) {
-    // Recalcule si la liste change de taille (police chargée, responsive…)
+  if (typeof ResizeObserver !== 'undefined') {
     resizeObserver = new ResizeObserver(updateIndicator)
-    resizeObserver.observe(listRef.value)
+    observeSizes()
+  }
+  // Changement de sens à chaud (dir sur <html> ou un ancêtre) : les onglets
+  // changent de place sans changer de taille, aucun ResizeObserver ne le voit
+  if (typeof MutationObserver !== 'undefined') {
+    dirObserver = new MutationObserver(() => nextTick(updateIndicator))
+    dirObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['dir'], subtree: true })
   }
 })
 
-onBeforeUnmount(() => resizeObserver?.disconnect())
+onBeforeUnmount(() => {
+  resizeObserver?.disconnect()
+  dirObserver?.disconnect()
+})
 
 // Classes
 const tabClasses = (index: number) => [

@@ -56,8 +56,18 @@ export const getFirstDayOfWeek = (code: string): number => {
   } catch {
     // Langue invalide : repli ci-dessous
   }
-  return /^(en(-US|-CA)?|ja|ko|zh|he|pt-BR|es-MX|ar)$/i.test(code) ? 0 : 1
+  // Repli sans getWeekInfo : langue et région seules (« ar-u-nu-latn » → ar)
+  const [language = '', second = ''] = code.toLowerCase().split(/[-_]/)
+  const region = /^[a-z]{2}$|^\d{3}$/.test(second) ? second : ''
+  const tag = region ? `${language}-${region}` : language
+  if (/^(ar|fa)(-(eg|ae|bh|dz|iq|jo|kw|ly|om|qa|sd|sy))?$/.test(tag)) return 6
+  if (/^(en(-us|-ca)?|ja|ko|zh|he|pt-br|es-mx|ar-sa)$/.test(tag)) return 0
+  return 1
 }
+
+/** Chiffres arabes-indiens (٠-٩) et persans (۰-۹) → chiffres latins */
+export const toLatinDigits = (text: string): string =>
+  text.replace(/[٠-٩۰-۹]/g, (digit) => String(digit.charCodeAt(0) & 0xf))
 
 /** Semaines (lignes de 7 cases, null hors du mois) d'un mois affiché */
 export const getMonthGrid = (month: Date, firstDayOfWeek: number): (Date | null)[][] => {
@@ -89,7 +99,8 @@ export const getDateFormatPattern = (code: string): { order: DatePart[]; separat
 
 /** Date saisie → Date (null si vide, undefined si illisible ou inexistante) */
 export const parseDateInput = (input: string, code: string): Date | null | undefined => {
-  const text = input.trim()
+  // Chiffres latins : une date affichée en ar-EG (« ٠٥/١١/٢٠٢٦ ») se relit
+  const text = toLatinDigits(input.trim())
   if (!text) return null
   const numbers = text.split(/[^\d]+/).filter(Boolean).map(Number)
   if (numbers.length !== 3) return undefined

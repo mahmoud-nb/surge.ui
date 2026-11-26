@@ -2,10 +2,10 @@
 import { computed } from 'vue'
 import type { PriceProps } from '@/types'
 import { usePrice } from '@/composables/usePrice'
+import { useLocale } from '@/composables/useLocale'
 
 const props = withDefaults(defineProps<PriceProps>(), {
   currency: 'EUR',
-  locale: 'fr-FR',
   variant: 'default',
   size: 'md',
   integerOnly: false,
@@ -24,6 +24,12 @@ defineSlots<{
   suffix?(): any
 }>()
 
+// Langue de formatage : prop explicite, sinon celle des composants
+// (plugin, provideLocale) ; le français par défaut donne « 1 234,50 € »
+const { locale: currentLocale, t } = useLocale()
+const localeCode = computed(() => props.locale ?? currentLocale.value.code)
+const unavailableLabel = () => t('price.unavailable')
+
 // ========================================
 // Composable — prix principal
 // ========================================
@@ -31,7 +37,8 @@ defineSlots<{
 const price = usePrice({
   amount: () => props.amount,
   currency: props.currency,
-  locale: props.locale,
+  locale: localeCode,
+  unavailableLabel,
   currencyDisplay: props.currencyDisplay,
   formatValue: props.formatValue
     ? (amount: number) => props.formatValue!(amount)
@@ -48,7 +55,8 @@ const originalPrice = computed(() => {
   return usePrice({
     amount: props.originalAmount,
     currency: props.currency,
-    locale: props.locale,
+    locale: localeCode,
+    unavailableLabel,
     currencyDisplay: props.currencyDisplay,
   })
 })

@@ -1,5 +1,16 @@
 <script setup lang="ts">
-import { computed, ref, watch, onMounted, onBeforeUnmount, nextTick, useAttrs, useId } from 'vue'
+import {
+  computed,
+  ref,
+  watch,
+  onMounted,
+  onBeforeUnmount,
+  nextTick,
+  useAttrs,
+  useId,
+  getCurrentInstance,
+  type ComponentInternalInstance
+} from 'vue'
 import Button from '../atoms/Button.vue'
 import { XMarkIcon } from '@heroicons/vue/24/outline'
 import type { DialogProps } from '@/types'
@@ -10,7 +21,15 @@ import { useLocale } from '@/composables/useLocale'
 // couche supérieure (plus de z-index), arrière-plan rendu inerte
 // par le navigateur (focus piégé), touche Échap native (`cancel`)
 // et fond `::backdrop`.
+//
+// Le <dialog> est téléporté dans <body> (prop `teleport`) : la couche
+// supérieure ne le protège pas des règles CSS de ses ancêtres
+// (`space-y-*`, `> * + *`…), qui s'appliquent tant qu'il reste dans le
+// DOM du parent.
 // ============================================================
+
+// Les attributs ($attrs) vont sur le <dialog>, pas sur le <Teleport>
+defineOptions({ inheritAttrs: false })
 
 const props = withDefaults(defineProps<DialogProps>(), {
   modelValue: false,
@@ -18,7 +37,8 @@ const props = withDefaults(defineProps<DialogProps>(), {
   closeOnOverlayClick: true,
   closeOnEscape: true,
   zIndex: 1000,
-  disableScroll: true
+  disableScroll: true,
+  teleport: 'body'
 })
 
 // Textes par défaut : prop explicite, sinon locale courante
@@ -49,6 +69,52 @@ let unmountTimer: ReturnType<typeof setTimeout> | undefined
 // Élément qui avait le focus avant l'ouverture, pour le lui rendre à la fermeture
 let previouslyFocused: HTMLElement | null = null
 
+// --- Téléportation ---
+// Active seulement après le montage : le rendu serveur et l'hydratation
+// gardent le <dialog> sur place, puis il rejoint sa cible (fermé).
+const isMounted = ref(false)
+const teleportTo = computed(() => (typeof props.teleport === 'boolean' ? 'body' : props.teleport))
+const teleportDisabled = computed(() => !isMounted.value || props.teleport === false)
+
+const instance = getCurrentInstance()
+
+// Styles scoped du parent : Vue ne pose leur attribut data-v-* que sur la
+// racine d'un composant. La racine étant <Teleport>, on les recopie sur le
+// <dialog> (en remontant les composants dont il est la racine, comme Vue).
+const collectScopeIds = (current: ComponentInternalInstance | null) => {
+  const ids: Record<string, string> = {}
+  let node = current
+  while (node) {
+    const scopeId = node.vnode.scopeId
+    if (scopeId) ids[scopeId] = ''
+    if (!node.parent || node.parent.subTree !== node.vnode) break
+    node = node.parent
+  }
+  return ids
+}
+const scopeAttributes = collectScopeIds(instance)
+
+// Contexte hérité de l'emplacement d'origine : une fois dans <body>, le
+// <dialog> perdrait le sens, la langue et le thème posés sur un conteneur
+const CONTEXT_ATTRIBUTES = ['dir', 'lang', 'data-theme', 'data-theme-mode', 'data-contrast']
+const contextAttributes = ref<Record<string, string>>({})
+
+const readContext = () => {
+  const result: Record<string, string> = {}
+  // $el : repère laissé par <Teleport> à l'emplacement d'origine
+  const origin = (instance?.proxy?.$el as Node | null | undefined)?.parentElement
+  if (!teleportDisabled.value && origin) {
+    for (const name of CONTEXT_ATTRIBUTES) {
+      const holder = origin.closest(`[${name}]`)
+      // Posé sur <html> ou <body> : le <dialog> en hérite déjà
+      if (holder && holder !== document.documentElement && holder !== document.body) {
+        result[name] = holder.getAttribute(name) ?? ''
+      }
+    }
+  }
+  contextAttributes.value = result
+}
+
 const dialogClasses = computed(() => [
   'su-dialog',
   `su-dialog--${props.display}`,
@@ -78,6 +144,14 @@ const ariaAttributes = computed(() => {
   return attrs
 })
 
+// Attributs du <dialog> : contexte, scoped et ARIA ; ceux du parent
+// ($attrs, ajoutés dans le template) restent prioritaires
+const dialogAttributes = computed(() => ({
+  ...contextAttributes.value,
+  ...scopeAttributes,
+  ...ariaAttributes.value
+}))
+
 // Durée de transition calculée (la plus longue), pour démonter le contenu
 // une fois l'animation de fermeture terminée
 const getTransitionMs = (el?: HTMLElement): number => {
@@ -92,6 +166,7 @@ const openDialog = async () => {
   if (isOpen.value) return
   clearTimeout(unmountTimer)
   previouslyFocused = document.activeElement as HTMLElement | null
+  readContext()
   isRendered.value = true
   isOpen.value = true
   emit('update:modelValue', true)
@@ -160,6 +235,9 @@ watch(() => props.modelValue, (newValue) => {
 })
 
 onMounted(() => {
+  // Avant l'ouverture : showModal() doit s'appliquer au <dialog> déjà
+  // téléporté (le déplacer ensuite le retirerait de la couche supérieure)
+  isMounted.value = true
   if (props.modelValue) openDialog()
 })
 
@@ -178,70 +256,75 @@ defineExpose({
 </script>
 
 <template>
-  <dialog
-    :id="dialogId"
-    ref="dialogRef"
-    :class="dialogClasses"
-    :style="width ? { width, maxWidth: '100%' } : undefined"
-    v-bind="ariaAttributes"
-    @cancel="handleCancel"
-    @close="handleNativeClose"
-    @pointerdown="handleBackdropPointerDown"
-    @click="handleBackdropClick"
+  <Teleport
+    :to="teleportTo"
+    :disabled="teleportDisabled"
   >
-    <template v-if="isRendered">
-      <Button
-        class="su-dialog__close"
-        variant="ghost"
-        size="sm"
-        :icon="XMarkIcon"
-        icon-display="only"
-        :aria-label="closeLabelText"
-        @click="closeDialog"
-      />
+    <dialog
+      :id="dialogId"
+      ref="dialogRef"
+      :class="dialogClasses"
+      :style="width ? { width, maxWidth: '100%' } : undefined"
+      v-bind="{ ...dialogAttributes, ...$attrs }"
+      @cancel="handleCancel"
+      @close="handleNativeClose"
+      @pointerdown="handleBackdropPointerDown"
+      @click="handleBackdropClick"
+    >
+      <template v-if="isRendered">
+        <Button
+          class="su-dialog__close"
+          variant="ghost"
+          size="sm"
+          :icon="XMarkIcon"
+          icon-display="only"
+          :aria-label="closeLabelText"
+          @click="closeDialog"
+        />
 
-      <div
-        class="su-dialog__container"
-        :style="{ height: height }"
-      >
-        <!-- Header -->
         <div
-          v-if="$slots.head || title || description"
-          class="su-dialog-header"
+          class="su-dialog__container"
+          :style="{ height: height }"
         >
-          <slot name="head">
-            <h2
-              v-if="title"
-              :id="titleId"
-              class="su-dialog-title"
-            >
-              {{ title }}
-            </h2>
-            <p
-              v-if="description"
-              :id="descriptionId"
-              class="su-dialog-description"
-            >
-              {{ description }}
-            </p>
-          </slot>
-        </div>
+          <!-- Header -->
+          <div
+            v-if="$slots.head || title || description"
+            class="su-dialog-header"
+          >
+            <slot name="head">
+              <h2
+                v-if="title"
+                :id="titleId"
+                class="su-dialog-title"
+              >
+                {{ title }}
+              </h2>
+              <p
+                v-if="description"
+                :id="descriptionId"
+                class="su-dialog-description"
+              >
+                {{ description }}
+              </p>
+            </slot>
+          </div>
 
-        <!-- Contenu principal -->
-        <div class="su-dialog-content">
-          <slot />
-        </div>
+          <!-- Contenu principal -->
+          <div class="su-dialog-content">
+            <slot />
+          </div>
 
-        <!-- Footer -->
-        <div
-          v-if="$slots.footer"
-          class="su-dialog-footer"
-        >
-          <slot name="footer" />
+          <!-- Footer -->
+          <div
+            v-if="$slots.footer"
+            class="su-dialog-footer"
+          >
+            <slot name="footer" />
+          </div>
         </div>
-      </div>
-    </template>
-  </dialog>
+      </template>
+    </dialog>
+  </Teleport>
 </template>
 
 <style lang="scss">

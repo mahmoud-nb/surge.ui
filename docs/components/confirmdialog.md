@@ -91,6 +91,12 @@ Un texte seul devient le titre : `await confirm('Quitter sans enregistrer ?')`.
 | `cancelLabel` | `string` | `'Annuler'` | Bouton d'annulation |
 | `tone` | `'default' \| 'danger'` | `'default'` | `danger` : bouton rouge, focus sur Annuler, clic sur le fond sans effet |
 
+### Props de SuConfirmDialog
+
+| Prop | Type | Défaut | Description |
+|------|------|--------|-------------|
+| `teleport` | `string | HTMLElement | boolean` | `'body'` | Où rendre le `<dialog>` ; `false` pour le laisser sur place. Voir [SuDialog](/components/dialog#rendu-dans-body) |
+
 Sans `SuConfirmDialog` monté, `confirm()` se replie sur `window.confirm()`.
 
 ## Accessibilité

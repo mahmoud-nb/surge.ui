@@ -21,8 +21,8 @@ features:
     title: Accessibilité WCAG AA
     details: Navigation clavier, rôles ARIA, lecteurs d'écran, contrastes 4.5:1, zones tactiles 44px et support du mode contraste élevé.
   - icon: 🎨
-    title: 5 thèmes intégrés
-    details: Light, Dark, Ocean, Forest et Sunset. Tokens CSS sémantiques (--su-*) pour une adaptation automatique.
+    title: 4 thèmes, clair et sombre
+    details: Default, Ocean, Forest et Sunset, chacun en clair et en sombre. Tokens CSS sémantiques (--su-*) pour une adaptation automatique.
   - icon: 🔧
     title: TypeScript natif
     details: Props typées, interfaces explicites, auto-complétion et sécurité de type à travers toute la bibliothèque.
@@ -33,7 +33,7 @@ features:
     title: Responsive & RTL
     details: Composants adaptés à tous les écrans avec support natif des directions gauche-droite et droite-gauche.
   - icon: 🧩
-    title: 34+ composants
+    title: 75+ composants
     details: Des atomes (Button, Input, Badge) aux organismes (Dialog, Tabs, Accordion), organisés en Atomic Design.
 ---
 
@@ -47,7 +47,7 @@ npm install @surgeui/ds-vue
 
 ```vue
 <script setup>
-import { SuButton } from '@surgeui/ds-vue'
+import { Button as SuButton } from '@surgeui/ds-vue'
 import '@surgeui/ds-vue/style.css'
 </script>
 

@@ -140,11 +140,12 @@ For a complete price display with visual variants, slots, and built-in accessibi
 |--------|------|---------|-------------|
 | `amount` | `number \| Ref<number> \| () => number` | — (required) | Reactive amount |
 | `currency` | `string` | `'EUR'` | ISO 4217 currency code |
-| `locale` | `string` | `'fr-FR'` | BCP 47 locale |
+| `locale` | `MaybeRefOrGetter<string>` | component locale | BCP 47 locale (ref or getter accepted). Without a value: code of the [component locale](/en/composables/uselocale) when usePrice is called in a `setup`, otherwise `'fr-FR'` |
 | `currencyDisplay` | `'symbol' \| 'narrowSymbol' \| 'code' \| 'name'` | `'symbol'` | Symbol format |
 | `minimumFractionDigits` | `number` | `2` | Minimum fraction digits |
 | `maximumFractionDigits` | `number` | `2` | Maximum fraction digits |
 | `formatValue` | `(amount, currency, locale) => string` | — | Custom formatter |
+| `unavailableLabel` | `MaybeRefOrGetter<string>` | `price.unavailable` message | Accessible name of an invalid amount (`NaN`, `Infinity`) |
 
 ### Return
 

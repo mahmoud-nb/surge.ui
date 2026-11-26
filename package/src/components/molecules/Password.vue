@@ -11,6 +11,9 @@ defineOptions({ inheritAttrs: false })
 export interface Props extends PasswordProps {}
 
 const props = withDefaults(defineProps<Props>(), {
+  // undefined : sans la prop, l'attribut ARIA reste absent (Vue changerait l'absence en false)
+  ariaInvalid: undefined,
+  ariaRequired: undefined,
   size: 'md',
   state: 'default',
   disabled: false,

@@ -226,7 +226,7 @@ const { formatted, integerPart, decimalPart, currencySymbol } = usePrice({
 | `amount` | `number` | — (requis) | Montant numérique à afficher |
 | `originalAmount` | `number` | — | Montant original pour le prix barré |
 | `currency` | `string` | `'EUR'` | Code devise ISO 4217 |
-| `locale` | `string` | `'fr-FR'` | Locale BCP 47 |
+| `locale` | `string` | locale des composants | Locale BCP 47. Sans valeur : le code de la [locale des composants](/composables/uselocale) (`fr` par défaut, même rendu que `fr-FR`) |
 | `variant` | `'default' \| 'highlight' \| 'muted'` | `'default'` | Variante visuelle |
 | `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Taille |
 | `integerOnly` | `boolean` | `false` | Masquer la partie décimale |
@@ -251,7 +251,8 @@ const { formatted, integerPart, decimalPart, currencySymbol } = usePrice({
 |--------|------|--------|-------------|
 | `amount` | `number \| Ref<number> \| () => number` | — (requis) | Montant réactif |
 | `currency` | `string` | `'EUR'` | Code devise ISO 4217 |
-| `locale` | `string` | `'fr-FR'` | Locale BCP 47 |
+| `locale` | `MaybeRefOrGetter<string>` | locale des composants | Locale BCP 47 (ref ou getter accepté) |
+| `unavailableLabel` | `MaybeRefOrGetter<string>` | message `price.unavailable` | Nom accessible d'un montant invalide |
 | `currencyDisplay` | `CurrencyDisplay` | `'symbol'` | Format du symbole |
 | `minimumFractionDigits` | `number` | `2` | Chiffres décimaux min |
 | `maximumFractionDigits` | `number` | `2` | Chiffres décimaux max |

@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it } from 'vitest'
-import { mount, type VueWrapper } from '@vue/test-utils'
+import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import Tabs from '@/components/organisms/Tabs.vue'
 import Accordion from '@/components/organisms/Accordion.vue'
 
@@ -51,6 +51,28 @@ describe('SuTabs', () => {
     await list.trigger('keydown', { key: 'ArrowLeft' })
     expect(selected()).toEqual(['false', 'false', 'true'])
     expect(wrapper.emitted('update:modelValue')?.at(-1)).toEqual([2])
+  })
+
+  it("recale l'indicateur quand le sens change sans recharger", async () => {
+    wrapper = mount(Tabs, { props: { tabs }, attachTo: document.body })
+    // happy-dom ne calcule pas de mise en page : position simulée selon le sens
+    const first = wrapper.find('[role="tab"]').element
+    Object.defineProperty(first, 'offsetLeft', {
+      configurable: true,
+      get: () => (document.documentElement.dir === 'rtl' ? 933 : 32)
+    })
+    const list = () => wrapper!.find('[role="tablist"]').element as HTMLElement
+    await wrapper.setProps({ modelValue: 0, variant: 'pills' })
+    await flushPromises()
+    expect(list().style.getPropertyValue('--su-tabs-indicator-left')).toBe('32px')
+
+    document.documentElement.dir = 'rtl'
+    await flushPromises()
+    expect(list().style.getPropertyValue('--su-tabs-indicator-left')).toBe('933px')
+
+    document.documentElement.removeAttribute('dir')
+    await flushPromises()
+    expect(list().style.getPropertyValue('--su-tabs-indicator-left')).toBe('32px')
   })
 })
 

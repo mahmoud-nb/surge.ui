@@ -15,6 +15,16 @@ const env = loadEnv(mode, process.cwd(), 'VITE_')
 const ROOT_URL = env.VITE_APP_ROOT_URL || pkg.config.rootUrl
 const BASE_URL = env.VITE_APP_BASE_URL || pkg.config.baseUrl
 
+// Version publiée (mise à jour par standard-version) et notes de version
+const REPO_URL = 'https://github.com/mahmoud-nb/surge.ui'
+const versionNav = (changelog: string) => ({
+  text: `v${pkg.version}`,
+  items: [
+    { text: changelog, link: `${REPO_URL}/blob/main/CHANGELOG.md` },
+    { text: 'npm', link: 'https://www.npmjs.com/package/@surgeui/ds-vue' }
+  ]
+})
+
 const getNavItems = (section: string = 'display', lang: string = 'fr') => {
 
   const langPrefix = lang === 'fr' ? '' : '/en'
@@ -156,7 +166,8 @@ export default defineConfig({
           { text: 'Démarrage', link: '/guide/get-started' },
           { text: 'Composants', link: '/components/' },
           { text: 'Composables', link: '/composables/usetheme' },
-          { text: 'Storybook', link: `${ROOT_URL}storybook/`, target: '_blank' }
+          { text: 'Storybook', link: `${ROOT_URL}storybook/`, target: '_blank' },
+          versionNav('Notes de version')
         ],
         sidebar: [
           {
@@ -215,7 +226,8 @@ export default defineConfig({
           { text: 'Get Started', link: '/en/guide/get-started' },
           { text: 'Components', link: '/en/components/' },
           { text: 'Composables', link: '/en/composables/usetheme' },
-          { text: 'Storybook', link: `${ROOT_URL}storybook/`, target: '_blank' }
+          { text: 'Storybook', link: `${ROOT_URL}storybook/`, target: '_blank' },
+          versionNav('Changelog')
         ],
         sidebar: [
           {

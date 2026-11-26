@@ -14,7 +14,7 @@ Composant Dropdown qui ressemble à un bouton mais affiche une liste d'options a
         :options="[
           { value: 'profile', label: 'Mon profil', icon: 'UserIcon' },
           { value: 'settings', label: 'Paramètres', icon: 'CogIcon' },
-          { value: 'separator1', separator: true },
+          { type: 'separator' },
           { value: 'logout', label: 'Déconnexion', icon: 'ArrowUturnLeftIcon' }
         ]"
         label="Menu utilisateur"
@@ -31,7 +31,7 @@ import { UserIcon, CogIcon, ArrowUturnLeftIcon } from '@heroicons/vue/24/outline
 const userOptions = [
   { value: 'profile', label: 'Mon profil', icon: UserIcon },
   { value: 'settings', label: 'Paramètres', icon: CogIcon },
-  { value: 'separator1', separator: true },
+  { type: 'separator' },
   { value: 'logout', label: 'Déconnexion', icon: ArrowUturnLeftIcon }
 ]
 
@@ -61,7 +61,7 @@ const handleSelect = (option) => {
         :options="[
           { value: 'profile', label: 'Mon profil', icon: 'UserIcon' },
           { value: 'docs', label: 'Documentation', href: '/docs', icon: 'DocumentIcon' },
-          { value: 'separator1', separator: true },
+          { type: 'separator' },
           { value: 'settings', label: 'Paramètres', icon: 'CogIcon' },
           { value: 'help', label: 'Aide', href: 'https://help.example.com', target: '_blank', icon: 'QuestionMarkCircleIcon' }
         ]"
@@ -80,7 +80,7 @@ import { UserIcon, DocumentIcon, CogIcon, QuestionMarkCircleIcon } from '@heroic
 const mixedOptions = [
   { value: 'profile', label: 'Mon profil', icon: UserIcon },
   { value: 'docs', label: 'Documentation', href: '/docs', icon: DocumentIcon },
-  { value: 'separator1', separator: true },
+  { type: 'separator' },
   { value: 'settings', label: 'Paramètres', icon: CogIcon },
   { value: 'help', label: 'Aide', href: 'https://help.example.com', target: '_blank', icon: QuestionMarkCircleIcon }
 ]
@@ -115,7 +115,7 @@ const handleSelect = (option) => {
         :options="[
           { value: 'edit', label: 'Modifier', icon: 'PencilIcon' },
           { value: 'duplicate', label: 'Dupliquer', icon: 'DocumentDuplicateIcon' },
-          { value: 'separator1', separator: true },
+          { type: 'separator' },
           { value: 'delete', label: 'Supprimer', icon: 'TrashIcon' }
         ]"
         :icon="'EllipsisVerticalIcon'"
@@ -134,7 +134,7 @@ import { EllipsisVerticalIcon, PencilIcon, DocumentDuplicateIcon, TrashIcon } fr
 const actionOptions = [
   { value: 'edit', label: 'Modifier', icon: PencilIcon },
   { value: 'duplicate', label: 'Dupliquer', icon: DocumentDuplicateIcon },
-  { value: 'separator1', separator: true },
+  { type: 'separator' },
   { value: 'delete', label: 'Supprimer', icon: TrashIcon }
 ]
 </script>
@@ -162,7 +162,7 @@ const actionOptions = [
           { value: 'all', label: 'Tous les produits', href: '/products' },
           { value: 'laptops', label: 'Ordinateurs portables', href: '/products/laptops' },
           { value: 'phones', label: 'Téléphones', href: '/products/phones' },
-          { value: 'separator1', separator: true },
+          { type: 'separator' },
           { value: 'accessories', label: 'Accessoires', href: '/products/accessories' }
         ]"
         label="Produits"
@@ -298,7 +298,7 @@ const actionOptions = [
             description: 'Partir d\'un modèle existant',
             icon: 'DocumentIcon'
           },
-          { value: 'separator1', separator: true },
+          { type: 'separator' },
           { 
             value: 'import', 
             label: 'Importer', 
@@ -331,7 +331,7 @@ const createOptions = [
     description: 'Partir d\'un modèle existant',
     icon: DocumentIcon
   },
-  { value: 'separator1', separator: true },
+  { type: 'separator' },
   { 
     value: 'import', 
     label: 'Importer', 
@@ -415,6 +415,8 @@ const createOptions = [
 | `closeOnSelect` | `boolean` | `true` | Fermer après sélection |
 | `maxHeight` | `string` | `'300px'` | Hauteur maximale du menu |
 
+Les attributs non déclarés comme props (`id`, `aria-*`, `data-*`, écouteurs) vont sur le bouton déclencheur ; `class` et `style` restent sur le conteneur. Un `id` n'apparaît donc qu'une fois, sur le bouton que le menu référence (`aria-labelledby`).
+
 ### Types d'options
 
 #### DropdownOption
@@ -428,8 +430,13 @@ interface DropdownOption {
   disabled?: boolean
   icon?: Component
   description?: string
-  separator?: boolean              // Si true, affiche un séparateur
+  separatorBefore?: boolean        // Trace un séparateur avant l'option
+  /** @deprecated l'option devient un séparateur et disparaît */
+  separator?: boolean
 }
+
+// Séparateur seul (value et label facultatifs)
+type DropdownSeparatorOption = { type: 'separator' }
 ```
 
 ### Attributs d'accessibilité
@@ -505,16 +512,23 @@ const handleAction = (option) => {
 
 ## Séparateurs
 
-Les séparateurs permettent de grouper visuellement les options :
+Les séparateurs groupent visuellement les options (`role="separator"`). Deux écritures :
 
-```vue
+```ts
 const options = [
   { value: 'edit', label: 'Modifier' },
   { value: 'duplicate', label: 'Dupliquer' },
-  { value: 'separator1', separator: true }, // Séparateur
-  { value: 'delete', label: 'Supprimer' }
+  { type: 'separator' },                                    // trait seul
+  { value: 'archive', label: 'Archiver' },
+  { value: 'delete', label: 'Supprimer', separatorBefore: true } // trait avant l'option
 ]
 ```
+
+`separatorBefore` est ignoré sur la première option et juste après un séparateur (pas de double trait).
+
+::: warning Ancienne forme
+`separator: true` reste accepté mais est déprécié : l'option devient un séparateur et n'est **pas** affichée, même avec un libellé. Un avertissement le signale dans la console. Utilisez `{ type: 'separator' }`, ou `separatorBefore: true` pour garder l'option.
+:::
 
 ## Positionnement
 
@@ -607,7 +621,7 @@ const navigationOptions = [
   { value: 'laptops', label: 'Ordinateurs portables', href: '/products/laptops' },
   { value: 'phones', label: 'Téléphones', href: '/products/phones' },
   { value: 'tablets', label: 'Tablettes', href: '/products/tablets' },
-  { value: 'separator1', separator: true },
+  { type: 'separator' },
   { value: 'accessories', label: 'Accessoires', href: '/products/accessories' },
   { value: 'support', label: 'Support', href: '/support' }
 ]
@@ -651,10 +665,10 @@ const user = ref({
 const userMenuOptions = [
   { value: 'profile', label: 'Mon profil', href: '/profile', icon: UserIcon },
   { value: 'settings', label: 'Paramètres', href: '/settings', icon: CogIcon },
-  { value: 'separator1', separator: true },
+  { type: 'separator' },
   { value: 'docs', label: 'Documentation', href: '/docs', icon: DocumentIcon },
   { value: 'help', label: 'Centre d\'aide', href: 'https://help.example.com', target: '_blank', icon: DocumentIcon },
-  { value: 'separator2', separator: true },
+  { type: 'separator' },
   { value: 'logout', label: 'Déconnexion', icon: ArrowUturnLeftIcon }
 ]
 
@@ -703,9 +717,9 @@ const selectedItem = ref(null)
 const contextMenuOptions = [
   { value: 'edit', label: 'Modifier', icon: PencilIcon },
   { value: 'duplicate', label: 'Dupliquer', icon: DocumentDuplicateIcon },
-  { value: 'separator1', separator: true },
+  { type: 'separator' },
   { value: 'share', label: 'Partager', icon: ShareIcon },
-  { value: 'separator2', separator: true },
+  { type: 'separator' },
   { value: 'delete', label: 'Supprimer', icon: TrashIcon }
 ]
 
@@ -756,10 +770,10 @@ const handleContextAction = (option) => {
 const fileMenuOptions = [
   { value: 'new', label: 'Nouveau', icon: PlusIcon },
   { value: 'open', label: 'Ouvrir', icon: DocumentIcon },
-  { value: 'separator1', separator: true },
+  { type: 'separator' },
   { value: 'save', label: 'Sauvegarder', icon: DocumentIcon, disabled: true },
   { value: 'save-as', label: 'Sauvegarder sous...', icon: DocumentIcon },
-  { value: 'separator2', separator: true },
+  { type: 'separator' },
   { value: 'print', label: 'Imprimer', icon: DocumentIcon, disabled: true }
 ]
 </script>

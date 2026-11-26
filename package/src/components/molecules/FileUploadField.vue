@@ -6,9 +6,12 @@ import type { FileUploadFieldProps, UploadedFile } from '@/types'
 import { useLocale } from '@/composables/useLocale'
 import { useAnnouncer } from '@/composables/useAnnouncer'
 
-interface Props extends Omit<FileUploadFieldProps, 'value'> {}
+export interface Props extends Omit<FileUploadFieldProps, 'value'> {}
 
 const props = withDefaults(defineProps<Props>(), {
+  // undefined : sans la prop, l'attribut ARIA reste absent (Vue changerait l'absence en false)
+  ariaInvalid: undefined,
+  ariaRequired: undefined,
   multiple: false,
   variant: 'default',
   maxSize: 10 * 1024 * 1024, // 10MB

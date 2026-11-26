@@ -33,7 +33,7 @@ features:
     title: Responsive & RTL
     details: Components adapted to all screen sizes with native support for left-to-right and right-to-left directions.
   - icon: 🧩
-    title: 34+ Components
+    title: 75+ Components
     details: From atoms (Button, Input, Badge) to organisms (Dialog, Tabs, Accordion), organized using Atomic Design.
 ---
 
@@ -47,7 +47,7 @@ npm install @surgeui/ds-vue
 
 ```vue
 <script setup>
-import { SuButton } from '@surgeui/ds-vue'
+import { Button as SuButton } from '@surgeui/ds-vue'
 import '@surgeui/ds-vue/style.css'
 </script>
 

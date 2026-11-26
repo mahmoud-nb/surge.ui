@@ -289,6 +289,24 @@ const showFullScreen = ref(false)
 </template>
 ```
 
+## Rendu dans body
+
+Le `<dialog>` est rendu dans `<body>` (prop `teleport`, `'body'` par défaut). La couche supérieure du navigateur le place au-dessus de la page, mais ne le protège pas des règles CSS de ses ancêtres : resté dans le DOM du parent, il subirait par exemple la marge d'un conteneur `space-y-6` (Tailwind).
+
+Une fois déplacé, le `<dialog>` garde le contexte de son emplacement d'origine : il reprend `dir`, `lang`, `data-theme`, `data-theme-mode` et `data-contrast` de l'ancêtre le plus proche qui les porte, ainsi que les styles scoped du composant parent. Les classes et attributs passés à `SuDialog` vont sur le `<dialog>`.
+
+```vue
+<!-- Dans un autre conteneur -->
+<SuDialog v-model="open" teleport="#modales" title="Paramètres" />
+
+<!-- Sur place, sans déplacement -->
+<SuDialog v-model="open" :teleport="false" title="Paramètres" />
+```
+
+::: tip Rendu serveur
+Le déplacement a lieu après le montage : côté serveur et pendant l'hydratation, le `<dialog>` reste à sa place, ce qui évite tout écart d'hydratation.
+:::
+
 ## API
 
 ### Props
@@ -306,6 +324,7 @@ const showFullScreen = ref(false)
 | `height` | `string` | `auto` | Hauteur personnalisée du Dialog (ex: `'400px'`, `'90vh'`) |
 | `zIndex` | `number` | — | **Obsolète**, sans effet : le Dialog s'affiche dans la couche supérieure du navigateur, au-dessus de tout z-index |
 | `disableScroll` | `boolean` | `true` | Désactive le défilement du corps de la page lorsque le Dialog est ouvert |
+| `teleport` | `string | HTMLElement | boolean` | `'body'` | Où rendre le `<dialog>` : sélecteur ou élément ; `false` pour le laisser sur place. Voir [Rendu dans body](#rendu-dans-body) |
 
 ### Attributs d'accessibilité
 

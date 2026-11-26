@@ -65,7 +65,9 @@ $available-themes: ('default', 'ocean', 'forest', 'sunset') !default;
         @include registry.generate-theme-vars(contrast.$contrast-overrides);
       }
 
-      :root:not([data-contrast])[data-theme-mode='dark'] {
+      // Mode sombre : data-theme-mode, ou classe .dark sans data-theme-mode
+      :root:not([data-contrast])[data-theme-mode='dark'],
+      :root:not([data-contrast]):where(.dark):not([data-theme-mode]) {
         @include registry.generate-theme-vars(contrast.$contrast-dark-overrides);
       }
     }
@@ -76,7 +78,8 @@ $available-themes: ('default', 'ocean', 'forest', 'sunset') !default;
     [data-contrast='high']:is(:root, [data-theme]) {
       @include registry.generate-theme-vars(contrast.$contrast-overrides);
 
-      &[data-theme-mode='dark'] {
+      &[data-theme-mode='dark'],
+      &:where(.dark):not([data-theme-mode]) {
         @include registry.generate-theme-vars(contrast.$contrast-dark-overrides);
       }
     }

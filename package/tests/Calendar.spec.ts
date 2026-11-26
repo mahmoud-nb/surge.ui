@@ -40,6 +40,18 @@ describe('utilitaires de dates', () => {
     expect(parseDateInput('31/02/2026', 'fr')).toBeUndefined()
     expect(parseDateInput('', 'fr')).toBeNull()
   })
+
+  it('arabe : semaine dès samedi et relecture des chiffres arabes-indiens', () => {
+    expect(getFirstDayOfWeek('ar')).toBe(6)
+    expect(getFirstDayOfWeek('ar-u-nu-latn')).toBe(6)
+
+    // Date affichée en ar-EG puis relue telle quelle
+    const shown = new Intl.DateTimeFormat('ar-EG', { day: '2-digit', month: '2-digit', year: 'numeric' }).format(new Date(2026, 10, 5))
+    expect(shown).toMatch(/[٠-٩]/)
+    expect(toDateKey(parseDateInput(shown, 'ar-EG')!)).toBe('2026-11-05')
+    expect(toDateKey(parseDateInput('٠٥/١١/٢٠٢٦', 'ar')!)).toBe('2026-11-05')
+    expect(toDateKey(parseDateInput('۰۵/۱۱/۲۰۲۶', 'ar')!)).toBe('2026-11-05')
+  })
 })
 
 const mountCalendar = (props: Record<string, unknown> = {}) => {

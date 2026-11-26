@@ -5,6 +5,8 @@ import { useLocale } from '@/composables/useLocale'
 
 
 const props = withDefaults(defineProps<ImageProps>(), {
+  // undefined : sans la prop, l'attribut ARIA reste absent (Vue changerait l'absence en false)
+  ariaHidden: undefined,
   ratio: 'auto',
   fit: 'cover',
   position: 'center',

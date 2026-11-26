@@ -29,7 +29,7 @@ Each theme is available in both light **and** dark mode.
 - **system** - Follows system preference automatically (`prefers-color-scheme`)
 
 ::: tip Default Behavior
-Without any HTML attributes, the `default` theme in `light` mode is applied via a CSS fallback on `html:not([data-theme])`. The `system` mode is **not** enabled by default -  the user must explicitly choose it.
+Without any HTML attributes, the `default` theme in `light` mode applies (see [fallbacks](#without-attributes-or-with-the-dark-class)). The `system` mode is **not** enabled by default: the user must explicitly choose it.
 :::
 
 ::: warning Deprecated Names
@@ -47,11 +47,35 @@ The theme and mode are two separate HTML attributes on `<html>`:
 <!-- Ocean theme in dark mode -->
 <html data-theme="ocean" data-theme-mode="dark">
 
-<!-- Forest theme following system preference -->
-<html data-theme="forest" data-theme-mode="system">
 ```
 
+In CSS, `data-theme-mode` is `light` or `dark`. The `system` mode is a [useTheme](/en/composables/usetheme) setting: it follows `prefers-color-scheme` and sets `light` or `dark` on `<html>`.
+
 Backward compatibility is ensured: `[data-theme='light']` and `[data-theme='dark']` still work in CSS (aliases defined in `default/index.scss`).
+
+### Without attributes, or with the .dark class
+
+Missing attributes have a fallback value, so SurgeUI works without useTheme, for instance with Tailwind's dark mode:
+
+| `<html>` | Theme | Mode |
+|----------|-------|------|
+| no attribute | `default` | light |
+| `data-theme-mode="dark"` | `default` | dark |
+| `data-theme="ocean"` | `ocean` | light |
+| `class="dark"` | `default` | dark |
+| `data-theme="ocean" class="dark"` | `ocean` | dark |
+| `data-theme-mode="light" class="dark"` | `default` | light: the attribute wins over the class |
+
+```html
+<!-- Tailwind dark mode (darkMode: 'class'): nothing else to do -->
+<html class="dark">
+```
+
+The `.dark` class is only read when `data-theme-mode` is missing: with useTheme, which always sets the attribute, it has no effect. High contrast and the components' `dark-mode` mixin recognize it too.
+
+::: info Specificity
+All these selectors have a `(0,2,0)` specificity, like `[data-theme][data-theme-mode]`: your overrides written on `[data-theme='ocean'][data-theme-mode='dark']` keep applying.
+:::
 
 ## Installation and Configuration
 

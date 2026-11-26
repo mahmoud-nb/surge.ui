@@ -13,11 +13,19 @@
     "./types": {
       "types": "./dist/types/index.d.ts"
     },
-    "./style.css": "./dist/style.css"
+    "./global": {
+      "types": "./global.d.ts"
+    },
+    "./style.css": "./dist/style.css",
+    "./style.layer.css": "./dist/style.layer.css"
   },
   "types": "./dist/index.d.ts",
+  "sideEffects": [
+    "**/*.css"
+  ],
   "files": [
-    "dist"
+    "dist",
+    "global.d.ts"
   ],
   "author": {
     "name": "Mahmoud NBET",

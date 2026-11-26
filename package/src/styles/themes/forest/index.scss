@@ -6,12 +6,18 @@
 // THÈME FOREST — MODE CLAIR + SOMBRE
 // ============================================================
 
+// Sans data-theme-mode : clair, ou sombre avec la classe .dark (convention
+// Tailwind). Tous les sélecteurs ont la même spécificité (0,2,0) : le mode
+// sombre, émis après, l'emporte quand les deux s'appliquent.
+
 // --- Mode clair ---
-[data-theme='forest'][data-theme-mode='light'] {
+[data-theme='forest'][data-theme-mode='light'],
+[data-theme='forest']:not([data-theme-mode]) {
   @include registry.generate-mode-vars($theme-forest-light, 'light');
 }
 
 // --- Mode sombre ---
-[data-theme='forest'][data-theme-mode='dark'] {
+[data-theme='forest'][data-theme-mode='dark'],
+[data-theme='forest']:where(.dark):not([data-theme-mode]) {
   @include registry.generate-mode-vars($theme-forest-dark, 'dark');
 }

@@ -288,6 +288,24 @@ const showFullScreen = ref(false)
 </template>
 ```
 
+## Rendering in body
+
+The `<dialog>` is rendered in `<body>` (`teleport` prop, `'body'` by default). The browser's top layer puts it above the page, but does not shield it from its ancestors' CSS rules: left in the parent's DOM, it would get, for instance, the margin of a `space-y-6` container (Tailwind).
+
+Once moved, the `<dialog>` keeps the context of its original location: it copies `dir`, `lang`, `data-theme`, `data-theme-mode` and `data-contrast` from the closest ancestor that has them, as well as the parent component's scoped styles. Classes and attributes passed to `SuDialog` go on the `<dialog>`.
+
+```vue
+<!-- In another container -->
+<SuDialog v-model="open" teleport="#modals" title="Settings" />
+
+<!-- In place, not moved -->
+<SuDialog v-model="open" :teleport="false" title="Settings" />
+```
+
+::: tip Server-side rendering
+The move happens after mounting: on the server and during hydration, the `<dialog>` stays in place, so there is no hydration mismatch.
+:::
+
 ## API
 
 ### Props
@@ -305,6 +323,7 @@ const showFullScreen = ref(false)
 | `height` | `string` | `auto` | Custom height of the Dialog (e.g., `'400px'`, `'90vh'`) |
 | `zIndex` | `number` | — | **Deprecated**, no effect: the Dialog renders in the browser top layer, above any z-index |
 | `disableScroll` | `boolean` | `true` | Disables page body scrolling when the Dialog is open |
+| `teleport` | `string | HTMLElement | boolean` | `'body'` | Where to render the `<dialog>`: a selector or an element; `false` to keep it in place. See [Rendering in body](#rendering-in-body) |
 
 ### Accessibility Attributes
 

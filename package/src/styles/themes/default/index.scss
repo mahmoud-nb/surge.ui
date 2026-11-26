@@ -7,22 +7,29 @@
 // Sélecteur double attribut : data-theme + data-theme-mode
 // ============================================================
 
+// Replis :
+//   - sans data-theme sur :root → thème default (avant le JS, ou attribut
+//     jamais posé), dans le mode indiqué par data-theme-mode ;
+//   - sans data-theme-mode → clair, ou sombre avec la classe .dark
+//     (convention Tailwind).
+// Le mode sombre de prefers-color-scheme n'est pas suivi sans JS :
+// useTheme (mode 'auto') pose data-theme-mode.
+// Tous les sélecteurs ont la même spécificité (0,2,0) : le mode sombre,
+// émis après, l'emporte quand les deux s'appliquent, et la surcouche de
+// contraste élevé, émise plus loin, reste prioritaire.
+
 // --- Mode clair ---
-[data-theme='default'][data-theme-mode='light'] {
+[data-theme='default'][data-theme-mode='light'],
+[data-theme='default']:not([data-theme-mode]),
+:root:not([data-theme]) {
   @include registry.generate-mode-vars($theme-default-light, 'light');
 }
 
 // --- Mode sombre ---
-[data-theme='default'][data-theme-mode='dark'] {
+[data-theme='default'][data-theme-mode='dark'],
+[data-theme='default']:where(.dark):not([data-theme-mode]),
+:root:where([data-theme-mode='dark'], .dark:not([data-theme-mode])):not([data-theme]) {
   @include registry.generate-mode-vars($theme-default-dark, 'dark');
-}
-
-// --- Fallback par défaut : aucun attribut → default light ---
-// S'applique avant JS ou si data-theme n'est jamais posé.
-// Le mode sombre via prefers-color-scheme n'est pas activé
-// automatiquement ; l'utilisateur doit le choisir explicitement.
-:root:not([data-theme]) {
-  @include registry.generate-mode-vars($theme-default-light, 'light');
 }
 
 // --- Rétrocompatibilité : anciens sélecteurs data-theme='light' / 'dark' ---

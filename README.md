@@ -16,7 +16,7 @@ An accessible **Vue 3** component library: components, layouts and composables b
 
 ## ✨ Features
 
-- 🧩 **50+ components** - Display, actions, forms and 9 mobile-first layouts
+- 🧩 **75+ components** - Display, actions, forms and 9 mobile-first layouts
 - ♿ **Accessible** - WAI-ARIA patterns, full keyboard support, screen reader announcements
 - 🎨 **Themable** - 4 built-in themes × light / dark mode, CSS custom properties
 - 🌍 **Translatable** - Default texts in French and English

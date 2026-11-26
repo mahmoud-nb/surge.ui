@@ -30,7 +30,7 @@ const {
 
 ## Themes disponibles
 
-5 themes integres : `default`, `ocean`, `forest`, `sunset` (+ mode `light` / `dark` pour chacun).
+4 themes integres : `default`, `ocean`, `forest`, `sunset` (+ mode `light` / `dark` pour chacun).
 
 ```vue
 <script setup>
@@ -72,7 +72,7 @@ const { systemTheme, systemContrast, systemMotion } = useTheme()
 useTheme({
   availableThemes?: string[]     // Themes actives (defaut: tous)
   defaultTheme?: string          // Theme par defaut ('default')
-  defaultThemeMode?: ThemeMode   // Mode par defaut ('auto')
+  defaultThemeMode?: ThemeMode   // Mode par defaut ('light', voir theme.config)
   storageKey?: string            // Cle localStorage ('su-theme-config')
   persist?: boolean              // Persister les preferences (true)
 })

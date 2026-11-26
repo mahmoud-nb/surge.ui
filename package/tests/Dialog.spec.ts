@@ -1,5 +1,6 @@
 import { afterEach, describe, expect, it } from 'vitest'
 import { mount, flushPromises, type VueWrapper } from '@vue/test-utils'
+import { defineComponent, h } from 'vue'
 import Dialog from '@/components/organisms/Dialog.vue'
 
 let wrapper: VueWrapper | undefined
@@ -17,6 +18,8 @@ const mountDialog = (props: Record<string, unknown> = {}) => {
       description: 'Cette action est définitive.',
       modelValue: false,
       'onUpdate:modelValue': (value: boolean) => wrapper?.setProps({ modelValue: value }),
+      // Sur place : wrapper.find ne voit pas le contenu téléporté (testé à part)
+      teleport: false,
       ...props
     },
     slots: { default: '<p>Contenu</p>' },
@@ -86,5 +89,86 @@ describe('SuDialog', () => {
 
     await wrapper!.find('.su-dialog__close').trigger('click')
     expect(document.activeElement).toBe(trigger)
+  })
+})
+
+describe('SuDialog — téléportation', () => {
+  // Hôte : conteneur avec son propre contexte (sens, langue, thème) et une
+  // règle de type space-y-* qui ne doit plus atteindre le <dialog>
+  const Host = defineComponent({
+    __scopeId: 'data-v-host',
+    props: { open: { type: Boolean, default: false } },
+    setup(props) {
+      return () =>
+        h('section', { dir: 'rtl', lang: 'ar', 'data-theme': 'ocean', 'data-theme-mode': 'dark', class: 'space-y-6' }, [
+          h('p', 'Avant'),
+          h(Dialog, { modelValue: props.open, title: 'Titre', class: 'mon-dialog', 'data-testid': 'dlg' }, () => 'Contenu')
+        ])
+    }
+  })
+
+  let host: VueWrapper | undefined
+  afterEach(() => {
+    host?.unmount()
+    host = undefined
+  })
+
+  const dialog = () => document.querySelector('dialog') as HTMLDialogElement
+
+  it('rend le <dialog> dans <body>, hors du DOM du parent', async () => {
+    host = mount(Host, { attachTo: document.body })
+    await flushPromises()
+
+    expect(dialog().parentElement).toBe(document.body)
+    expect(host.find('section dialog').exists()).toBe(false)
+  })
+
+  it("recopie le sens, la langue et le thème de l'emplacement d'origine", async () => {
+    host = mount(Host, { attachTo: document.body })
+    await host.setProps({ open: true })
+    await flushPromises()
+
+    const el = dialog()
+    expect(el.open).toBe(true)
+    expect(el.getAttribute('dir')).toBe('rtl')
+    expect(el.getAttribute('lang')).toBe('ar')
+    expect(el.getAttribute('data-theme')).toBe('ocean')
+    expect(el.getAttribute('data-theme-mode')).toBe('dark')
+  })
+
+  it('garde les attributs du parent et ses styles scoped sur le <dialog>', async () => {
+    host = mount(Host, { attachTo: document.body })
+    await flushPromises()
+
+    const el = dialog()
+    expect(el.classList.contains('su-dialog')).toBe(true)
+    expect(el.classList.contains('mon-dialog')).toBe(true)
+    expect(el.getAttribute('data-testid')).toBe('dlg')
+    expect(el.hasAttribute('data-v-host')).toBe(true)
+  })
+
+  it("s'ouvre déjà téléporté quand modelValue est vrai au montage", async () => {
+    host = mount(Host, { props: { open: true }, attachTo: document.body })
+    await flushPromises()
+
+    expect(dialog().parentElement).toBe(document.body)
+    expect(dialog().open).toBe(true)
+  })
+
+  it('reste sur place avec teleport à false', async () => {
+    wrapper = mount(Dialog, { props: { modelValue: false, teleport: false }, attachTo: document.body })
+    await flushPromises()
+
+    expect(wrapper.find('dialog').exists()).toBe(true)
+  })
+})
+
+describe('SuDialog — rendu serveur', () => {
+  it('rend le <dialog> sur place côté serveur (hydratation sans écart)', async () => {
+    const { createSSRApp } = await import('vue')
+    const { renderToString } = await import('vue/server-renderer')
+    const html = await renderToString(createSSRApp({ render: () => h('main', [h(Dialog, { title: 'Titre' })]) }))
+
+    expect(html).toMatch(/<main><!--teleport start--><dialog[^>]*class="su-dialog/)
   })
 })

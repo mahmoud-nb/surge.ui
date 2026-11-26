@@ -21,6 +21,7 @@ import Alert from './components/organisms/Alert.vue'
 import Card from './components/organisms/Card.vue'
 import Skeleton from './components/atoms/Skeleton.vue'
 import Tooltip from './components/molecules/Tooltip.vue'
+import Popover from './components/molecules/Popover.vue'
 import Toast from './components/molecules/Toast.vue'
 import Toaster from './components/organisms/Toaster.vue'
 import Divider from './components/atoms/Divider.vue'
@@ -93,7 +94,7 @@ import FullScreenLayout from './components/templates/FullScreenLayout.vue'
 import * as accessibility from './utils/accessibility'
 import { SurgeuiTheme, ThemeSymbol, flattenThemeToCSS } from './plugin/theme'
 import { computed, toValue, type MaybeRefOrGetter } from 'vue'
-import { LocaleKey, defineLocale } from './composables/useLocale'
+import { LocaleKey, createDocumentLocale, defineLocale } from './composables/useLocale'
 import { ToasterKey, createToaster } from './composables/useToast'
 import { ConfirmerKey, createConfirmer } from './composables/useConfirm'
 import { fr } from './locales/fr'
@@ -101,7 +102,7 @@ import type { SurgeLocale, SurgeLocaleInput } from './locales/types'
 
 // Export des composants et de la fonction d'installation
 export { Icon, Heading, Panel, Image, Avatar, AvatarGroup, Badge, Dialog, Progress, Spinner, Price }
-export { Tabs, Accordion, AccordionItem, Alert, Card, Skeleton, Tooltip, Toast, Toaster }
+export { Tabs, Accordion, AccordionItem, Alert, Card, Skeleton, Tooltip, Popover, Toast, Toaster }
 export { Divider, Kbd, VisuallyHidden, Tag, EmptyState, Stepper, ConfirmDialog, DataTable, TreeView, CommandPalette }
 export { Link, LinkGroup, Button, ButtonGroup, Toggle, ToggleGroup, FloatButton, Dropdown, Breadcrumb, Pagination }
 export { Input, Textarea, SelectBox, RadioGroup, Checkbox, CheckboxGroup, NumberInput, Autocomplete, Calendar, DatePicker, FileUpload, Switch, Slider, Password, OtpInput }
@@ -113,14 +114,130 @@ export { getPaginationItems } from './utils/pagination'
 export type { PaginationItem, PaginationRangeOptions } from './utils/pagination'
 export { parseDateInput, getFirstDayOfWeek } from './utils/date'
 
+/**
+ * Composants enregistrés par le plugin, par nom sans préfixe. Les types
+ * globaux (`@surgeui/ds-vue/global`) en découlent ; l'objet `components`
+ * ci-dessous doit avoir exactement ces clés (sinon erreur de compilation).
+ */
+export interface SurgeComponents {
+  Icon: typeof Icon
+  Heading: typeof Heading
+  Panel: typeof Panel
+  Badge: typeof Badge
+  Dialog: typeof Dialog
+  Image: typeof Image
+  Avatar: typeof Avatar
+  AvatarGroup: typeof AvatarGroup
+  Tabs: typeof Tabs
+  Accordion: typeof Accordion
+  AccordionItem: typeof AccordionItem
+  Progress: typeof Progress
+  Spinner: typeof Spinner
+  Price: typeof Price
+  Alert: typeof Alert
+  Card: typeof Card
+  Skeleton: typeof Skeleton
+  Tooltip: typeof Tooltip
+  Popover: typeof Popover
+  Toast: typeof Toast
+  Toaster: typeof Toaster
+  Divider: typeof Divider
+  Kbd: typeof Kbd
+  VisuallyHidden: typeof VisuallyHidden
+  Tag: typeof Tag
+  EmptyState: typeof EmptyState
+  Stepper: typeof Stepper
+  ConfirmDialog: typeof ConfirmDialog
+  DataTable: typeof DataTable
+  TreeView: typeof TreeView
+  CommandPalette: typeof CommandPalette
+  Button: typeof Button
+  ButtonGroup: typeof ButtonGroup
+  Link: typeof Link
+  LinkGroup: typeof LinkGroup
+  FloatButton: typeof FloatButton
+  Toggle: typeof Toggle
+  ToggleGroup: typeof ToggleGroup
+  Dropdown: typeof Dropdown
+  Breadcrumb: typeof Breadcrumb
+  Pagination: typeof Pagination
+  Input: typeof Input
+  Textarea: typeof Textarea
+  SelectBox: typeof SelectBox
+  RadioGroup: typeof RadioGroup
+  Checkbox: typeof Checkbox
+  CheckboxGroup: typeof CheckboxGroup
+  NumberInput: typeof NumberInput
+  Autocomplete: typeof Autocomplete
+  Calendar: typeof Calendar
+  DatePicker: typeof DatePicker
+  FileUpload: typeof FileUpload
+  Switch: typeof Switch
+  Slider: typeof Slider
+  Password: typeof Password
+  OtpInput: typeof OtpInput
+  FormField: typeof FormField
+  InputField: typeof InputField
+  TextareaField: typeof TextareaField
+  SelectBoxField: typeof SelectBoxField
+  RadioGroupField: typeof RadioGroupField
+  CheckboxGroupField: typeof CheckboxGroupField
+  PasswordField: typeof PasswordField
+  SwitchField: typeof SwitchField
+  SliderField: typeof SliderField
+  FileUploadField: typeof FileUploadField
+  OtpInputField: typeof OtpInputField
+  NumberInputField: typeof NumberInputField
+  FormFieldGroup: typeof FormFieldGroup
+  SingleColumnLayout: typeof SingleColumnLayout
+  SidebarLayout: typeof SidebarLayout
+  SplitLayout: typeof SplitLayout
+  HolyGrailLayout: typeof HolyGrailLayout
+  MagazineLayout: typeof MagazineLayout
+  GridLayout: typeof GridLayout
+  MasonryLayout: typeof MasonryLayout
+  HeroLayout: typeof HeroLayout
+  FullScreenLayout: typeof FullScreenLayout
+}
+
+// Enregistrés sous le préfixe choisi (`Su` par défaut)
+const components: SurgeComponents = {
+  // ## Display Components
+  Icon, Heading, Panel, Badge, Dialog, Image, Avatar, AvatarGroup, Tabs, Accordion, AccordionItem,
+  Progress, Spinner, Price, Alert, Card, Skeleton, Tooltip, Popover, Toast, Toaster, Divider, Kbd,
+  VisuallyHidden, Tag, EmptyState, Stepper, ConfirmDialog, DataTable, TreeView, CommandPalette,
+  // ## Action Components
+  Button, ButtonGroup, Link, LinkGroup, FloatButton, Toggle, ToggleGroup, Dropdown, Breadcrumb, Pagination,
+  // ## Form Components : champs de base, champs avancés
+  Input, Textarea, SelectBox, RadioGroup, Checkbox, CheckboxGroup, NumberInput, Autocomplete, Calendar,
+  DatePicker, FileUpload, Switch, Slider, Password, OtpInput,
+  // ...... avec FormField, et leur conteneur
+  FormField, InputField, TextareaField, SelectBoxField, RadioGroupField, CheckboxGroupField, PasswordField,
+  SwitchField, SliderField, FileUploadField, OtpInputField, NumberInputField, FormFieldGroup,
+  // ## Templates (layouts)
+  SingleColumnLayout, SidebarLayout, SplitLayout, HolyGrailLayout, MagazineLayout, GridLayout,
+  MasonryLayout, HeroLayout, FullScreenLayout
+}
+
+/**
+ * Composants globaux sous un préfixe, pour typer les templates :
+ * `declare module 'vue' { interface GlobalComponents extends SurgeGlobalComponents<'Ui'> {} }`.
+ * Pour le préfixe par défaut, ajouter `@surgeui/ds-vue/global` aux `types` du tsconfig.
+ */
+export type SurgeGlobalComponents<Prefix extends string = 'Su'> = {
+  [Name in keyof SurgeComponents as `${Prefix}${Name}`]: SurgeComponents[Name]
+}
+
 export interface SurgeUIOptions {
   prefix?: string
   theme?: SurgeuiTheme
   /**
    * Textes par défaut des composants (français sinon). Locale fournie
    * (`locales.en`), messages partiels, ou ref pour changer de langue.
+   * `'auto'` : suit `<html lang>` (fr, en, ar ; anglais pour les autres
+   * langues et en rendu serveur).
    */
-  locale?: MaybeRefOrGetter<SurgeLocale | SurgeLocaleInput | undefined>
+  locale?: 'auto' | MaybeRefOrGetter<SurgeLocale | SurgeLocaleInput | undefined>
 }
 
 const defaultTheme: SurgeuiTheme = {}
@@ -134,7 +251,13 @@ export default {
     app.provide(ThemeSymbol, mergedTheme)
 
     // Locale des textes par défaut (libellés, annonces)
-    app.provide(LocaleKey, computed(() => defineLocale(fr, toValue(locale))))
+    if (locale === 'auto') {
+      const documentLocale = createDocumentLocale()
+      app.provide(LocaleKey, documentLocale.locale)
+      app.onUnmount(documentLocale.stop)
+    } else {
+      app.provide(LocaleKey, computed(() => defineLocale(fr, toValue(locale))))
+    }
 
     // File des toasts (useToast) : une par application
     app.provide(ToasterKey, createToaster())
@@ -152,96 +275,10 @@ export default {
       }
     }
 
-    // ## Display Components
-    app.component(`${prefix}Icon`, Icon)
-    app.component(`${prefix}Heading`, Heading)
-    app.component(`${prefix}Panel`, Panel)
-    app.component(`${prefix}Badge`, Badge)
-    app.component(`${prefix}Dialog`, Dialog)
-    app.component(`${prefix}Image`, Image)
-    app.component(`${prefix}Avatar`, Avatar)
-    app.component(`${prefix}AvatarGroup`, AvatarGroup)
-    app.component(`${prefix}Tabs`, Tabs)
-    app.component(`${prefix}Accordion`, Accordion)
-    app.component(`${prefix}AccordionItem`, AccordionItem)
-    app.component(`${prefix}Progress`, Progress)
-    app.component(`${prefix}Spinner`, Spinner)
-    app.component(`${prefix}Price`, Price)
-    app.component(`${prefix}Alert`, Alert)
-    app.component(`${prefix}Card`, Card)
-    app.component(`${prefix}Skeleton`, Skeleton)
-    app.component(`${prefix}Tooltip`, Tooltip)
-    app.component(`${prefix}Toast`, Toast)
-    app.component(`${prefix}Toaster`, Toaster)
-    app.component(`${prefix}Divider`, Divider)
-    app.component(`${prefix}Kbd`, Kbd)
-    app.component(`${prefix}VisuallyHidden`, VisuallyHidden)
-    app.component(`${prefix}Tag`, Tag)
-    app.component(`${prefix}EmptyState`, EmptyState)
-    app.component(`${prefix}Stepper`, Stepper)
-    app.component(`${prefix}ConfirmDialog`, ConfirmDialog)
-    app.component(`${prefix}DataTable`, DataTable)
-    app.component(`${prefix}TreeView`, TreeView)
-    app.component(`${prefix}CommandPalette`, CommandPalette)
-
-    // ## Action Components
-    app.component(`${prefix}Button`, Button)
-    app.component(`${prefix}ButtonGroup`, ButtonGroup)
-    app.component(`${prefix}Link`, Link)
-    app.component(`${prefix}LinkGroup`, LinkGroup)
-    app.component(`${prefix}FloatButton`, FloatButton)
-    app.component(`${prefix}Toggle`, Toggle)
-    app.component(`${prefix}ToggleGroup`, ToggleGroup)
-    app.component(`${prefix}Dropdown`, Dropdown)
-    app.component(`${prefix}Breadcrumb`, Breadcrumb)
-    app.component(`${prefix}Pagination`, Pagination)
-
-    // ## Form Components ...... Base fields
-    app.component(`${prefix}Input`, Input)
-    app.component(`${prefix}Textarea`, Textarea)
-    app.component(`${prefix}SelectBox`, SelectBox)
-    app.component(`${prefix}RadioGroup`, RadioGroup)
-    app.component(`${prefix}Checkbox`, Checkbox)
-    app.component(`${prefix}CheckboxGroup`, CheckboxGroup)
-    app.component(`${prefix}NumberInput`, NumberInput)
-    app.component(`${prefix}Autocomplete`, Autocomplete)
-    app.component(`${prefix}Calendar`, Calendar)
-    app.component(`${prefix}DatePicker`, DatePicker)
-    app.component(`${prefix}FileUpload`, FileUpload)
-    app.component(`${prefix}Switch`, Switch)
-    app.component(`${prefix}Slider`, Slider)
-    
-    // ...... Advanced fields
-    app.component(`${prefix}Password`, Password)
-    app.component(`${prefix}OtpInput`, OtpInput)
-
-    // ...... With FormField wrapper
-    app.component(`${prefix}FormField`, FormField)
-    app.component(`${prefix}InputField`, InputField)
-    app.component(`${prefix}TextareaField`, TextareaField)
-    app.component(`${prefix}SelectBoxField`, SelectBoxField)
-    app.component(`${prefix}RadioGroupField`, RadioGroupField)
-    app.component(`${prefix}CheckboxGroupField`, CheckboxGroupField)
-    app.component(`${prefix}PasswordField`, PasswordField)
-    app.component(`${prefix}SwitchField`, SwitchField)
-    app.component(`${prefix}SliderField`, SliderField)
-    app.component(`${prefix}FileUploadField`, FileUploadField)
-    app.component(`${prefix}OtpInputField`, OtpInputField)
-    app.component(`${prefix}NumberInputField`, NumberInputField)
-
-    // ...... FormFieldGroup container
-    app.component(`${prefix}FormFieldGroup`, FormFieldGroup)
-
-    // ## Templates (layouts)
-    app.component(`${prefix}SingleColumnLayout`, SingleColumnLayout)
-    app.component(`${prefix}SidebarLayout`, SidebarLayout)
-    app.component(`${prefix}SplitLayout`, SplitLayout)
-    app.component(`${prefix}HolyGrailLayout`, HolyGrailLayout)
-    app.component(`${prefix}MagazineLayout`, MagazineLayout)
-    app.component(`${prefix}GridLayout`, GridLayout)
-    app.component(`${prefix}MasonryLayout`, MasonryLayout)
-    app.component(`${prefix}HeroLayout`, HeroLayout)
-    app.component(`${prefix}FullScreenLayout`, FullScreenLayout)
+    // Enregistrement global sous le préfixe (SuButton, SuDialog…)
+    for (const [name, component] of Object.entries(components)) {
+      app.component(`${prefix}${name}`, component)
+    }
   }
 }
 export * from './composables'

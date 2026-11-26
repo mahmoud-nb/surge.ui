@@ -40,6 +40,9 @@ export const fr: SurgeLocale = {
     spinner: {
       label: 'Chargement…'
     },
+    price: {
+      unavailable: 'prix indisponible'
+    },
     textarea: {
       remaining: 'Caractères restants',
       overLimit: 'Limite de caractères dépassée'

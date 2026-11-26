@@ -7,6 +7,9 @@ import { useLocale } from '@/composables/useLocale'
 export interface Props extends Omit<SliderFieldProps, 'value'> {}
 
 const props = withDefaults(defineProps<Props>(), {
+  // undefined : sans la prop, l'attribut ARIA reste absent (Vue changerait l'absence en false)
+  ariaInvalid: undefined,
+  ariaRequired: undefined,
   min: 0,
   max: 100,
   step: 1,

@@ -29,7 +29,7 @@ Chaque thème est disponible en mode clair **et** en mode sombre.
 - **system** - Suit automatiquement la préférence système (`prefers-color-scheme`)
 
 ::: tip Comportement par défaut
-Sans aucun attribut HTML, le thème `default` en mode `light` est appliqué via un fallback CSS sur `html:not([data-theme])`. Le mode `system` n'est **pas** activé par défaut -  l'utilisateur doit le choisir explicitement.
+Sans aucun attribut HTML, le thème `default` en mode `light` s'applique (voir [les replis](#sans-attributs-ou-avec-la-classe-dark)). Le mode `system` n'est **pas** activé par défaut : l'utilisateur doit le choisir explicitement.
 :::
 
 ::: warning Noms dépréciés
@@ -47,11 +47,35 @@ Le thème et le mode sont deux attributs HTML séparés sur `<html>` :
 <!-- Thème Ocean en mode sombre -->
 <html data-theme="ocean" data-theme-mode="dark">
 
-<!-- Thème Forest qui suit la préférence système -->
-<html data-theme="forest" data-theme-mode="system">
 ```
 
+En CSS, `data-theme-mode` vaut `light` ou `dark`. Le mode `system` est un réglage de [useTheme](/composables/usetheme) : il suit `prefers-color-scheme` et pose `light` ou `dark` sur `<html>`.
+
 La rétrocompatibilité est assurée : `[data-theme='light']` et `[data-theme='dark']` fonctionnent toujours en CSS (alias définis dans `default/index.scss`).
+
+### Sans attributs, ou avec la classe .dark
+
+Les attributs absents ont une valeur de repli, ce qui permet d'utiliser SurgeUI sans useTheme, par exemple avec le mode sombre de Tailwind :
+
+| `<html>` | Thème | Mode |
+|----------|-------|------|
+| aucun attribut | `default` | clair |
+| `data-theme-mode="dark"` | `default` | sombre |
+| `data-theme="ocean"` | `ocean` | clair |
+| `class="dark"` | `default` | sombre |
+| `data-theme="ocean" class="dark"` | `ocean` | sombre |
+| `data-theme-mode="light" class="dark"` | `default` | clair : l'attribut l'emporte sur la classe |
+
+```html
+<!-- Mode sombre de Tailwind (darkMode: 'class') : rien d'autre à faire -->
+<html class="dark">
+```
+
+La classe `.dark` n'est lue que si `data-theme-mode` est absent : avec useTheme, qui pose toujours l'attribut, elle n'a pas d'effet. Le contraste élevé et le mixin `dark-mode` des composants la reconnaissent aussi.
+
+::: info Spécificité
+Tous ces sélecteurs ont la spécificité `(0,2,0)`, comme `[data-theme][data-theme-mode]` : vos surcharges écrites sur `[data-theme='ocean'][data-theme-mode='dark']` continuent de s'appliquer.
+:::
 
 ## Installation et Configuration
 

@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import { mount, flushPromises, type VueWrapper } from '@vue/test-utils'
 import Dropdown from '@/components/molecules/Dropdown.vue'
 import Popover from '@/components/molecules/Popover.vue'
@@ -131,5 +131,52 @@ describe('SuPopover modal', () => {
 
     await keydown('Escape')
     expect(document.activeElement).toBe(open)
+  })
+})
+
+describe('SuDropdown — attributs et séparateurs', () => {
+  it("pose id et data-* sur le déclencheur seulement, class et style sur le conteneur", () => {
+    wrapper = mount(Dropdown, {
+      props: { label: 'Actions', options },
+      attrs: { id: 'actions', 'data-testid': 'menu-actions', class: 'barre', style: 'margin: 4px' }
+    })
+
+    expect(wrapper.findAll('#actions')).toHaveLength(1)
+    expect(trigger().attributes('id')).toBe('actions')
+    expect(trigger().attributes('data-testid')).toBe('menu-actions')
+    expect(wrapper.classes()).toContain('barre')
+    expect(wrapper.attributes('style')).toContain('margin: 4px')
+    expect(wrapper.attributes('id')).toBeUndefined()
+  })
+
+  it("trace un séparateur avec { type: 'separator' } et avant une option avec separatorBefore", async () => {
+    wrapper = mount(Dropdown, {
+      props: {
+        label: 'Actions',
+        options: [
+          { value: 'edit', label: 'Modifier' },
+          { type: 'separator' },
+          { value: 'share', label: 'Partager' },
+          { value: 'delete', label: 'Supprimer', separatorBefore: true }
+        ]
+      },
+      attachTo: document.body
+    })
+    await trigger().trigger('click')
+
+    const menu = wrapper.find('[role="menu"]')
+    const roles = menu.findAll('[role]').map(el => el.attributes('role'))
+    expect(roles).toEqual(['menuitem', 'separator', 'menuitem', 'separator', 'menuitem'])
+    expect(items().map(item => item.text())).toEqual(['Modifier', 'Partager', 'Supprimer'])
+  })
+
+  it("garde l'ancienne forme separator: true et signale une option nommée qui disparaît", () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    wrapper = mount(Dropdown, {
+      props: { label: 'Actions', options: [{ value: 'x', label: 'Supprimer', separator: true }] }
+    })
+
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining('« Supprimer »'))
+    warn.mockRestore()
   })
 })

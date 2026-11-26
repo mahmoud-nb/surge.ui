@@ -2,12 +2,15 @@ import {
   computed,
   inject,
   provide,
+  ref,
   toValue,
   type ComputedRef,
   type InjectionKey,
   type MaybeRefOrGetter
 } from 'vue'
 import { fr } from '@/locales/fr'
+import { en } from '@/locales/en'
+import { ar } from '@/locales/ar'
 import type {
   LocaleMessage,
   MessageKey,
@@ -41,6 +44,53 @@ export function defineLocale(base: SurgeLocale, overrides?: SurgeLocaleInput | S
   }
 
   return { code: overrides.code ?? base.code, messages: messages as unknown as SurgeMessages }
+}
+
+const BUILT_IN_LOCALES: Record<string, SurgeLocale> = { fr, en, ar }
+
+/**
+ * Locale fournie la plus proche d'une langue BCP 47 : « fr-CA » → fr,
+ * « ar-EG » → ar. Le code complet est gardé pour Intl (dates, nombres,
+ * premier jour de la semaine). Langue vide ou sans traduction : `fallback`.
+ */
+export function matchLocale(lang: string | null | undefined, fallback: SurgeLocale = en): SurgeLocale {
+  const tag = (lang ?? '').trim()
+  if (!tag) return fallback
+  let language = tag.toLowerCase().split(/[-_]/)[0]
+  let code = tag
+  try {
+    const parsed = new Intl.Locale(tag)
+    language = parsed.language
+    code = parsed.toString()
+  } catch {
+    // Étiquette invalide : on garde la langue lue avant le premier tiret
+    code = language
+  }
+  const base = BUILT_IN_LOCALES[language]
+  if (!base) return fallback
+  return code === base.code ? base : { ...base, code }
+}
+
+/**
+ * Locale qui suit la langue de la page (`<html lang>`), y compris quand
+ * elle change à chaud. Sans document (rendu serveur) : `fallback`.
+ * Utilisée par l'option `locale: 'auto'` du plugin.
+ */
+export function createDocumentLocale(fallback: SurgeLocale = en) {
+  const hasDocument = typeof document !== 'undefined'
+  const lang = ref(hasDocument ? document.documentElement.lang : '')
+  let observer: MutationObserver | undefined
+  if (hasDocument && typeof MutationObserver !== 'undefined') {
+    observer = new MutationObserver(() => {
+      lang.value = document.documentElement.lang
+    })
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] })
+  }
+  return {
+    locale: computed(() => matchLocale(lang.value, fallback)),
+    /** Cesse de suivre <html lang> */
+    stop: () => observer?.disconnect()
+  }
 }
 
 const pluralRules = new Map<string, Intl.PluralRules>()

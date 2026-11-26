@@ -14,7 +14,7 @@ Bibliothèque de composants Vue.js 3 avec Composition API, conçue pour créer d
 - **TypeScript** -  Support complet de TypeScript pour une meilleure DX
 - **Composition API** -  Utilise la Composition API de Vue 3
 - **Responsive** -  Composants adaptés à tous les écrans
-- **5 thèmes** -  Light, Dark, Ocean, Forest et Sunset inclus
+- **4 thèmes** - Default, Ocean, Forest et Sunset, en clair et en sombre
 - **RTL & LTR** -  Support natif des deux directions de texte
 - **Accessibilité** -  Conforme WCAG 2.1 AA (focus, clavier, lecteurs d'écran, contrastes)
 - **Performance** -  Tree-shakable, CSS optimisé, transitions respectant `prefers-reduced-motion`

@@ -8,6 +8,9 @@ import type { InputFieldProps } from '@/types'
 defineOptions({ inheritAttrs: false })
 
 const props = withDefaults(defineProps<InputFieldProps>(), {
+  // undefined : sans la prop, l'attribut ARIA reste absent (Vue changerait l'absence en false)
+  ariaInvalid: undefined,
+  ariaRequired: undefined,
   type: 'text',
   size: 'md',
   state: 'default',

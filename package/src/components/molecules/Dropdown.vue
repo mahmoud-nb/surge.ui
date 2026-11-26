@@ -1,11 +1,16 @@
 <script setup lang="ts">
-import { computed, ref, nextTick, useAttrs, useId } from 'vue'
+import { computed, ref, nextTick, useAttrs, useId, watch, type StyleValue } from 'vue'
 import { ChevronDownIcon } from '@heroicons/vue/24/outline'
-import type { DropdownProps } from '@/types'
+import type { DropdownItemOption, DropdownOption, DropdownProps, DropdownSeparatorOption } from '@/types'
 import { useFloatingPosition } from '@/composables/useFloatingPosition'
 import { useLocale } from '@/composables/useLocale'
 import { useListNavigation } from '@/composables/useListNavigation'
 import { useDismiss } from '@/composables/useDismiss'
+
+// Attributs du parent : class et style sur le conteneur, le reste (id,
+// aria-*, data-*, écouteurs) sur le bouton déclencheur. Hérités par défaut,
+// id finissait à la fois sur le conteneur et sur le bouton (doublon).
+defineOptions({ inheritAttrs: false })
 
 const props = withDefaults(defineProps<DropdownProps>(), {
   options: () => [],
@@ -34,6 +39,10 @@ const emit = defineEmits<{
 
 const attrs = useAttrs()
 
+// Attributs du parent destinés au déclencheur : tous sauf class et style
+const triggerAttrs = (all: Record<string, unknown>) =>
+  Object.fromEntries(Object.entries(all).filter(([name]) => name !== 'class' && name !== 'style'))
+
 // Refs
 const dropdownRef = ref<HTMLDivElement>()
 const triggerRef = ref<HTMLButtonElement>()
@@ -54,8 +63,24 @@ const fieldId = 'dropdown-' + useId()
 const dropdownId = computed(() => attrs.id as string || fieldId)
 const menuId = computed(() => `${dropdownId.value}-menu`)
 
+// Séparateur : { type: 'separator' }, ou l'ancienne forme separator: true
+const isSeparator = (option: DropdownOption): option is DropdownSeparatorOption =>
+  option.type === 'separator' || (option.type !== 'item' && !!option.separator)
+
+// Trait avant une option (separatorBefore), sauf en tête de menu ou après un séparateur
+const hasSeparatorBefore = (option: DropdownOption, index: number) =>
+  !isSeparator(option) && !!option.separatorBefore && index > 0 && !isSeparator(props.options[index - 1])
+
+// L'ancienne forme sur une option nommée la fait disparaître : on le signale
+watch(() => props.options, (options) => {
+  const hidden = options.find(option => option.type !== 'separator' && option.separator && option.label)
+  if (hidden) {
+    console.warn(`[SuDropdown] L'option « ${hidden.label} » a separator: true : elle est rendue comme un séparateur et n'apparaît pas. Utiliser separatorBefore: true pour tracer un trait avant elle, ou { type: 'separator' } pour un séparateur seul.`)
+  }
+}, { immediate: true })
+
 // Items du menu (sans les séparateurs) et leurs éléments DOM
-const menuItems = computed(() => props.options.filter(option => !option.separator))
+const menuItems = computed(() => props.options.filter((option): option is DropdownItemOption => !isSeparator(option)))
 const itemRefs = ref<(HTMLElement | null)[]>([])
 const setItemRef = (el: unknown, option: unknown) => {
   const index = menuItems.value.indexOf(option as never)
@@ -160,8 +185,8 @@ const toggleDropdown = () => {
   else openDropdown('first')
 }
 
-const selectOption = (option: any) => {
-  if (option.disabled || option.separator) return
+const selectOption = (option: DropdownOption) => {
+  if (option.disabled || isSeparator(option)) return
 
   emit('select', option)
 
@@ -265,20 +290,21 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !props.lab
 </script>
 
 <template>
-  <div 
+  <div
     ref="dropdownRef"
-    :class="containerClasses"
+    :class="[containerClasses, $attrs.class]"
+    :style="$attrs.style as StyleValue"
     @mouseenter="handleMouseEnter"
     @mouseleave="handleMouseLeave"
   >
     <!-- Trigger Button -->
     <button
+      v-bind="{ ...triggerAttrs($attrs), ...ariaAttributes }"
       :id="dropdownId"
       ref="triggerRef"
       :class="triggerClasses"
       :disabled="disabled || loading"
       :tabindex="disabled ? -1 : 0"
-      v-bind="ariaAttributes"
       @click="toggleDropdown"
       @keydown="handleTriggerKeydown"
       @focus="handleFocus"
@@ -354,19 +380,19 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !props.lab
         <div class="su-dropdown-options">
           <template
             v-for="(option, index) in options"
-            :key="option.value || index"
+            :key="option.value ?? index"
           >
-            <!-- Séparateur -->
-            <div 
-              v-if="option.separator"
+            <!-- Séparateur seul, ou trait avant l'option (separatorBefore) -->
+            <div
+              v-if="isSeparator(option) || hasSeparatorBefore(option, index)"
               class="su-dropdown-separator"
               role="separator"
             />
-            
+
             <!-- Option normale -->
             <component
               :is="option.href ? 'a' : 'button'"
-              v-else
+              v-if="!isSeparator(option)"
               :ref="(el: unknown) => setItemRef(el, option)"
               :href="option.href"
               :target="option.target"

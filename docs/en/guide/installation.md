@@ -79,10 +79,10 @@ app.use(SurgeUI, {
     border: 'none',
     hoverBackground: '#383838',
     hoverShadow: '0 0'
-  }
+  },
 
   // custom link style
-  link?: {
+  link: {
     color: '#2563eb',
     hoverColor: '#1e40af',
     hoverBackground: 'none',
@@ -99,11 +99,11 @@ app.use(SurgeUI, {
 |--------|-------------|
 | `prefix` | Component prefix (`Su` by default) |
 | `theme` | Theme customization |
-| `locale` | Language of default texts: a provided locale (`locales.en`), partial messages or a ref |
+| `locale` | Language of default texts: a provided locale (`locales.en`), partial messages, a ref, or `'auto'` to follow `<html lang>` |
 
 ### Component language
 
-Default component texts (accessible labels, messages, screen reader announcements) are in French. Pass another locale to the plugin:
+Default component texts (accessible labels, messages, screen reader announcements) are in French. Pass another locale to the plugin (`locales.fr`, `locales.en` or `locales.ar`):
 
 ```ts
 import SurgeUI, { locales } from '@surgeui/ds-vue'
@@ -111,11 +111,54 @@ import SurgeUI, { locales } from '@surgeui/ds-vue'
 app.use(SurgeUI, { locale: locales.en })
 ```
 
-See [useLocale](/en/composables/uselocale) to customize messages or switch language at runtime.
+With `locale: 'auto'`, the language follows the `lang` attribute of `<html>`, including when it changes without a page reload. A language with no provided translation falls back to English:
+
+```ts
+app.use(SurgeUI, { locale: 'auto' })
+```
+
+::: warning Server-side rendering
+During server-side rendering (Nuxt, Vite SSR), `document` does not exist: `'auto'` gives English on the server, then the page language on the client. Pass the locale explicitly instead, based on the request language.
+:::
+
+See [useLocale](/en/composables/uselocale) to customize messages, plug in vue-i18n or switch language at runtime.
+
+## With Tailwind CSS
+
+`style.css` is not in any CSS layer (`@layer`). An unlayered rule beats every layered rule, so Tailwind 4 utilities set on a component (`class="w-full"`) would be ignored whenever SurgeUI sets the same property.
+
+Import `style.layer.css` instead: the same stylesheet inside the `surgeui` layer. Place that layer between Tailwind's base and its utilities:
+
+```css
+/* main.css — Tailwind 4 */
+@layer theme, base, surgeui, components, utilities;
+@import "tailwindcss";
+@import "@surgeui/ds-vue/style.layer.css";
+```
+
+Utilities then win over component styles, and component styles win over Tailwind's base (preflight).
+
+Tailwind 3 and UnoCSS do not use CSS layers: keep `style.css`, imported after the base and before the utilities. With equal specificity, the last rule wins:
+
+```css
+/* main.css — Tailwind 3 with postcss-import */
+@import "tailwindcss/base";
+@import "@surgeui/ds-vue/style.css";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+```
+
+::: tip
+`SuDialog`, `SuCommandPalette` and `SuConfirmDialog` render their `<dialog>` in `<body>`: utilities set on their containers (`space-y-*`, `divide-*`…) do not reach them. See the [`teleport`](/en/components/dialog#rendering-in-body) prop.
+:::
+
+## Dark mode
+
+With [useTheme](/en/composables/usetheme), the theme and mode are set on `<html>` (`data-theme`, `data-theme-mode`). Without it, Tailwind's `.dark` class is enough: SurgeUI switches to dark when `<html>` has `.dark` and no `data-theme-mode`. See [theme fallbacks](/en/theme/#without-attributes-or-with-the-dark-class).
 
 ## TypeScript
 
-The design system includes complete TypeScript types. No additional configuration is needed.
+The design system includes complete TypeScript types for imports.
 
 ```vue
 <script setup lang="ts">
@@ -124,4 +167,30 @@ import type { ButtonVariant } from '@surgeui/ds-vue'
 
 const variant: ButtonVariant = 'primary'
 </script>
+```
+
+### Global components
+
+With `app.use(SurgeUI)`, `<SuButton>`, `<SuDialog>`… are registered globally. For Volar and vue-tsc to check their props, events and slots in templates, add the global types to the `types` list of your tsconfig:
+
+```json
+// tsconfig.json
+{
+  "compilerOptions": {
+    "types": ["@surgeui/ds-vue/global"]
+  }
+}
+```
+
+These types cover the default `Su` prefix. With another prefix, declare them yourself:
+
+```ts
+// surgeui.d.ts
+import type { SurgeGlobalComponents } from '@surgeui/ds-vue'
+
+declare module 'vue' {
+  interface GlobalComponents extends SurgeGlobalComponents<'My'> {}
+}
+
+export {}
 ```
