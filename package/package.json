@@ -13,11 +13,15 @@
     "./types": {
       "types": "./dist/types/index.d.ts"
     },
+    "./global": {
+      "types": "./global.d.ts"
+    },
     "./style.css": "./dist/style.css"
   },
   "types": "./dist/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "global.d.ts"
   ],
   "author": {
     "name": "Mahmoud NBET",
