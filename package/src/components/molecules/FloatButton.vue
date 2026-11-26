@@ -7,7 +7,7 @@ import type { FloatButtonProps } from '@/types'
 export interface Props extends FloatButtonProps {}
 
 const props = withDefaults(defineProps<Props>(), {
-  position: 'right',
+  position: 'end',
   offset: () => ({ x: 24, y: 24 }),
   size: 'lg',
   variant: 'primary',
@@ -35,6 +35,9 @@ const isVisible = ref(true)
 const isTooltipVisible = ref(false)
 const lastScrollY = ref(0)
 
+// Côté logique : left / right sont des alias de start / end
+const side = computed(() => (props.position === 'left' || props.position === 'start' ? 'start' : 'end'))
+
 // Calcul de la position
 const positionStyles = computed(() => {
   const styles: Record<string, string> = {
@@ -42,9 +45,10 @@ const positionStyles = computed(() => {
     zIndex: props.zIndex.toString()
   }
   
-  // Position horizontale
-  const side = props.position === 'right' ? 'right' : 'left'
-  styles[side] = `max(${props.offset.x ?? 24}px, env(safe-area-inset-${side}))`
+  // Position horizontale, en début ou fin de ligne (droite en LTR, gauche
+  // en RTL pour end) ; les zones sûres des deux bords sont respectées
+  const inset = side.value === 'end' ? 'insetInlineEnd' : 'insetInlineStart'
+  styles[inset] = `max(${props.offset.x ?? 24}px, env(safe-area-inset-left), env(safe-area-inset-right))`
   
   // Position verticale
   styles.bottom = `max(${props.offset.y ?? 24}px, env(safe-area-inset-bottom))`
@@ -55,7 +59,9 @@ const positionStyles = computed(() => {
 // Classes CSS
 const containerClasses = computed(() => [
   'su-float-button-container',
-  `su-float-button-container--${props.position}`,
+  `su-float-button-container--${side.value}`,
+  // Ancienne classe, conservée pour les styles des applications
+  side.value !== props.position && `su-float-button-container--${props.position}`,
   `su-float-button-container--${props.size}`,
   {
     'su-float-button-container--hidden': !isVisible.value,
@@ -76,7 +82,7 @@ const buttonClasses = computed(() => [
 const tooltipClasses = computed(() => [
   'su-float-button-tooltip',
   `su-float-button-tooltip--${props.tooltipPosition}`,
-  `su-float-button-tooltip--in-${props.position}`,
+  `su-float-button-tooltip--in-${side.value}`,
   { 'su-float-button-tooltip--visible': isTooltipVisible.value }
 ])
 
@@ -180,7 +186,7 @@ defineExpose({
     <div 
       v-if="$slots.default" 
       class="su-float-button-slot"
-      :class="`su-float-button-slot--${position}`"
+      :class="`su-float-button-slot--${side}`"
     >
       <slot />
     </div>
@@ -246,7 +252,7 @@ defineExpose({
 
   @include transition(opacity, translate);
 
-  &--left {
+  &--start {
     align-items: flex-start;
   }
 
@@ -287,7 +293,7 @@ defineExpose({
     animation: none;
   }
 
-  &--left {
+  &--start {
     align-items: flex-start;
   }
 
@@ -348,7 +354,7 @@ defineExpose({
 .su-float-button-badge {
   position: absolute;
   top: -0.25rem;
-  right: -0.25rem;
+  inset-inline-end: -0.25rem;
   z-index: 1;
   display: flex;
   align-items: center;
@@ -399,35 +405,36 @@ defineExpose({
   &--top {
     bottom: calc(100% + 0.5rem);
 
-    &.su-float-button-tooltip--in-right {
-      right: 0;
+    &.su-float-button-tooltip--in-end {
+      inset-inline-end: 0;
     }
 
-    &.su-float-button-tooltip--in-left {
-      left: 0;
+    &.su-float-button-tooltip--in-start {
+      inset-inline-start: 0;
     }
   }
 
   &--bottom {
     top: calc(100% + 0.5rem);
 
-    &.su-float-button-tooltip--in-right {
-      right: 0;
+    &.su-float-button-tooltip--in-end {
+      inset-inline-end: 0;
     }
 
-    &.su-float-button-tooltip--in-left {
-      left: 0;
+    &.su-float-button-tooltip--in-start {
+      inset-inline-start: 0;
     }
   }
 
+  // Côtés logiques : left = début de ligne, right = fin de ligne
   &--left {
-    right: calc(100% + 0.5rem);
+    inset-inline-end: calc(100% + 0.5rem);
     top: 50%;
     translate: 0 -50%;
   }
 
   &--right {
-    left: calc(100% + 0.5rem);
+    inset-inline-start: calc(100% + 0.5rem);
     top: 50%;
     translate: 0 -50%;
   }

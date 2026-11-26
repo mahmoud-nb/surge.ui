@@ -694,7 +694,8 @@ export interface FloatButtonOffset {
   x?: number;
   y?: number;
 }
-export type FloatButtonPosition = 'left' | 'right';
+/** Côté du bouton : start / end suivent le sens de lecture ; left / right en sont des alias */
+export type FloatButtonPosition = 'start' | 'end' | 'left' | 'right';
 export type FloatButtonSize = 'sm' | 'md' | 'lg';
 export interface FloatButtonProps extends AccessibilityProps {
   position?: FloatButtonPosition;
@@ -1232,7 +1233,14 @@ export interface DataTableProps {
 }
 
 // Toaster.vue
-export type ToasterPosition = 'top-left' | 'top-center' | 'top-right' | 'bottom-left' | 'bottom-center' | 'bottom-right';
+/**
+ * Position du Toaster. start / end suivent le sens de lecture (end : à droite
+ * en LTR, à gauche en RTL). left / right sont des alias de start / end.
+ */
+export type ToasterPosition =
+  | 'top-start' | 'top-center' | 'top-end'
+  | 'bottom-start' | 'bottom-center' | 'bottom-end'
+  | 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
 export interface ToasterProps {
   position?: ToasterPosition;
   /** Nombre de toasts visibles ; les suivants attendent leur tour */
