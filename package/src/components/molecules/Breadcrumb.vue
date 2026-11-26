@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { computed, nextTick, ref } from 'vue'
+import { computed, nextTick, ref, type Component } from 'vue'
 import { ChevronRightIcon, EllipsisHorizontalIcon } from '@heroicons/vue/24/outline'
 import type { BreadcrumbItem, BreadcrumbProps } from '@/types'
 import { useLocale } from '@/composables/useLocale'
+import { useLinkComponent } from '@/composables/useLinkComponent'
 
 // ============================================================
 // BREADCRUMB — fil d'Ariane (motif APG) : <nav> nommée, liste ordonnée,
@@ -15,6 +16,20 @@ const props = withDefaults(defineProps<BreadcrumbProps>(), {
   separator: 'chevron',
   size: 'md'
 })
+
+// Élément d'un maillon : lien du routeur (`to`), lien classique (`href`)
+// ou simple texte
+const { linkFor } = useLinkComponent()
+const itemElement = (item: BreadcrumbItem): { is: Component | string; attrs: Record<string, unknown> } => {
+  if (item.to !== undefined) return linkFor(item.to)
+  if (item.href) {
+    return {
+      is: 'a',
+      attrs: { href: item.href, target: item.target, rel: item.target === '_blank' ? 'noopener noreferrer' : undefined }
+    }
+  }
+  return { is: 'span', attrs: {} }
+}
 
 defineSlots<{
   /** Rendu d'un élément (ex. RouterLink) */
@@ -114,10 +129,8 @@ const expand = async () => {
           :current="entry.index === lastIndex"
         >
           <component
-            :is="entry.item.href ? 'a' : 'span'"
-            :href="entry.item.href"
-            :target="entry.item.href ? entry.item.target : undefined"
-            :rel="entry.item.href && entry.item.target === '_blank' ? 'noopener noreferrer' : undefined"
+            :is="itemElement(entry.item).is"
+            v-bind="itemElement(entry.item).attrs"
             :class="['su-breadcrumb__link', { 'su-breadcrumb__link--current': entry.index === lastIndex }]"
             :aria-current="entry.index === lastIndex ? 'page' : undefined"
           >

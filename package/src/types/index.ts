@@ -8,6 +8,8 @@ export type Gap = 'none' | 'sm' | 'md' | 'lg'
 export type Orientation = 'horizontal' | 'vertical'
 export type TextAlign = 'default' | 'left' | 'center' | 'right'
 export type LinkTarget = '_blank' | '_self' | '_parent' | '_top'
+/** Destination d'un lien du routeur : chemin, ou objet de route (RouteLocationRaw) */
+export type LinkTo = string | object
 
 // HTML natifs attributes
 export type HTMLNativeProps = {
@@ -86,6 +88,14 @@ export interface ButtonProps extends AccessibilityProps {
   iconDisplay?: 'left' | 'right' | 'only';
   ariaExpanded?: boolean;
   ariaPressed?: boolean;
+  /** Lien du routeur : rendu par RouterLink (ou `linkComponent` du plugin) */
+  to?: LinkTo;
+  /** Lien classique : rendu par <a href> */
+  href?: string;
+  /** Cible d'un lien (`to` ou `href`) */
+  target?: LinkTarget;
+  /** rel d'un lien ; `noopener noreferrer` par défaut avec target="_blank" */
+  rel?: string;
 }
 
 // CheckboxGroup.vue
@@ -250,7 +260,7 @@ export type LinkSize = 'sm' | 'md' | 'lg';
 export type LinkUnderline = 'default' | 'always' | 'hover' | 'never';
 export interface LinkProps extends AccessibilityProps {
   href?: string;
-  to?: string | object;
+  to?: LinkTo;
   target?: LinkTarget;
   rel?: string;
   variant?: LinkVariant;
@@ -639,6 +649,8 @@ export interface DropdownItemOption {
   value: string | number;
   label: string;
   href?: string;
+  /** Lien du routeur (RouterLink ou `linkComponent` du plugin) */
+  to?: LinkTo;
   target?: LinkTarget;
   rel?: string;
   disabled?: boolean;
@@ -739,6 +751,8 @@ export interface TooltipProps {
 export interface BreadcrumbItem {
   label: string;
   href?: string;
+  /** Lien du routeur (RouterLink ou `linkComponent` du plugin) */
+  to?: LinkTo;
   target?: LinkTarget;
   icon?: Component;
   /** Icône seule : le libellé reste lu par les lecteurs d'écran */
@@ -931,6 +945,8 @@ export interface CommandItem {
   keywords?: string[];
   disabled?: boolean;
   onSelect?: () => void;
+  /** Destination ouverte à la sélection (router.push, sinon location) */
+  to?: LinkTo;
 }
 export interface CommandPaletteProps {
   commands?: CommandItem[];

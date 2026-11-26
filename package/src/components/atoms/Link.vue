@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, type Component } from 'vue'
 import { ArrowTopRightOnSquareIcon } from '@heroicons/vue/24/outline'
 import type { LinkProps } from '@/types'
 import { useLocale } from '@/composables/useLocale'
+import { useLinkComponent } from '@/composables/useLinkComponent'
 
 const props = withDefaults(defineProps<LinkProps>(), {
   variant: 'default',
@@ -28,6 +29,16 @@ const emit = defineEmits<{
 // Détermination du type de lien (interne Vue Router vs externe)
 const isRouterLink = computed(() => {
   return props.to !== undefined
+})
+
+// Élément rendu : lien du routeur (RouterLink, `linkComponent` du plugin)
+// pour `to`, sinon <a>. Désactivé, un lien `to` perd sa destination : un
+// clic sur RouterLink naviguerait avant tout autre écouteur.
+const { linkFor } = useLinkComponent()
+const element = computed<{ is: Component | string; attrs: Record<string, unknown> }>(() => {
+  if (!isRouterLink.value) return { is: 'a', attrs: {} }
+  if (props.disabled) return { is: 'a', attrs: { role: 'link' } }
+  return linkFor(props.to!)
 })
 
 const isExternalLink = computed(() => {
@@ -118,9 +129,9 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel) {
 
 <template>
   <component
-    :is="isRouterLink ? 'router-link' : 'a'"
+    :is="element.is"
     :class="linkClasses"
-    v-bind="isRouterLink ? { to: to, ...linkAttributes } : linkAttributes"
+    v-bind="{ ...element.attrs, ...linkAttributes }"
     @click="handleClick"
     @keydown="handleKeydown"
     @focus="handleFocus"
