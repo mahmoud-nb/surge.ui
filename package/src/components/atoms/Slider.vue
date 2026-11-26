@@ -167,12 +167,15 @@ const snapToStep = (value: number): number => {
   return props.min + (steps * props.step)
 }
 
+// Sens de lecture : en RTL, la valeur croît de droite à gauche
+const isRtl = () => !!trackRef.value && getComputedStyle(trackRef.value).direction === 'rtl'
+
 const getValueFromPosition = (clientX: number, clientY: number): number => {
   if (!trackRef.value) return props.min
   
   const rect = trackRef.value.getBoundingClientRect()
   const percent = props.orientation === 'horizontal'
-    ? (clientX - rect.left) / rect.width
+    ? (isRtl() ? rect.right - clientX : clientX - rect.left) / rect.width
     : 1 - (clientY - rect.top) / rect.height
   
   const clampedPercent = Math.max(0, Math.min(1, percent))
@@ -260,13 +263,17 @@ const handleKeyDown = (event: KeyboardEvent, thumbType: 'min' | 'max' = 'min') =
   let newValue = currentVal
   const largeStep = (props.max - props.min) / 10
   
+  // En RTL, la flèche droite va vers le début : elle diminue la valeur
+  const forward = props.orientation === 'horizontal' && isRtl() ? 'ArrowLeft' : 'ArrowRight'
+  const backward = forward === 'ArrowRight' ? 'ArrowLeft' : 'ArrowRight'
+
   switch (event.key) {
-    case 'ArrowRight':
+    case forward:
     case 'ArrowUp':
       event.preventDefault()
       newValue = currentVal + props.step
       break
-    case 'ArrowLeft':
+    case backward:
     case 'ArrowDown':
       event.preventDefault()
       newValue = currentVal - props.step
@@ -423,7 +430,7 @@ defineExpose({
           <div 
             class="su-slider-track-active"
             :style="{
-              [orientation === 'horizontal' ? 'left' : 'bottom']: `${isDualRange ? Math.min(minPercent, maxPercent) : 0}%`,
+              [orientation === 'horizontal' ? 'insetInlineStart' : 'bottom']: `${isDualRange ? Math.min(minPercent, maxPercent) : 0}%`,
               [orientation === 'horizontal' ? 'width' : 'height']: `${isDualRange ? Math.abs(maxPercent - minPercent) : Math.abs(minPercent)}%`
             }"
           />
@@ -438,7 +445,7 @@ defineExpose({
               :key="tick.value"
               class="su-slider-tick"
               :style="{
-                [orientation === 'horizontal' ? 'left' : 'bottom']: `${tick.percent}%`
+                [orientation === 'horizontal' ? 'insetInlineStart' : 'bottom']: `${tick.percent}%`
               }"
             />
           </div>
@@ -453,7 +460,7 @@ defineExpose({
               :key="mark.value"
               class="su-slider-mark"
               :style="{
-                [orientation === 'horizontal' ? 'left' : 'bottom']: `${mark.percent}%`
+                [orientation === 'horizontal' ? 'insetInlineStart' : 'bottom']: `${mark.percent}%`
               }"
             >
               <div class="su-slider-mark-dot" />
@@ -469,7 +476,7 @@ defineExpose({
             ref="thumb1Ref"
             :class="getThumbClasses('min')"
             :style="{
-              [orientation === 'horizontal' ? 'left' : 'bottom']: `${minPercent}%`
+              [orientation === 'horizontal' ? 'insetInlineStart' : 'bottom']: `${minPercent}%`
             }"
             :tabindex="fieldDisabled ? -1 : 0"
             v-bind="getAriaAttributes('min')"
@@ -499,7 +506,7 @@ defineExpose({
             ref="thumb2Ref"
             :class="getThumbClasses('max')"
             :style="{
-              [orientation === 'horizontal' ? 'left' : 'bottom']: `${maxPercent}%`
+              [orientation === 'horizontal' ? 'insetInlineStart' : 'bottom']: `${maxPercent}%`
             }"
             :tabindex="fieldDisabled ? -1 : 0"
             v-bind="getAriaAttributes('max')"
@@ -681,8 +688,17 @@ defineExpose({
 // ### Zone interactive
 
 .su-slider-slider {
+  // Centrage des éléments posés en inset-inline-start (poignées, marques,
+  // graduations) : vers la gauche en LTR, vers la droite en RTL
+  --_su-slider-center: -50%;
+
   position: relative;
   flex: 1;
+
+  [dir='rtl'] & {
+    --_su-slider-center: 50%;
+  }
+
   height: var(--_su-slider-thumb);
   cursor: pointer;
   touch-action: none;
@@ -742,7 +758,7 @@ defineExpose({
     top: 0;
     width: 1px;
     height: 100%;
-    translate: -50% 0;
+    translate: var(--_su-slider-center) 0;
   }
 
   .su-slider-track--vertical & {
@@ -768,8 +784,8 @@ defineExpose({
   .su-slider-track--vertical & {
     top: 0;
     bottom: 0;
-    left: 100%;
-    margin-left: 0.625rem;
+    inset-inline-start: 100%;
+    margin-inline-start: 0.625rem;
   }
 }
 
@@ -781,7 +797,7 @@ defineExpose({
   gap: 0.25rem;
 
   .su-slider-track--horizontal & {
-    translate: -50% 0;
+    translate: var(--_su-slider-center) 0;
   }
 
   .su-slider-track--vertical & {
@@ -818,7 +834,7 @@ defineExpose({
 
   &--horizontal {
     top: 50%;
-    translate: -50% -50%;
+    translate: var(--_su-slider-center) -50%;
   }
 
   &--vertical {
