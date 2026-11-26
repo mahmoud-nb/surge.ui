@@ -20,6 +20,9 @@
     "./style.layer.css": "./dist/style.layer.css"
   },
   "types": "./dist/index.d.ts",
+  "sideEffects": [
+    "**/*.css"
+  ],
   "files": [
     "dist",
     "global.d.ts"
