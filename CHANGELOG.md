@@ -2,6 +2,41 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.2.0](https://mahmoud-nb.github.io/surge.ui/compare/v3.1.0...v3.2.0) (2026-11-26)
+
+
+### ⚡ Performance Improvements
+
+* **package:** déclare sideEffects (CSS seulement) ([0a75933](https://mahmoud-nb.github.io/surge.ui/commit/0a75933cc3ff7e60aef732d96fa0fd0ab0334a45))
+
+
+### ✨ Features
+
+* **locale:** option locale 'auto' qui suit <html lang> ([b855e36](https://mahmoud-nb.github.io/surge.ui/commit/b855e36500d733d93a534f05c499ecaaacca333a))
+* **locales:** ajoute la locale arabe (locales.ar) ([2a4cad4](https://mahmoud-nb.github.io/surge.ui/commit/2a4cad48e0fc0e670231e71c056b8ef281ba1117))
+* **styles:** publie style.layer.css, la feuille dans la couche CSS surgeui ([806e49a](https://mahmoud-nb.github.io/surge.ui/commit/806e49a213b305f065e288eb9c467f17e0777bf2))
+* **types:** types des composants globaux (`@surgeui/ds-vue/global`) ([37e72cd](https://mahmoud-nb.github.io/surge.ui/commit/37e72cd6a5fc1c60602c6cd725c968f1d85c21de))
+
+
+### 🐛 Bug Fixes
+
+* **a11y:** n'annonce plus chaque bouton comme une bascule ([a520bf5](https://mahmoud-nb.github.io/surge.ui/commit/a520bf5bb2a7f3513ea97a98faef7785d0e496ca))
+* **DatePicker:** relit les dates en chiffres arabes-indiens ([067592f](https://mahmoud-nb.github.io/surge.ui/commit/067592f6a587c8ebbb22b499c634ce88986f4727))
+* **Dialog:** rend le <dialog> dans <body>, à l'abri du CSS du parent ([ca09d65](https://mahmoud-nb.github.io/surge.ui/commit/ca09d65880e714041a493998319dfb6b905b09c5))
+* **Dropdown:** un seul id, sur le déclencheur, et séparateurs explicites ([c515b82](https://mahmoud-nb.github.io/surge.ui/commit/c515b82f120e578fba66a64f7d6b81d00cc9b4a5))
+* exporte et enregistre SuPopover ([9c2e7b9](https://mahmoud-nb.github.io/surge.ui/commit/9c2e7b9689d73a43591e567457479e211b549227))
+* **Price:** formate dans la langue des composants ([92edc94](https://mahmoud-nb.github.io/surge.ui/commit/92edc94888ea255c144903bd1709502ee4878609))
+* **Tabs:** recale l'indicateur quand le sens de lecture change ([9ccd40b](https://mahmoud-nb.github.io/surge.ui/commit/9ccd40b987e7a757a0db7392d9f1b6f89fa7adf4))
+* **theme:** replis sans data-theme ou data-theme-mode, classe .dark ([643f0d7](https://mahmoud-nb.github.io/surge.ui/commit/643f0d7e13a98036dafc2db96507ff4df2f77870))
+
+
+### 📚 Documentation
+
+* affiche la version et les notes de version dans la navigation ([55fcd9f](https://mahmoud-nb.github.io/surge.ui/commit/55fcd9fdceb82a623c52943660c5772bc75c9d74))
+* corrige les incohérences de l'accueil et de l'installation ([09abc4a](https://mahmoud-nb.github.io/surge.ui/commit/09abc4ac6c9b8276e970ab22720e25bb483ad32e))
+* Tailwind, mode sombre, types globaux et langue auto ([93ff0b2](https://mahmoud-nb.github.io/surge.ui/commit/93ff0b26ebe8f396d742db8487fe4df5f1206313))
+* teleport, séparateurs du Dropdown, locale arabe et Price ([42b1d03](https://mahmoud-nb.github.io/surge.ui/commit/42b1d030344e5d218017122101bc93f3d88683a3))
+
 ## [3.1.0](https://mahmoud-nb.github.io/surge.ui/compare/v3.0.2...v3.1.0) (2026-11-05)
 
 
