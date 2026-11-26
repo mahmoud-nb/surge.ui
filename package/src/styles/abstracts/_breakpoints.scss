@@ -92,9 +92,10 @@ $breakpoints: (
   }
 }
 
-/// Mode sombre du thème courant
+/// Mode sombre du thème courant : data-theme-mode="dark", ou classe .dark
+/// (convention Tailwind) quand data-theme-mode est absent
 @mixin dark-mode {
-  :where([data-theme-mode='dark']) & {
+  :where([data-theme-mode='dark'], .dark:not([data-theme-mode])) & {
     @content;
   }
 }
