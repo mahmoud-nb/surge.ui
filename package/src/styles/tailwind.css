@@ -1,0 +1,87 @@
+/*
+ * Préréglage Tailwind CSS 4 — @surgeui/ds-vue/tailwind.css
+ *
+ * Les couleurs, rayons et ombres de SurgeUI deviennent des utilitaires
+ * Tailwind : bg-su-surface, text-su-muted, border-su-border,
+ * rounded-su-control, shadow-su-popover… Les valeurs restent les variables
+ * du thème (inline) : thème, mode sombre et contraste élevé suivent sans
+ * configuration.
+ *
+ *   @layer theme, base, surgeui, components, utilities;
+ *   @import "tailwindcss";
+ *   @import "@surgeui/ds-vue/style.layer.css";
+ *   @import "@surgeui/ds-vue/tailwind.css";
+ */
+
+@theme inline {
+  /* Actions */
+  --color-su-primary: var(--su-primary-default);
+  --color-su-primary-hover: var(--su-primary-hover);
+  --color-su-primary-active: var(--su-primary-active);
+  --color-su-on-primary: var(--su-primary-text);
+  --color-su-secondary: var(--su-secondary-default);
+  --color-su-secondary-hover: var(--su-secondary-hover);
+  --color-su-on-secondary: var(--su-secondary-text);
+
+  /* Palette primaire */
+  --color-su-primary-50: var(--su-primary-50);
+  --color-su-primary-100: var(--su-primary-100);
+  --color-su-primary-200: var(--su-primary-200);
+  --color-su-primary-300: var(--su-primary-300);
+  --color-su-primary-400: var(--su-primary-400);
+  --color-su-primary-500: var(--su-primary-500);
+  --color-su-primary-600: var(--su-primary-600);
+  --color-su-primary-700: var(--su-primary-700);
+  --color-su-primary-800: var(--su-primary-800);
+  --color-su-primary-900: var(--su-primary-900);
+  --color-su-primary-950: var(--su-primary-950);
+
+  /* Fonds */
+  --color-su-canvas: var(--su-bg-canvas);
+  --color-su-surface: var(--su-bg-surface);
+  --color-su-surface-elevated: var(--su-bg-surface-elevated);
+  --color-su-overlay: var(--su-bg-overlay);
+  --color-su-hover: var(--su-bg-hover);
+  --color-su-active: var(--su-bg-active);
+  --color-su-selected: var(--su-bg-selected);
+  --color-su-accent: var(--su-bg-accent);
+  --color-su-muted-surface: var(--su-bg-muted);
+
+  /* Texte (text-su-text, text-su-muted…) */
+  --color-su-text: var(--su-text-primary);
+  --color-su-muted: var(--su-text-secondary);
+  --color-su-subtle: var(--su-text-tertiary);
+  --color-su-text-disabled: var(--su-text-disabled);
+  --color-su-text-inverse: var(--su-text-inverse);
+
+  /* Bordures */
+  --color-su-border: var(--su-border-default);
+  --color-su-border-subtle: var(--su-border-subtle);
+  --color-su-border-strong: var(--su-border-strong);
+  --color-su-border-focus: var(--su-border-focus);
+  --color-su-ring: var(--su-ring);
+
+  /* Liens */
+  --color-su-link: var(--su-link-default);
+  --color-su-link-hover: var(--su-link-hover);
+
+  /* États : couleur vive, fond teinté, texte lisible sur ce fond */
+  --color-su-success: var(--su-state-success);
+  --color-su-success-bg: var(--su-state-success-bg);
+  --color-su-success-fg: var(--su-state-success-fg);
+  --color-su-warning: var(--su-state-warning);
+  --color-su-warning-bg: var(--su-state-warning-bg);
+  --color-su-warning-fg: var(--su-state-warning-fg);
+  --color-su-error: var(--su-state-error);
+  --color-su-error-bg: var(--su-state-error-bg);
+  --color-su-error-fg: var(--su-state-error-fg);
+  --color-su-info: var(--su-state-info);
+  --color-su-info-bg: var(--su-state-info-bg);
+  --color-su-info-fg: var(--su-state-info-fg);
+
+  /* Rayons et ombres des composants */
+  --radius-su-control: var(--su-radius-control);
+  --radius-su-container: var(--su-radius-container);
+  --shadow-su-control: var(--su-shadow-control);
+  --shadow-su-popover: var(--su-shadow-popover);
+}

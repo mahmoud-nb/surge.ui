@@ -2,7 +2,7 @@
 import { defineConfig, type Plugin } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import dts from 'vite-plugin-dts'
-import { existsSync, readFileSync, writeFileSync } from 'fs'
+import { copyFileSync, existsSync, readFileSync, writeFileSync } from 'fs'
 import { resolve, dirname } from 'path'
 import { fileURLToPath } from 'url'
 const __filename = fileURLToPath(import.meta.url)
@@ -26,6 +26,16 @@ const cssLayer = (layer = 'surgeui'): Plugin => ({
   }
 })
 
+// dist/tailwind.css : préréglage Tailwind 4 (@theme inline), copié tel quel
+// (Tailwind le lit dans le CSS de l'application, il ne passe pas par Sass)
+const tailwindPreset = (): Plugin => ({
+  name: 'surgeui-tailwind-preset',
+  apply: 'build',
+  closeBundle() {
+    copyFileSync(resolve(__dirname, 'src/styles/tailwind.css'), resolve(__dirname, 'dist/tailwind.css'))
+  }
+})
+
 export default defineConfig({
   plugins: [
     vue(),
@@ -33,7 +43,8 @@ export default defineConfig({
       insertTypesEntry: false,
       rollupTypes: false
     }),
-    cssLayer()
+    cssLayer(),
+    tailwindPreset()
   ],
   css: {
     preprocessorOptions: {
