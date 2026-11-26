@@ -21,6 +21,7 @@ import Alert from './components/organisms/Alert.vue'
 import Card from './components/organisms/Card.vue'
 import Skeleton from './components/atoms/Skeleton.vue'
 import Tooltip from './components/molecules/Tooltip.vue'
+import Popover from './components/molecules/Popover.vue'
 import Toast from './components/molecules/Toast.vue'
 import Toaster from './components/organisms/Toaster.vue'
 import Divider from './components/atoms/Divider.vue'
@@ -101,7 +102,7 @@ import type { SurgeLocale, SurgeLocaleInput } from './locales/types'
 
 // Export des composants et de la fonction d'installation
 export { Icon, Heading, Panel, Image, Avatar, AvatarGroup, Badge, Dialog, Progress, Spinner, Price }
-export { Tabs, Accordion, AccordionItem, Alert, Card, Skeleton, Tooltip, Toast, Toaster }
+export { Tabs, Accordion, AccordionItem, Alert, Card, Skeleton, Tooltip, Popover, Toast, Toaster }
 export { Divider, Kbd, VisuallyHidden, Tag, EmptyState, Stepper, ConfirmDialog, DataTable, TreeView, CommandPalette }
 export { Link, LinkGroup, Button, ButtonGroup, Toggle, ToggleGroup, FloatButton, Dropdown, Breadcrumb, Pagination }
 export { Input, Textarea, SelectBox, RadioGroup, Checkbox, CheckboxGroup, NumberInput, Autocomplete, Calendar, DatePicker, FileUpload, Switch, Slider, Password, OtpInput }
@@ -171,6 +172,7 @@ export default {
     app.component(`${prefix}Card`, Card)
     app.component(`${prefix}Skeleton`, Skeleton)
     app.component(`${prefix}Tooltip`, Tooltip)
+    app.component(`${prefix}Popover`, Popover)
     app.component(`${prefix}Toast`, Toast)
     app.component(`${prefix}Toaster`, Toaster)
     app.component(`${prefix}Divider`, Divider)
