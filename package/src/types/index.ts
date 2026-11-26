@@ -387,7 +387,7 @@ export interface PriceProps extends AccessibilityProps {
   originalAmount?: number
   /** Code devise ISO 4217 (ex: 'EUR', 'USD', 'GBP') */
   currency?: string
-  /** Locale BCP 47 (ex: 'fr-FR', 'en-US') */
+  /** Locale BCP 47 (ex: 'fr-FR', 'en-US'). Défaut : la locale des composants (plugin, provideLocale) */
   locale?: string
   /** Variante visuelle */
   variant?: PriceVariant

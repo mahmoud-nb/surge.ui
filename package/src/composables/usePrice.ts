@@ -1,5 +1,6 @@
-import { computed, readonly, type Ref } from 'vue'
+import { computed, hasInjectionContext, readonly, type MaybeRefOrGetter, type Ref } from 'vue'
 import { toValue } from 'vue'
+import { useLocale } from './useLocale'
 import type { CurrencyDisplay } from '@/types'
 
 // ============================================================
@@ -11,8 +12,13 @@ export interface UsePriceOptions {
   amount: number | Ref<number> | (() => number)
   /** Code devise ISO 4217 (ex: 'EUR', 'USD', 'GBP'). Défaut: 'EUR' */
   currency?: string
-  /** Locale BCP 47 (ex: 'fr-FR', 'en-US'). Défaut: 'fr-FR' */
-  locale?: string
+  /**
+   * Locale BCP 47 (ex: 'fr-FR', 'en-US'), ref ou getter. Défaut : la locale
+   * des composants (plugin, provideLocale), sinon 'fr-FR'
+   */
+  locale?: MaybeRefOrGetter<string | undefined>
+  /** Nom accessible d'un montant invalide. Défaut : message `price.unavailable` de la locale */
+  unavailableLabel?: MaybeRefOrGetter<string | undefined>
   /** Affichage de la devise. Défaut: 'symbol' */
   currencyDisplay?: CurrencyDisplay
   /** Nombre minimum de chiffres décimaux. Défaut: 2 */
@@ -253,7 +259,9 @@ function isValidAmount(amount: number): boolean {
 export function usePrice(options: UsePriceOptions): UsePriceReturn {
   // Valeurs par défaut
   const currency = options.currency ?? 'EUR'
-  const locale = options.locale ?? 'fr-FR'
+  // Locale des composants si on est dans un setup (inject impossible ailleurs)
+  const context = hasInjectionContext() ? useLocale() : null
+  const locale = computed(() => toValue(options.locale) ?? context?.locale.value.code ?? 'fr-FR')
   const currencyDisplay = options.currencyDisplay ?? 'symbol'
   const minFrac = options.minimumFractionDigits ?? 2
   const maxFrac = options.maximumFractionDigits ?? 2
@@ -269,11 +277,11 @@ export function usePrice(options: UsePriceOptions): UsePriceReturn {
   // ========================================
 
   const formatter = computed(() =>
-    createCurrencyFormatter(locale, currency, currencyDisplay, minFrac, maxFrac)
+    createCurrencyFormatter(locale.value, currency, currencyDisplay, minFrac, maxFrac)
   )
 
   const ariaFormatter = computed(() =>
-    createAriaFormatter(locale, currency)
+    createAriaFormatter(locale.value, currency)
   )
 
   // ========================================
@@ -288,7 +296,7 @@ export function usePrice(options: UsePriceOptions): UsePriceReturn {
     }
 
     if (options.formatValue) {
-      return options.formatValue(amount, currency, locale)
+      return options.formatValue(amount, currency, locale.value)
     }
 
     return formatter.value.format(amount)
@@ -308,7 +316,7 @@ export function usePrice(options: UsePriceOptions): UsePriceReturn {
   const decimalPart = computed(() => parts.value.decimal)
 
   const decimalSeparator = computed(() =>
-    extractDecimalSeparator(locale)
+    extractDecimalSeparator(locale.value)
   )
 
   const currencySymbol = computed(() =>
@@ -323,7 +331,7 @@ export function usePrice(options: UsePriceOptions): UsePriceReturn {
     const amount = resolvedAmount.value
 
     if (!isValidAmount(amount)) {
-      return 'prix indisponible'
+      return toValue(options.unavailableLabel) ?? context?.t('price.unavailable') ?? 'prix indisponible'
     }
 
     return ariaFormatter.value.format(amount)
