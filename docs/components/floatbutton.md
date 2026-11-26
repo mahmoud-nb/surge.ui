@@ -341,7 +341,7 @@ import { QuestionMarkCircleIcon, PhoneIcon, EnvelopeIcon, ChatBubbleLeftIcon } f
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `position` | `'left' \| 'right'` | `'right'` | Position du bouton flottant |
+| `position` | `'start' \| 'end'` | `'end'` | Côté du bouton : `end` à droite en LTR, à gauche en RTL ; `left` et `right` en sont des alias |
 | `offset` | `{ x?: number, y?: number }` | `{ x: 24, y: 24 }` | Décalage personnalisé en pixels |
 | `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Taille du bouton flottant |
 | `icon` | `Component` | `undefined` | Icône du bouton |

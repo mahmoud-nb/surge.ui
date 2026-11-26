@@ -164,7 +164,7 @@ import { PlusIcon, CogIcon, HeartIcon, ShareIcon } from '@heroicons/vue/24/outli
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `position` | `'left' \| 'right'` | `'right'` | Floating button position |
+| `position` | `'start' \| 'end'` | `'end'` | Button side: `end` is right in LTR, left in RTL; `left` and `right` are aliases |
 | `offset` | `{ x?: number, y?: number }` | `{ x: 24, y: 24 }` | Custom offset in pixels |
 | `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Floating button size |
 | `icon` | `Component` | `undefined` | Button icon |

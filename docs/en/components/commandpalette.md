@@ -82,6 +82,7 @@ The demo on this page disables the shortcut (`:hotkey="false"`) so it does not i
 | `keywords` | `string[]` | Extra search terms |
 | `disabled` | `boolean` | Unavailable command |
 | `onSelect` | `() => void` | Action, called after closing |
+| `to` | `string \| RouteLocationRaw` | Page opened on selection (`router.push`, otherwise a page load) |
 
 ### Events
 

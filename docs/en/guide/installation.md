@@ -100,6 +100,7 @@ app.use(SurgeUI, {
 | `prefix` | Component prefix (`Su` by default) |
 | `theme` | Theme customization |
 | `locale` | Language of default texts: a provided locale (`locales.en`), partial messages, a ref, or `'auto'` to follow `<html lang>` |
+| `linkComponent` | Component for `to` links: NuxtLink or your own. Default: RouterLink when registered, otherwise `<a href>` |
 
 ### Component language
 
@@ -122,6 +123,19 @@ During server-side rendering (Nuxt, Vite SSR), `document` does not exist: `'auto
 :::
 
 See [useLocale](/en/composables/uselocale) to customize messages, plug in vue-i18n or switch language at runtime.
+
+### Router links
+
+The `to` prop of SuButton, SuLink, SuBreadcrumb (items), SuDropdown (options), SuCommandPalette (commands) and SuTabs (navigation tabs) navigates without reloading the page. The link is rendered by RouterLink when registered (Vue Router, Nuxt), otherwise by a plain `<a href>`. The `linkComponent` option sets another component:
+
+```ts
+import SurgeUI from '@surgeui/ds-vue'
+import { NuxtLink } from '#components'
+
+app.use(SurgeUI, { linkComponent: NuxtLink })
+```
+
+The component receives `to` and the link attributes (classes, `aria-*`, `target`). For your own components, `useLinkComponent()` returns the same component (`linkFor(to)`) and `navigate(to)`.
 
 ## With Tailwind CSS
 
@@ -151,6 +165,36 @@ Tailwind 3 and UnoCSS do not use CSS layers: keep `style.css`, imported after th
 ::: tip
 `SuDialog`, `SuCommandPalette` and `SuConfirmDialog` render their `<dialog>` in `<body>`: utilities set on their containers (`space-y-*`, `divide-*`…) do not reach them. See the [`teleport`](/en/components/dialog#rendering-in-body) prop.
 :::
+
+### Tailwind preset
+
+`@surgeui/ds-vue/tailwind.css` (Tailwind 4) turns SurgeUI colors, radii and shadows into utilities, so your pages use the same color source as the components:
+
+```css
+@layer theme, base, surgeui, components, utilities;
+@import "tailwindcss";
+@import "@surgeui/ds-vue/style.layer.css";
+@import "@surgeui/ds-vue/tailwind.css";
+```
+
+```vue
+<section class="rounded-su-container border border-su-border bg-su-surface p-6 shadow-su-popover">
+  <h2 class="text-su-text">Projects</h2>
+  <p class="text-su-muted">12 active projects</p>
+  <span class="text-su-success-fg bg-su-success-bg">Up to date</span>
+</section>
+```
+
+| Group | Utilities (`bg-`, `text-`, `border-`…) |
+|-------|----------------------------------------|
+| Actions | `su-primary`, `su-primary-hover`, `su-primary-active`, `su-on-primary`, `su-secondary`, `su-secondary-hover`, `su-on-secondary`, `su-primary-50` to `su-primary-950` |
+| Backgrounds | `su-canvas`, `su-surface`, `su-surface-elevated`, `su-overlay`, `su-hover`, `su-active`, `su-selected`, `su-accent`, `su-muted-surface` |
+| Text | `su-text`, `su-muted`, `su-subtle`, `su-text-disabled`, `su-text-inverse`, `su-link`, `su-link-hover` |
+| Borders | `su-border`, `su-border-subtle`, `su-border-strong`, `su-border-focus`, `su-ring` |
+| States | `su-success`, `su-warning`, `su-error`, `su-info`, with `-bg` (tinted background) and `-fg` (text on that background) |
+| Radii, shadows | `rounded-su-control`, `rounded-su-container`, `shadow-su-control`, `shadow-su-popover` |
+
+Values stay the theme variables: the chosen theme, dark mode and high contrast also apply to these utilities.
 
 ## Dark mode
 

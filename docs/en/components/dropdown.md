@@ -134,6 +134,7 @@ interface DropdownOption {
   value: string | number
   label: string
   href?: string                    // If present, option becomes a link
+  to?: string | RouteLocationRaw   // Router link (RouterLink); disabled, the option does not navigate
   target?: '_blank' | '_self' | '_parent' | '_top'
   rel?: string
   disabled?: boolean

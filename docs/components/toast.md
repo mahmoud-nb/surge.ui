@@ -131,7 +131,7 @@ toast.update(id, { title: 'Export terminé', type: 'success', duration: 4000, di
 
 | Prop | Type | Défaut | Description |
 |------|------|--------|-------------|
-| `position` | `'top-left' \| 'top-center' \| 'top-right' \| 'bottom-left' \| 'bottom-center' \| 'bottom-right'` | `'bottom-right'` | Coin de l'écran (pleine largeur sur mobile) |
+| `position` | `'top-start' \| 'top-center' \| 'top-end' \| 'bottom-start' \| 'bottom-center' \| 'bottom-end'` | `'bottom-end'` | Coin de l'écran (pleine largeur sur mobile). `start` et `end` suivent le sens de lecture (`end` : à droite en LTR, à gauche en RTL) ; `left` et `right` en sont des alias |
 | `max` | `number` | `3` | Toasts visibles ; les suivants attendent leur tour |
 | `duration` | `number` | `5000` | Durée par défaut (ms) |
 | `ariaLabel` | `string` | `'Notifications'` | Nom de la zone |

@@ -124,6 +124,32 @@ import { PlusIcon, ArrowRightIcon, HeartIcon, TrashIcon } from '@heroicons/vue/2
 </template>
 ```
 
+## Link button
+
+With `to` (router link) or `href` (plain link), the button is rendered as a link, with the same look. A link to a page stays a link for screen readers, middle click or "open in a new tab".
+
+<div class="component-demo">
+  <div class="demo-section">
+    <h4>Links</h4>
+    <div class="demo-buttons">
+      <SuButton to="/en/components/link">Link component</SuButton>
+      <SuButton href="https://github.com/mahmoud-nb/surge.ui" target="_blank" variant="outline">GitHub</SuButton>
+      <SuButton to="/en/components/link" disabled variant="secondary">Disabled</SuButton>
+    </div>
+  </div>
+</div>
+
+```vue
+<!-- Router link: RouterLink, or the plugin's linkComponent (NuxtLink) -->
+<SuButton to="/projects">Projects</SuButton>
+<SuButton :to="{ name: 'project', params: { id: 42 } }">Project 42</SuButton>
+
+<!-- Plain link; rel="noopener noreferrer" added with target="_blank" -->
+<SuButton href="https://example.com" target="_blank">External site</SuButton>
+```
+
+When disabled or loading, the link loses its destination: it can no longer be reached with the keyboard and does not navigate. Without a router, `to` gives a plain `<a href>`.
+
 ## API
 
 ### Props
@@ -139,6 +165,10 @@ import { PlusIcon, ArrowRightIcon, HeartIcon, TrashIcon } from '@heroicons/vue/2
 | `block` | `boolean` | `false` | Take full available width |
 | `icon` | `Component` | `undefined` | Icon to display |
 | `iconDisplay` | `'left' \| 'right' \| 'only'` | `'left'` | Icon position |
+| `to` | `string \| RouteLocationRaw` | `undefined` | Router link: rendered by RouterLink (or the plugin's [`linkComponent`](/en/guide/installation#router-links)) |
+| `href` | `string` | `undefined` | Plain link: rendered by `<a href>` |
+| `target` | `'_blank' \| '_self' \| '_parent' \| '_top'` | `undefined` | Link target (`to` or `href`) |
+| `rel` | `string` | `undefined` | Link `rel`; `noopener noreferrer` by default with `target="_blank"` |
 | `ariaLabel` | `string` | `undefined` | Accessible label for screen readers |
 | `ariaDescribedBy` | `string` | `undefined` | ID of element describing the button |
 | `ariaExpanded` | `boolean` | `undefined` | Indicates if controlled element is expanded |

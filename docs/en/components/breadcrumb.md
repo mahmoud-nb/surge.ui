@@ -124,6 +124,7 @@ The `item` slot replaces an item's rendering, for instance with a `RouterLink`.
 |----------|------|-------------|
 | `label` | `string` | Label |
 | `href` | `string` | Link (without a link: plain text) |
+| `to` | `string \| RouteLocationRaw` | Router link (RouterLink or the plugin's `linkComponent`) |
 | `target` | `'_blank' \| '_self' \| '_parent' \| '_top'` | Link target |
 | `icon` | `Component` | Icon before the label |
 | `iconOnly` | `boolean` | Visually hides the label |

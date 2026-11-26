@@ -124,6 +124,7 @@ Le slot `item` remplace le rendu d'un élément, par exemple par un `RouterLink`
 |-----------|------|-------------|
 | `label` | `string` | Libellé |
 | `href` | `string` | Lien (sans lien : texte simple) |
+| `to` | `string \| RouteLocationRaw` | Lien du routeur (RouterLink ou `linkComponent` du plugin) |
 | `target` | `'_blank' \| '_self' \| '_parent' \| '_top'` | Cible du lien |
 | `icon` | `Component` | Icône avant le libellé |
 | `iconOnly` | `boolean` | Masque visuellement le libellé |
