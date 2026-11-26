@@ -5,7 +5,7 @@ import { useBreakpoint } from './useBreakpoint'
 import { usePrice } from './usePrice'
 import { useFloatingPosition } from './useFloatingPosition'
 import { useAnnouncer, announce, clearAnnouncements } from './useAnnouncer'
-import { useLocale, provideLocale, defineLocale, formatMessage, LocaleKey } from './useLocale'
+import { useLocale, provideLocale, defineLocale, formatMessage, matchLocale, createDocumentLocale, LocaleKey } from './useLocale'
 import { useFormField, provideFormField, mergeIds, FormFieldKey } from './useFormField'
 import { useFocusTrap, createFocusTrap, getTabbableElements } from './useFocusTrap'
 import { useDismiss } from './useDismiss'
@@ -28,6 +28,8 @@ export {
   provideLocale,
   defineLocale,
   formatMessage,
+  matchLocale,
+  createDocumentLocale,
   LocaleKey,
   useFormField,
   provideFormField,

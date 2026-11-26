@@ -94,7 +94,7 @@ import FullScreenLayout from './components/templates/FullScreenLayout.vue'
 import * as accessibility from './utils/accessibility'
 import { SurgeuiTheme, ThemeSymbol, flattenThemeToCSS } from './plugin/theme'
 import { computed, toValue, type MaybeRefOrGetter } from 'vue'
-import { LocaleKey, defineLocale } from './composables/useLocale'
+import { LocaleKey, createDocumentLocale, defineLocale } from './composables/useLocale'
 import { ToasterKey, createToaster } from './composables/useToast'
 import { ConfirmerKey, createConfirmer } from './composables/useConfirm'
 import { fr } from './locales/fr'
@@ -234,8 +234,10 @@ export interface SurgeUIOptions {
   /**
    * Textes par défaut des composants (français sinon). Locale fournie
    * (`locales.en`), messages partiels, ou ref pour changer de langue.
+   * `'auto'` : suit `<html lang>` (fr, en, ar ; anglais pour les autres
+   * langues et en rendu serveur).
    */
-  locale?: MaybeRefOrGetter<SurgeLocale | SurgeLocaleInput | undefined>
+  locale?: 'auto' | MaybeRefOrGetter<SurgeLocale | SurgeLocaleInput | undefined>
 }
 
 const defaultTheme: SurgeuiTheme = {}
@@ -249,7 +251,13 @@ export default {
     app.provide(ThemeSymbol, mergedTheme)
 
     // Locale des textes par défaut (libellés, annonces)
-    app.provide(LocaleKey, computed(() => defineLocale(fr, toValue(locale))))
+    if (locale === 'auto') {
+      const documentLocale = createDocumentLocale()
+      app.provide(LocaleKey, documentLocale.locale)
+      app.onUnmount(documentLocale.stop)
+    } else {
+      app.provide(LocaleKey, computed(() => defineLocale(fr, toValue(locale))))
+    }
 
     // File des toasts (useToast) : une par application
     app.provide(ToasterKey, createToaster())
