@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.3.0](https://mahmoud-nb.github.io/surge.ui/compare/v3.2.0...v3.3.0) (2026-11-26)
+
+
+### ✨ Features
+
+* **Badge:** pastille de statut `dot` et `pulse` ([ddfc191](https://mahmoud-nb.github.io/surge.ui/commit/ddfc191ee16a0425b0bdcdc534e8b3969ac5fe13))
+* **links:** prop `to` pour les liens du routeur ([3866e69](https://mahmoud-nb.github.io/surge.ui/commit/3866e691c6b88c1959fdaf54ba3a8b7276219b76))
+* **rtl:** positions start / end du Toaster et du FloatButton, classe su-flip-rtl ([9624545](https://mahmoud-nb.github.io/surge.ui/commit/96245456ec3c5ba468e10208f930641560bcb307))
+* **styles:** préréglage Tailwind 4 (`@surgeui/ds-vue/tailwind.css`) ([0cce9c2](https://mahmoud-nb.github.io/surge.ui/commit/0cce9c2e55e7275113d163ecc7b0bdb663111900))
+* **Tabs:** onglets par identifiant, panneau unique et navigation ([5e89d12](https://mahmoud-nb.github.io/surge.ui/commit/5e89d123274a30993abf6412361b7b4faf10d0d0))
+
+
+### 🐛 Bug Fixes
+
+* **rtl:** propriétés logiques dans Avatar, Price, ToggleGroup, Collapse et Progress ([0ce779b](https://mahmoud-nb.github.io/surge.ui/commit/0ce779b8246621da66086cc8167e26f8f56d44a1))
+* **Slider:** fonctionne en lecture de droite à gauche ([5b50dba](https://mahmoud-nb.github.io/surge.ui/commit/5b50dba73aa715ba496646d43db08cadcd11d824))
+* **styles:** retire la règle charset de style.layer.css ([abe6772](https://mahmoud-nb.github.io/surge.ui/commit/abe6772ac3a75b7633d8fa884a9d1035743552f4))
+
+
+### 📚 Documentation
+
+* guides RTL et Nuxt ([d6d945a](https://mahmoud-nb.github.io/surge.ui/commit/d6d945ad6b2e8117a71cc684885ca81591b765ee))
+* liens du routeur, onglets, Badge, positions logiques et préréglage Tailwind ([8e4b1d2](https://mahmoud-nb.github.io/surge.ui/commit/8e4b1d2c7e0afc4823a6bc47cf614ad7c04259cd))
+* répare les tableaux de la prop teleport ([a2285a5](https://mahmoud-nb.github.io/surge.ui/commit/a2285a5c85fc274c6f5a061e154fc533760a2777))
+
 ## [3.2.0](https://mahmoud-nb.github.io/surge.ui/compare/v3.1.0...v3.2.0) (2026-11-26)
 
 
