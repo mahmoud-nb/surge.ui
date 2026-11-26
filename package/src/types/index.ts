@@ -634,7 +634,8 @@ export interface AvatarGroupProps extends AccessibilityProps {
 }
 
 // Dropdown.vue
-export interface DropdownOption {
+export interface DropdownItemOption {
+  type?: 'item';
   value: string | number;
   label: string;
   href?: string;
@@ -643,8 +644,17 @@ export interface DropdownOption {
   disabled?: boolean;
   icon?: Component;
   description?: string;
+  /** Trace un séparateur avant cette option */
+  separatorBefore?: boolean;
+  /**
+   * @deprecated L'option devient un séparateur et n'est pas affichée.
+   * Utiliser `{ type: 'separator' }`, ou `separatorBefore: true` pour garder l'option.
+   */
   separator?: boolean;
 }
+/** Trait de séparation entre deux groupes d'options */
+export type DropdownSeparatorOption = { type: 'separator' } & Partial<Omit<DropdownItemOption, 'type'>>;
+export type DropdownOption = DropdownItemOption | DropdownSeparatorOption;
 export type DropdownTrigger = 'click' | 'hover';
 export type DropdownPlacement = 'bottom-start' | 'bottom-end' | 'top-start' | 'top-end' | 'left-start' | 'left-end' | 'right-start' | 'right-end';
 export interface DropdownProps extends AccessibilityProps {
