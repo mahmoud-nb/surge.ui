@@ -79,10 +79,10 @@ app.use(SurgeUI, {
     border: 'none',
     hoverBackground: '#383838',
     hoverShadow: '0 0'
-  }
+  },
 
   // custom link style
-  link?: {
+  link: {
     color: '#2563eb',
     hoverColor: '#1e40af',
     hoverBackground: 'none',

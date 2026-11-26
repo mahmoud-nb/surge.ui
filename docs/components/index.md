@@ -1,6 +1,6 @@
 # Composants
 
-Le SurgeUI Design System propose une bibliothèque de composants Vue 3 organisés selon le principe d'**Atomic Design**. Chaque composant est accessible, thématisable et conçu pour fonctionner avec les 5 thèmes intégrés (light, dark, ocean, forest, sunset).
+Le SurgeUI Design System propose une bibliothèque de composants Vue 3 organisés selon le principe d'**Atomic Design**. Chaque composant est accessible, thématisable et conçu pour fonctionner avec les 4 thèmes intégrés (default, ocean, forest, sunset), en clair et en sombre.
 
 ## Principes
 

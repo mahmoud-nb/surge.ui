@@ -72,7 +72,7 @@ const { systemTheme, systemContrast, systemMotion } = useTheme()
 useTheme({
   availableThemes?: string[]     // Enabled themes (default: all)
   defaultTheme?: string          // Default theme ('default')
-  defaultThemeMode?: ThemeMode   // Default mode ('auto')
+  defaultThemeMode?: ThemeMode   // Default mode ('light', see theme.config)
   storageKey?: string            // localStorage key ('su-theme-config')
   persist?: boolean              // Persist preferences (true)
 })
