@@ -254,14 +254,14 @@ const priceClasses = computed(() => [
 
   &__prefix {
     color: var(--su-text-secondary);
-    margin-right: 0.125rem;
+    margin-inline-end: 0.125rem;
     font-size: var(--_su-price-aside-size);
   }
 
   &__original {
     text-decoration: line-through;
     color: var(--su-text-tertiary);
-    margin-right: 0.25rem;
+    margin-inline-end: 0.25rem;
     font-size: var(--_su-price-aside-size);
     font-weight: 400;
   }
@@ -297,7 +297,7 @@ const priceClasses = computed(() => [
 
   &__suffix {
     color: var(--su-text-secondary);
-    margin-left: 0.125rem;
+    margin-inline-start: 0.125rem;
     font-size: var(--_su-price-aside-size);
   }
 

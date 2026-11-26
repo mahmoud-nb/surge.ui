@@ -172,6 +172,11 @@ const trackStyle = computed(() => ({
     width: 40%;
     animation: su-progress-slide 1.4s var(--su-ease-in-out) infinite;
 
+    // En RTL, le segment part de la droite
+    [dir='rtl'] & {
+      animation-direction: reverse;
+    }
+
     @include motion-reduce {
       width: 100%;
       opacity: 0.6;

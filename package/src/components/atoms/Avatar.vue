@@ -348,7 +348,7 @@ $su-avatar-sizes: (
 
 .su-avatar-status {
   position: absolute;
-  right: 0;
+  inset-inline-end: 0;
   bottom: 0;
   box-sizing: content-box;
   width: var(--_su-avatar-status);
@@ -384,7 +384,7 @@ $su-avatar-sizes: (
 .su-avatar__badge {
   position: absolute;
   top: -0.25rem;
-  right: -0.25rem;
+  inset-inline-end: -0.25rem;
   z-index: 1;
 }
 </style>

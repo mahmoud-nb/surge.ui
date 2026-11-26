@@ -110,14 +110,14 @@ const handleItemToggle = (value: string | number) => {
     &.su-toggle-group--horizontal {
       .su-toggle-group__item {
         &:not(:first-child) {
-          margin-left: -1px;
-          border-top-left-radius: 0 !important;
-          border-bottom-left-radius: 0 !important;
+          margin-inline-start: -1px;
+          border-start-start-radius: 0 !important;
+          border-end-start-radius: 0 !important;
         }
 
         &:not(:last-child) {
-          border-top-right-radius: 0 !important;
-          border-bottom-right-radius: 0 !important;
+          border-start-end-radius: 0 !important;
+          border-end-end-radius: 0 !important;
         }
 
         &:focus-visible,
