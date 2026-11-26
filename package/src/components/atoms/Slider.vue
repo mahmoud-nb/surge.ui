@@ -6,6 +6,8 @@ import { mergeIds } from '@/composables/useFormField'
 import { useFormField } from '@/composables/useFormField'
 
 const props = withDefaults(defineProps<SliderProps>(), {
+  // undefined : sans la prop, l'attribut ARIA reste absent (Vue changerait l'absence en false)
+  ariaInvalid: undefined,
   min: 0,
   max: 100,
   step: 1,

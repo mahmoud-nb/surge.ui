@@ -3,6 +3,8 @@ import { computed } from 'vue'
 import type { BadgeProps } from '@/types'
 
 const props = withDefaults(defineProps<BadgeProps>(), {
+  // undefined : sans la prop, l'attribut ARIA reste absent (Vue changerait l'absence en false)
+  ariaHidden: undefined,
   variant: 'default',
   size: 'md',
   radius: 'md',

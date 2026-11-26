@@ -5,6 +5,9 @@ import Spinner from './Spinner.vue'
 import { useLocale } from '@/composables/useLocale'
 
 const props = withDefaults(defineProps<ButtonProps>(), {
+  // undefined : sans la prop, l'attribut ARIA reste absent (Vue changerait l'absence en false)
+  ariaExpanded: undefined,
+  ariaPressed: undefined,
   type: 'button',
   variant: 'primary',
   size: 'md',

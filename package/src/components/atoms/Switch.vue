@@ -6,6 +6,9 @@ import { useFormField } from '@/composables/useFormField'
 defineOptions({ inheritAttrs: false })
 
 const props = withDefaults(defineProps<SwitchProps>(), {
+  // undefined : sans la prop, l'attribut ARIA reste absent (Vue changerait l'absence en false)
+  ariaInvalid: undefined,
+  ariaRequired: undefined,
   size: 'md',
   state: 'default',
   padded: true,

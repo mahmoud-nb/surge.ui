@@ -7,6 +7,9 @@ import { useAnnouncer } from '@/composables/useAnnouncer'
 import { useFormField } from '@/composables/useFormField'
 
 const props = withDefaults(defineProps<BaseFileUploadProps>(), {
+  // undefined : sans la prop, l'attribut ARIA reste absent (Vue changerait l'absence en false)
+  ariaInvalid: undefined,
+  ariaRequired: undefined,
   multiple: false,
   variant: 'default',
   maxSize: 10 * 1024 * 1024, // 10MB
