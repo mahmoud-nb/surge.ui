@@ -67,6 +67,10 @@ export interface BadgeProps extends AccessibilityProps {
   iconDisplay?: 'left' | 'right' | 'only';
   color?: string;
   backgroundColor?: string;
+  /** Pastille de statut avant le libellé ; seule sans libellé (ariaLabel requis) */
+  dot?: boolean;
+  /** Pastille pulsée, pour un statut en direct (« en cours ») ; implique `dot` */
+  pulse?: boolean;
 }
 
 // Button.vue
