@@ -20,7 +20,8 @@ import { useListNavigation } from '@/composables/useListNavigation'
 
 const props = withDefaults(defineProps<CommandPaletteProps>(), {
   commands: () => [],
-  hotkey: 'k'
+  hotkey: 'k',
+  teleport: 'body'
 })
 
 const open = defineModel<boolean>('open', { default: false })
@@ -170,6 +171,7 @@ onBeforeUnmount(() => {
     v-model="open"
     class="su-command-palette"
     :aria-label="label"
+    :teleport="teleport"
     width="36rem"
   >
     <div class="su-command-palette__search">

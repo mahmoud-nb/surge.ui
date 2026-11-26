@@ -14,6 +14,8 @@ afterEach(() => {
 
 const mountDialog = (confirmer: Confirmer) => {
   wrapper = mount(ConfirmDialog, {
+    // Sur place : wrapper.find ne voit pas le contenu téléporté (voir Dialog.spec)
+    props: { teleport: false },
     global: { provide: { [ConfirmerKey as symbol]: confirmer } },
     attachTo: document.body
   })

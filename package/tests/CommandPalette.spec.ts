@@ -25,6 +25,8 @@ const mountPalette = (props: Record<string, unknown> = {}) => {
     props: {
       commands,
       open: false,
+      // Sur place : wrapper.find ne voit pas le contenu téléporté (voir Dialog.spec)
+      teleport: false,
       'onUpdate:open': (value: boolean) => wrapper?.setProps({ open: value }),
       ...props
     },

@@ -4,6 +4,7 @@ import Dialog from './Dialog.vue'
 import Button from '../atoms/Button.vue'
 import { useConfirm } from '@/composables/useConfirm'
 import { useLocale } from '@/composables/useLocale'
+import type { DialogTeleport } from '@/types'
 
 // ============================================================
 // CONFIRM DIALOG — affiche les demandes de useConfirm(), une à la
@@ -11,6 +12,13 @@ import { useLocale } from '@/composables/useLocale'
 // « Annuler » répondent false. Focus initial (autofocus, honoré par
 // showModal) : Annuler pour une action dangereuse, Confirmer sinon.
 // ============================================================
+
+withDefaults(defineProps<{
+  /** Où rendre le `<dialog>` (voir SuDialog) : `'body'` par défaut, `false` sur place */
+  teleport?: DialogTeleport
+}>(), {
+  teleport: 'body'
+})
 
 const confirmer = useConfirm()
 const unregister = confirmer.register()
@@ -54,6 +62,7 @@ watch(() => request.value?.id, async (id, previous) => {
     width="28rem"
     role="alertdialog"
     class="su-confirm-dialog"
+    :teleport="teleport"
     @close="handleClose"
   >
     <template #footer>

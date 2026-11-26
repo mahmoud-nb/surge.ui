@@ -929,6 +929,8 @@ export interface CommandPaletteProps {
   hotkey?: string | false;
   emptyText?: string;
   ariaLabel?: string;
+  /** Où rendre le `<dialog>` (voir SuDialog) : `'body'` par défaut, `false` sur place */
+  teleport?: DialogTeleport;
 }
 
 // FileUploadField.vue — mirrors BaseFileUploadProps for the field wrapper variant
@@ -1226,7 +1228,15 @@ export interface DialogProps extends AccessibilityProps {
   disableScroll?: boolean;
   /** Nom accessible du bouton de fermeture */
   closeLabel?: string;
+  /**
+   * Où rendre le `<dialog>` : `'body'` par défaut (à l'abri du CSS du parent),
+   * un sélecteur ou un élément, ou `false` pour le laisser sur place.
+   */
+  teleport?: DialogTeleport;
 }
+
+/** Cible du `<dialog>` : sélecteur, élément, `true` (body) ou `false` (sur place) */
+export type DialogTeleport = string | HTMLElement | boolean
 
 // Tabs.vue
 export interface TabItem {
