@@ -14,7 +14,7 @@ Dropdown component that looks like a button but displays a list of options when 
         :options="[
           { value: 'profile', label: 'My profile', icon: 'UserIcon' },
           { value: 'settings', label: 'Settings', icon: 'CogIcon' },
-          { value: 'separator1', separator: true },
+          { type: 'separator' },
           { value: 'logout', label: 'Logout', icon: 'ArrowUturnLeftIcon' }
         ]"
         label="User menu"
@@ -31,7 +31,7 @@ import { UserIcon, CogIcon, ArrowUturnLeftIcon } from '@heroicons/vue/24/outline
 const userOptions = [
   { value: 'profile', label: 'My profile', icon: UserIcon },
   { value: 'settings', label: 'Settings', icon: CogIcon },
-  { value: 'separator1', separator: true },
+  { type: 'separator' },
   { value: 'logout', label: 'Logout', icon: ArrowUturnLeftIcon }
 ]
 
@@ -61,7 +61,7 @@ const handleSelect = (option) => {
         :options="[
           { value: 'profile', label: 'My profile', icon: 'UserIcon' },
           { value: 'docs', label: 'Documentation', href: '/docs', icon: 'DocumentIcon' },
-          { value: 'separator1', separator: true },
+          { type: 'separator' },
           { value: 'settings', label: 'Settings', icon: 'CogIcon' },
           { value: 'help', label: 'Help', href: 'https://help.example.com', target: '_blank', icon: 'QuestionMarkCircleIcon' }
         ]"
@@ -80,7 +80,7 @@ import { UserIcon, DocumentIcon, CogIcon, QuestionMarkCircleIcon } from '@heroic
 const mixedOptions = [
   { value: 'profile', label: 'My profile', icon: UserIcon },
   { value: 'docs', label: 'Documentation', href: '/docs', icon: DocumentIcon },
-  { value: 'separator1', separator: true },
+  { type: 'separator' },
   { value: 'settings', label: 'Settings', icon: CogIcon },
   { value: 'help', label: 'Help', href: 'https://help.example.com', target: '_blank', icon: QuestionMarkCircleIcon }
 ]
@@ -124,6 +124,8 @@ const handleSelect = (option) => {
 | `closeOnSelect` | `boolean` | `true` | Close after selection |
 | `maxHeight` | `string` | `'300px'` | Maximum menu height |
 
+Attributes not declared as props (`id`, `aria-*`, `data-*`, listeners) go on the trigger button; `class` and `style` stay on the container. An `id` therefore appears only once, on the button the menu refers to (`aria-labelledby`).
+
 ### Option types
 
 #### DropdownOption
@@ -137,8 +139,13 @@ interface DropdownOption {
   disabled?: boolean
   icon?: Component
   description?: string
-  separator?: boolean              // If true, displays a separator
+  separatorBefore?: boolean        // Draws a separator before the option
+  /** @deprecated the option becomes a separator and is hidden */
+  separator?: boolean
 }
+
+// Separator alone (value and label optional)
+type DropdownSeparatorOption = { type: 'separator' }
 ```
 
 ### Events
@@ -192,6 +199,26 @@ const handleAction = (option) => {
 }
 </script>
 ```
+
+## Separators
+
+Separators group options visually (`role="separator"`). Two forms:
+
+```ts
+const options = [
+  { value: 'edit', label: 'Edit' },
+  { value: 'duplicate', label: 'Duplicate' },
+  { type: 'separator' },                                  // separator alone
+  { value: 'archive', label: 'Archive' },
+  { value: 'delete', label: 'Delete', separatorBefore: true } // separator before the option
+]
+```
+
+`separatorBefore` is ignored on the first option and right after a separator (no double line).
+
+::: warning Legacy form
+`separator: true` is still accepted but deprecated: the option becomes a separator and is **not** shown, even with a label. A console warning reports it. Use `{ type: 'separator' }`, or `separatorBefore: true` to keep the option.
+:::
 
 ## Accessibility
 

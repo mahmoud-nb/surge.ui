@@ -1,6 +1,6 @@
 # useLocale
 
-Langue des textes par défaut des composants : libellés accessibles (« Effacer la sélection », « Fermer »…), placeholders, messages d'erreur et annonces aux lecteurs d'écran. Le français est la locale par défaut ; l'anglais est fourni.
+Langue des textes par défaut des composants : libellés accessibles (« Effacer la sélection », « Fermer »…), placeholders, messages d'erreur et annonces aux lecteurs d'écran. Le français est la locale par défaut ; l'anglais et l'arabe sont fournis (`locales.fr`, `locales.en`, `locales.ar`).
 
 Une prop explicite d'un composant reste toujours prioritaire sur la locale.
 
@@ -14,6 +14,46 @@ import SurgeUI, { locales } from '@surgeui/ds-vue'
 createApp(App)
   .use(SurgeUI, { locale: locales.en })
   .mount('#app')
+```
+
+La locale arabe utilise le code `ar` : chiffres latins dans les moteurs récents, semaine à partir du samedi. Pour les chiffres arabes-indiens (٠١٢٣) ou les conventions d'un pays, gardez ses messages et changez son code :
+
+```ts
+app.use(SurgeUI, { locale: defineLocale(locales.ar, { code: 'ar-EG' }) })
+```
+
+## Suivre la langue de la page
+
+Avec `locale: 'auto'`, la langue suit l'attribut `lang` de `<html>`, y compris quand il change sans recharger la page (sélecteur de langue, routeur) :
+
+```ts
+app.use(SurgeUI, { locale: 'auto' })
+```
+
+La langue est rapprochée de la locale fournie la plus proche : `fr-CA` donne les messages français, `ar-EG` les messages arabes. Le code complet est gardé pour les formats (dates, nombres, premier jour de la semaine). Une langue sans traduction fournie (`de`, `es`…) donne l'anglais.
+
+::: warning Rendu serveur
+`document` n'existe pas côté serveur : `'auto'` y donne l'anglais. En SSR, passez la locale explicitement, tirée de la langue de la requête.
+:::
+
+`matchLocale(lang)` fait ce rapprochement pour vos propres sources de langue, et `createDocumentLocale()` renvoie la locale réactive utilisée par `'auto'`.
+
+## Avec vue-i18n
+
+Les composants suivent la langue de vue-i18n :
+
+```ts
+// main.ts
+import { computed } from 'vue'
+import { createI18n } from 'vue-i18n'
+import SurgeUI, { matchLocale } from '@surgeui/ds-vue'
+
+const i18n = createI18n({ legacy: false, locale: 'fr', messages })
+
+app.use(i18n)
+app.use(SurgeUI, {
+  locale: computed(() => matchLocale(i18n.global.locale.value))
+})
 ```
 
 ## Changer de langue à la volée
@@ -77,7 +117,7 @@ Un message contient des paramètres `{nom}`, ou un objet de formes plurielles ch
 }
 ```
 
-En français, 0 et 1 prennent la forme `one` ; en anglais, seulement 1.
+En français, 0 et 1 prennent la forme `one` ; en anglais, seulement 1. L'arabe utilise les six formes : `zero`, `one`, `two`, `few` (3 à 10), `many` (11 à 99) et `other` (100 et plus).
 
 ## Dans vos composants
 
@@ -112,7 +152,9 @@ const size = formatBytes(1536) // « 1,5 ko » (fr), « 1.5 kB » (en)
 | `provideLocale(locale)` | Fournit une locale (complète, partielle, ref ou getter) au sous-arbre ; elle complète celle du parent |
 | `defineLocale(base, overrides)` | Crée une locale à partir d'une base et de messages partiels |
 | `formatMessage(message, params?, code?)` | Met en forme un message (pluriel, paramètres) |
-| `locales.fr`, `locales.en` | Locales fournies |
+| `matchLocale(lang, fallback?)` | Locale fournie la plus proche d'une langue BCP 47 (`fr-CA` → français, code `fr-CA` gardé) ; `fallback` (anglais par défaut) pour une langue sans traduction |
+| `createDocumentLocale(fallback?)` | Locale réactive qui suit `<html lang>` : `{ locale, stop }` |
+| `locales.fr`, `locales.en`, `locales.ar` | Locales fournies |
 
 ### Espaces de messages
 
@@ -126,6 +168,7 @@ const size = formatBytes(1536) // « 1,5 ko » (fr), « 1.5 kB » (en)
 | `link` | Link | `external` |
 | `progress` | Progress | `indeterminate` |
 | `spinner` | Spinner | `label` |
+| `price` | Price | `unavailable` |
 | `textarea` | Textarea | `remaining`, `overLimit` |
 | `selectBox` | SelectBox | `placeholder`, `searchPlaceholder`, `noOptions`, `noResults`, `clear`, `removeTag`, `selectedCount`, `selected`, `deselected`, `removed`, `cleared`, `maxReached` |
 | `checkboxGroup` | CheckboxGroup | `maxReached` |

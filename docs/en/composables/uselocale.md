@@ -1,6 +1,6 @@
 # useLocale
 
-Language of the components' default texts: accessible labels ("Clear selection", "Close"…), placeholders, error messages and screen reader announcements. French is the default locale; English is provided.
+Language of the components' default texts: accessible labels ("Clear selection", "Close"…), placeholders, error messages and screen reader announcements. French is the default locale; English and Arabic are provided (`locales.fr`, `locales.en`, `locales.ar`).
 
 An explicit component prop always wins over the locale.
 
@@ -14,6 +14,46 @@ import SurgeUI, { locales } from '@surgeui/ds-vue'
 createApp(App)
   .use(SurgeUI, { locale: locales.en })
   .mount('#app')
+```
+
+The Arabic locale uses the `ar` code: Latin digits in recent engines, week starting on Saturday. For Arabic-Indic digits (٠١٢٣) or a country's conventions, keep its messages and change its code:
+
+```ts
+app.use(SurgeUI, { locale: defineLocale(locales.ar, { code: 'ar-EG' }) })
+```
+
+## Following the page language
+
+With `locale: 'auto'`, the language follows the `lang` attribute of `<html>`, including when it changes without a page reload (language switcher, router):
+
+```ts
+app.use(SurgeUI, { locale: 'auto' })
+```
+
+The language is matched to the closest provided locale: `fr-CA` gives the French messages, `ar-EG` the Arabic ones. The full code is kept for formats (dates, numbers, first day of the week). A language with no provided translation (`de`, `es`…) gives English.
+
+::: warning Server-side rendering
+`document` does not exist on the server: `'auto'` gives English there. With SSR, pass the locale explicitly, based on the request language.
+:::
+
+`matchLocale(lang)` does this matching for your own language sources, and `createDocumentLocale()` returns the reactive locale used by `'auto'`.
+
+## With vue-i18n
+
+Components follow the vue-i18n language:
+
+```ts
+// main.ts
+import { computed } from 'vue'
+import { createI18n } from 'vue-i18n'
+import SurgeUI, { matchLocale } from '@surgeui/ds-vue'
+
+const i18n = createI18n({ legacy: false, locale: 'en', messages })
+
+app.use(i18n)
+app.use(SurgeUI, {
+  locale: computed(() => matchLocale(i18n.global.locale.value))
+})
 ```
 
 ## Switching language at runtime
@@ -77,7 +117,7 @@ A message holds `{name}` parameters, or an object of plural forms picked with `I
 }
 ```
 
-In English only 1 takes the `one` form; in French, 0 and 1 do.
+In English only 1 takes the `one` form; in French, 0 and 1 do. Arabic uses all six forms: `zero`, `one`, `two`, `few` (3 to 10), `many` (11 to 99) and `other` (100 and above).
 
 ## In your components
 
@@ -112,7 +152,9 @@ const size = formatBytes(1536) // "1.5 kB" (en), "1,5 ko" (fr)
 | `provideLocale(locale)` | Provides a locale (complete, partial, ref or getter) to the subtree; it completes the parent's |
 | `defineLocale(base, overrides)` | Creates a locale from a base and partial messages |
 | `formatMessage(message, params?, code?)` | Formats a message (plural, parameters) |
-| `locales.fr`, `locales.en` | Provided locales |
+| `matchLocale(lang, fallback?)` | Closest provided locale for a BCP 47 language (`fr-CA` → French, `fr-CA` code kept); `fallback` (English by default) for a language with no translation |
+| `createDocumentLocale(fallback?)` | Reactive locale following `<html lang>`: `{ locale, stop }` |
+| `locales.fr`, `locales.en`, `locales.ar` | Provided locales |
 
 ### Message namespaces
 
@@ -126,6 +168,7 @@ const size = formatBytes(1536) // "1.5 kB" (en), "1,5 ko" (fr)
 | `link` | Link | `external` |
 | `progress` | Progress | `indeterminate` |
 | `spinner` | Spinner | `label` |
+| `price` | Price | `unavailable` |
 | `textarea` | Textarea | `remaining`, `overLimit` |
 | `selectBox` | SelectBox | `placeholder`, `searchPlaceholder`, `noOptions`, `noResults`, `clear`, `removeTag`, `selectedCount`, `selected`, `deselected`, `removed`, `cleared`, `maxReached` |
 | `checkboxGroup` | CheckboxGroup | `maxReached` |
