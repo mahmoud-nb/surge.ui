@@ -67,7 +67,7 @@ La démo de cette page désactive le raccourci (`:hotkey="false"`) pour ne pas g
 | `hotkey` | `string \| false` | `'k'` | Touche du raccourci avec `Ctrl` / `⌘` ; `false` : aucun |
 | `emptyText` | `string` | `'Aucun résultat'` | Texte sans résultat |
 | `ariaLabel` | `string` | `'Palette de commandes'` | Nom du dialog et de la liste |
-| `teleport` | `string | HTMLElement | boolean` | `'body'` | Où rendre le `<dialog>` ; `false` pour le laisser sur place. Voir [SuDialog](/components/dialog#rendu-dans-body) |
+| `teleport` | `string \| HTMLElement \| boolean` | `'body'` | Où rendre le `<dialog>` ; `false` pour le laisser sur place. Voir [SuDialog](/components/dialog#rendu-dans-body) |
 
 ### CommandItem
 
