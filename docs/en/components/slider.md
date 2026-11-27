@@ -253,6 +253,9 @@ This approach is equivalent to:
 | `showTicks` | `boolean` | `false` | Show tick marks |
 | `showLabels` | `boolean` | `false` | Show min/max labels |
 | `formatValue` | `(value: number) => string` | `undefined` | Value formatting function |
+| `state` | `'default' \| 'success' \| 'warning' \| 'error'` | `'default'` | Validation state (message color) |
+| `required` | `boolean` | `false` | Required field (`aria-required`) |
+| `message` | `string` | - | Help or error message under the slider, linked through `aria-describedby` |
 
 ### Accessibility Attributes
 

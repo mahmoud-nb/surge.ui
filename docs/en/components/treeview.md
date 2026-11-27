@@ -75,6 +75,8 @@ With `:selectable="false"`, no item is marked as selected: `Enter` expands, and 
 | `selectable` | `boolean` | `true` | An item can be selected (`aria-selected`) |
 | `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Size |
 | `ariaLabel` / `ariaLabelledBy` | `string` | - | Tree name (required) |
+| `v-model:expanded` | `(string \| number)[]` | `[]` | Ids of the expanded items |
+| `v-model:selected` | `null \| string \| number` | `null` | Id of the selected item |
 
 ### TreeItem
 

@@ -544,6 +544,8 @@ When used with `SuFormField`, automatically receives:
 | `aria-describedby` | `string` | Message ID (messageId) |
 | `state` | `string` | Validation state |
 | `disabled` | `boolean` | Disabled state |
+| `loadingText` | `string` | - | Drop zone title while loading (translated otherwise) |
+| `loadingSubText` | `string` | - | Drop zone subtitle while loading (translated otherwise) |
 
 ### Types
 

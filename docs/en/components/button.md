@@ -175,6 +175,7 @@ When disabled or loading, the link loses its destination: it can no longer be re
 | `ariaPressed` | `boolean` | `undefined` | Indicates pressed state of toggle button |
 | `role` | `string` | `undefined` | Custom ARIA role |
 | `tabIndex` | `number` | `0` | Tab order |
+| `loadingLabel` | `string` | - | Text read while loading (translated otherwise) |
 
 ### Events
 

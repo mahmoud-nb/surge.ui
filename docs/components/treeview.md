@@ -75,6 +75,8 @@ Avec `:selectable="false"`, aucun élément n'est marqué choisi : `Entrée` dé
 | `selectable` | `boolean` | `true` | Un élément peut être choisi (`aria-selected`) |
 | `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Taille |
 | `ariaLabel` / `ariaLabelledBy` | `string` | - | Nom de l'arbre (obligatoire) |
+| `v-model:expanded` | `(string \| number)[]` | `[]` | Identifiants des éléments dépliés |
+| `v-model:selected` | `null \| string \| number` | `null` | Identifiant de l’élément sélectionné |
 
 ### TreeItem
 

@@ -667,6 +667,9 @@ Cette approche est équivalente à :
 | `showTicks` | `boolean` | `false` | Afficher les graduations |
 | `showLabels` | `boolean` | `false` | Afficher les labels min/max |
 | `formatValue` | `(value: number) => string` | `undefined` | Fonction de formatage des valeurs |
+| `state` | `'default' \| 'success' \| 'warning' \| 'error'` | `'default'` | État de validation (couleur du message) |
+| `required` | `boolean` | `false` | Champ requis (`aria-required`) |
+| `message` | `string` | - | Message d’aide ou d’erreur sous le curseur, relié par `aria-describedby` |
 
 ### Attributs d'accessibilité
 

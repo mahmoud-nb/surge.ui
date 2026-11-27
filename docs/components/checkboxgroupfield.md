@@ -450,6 +450,9 @@ const permissionOptions = [
 | `maxHeight` | `string` | `null` | Hauteur maximale avec scroll automatique |
 | `label` | `string` | `undefined` | Label du groupe |
 | `message` | `string` | `undefined` | Message affiché (style déterminé par le state) |
+| `name` | `string` | - | Nom du champ, pour la soumission native du formulaire |
+| `fieldId` | `string` | - | Id du contrôle, relié au label (sinon généré) |
+| `requiredText` | `string` | - | Texte de l’astérisque « requis » pour les lecteurs d’écran (sinon traduit) |
 
 ### Types d'options
 

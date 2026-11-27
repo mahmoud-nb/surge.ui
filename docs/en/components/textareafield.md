@@ -213,7 +213,7 @@ const message = ref('')
 | `readonly` | `boolean` | `false` | Read-only textarea |
 | `required` | `boolean` | `false` | Required field |
 | `placeholder` | `string` | `undefined` | Placeholder text |
-| `value` | `string` | `undefined` | Textarea value |
+| `v-model` | `string` | `''` | Textarea value |
 | `rows` | `number` | `3` | Default number of rows |
 | `minRows` | `number` | `2` | Minimum number of rows (auto-resize) |
 | `maxRows` | `number` | `10` | Maximum number of rows (auto-resize) |
@@ -224,6 +224,9 @@ const message = ref('')
 | `message` | `string` | `undefined` | Displayed message |
 | `spellcheck` | `boolean` | `true` | Spell checking |
 | `wrap` | `'soft' \| 'hard' \| 'off'` | `'soft'` | Line wrapping mode |
+| `fieldId` | `string` | - | Control id, linked to the label (generated otherwise) |
+| `requiredText` | `string` | - | Screen reader text of the "required" asterisk (translated otherwise) |
+| `autocomplete` | `string` | - | Native `autocomplete` attribute (`email`, `current-password`, `off`…) |
 
 ### Events
 

@@ -726,6 +726,7 @@ When used with `SuFormField`, the component automatically receives:
 | `aria-describedby` | `string` | Associated message ID (messageId) |
 | `state` | `string` | Validation state |
 | `disabled` | `boolean` | Disabled state |
+| `name` | `string` | - | Field name, for native form submission |
 
 ### Option types
 

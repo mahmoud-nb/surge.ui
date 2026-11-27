@@ -138,6 +138,7 @@ A modern and accessible spinner component for displaying loading states in your 
 | `speed`      | `number`           | `1`           | Animation speed in seconds   |
 | `label`      | `string`           | `'Chargement…'`| Accessibility text for screen readers    |
 | `fill`       | `string`           | `'none'`      | Background color for SVG spinners    |
+| `showLabel` | `boolean` | `false` | Shows the label under the spinner (otherwise read by screen readers only) |
 
 
 ### Accessibility Attributes

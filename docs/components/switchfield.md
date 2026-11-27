@@ -248,6 +248,11 @@ const notifications = ref(false)
 | `leftLabel` | `string` | `undefined` | Label affiché à gauche du switch |
 | `rightLabel` | `string` | `undefined` | Label affiché à droite du switch |
 | `message` | `string` | `undefined` | Message affiché (style déterminé par le state) |
+| `fieldId` | `string` | - | Id du contrôle, relié au label (sinon généré) |
+| `requiredText` | `string` | - | Texte de l’astérisque « requis » pour les lecteurs d’écran (sinon traduit) |
+| `leftIcon` | `Component` | - | Icône dans la pastille, interrupteur désactivé |
+| `rightIcon` | `Component` | - | Icône dans la pastille, interrupteur activé |
+| `padded` | `boolean` | - | Marge entre la pastille et le bord de la piste (`false` : pastille au ras) |
 
 ### Attributs d'accessibilité
 

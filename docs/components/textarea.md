@@ -522,6 +522,7 @@ Lorsque utilisé avec `SuFormField`, le composant reçoit automatiquement :
 | `aria-describedby` | `string` | ID du message associé (messageId) |
 | `state` | `string` | État de validation |
 | `disabled` | `boolean` | État désactivé |
+| `autocomplete` | `string` | - | Attribut `autocomplete` natif (`email`, `current-password`, `off`…) |
 
 ### Attributs d'accessibilité supplémentaires
 

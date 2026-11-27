@@ -148,6 +148,9 @@ With `manual`, rows are shown as received: the table emits `update:sort` and `up
 | `stickyHeader` | `boolean` | `false` | Sticky header (with `maxHeight`) |
 | `maxHeight` | `string` | - | Maximum height (scrolling) |
 | `locale` | `string` | component locale | Alphabetical sort language |
+| `v-model:sort` | `null \| DataTableSort` | `null` | Current sort (`{ key, direction }`), `null` when unsorted |
+| `v-model:page` | `number` | `1` | Current page (starting at 1) |
+| `v-model:selected` | `(string \| number)[]` | `[]` | Keys of the selected rows (with `selectable`) |
 
 ### DataTableColumn
 

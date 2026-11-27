@@ -103,7 +103,16 @@ const quantity = ref(1)
 | `name` / `placeholder` | `string` | - | Field attributes |
 | `incrementLabel` / `decrementLabel` | `string` | `'Increase'` / `'Decrease'` (locale) | Button names |
 
-`SuNumberInputField` also takes `label`, `message` and `requiredText`.
+### Props (NumberInputField)
+
+`SuNumberInputField` takes the props above, plus the field props:
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `label` | `string` | - | Field label |
+| `message` | `string` | - | Help or error message, linked through `aria-describedby` |
+| `requiredText` | `string` | - | Screen reader text of the "required" asterisk (translated otherwise) |
+| `fieldId` | `string` | - | Control id, linked to the label (generated otherwise) |
 
 ### Events
 

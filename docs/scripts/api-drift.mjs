@@ -6,7 +6,13 @@
 // - inconnues : documentées mais absentes du code (erreur : elles
 //   induisent les lecteurs et les assistants IA en erreur) ;
 // - non documentées : présentes dans le code, absentes de la page.
-// Les props d'accessibilité communes (ariaLabel…) ne sont pas exigées.
+// Les props d'accessibilité communes (ariaLabel…) et les props obsolètes
+// (@deprecated, sans effet) ne sont pas exigées.
+// Un composant sans page à son nom (AccordionItem, Toaster, *Field) peut
+// être documenté par un tableau « Props (Nom) » dans la page d'un autre ;
+// ce tableau hérite des props du tableau principal de la page.
+// --strict : échoue sur toute prop inconnue ou non documentée, tout
+// composant sans tableau.
 // Usage : npm run api:check -w docs [-- --strict] [-- --verbose]
 // ============================================================
 
@@ -81,21 +87,29 @@ const documentedProps = (markdown) => {
 const report = []
 for (const [lang, dir] of [['fr', join(docsDir, 'components')], ['en', join(docsDir, 'en/components')]]) {
   const pages = pagesIn(dir)
+  // Composants documentés par un tableau dans la page d'un autre composant
+  const hosted = new Set()
+  for (const page of Object.values(pages)) {
+    for (const target of documentedProps(readFileSync(page, 'utf8')).keys()) if (target) hosted.add(target)
+  }
   for (const name of Object.keys(components)) {
     const page = pages[name.toLowerCase()]
     if (!page) {
-      report.push({ lang, name, page: null })
+      if (!hosted.has(name)) report.push({ lang, name, page: null })
       continue
     }
     const tables = documentedProps(readFileSync(page, 'utf8'))
     if (!tables.has(null) && !tables.has(name)) {
       report.push({ lang, name, page, noTable: true })
     }
+    const main = tables.get(null) ?? tables.get(name) ?? new Set()
     // Chaque tableau est comparé au composant qu'il décrit (la page, ou un sous-composant)
-    for (const [target, documented] of tables) {
+    for (const [target, own] of tables) {
       const targetName = target ?? name
       const actualComponent = components[targetName]
       if (!actualComponent) continue
+      // Tableau d'un sous-composant : les props du tableau principal valent aussi pour lui
+      const documented = target && target !== name ? new Set([...own, ...main]) : own
       // Casse ignorée : aria-describedby s'écrit ariaDescribedby ou ariaDescribedBy selon les pages
       const actual = new Map(actualComponent.props.map((prop) => [prop.name.toLowerCase(), prop.name]))
       const seen = new Set([...documented].map((prop) => prop.toLowerCase()))
@@ -103,8 +117,10 @@ for (const [lang, dir] of [['fr', join(docsDir, 'components')], ['en', join(docs
         lang,
         name: targetName,
         page,
-        unknown: [...documented].filter((prop) => !actual.has(prop.toLowerCase()) && !ATTRIBUTES.has(prop)),
-        undocumented: [...actual.values()].filter((prop) => !seen.has(prop.toLowerCase()) && !COMMON.has(prop))
+        unknown: [...own].filter((prop) => !actual.has(prop.toLowerCase()) && !ATTRIBUTES.has(prop)),
+        undocumented: actualComponent.props
+          .filter((prop) => !seen.has(prop.name.toLowerCase()) && !COMMON.has(prop.name) && !prop.deprecated)
+          .map((prop) => prop.name)
       })
     }
   }
@@ -132,4 +148,7 @@ if (verbose) {
   if (noPage.length) console.log(`Sans page : ${noPage.map((e) => `[${e.lang}] ${e.name}`).join(', ')}`)
   if (noTable.length) console.log(`Sans tableau Props : ${noTable.map((e) => `[${e.lang}] ${e.name}`).join(', ')}`)
 }
-if (strict && sum('unknown') > 0) process.exit(1)
+if (strict && (sum('unknown') > 0 || sum('undocumented') > 0 || noPage.length > 0 || noTable.length > 0)) {
+  if (!verbose) console.log('Détail : npm run api:check -w docs -- --verbose')
+  process.exit(1)
+}

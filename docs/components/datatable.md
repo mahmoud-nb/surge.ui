@@ -148,6 +148,9 @@ Avec `manual`, les lignes reçues sont affichées telles quelles : le tableau é
 | `stickyHeader` | `boolean` | `false` | En-tête collant (avec `maxHeight`) |
 | `maxHeight` | `string` | - | Hauteur maximale (défilement) |
 | `locale` | `string` | locale des composants | Langue du tri alphabétique |
+| `v-model:sort` | `null \| DataTableSort` | `null` | Tri courant (`{ key, direction }`), `null` sans tri |
+| `v-model:page` | `number` | `1` | Page courante (à partir de 1) |
+| `v-model:selected` | `(string \| number)[]` | `[]` | Clés des lignes sélectionnées (avec `selectable`) |
 
 ### DataTableColumn
 

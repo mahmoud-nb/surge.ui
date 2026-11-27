@@ -380,6 +380,8 @@ const handleAvatarClick = () => {
 | `badgeColor` | `string` | `undefined` | Couleur personnalisée du badge |
 | `loading` | `boolean` | `false` | État de chargement |
 | `clickable` | `boolean` | `false` | Avatar cliquable |
+| `badgeProps` | `BadgeProps` | - | Props transmises au Badge de l’avatar (variante, taille…) |
+| `loadingLabel` | `string` | - | Texte lu pendant le chargement de l’image (sinon traduit) |
 
 ### Attributs d'accessibilité
 

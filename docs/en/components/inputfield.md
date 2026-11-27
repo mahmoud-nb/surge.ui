@@ -196,6 +196,20 @@ import {
 | `textAlign` | `'left' \| 'center' \| 'right'` | `'left'` | Text alignment |
 | `label` | `string` | `undefined` | Input label |
 | `message` | `string` | `undefined` | Additional message |
+| `fieldId` | `string` | - | Control id, linked to the label (generated otherwise) |
+| `requiredText` | `string` | - | Screen reader text of the "required" asterisk (translated otherwise) |
+| `name` | `string` | - | Field name, for native form submission |
+| `prefixLabel` | `string` | - | Accessible name of the text prefix when it is clickable (`@prefix-click`) |
+| `prefixIconLabel` | `string` | - | Accessible name of the prefix icon when it is clickable (`@prefix-icon-click`) |
+| `suffixLabel` | `string` | - | Accessible name of the text suffix when it is clickable (`@suffix-click`) |
+| `suffixIconLabel` | `string` | - | Accessible name of the suffix icon when it is clickable (`@suffix-icon-click`) |
+| `autocomplete` | `string` | - | Native `autocomplete` attribute (`email`, `current-password`, `off`…) |
+| `min` | `string \| number` | - | Minimum value (`number`, `date`… types) |
+| `max` | `string \| number` | - | Maximum value (`number`, `date`… types) |
+| `step` | `string \| number` | - | Step between two values (`number`, `date`… types) |
+| `minLength` | `number` | - | Minimum number of characters (native validation) |
+| `maxLength` | `number` | - | Maximum number of characters |
+| `pattern` | `string` | - | Native validation regular expression |
 
 ### Events
 

@@ -72,13 +72,18 @@ for (const name of names) {
     file: `src/${files[name]}`,
     props: meta.props
       .filter((prop) => !prop.global && !eventProps.has(prop.name))
-      .map((prop) => ({
-        name: prop.name,
-        type: typeOf(prop),
-        required: prop.required || undefined,
-        default: prop.default,
-        description: clean(prop.description)
-      })),
+      .map((prop) => {
+        // @deprecated : la raison devient la description, signalée par deprecated: true
+        const deprecated = prop.tags?.find((tag) => tag.name === 'deprecated')
+        return {
+          name: prop.name,
+          type: typeOf(prop),
+          required: prop.required || undefined,
+          default: prop.default,
+          deprecated: deprecated ? true : undefined,
+          description: clean(prop.description) ?? (deprecated ? clean(`Obsolète. ${deprecated.text ?? ''}`) : undefined)
+        }
+      }),
     events,
     slots: meta.slots.map((slot) => ({
       name: slot.name,

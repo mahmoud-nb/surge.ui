@@ -314,6 +314,9 @@ const plans = [
 | `maxSelectedItems` | `number` | `undefined` | Multiple selection limit |
 | `label` | `string` | `undefined` | SelectBox label |
 | `message` | `string` | `undefined` | Displayed message |
+| `fieldId` | `string` | - | Control id, linked to the label (generated otherwise) |
+| `requiredText` | `string` | - | Screen reader text of the "required" asterisk (translated otherwise) |
+| `textAlign` | `'default' \| 'left' \| 'right' \| 'center'` | `'left'` | Alignment of the displayed text |
 
 ### Option types
 

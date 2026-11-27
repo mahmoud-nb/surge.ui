@@ -48,6 +48,29 @@ With `attached`, the items form a single block separated by dividers: a good fit
 | `multiple` | `boolean`                         | `false` | When `true`, several panels can be open at the same time.            |
 | `attached` | `boolean`                         | `false` | Groups the items in a single frame, separated by dividers (ignores `gap`). |
 | `gap`      | `'sm' \| 'md' \| 'lg' \| 'none'` | `'md'`  | Spacing between separated items.                                     |
+| `items` | `AccordionItemData[]` | `[]` | Panels described as data (`id`, `title`, `content`, `disabled`, `open`), instead of SuAccordionItem |
+| `v-model` | `(string \| number)[]` | `[]` | Ids of the open panels |
+| `level` | `1 \| 2 \| 3 \| 4 \| 5 \| 6` | `2` | Heading level of the panel headers (`h2` by default) |
+
+**AccordionItem**
+
+| Prop | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| `title` | `string` | - | Title shown in the button. Can be replaced with the `header` slot. |
+| `open` | `boolean` | `false` | Initial state (open or closed). |
+| `id` | `string` | - | Optional unique id of the item. |
+| `content` | `string` | - | Text content of the panel (default slot otherwise) |
+| `disabled` | `boolean` | `false` | Panel that cannot be expanded |
+| `level` | `1 \| 2 \| 3 \| 4 \| 5 \| 6` | `3` | Heading level of the header |
+
+### Slots
+
+**AccordionItem**
+
+| Slot | Description |
+| ---- | ----------- |
+| `header` | Replaces the content of the button title (props: `item`). |
+| `default` | Main content of the panel (props: `item`). |
 
 ## Accessibility
 

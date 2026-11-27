@@ -116,6 +116,9 @@ Image component with aspect ratio support, multiple sources, lazy loading, fallb
 | `height` | `string \| number` | `undefined` | Image height |
 | `placeholder` | `boolean` | `true` | Show placeholder during loading |
 | `placeholderColor` | `string` | `'#f3f4f6'` | Placeholder color |
+| `loadingAriaLabel` | `string` | - | Text added to the accessible name while loading (translated otherwise) |
+| `errorAriaLabel` | `string` | - | Text added to the accessible name on error (translated otherwise) |
+| `errorText` | `string` | - | Message shown when the image fails to load (translated otherwise) |
 
 ### Types
 

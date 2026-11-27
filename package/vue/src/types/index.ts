@@ -115,13 +115,16 @@ export interface CheckboxGroupProps extends AccessibilityProps {
   /** Nom des cases, pour la soumission native du formulaire */
   name?: string;
   options: CheckboxOption[];
+  /** @deprecated Sans effet : la valeur passe par `v-model`. */
   value?: (string | number)[];
   size?: Size;
   state?: State;
   disabled?: boolean;
   required?: boolean;
   displayType?: CheckboxDisplayType;
+  /** @deprecated Sans effet sur SuCheckboxGroup : utiliser SuCheckboxGroupField ou SuFormField. */
   label?: string;
+  /** @deprecated Sans effet sur SuCheckboxGroup : utiliser SuCheckboxGroupField ou SuFormField. */
   message?: string;
   direction?: 'horizontal' | 'vertical';
   maxSelections?: number;
@@ -144,6 +147,7 @@ export type FileUploadSize = 'sm' | 'md' | 'lg';
 export type FileUploadState = 'default' | 'error' | 'success' | 'warning';
 export type FileUploadVariant = 'default' | 'dashed' | 'solid' | 'minimal';
 export interface BaseFileUploadProps extends AccessibilityProps {
+  /** @deprecated Sans effet : les fichiers passent par `v-model`. */
   value?: UploadedFile[];
   variant?: FileUploadVariant;
   multiple?: boolean;
@@ -155,7 +159,9 @@ export interface BaseFileUploadProps extends AccessibilityProps {
   disabled?: boolean;
   readonly?: boolean;
   required?: boolean;
+  /** @deprecated Sans effet sur SuFileUpload : utiliser SuFileUploadField ou SuFormField. */
   label?: string;
+  /** @deprecated Sans effet sur SuFileUpload : utiliser SuFileUploadField ou SuFormField. */
   message?: string;
   placeholder?: string;
   dragText?: string;
@@ -302,6 +308,7 @@ export interface RadioOption {
 }
 export interface RadioGroupProps extends AccessibilityProps {
   options: RadioOption[];
+  /** @deprecated Sans effet : la valeur passe par `v-model`. */
   value?: string | number;
   name?: string;
   size?: Size;
@@ -309,7 +316,9 @@ export interface RadioGroupProps extends AccessibilityProps {
   disabled?: boolean;
   required?: boolean;
   displayType?: RadioDisplayType;
+  /** @deprecated Sans effet sur SuRadioGroup : utiliser SuRadioGroupField ou SuFormField. */
   label?: string;
+  /** @deprecated Sans effet sur SuRadioGroup : utiliser SuRadioGroupField ou SuFormField. */
   message?: string;
   direction?: 'horizontal' | 'vertical';
   maxHeight?: string | null;
@@ -369,6 +378,7 @@ export interface SliderProps extends AccessibilityProps {
   showTicks?: boolean;
   showLabels?: boolean;
   formatValue?: (value: number) => string;
+  /** @deprecated Sans effet sur SuSlider : utiliser SuSliderField, SuFormField ou ariaLabel. */
   label?: string;
   message?: string;
   ariaInvalid?: boolean;
@@ -560,6 +570,7 @@ export interface TextareaProps extends AccessibilityProps {
   readonly?: boolean;
   required?: boolean;
   placeholder?: string;
+  /** @deprecated Sans effet : la valeur passe par `v-model`. */
   value?: string;
   rows?: number;
   minRows?: number;
@@ -1132,7 +1143,7 @@ export interface SliderFieldProps extends AccessibilityProps {
 }
 
 // CheckboxGroupField.vue
-export type CheckboxGroupFieldProps = FormFieldProps & CheckboxGroupProps
+export type CheckboxGroupFieldProps = FormFieldProps & Omit<CheckboxGroupProps, 'label' | 'message' | 'value'>
 
 // InputField.vue
 export type InputFieldProps = FormFieldProps & InputProps
@@ -1141,7 +1152,7 @@ export type InputFieldProps = FormFieldProps & InputProps
 export type PasswordFieldProps = FormFieldProps & PasswordProps
 
 // RadioGroupField.vue
-export type RadioGroupFieldProps = FormFieldProps & RadioGroupProps
+export type RadioGroupFieldProps = FormFieldProps & Omit<RadioGroupProps, 'label' | 'message' | 'value'>
 
 // SelectBoxField.vue
 export type SelectBoxFieldProps = FormFieldProps & SelectBoxProps
@@ -1150,7 +1161,7 @@ export type SelectBoxFieldProps = FormFieldProps & SelectBoxProps
 export type SwitchFieldProps = FormFieldProps & SwitchProps
 
 // TextareaField.vue
-export type TextareaFieldProps = FormFieldProps & TextareaProps
+export type TextareaFieldProps = FormFieldProps & Omit<TextareaProps, 'value'>
 
 // NumberInputField.vue
 export type NumberInputFieldProps = FormFieldProps & NumberInputProps

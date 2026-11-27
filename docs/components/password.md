@@ -428,6 +428,29 @@ const handleValidation = (validation) => {
 | `rules` | `PasswordRules` | `{ minLength: 8, minUppercase: 1, minLowercase: 1, minDigits: 1, minSpecialChars: 1 }` | Règles de validation du mot de passe |
 | `showProgress` | `boolean` | `false` | Afficher la barre de progression de force |
 | `showToggle` | `boolean` | `true` | Afficher le bouton toggle de visibilité |
+| `name` | `string` | - | Nom du champ, pour la soumission native du formulaire |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Taille du champ |
+| `required` | `boolean` | `false` | Champ requis |
+| `placeholder` | `string` | - | Texte indicatif |
+| `max` | `string \| number` | - | Valeur maximale (types `number`, `date`…) |
+| `disabled` | `boolean` | `false` | Champ désactivé |
+| `min` | `string \| number` | - | Valeur minimale (types `number`, `date`…) |
+| `state` | `'default' \| 'success' \| 'warning' \| 'error'` | `'default'` | État de validation |
+| `prefix` | `string` | - | Texte avant la saisie |
+| `suffix` | `string` | - | Texte après la saisie |
+| `autocomplete` | `string` | - | Attribut `autocomplete` natif (`email`, `current-password`, `off`…) |
+| `readonly` | `boolean` | `false` | Lecture seule |
+| `prefixIcon` | `Component` | - | Icône avant la saisie |
+| `prefixLabel` | `string` | - | Nom accessible du préfixe texte quand il est cliquable (`@prefix-click`) |
+| `prefixIconLabel` | `string` | - | Nom accessible de l’icône de préfixe quand elle est cliquable (`@prefix-icon-click`) |
+| `suffixLabel` | `string` | - | Nom accessible du suffixe texte quand il est cliquable (`@suffix-click`) |
+| `suffixIconLabel` | `string` | - | Nom accessible de l’icône de suffixe quand elle est cliquable (`@suffix-icon-click`) |
+| `textAlign` | `'default' \| 'left' \| 'right' \| 'center'` | - | Alignement du texte saisi |
+| `step` | `string \| number` | - | Pas entre deux valeurs (types `number`, `date`…) |
+| `minLength` | `number` | - | Nombre minimal de caractères (validation native) |
+| `maxLength` | `number` | - | Nombre maximal de caractères |
+| `pattern` | `string` | - | Expression régulière de validation native |
+| `v-model` | `string` | `''` | Mot de passe saisi |
 
 **Hérite de toutes les props du composant Input** : `size`, `state`, `disabled`, `readonly`, `required`, `placeholder`, `label`, `message`, etc.
 
@@ -460,6 +483,17 @@ interface PasswordValidation {
   }
 }
 ```
+
+### Props (PasswordField)
+
+`SuPasswordField` accepte les props ci-dessus, et celles du champ :
+
+| Prop | Type | Défaut | Description |
+|------|------|--------|-------------|
+| `label` | `string` | - | Label du champ |
+| `message` | `string` | - | Message d'aide ou d'erreur, relié par `aria-describedby` |
+| `requiredText` | `string` | - | Texte de l'astérisque « requis » pour les lecteurs d'écran (sinon traduit) |
+| `fieldId` | `string` | - | Id du contrôle, relié au label (sinon généré) |
 
 ### Events
 

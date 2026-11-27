@@ -225,6 +225,7 @@ Désactivé ou en chargement, le lien perd sa destination : il n'est plus atteig
 | `ariaPressed` | `boolean` | `undefined` | Indique l'état pressé d'un bouton toggle |
 | `role` | `string` | `undefined` | Rôle ARIA personnalisé |
 | `tabIndex` | `number` | `0` | Ordre de tabulation |
+| `loadingLabel` | `string` | - | Texte lu pendant le chargement (sinon traduit) |
 
 ### Events
 

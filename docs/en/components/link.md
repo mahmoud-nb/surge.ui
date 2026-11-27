@@ -105,6 +105,7 @@ import { HomeIcon, ArrowRightIcon, UserIcon, ArrowTopRightOnSquareIcon } from '@
 | `externalLabel` | `string` | `"(s'ouvre dans un nouvel onglet)"` | Text read by screen readers when the link opens in a new tab |
 | `icon` | `Component` | `undefined` | Icon to display |
 | `iconDisplay` | `'top' \| 'left' \| 'right' \| 'only'` | `'left'` | Icon position |
+| `block` | `boolean` | - | Block link, full width |
 
 ### Accessibility Attributes
 

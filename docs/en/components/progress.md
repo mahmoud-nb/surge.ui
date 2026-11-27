@@ -113,6 +113,13 @@ The bar will animate to indicate ongoing activity without a defined completion p
 | `max`           | `number`                  | `100`                 | The maximum progress value.                 |
 | `indeterminate` | `boolean`                 | `false`               | Displays an animated, indeterminate progress bar. |
 | `formatValue`   | `(val: number) => string` | `(val) => \`${val}%`` | Custom function to format the displayed label.|
+| `min` | `number` | `0` | Minimum value |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Bar thickness |
+| `color` | `string` | - | Bar color (CSS) |
+| `backgroundColor` | `string` | - | Track color (CSS) |
+| `state` | `'default' \| 'success' \| 'warning' \| 'error'` | `'default'` | State (bar color) |
+| `showLabel` | `boolean` | `false` | Shows the percentage |
+| `indeterminateLabel` | `string` | - | Text shown and read in indeterminate mode (translated otherwise) |
 
 ### Accessibility attributes
 

@@ -84,7 +84,6 @@ Le composant Alert permet d'afficher des messages importants et contextuels à l
     title="Notification"
     description="Cette alerte peut être fermée."
     dismissible
-    @dismiss="handleDismiss"
   />
 </div>
 
@@ -110,13 +109,30 @@ const handleDismiss = () => {
 
 ### Props
 
-### Attributs d'accessibilité
-
-### Attributs de validation HTML
+| Prop | Type | Défaut | Description |
+|------|------|--------|-------------|
+| `type` | `'success' \| 'warning' \| 'error' \| 'info' \| 'neutral'` | `'info'` | Type (couleur et icône) |
+| `title` | `string` | - | Titre (sinon slot `title`) |
+| `description` | `string` | - | Texte (sinon slot `description`) |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Taille |
+| `dismissible` | `boolean` | `false` | Bouton de fermeture |
+| `dismissLabel` | `string` | - | Nom accessible du bouton de fermeture (sinon traduit) |
+| `ariaLive` | `'polite' \| 'assertive' \| 'off'` | `'polite'` | Politesse de l'annonce aux lecteurs d'écran |
+| `ariaAtomic` | `boolean` | `true` | Relit toute l'alerte quand elle change |
 
 ### Events
 
+| Event | Payload | Description |
+|-------|---------|-------------|
+| `dismiss` | - | Clic sur le bouton de fermeture ; la page retire l'alerte |
+
 ### Slots
+
+| Slot | Description |
+|------|-------------|
+| `title` | Remplace le titre |
+| `description` | Remplace le texte |
+| `default` | Contenu supplémentaire sous la description (actions, liens) |
 
 ## Accessibilité
 
@@ -125,13 +141,13 @@ Le composant Alert respecte les normes WCAG 2.1 AA et les bonnes pratiques W3C p
 ### Fonctionnalités d'accessibilité
 
 - Rôle ARIA approprié : Utilise role="alert" pour identifier l'élément comme une alerte
-- Annonces screen reader : Support de aria-live avec différents niveaux de politesse (assertive pour les alertescritiques, polite pour les informations)
+- Annonces screen reader : Support de aria-live avec différents niveaux de politesse (assertive pour les alertes critiques, polite pour les informations)
 - Navigation au clavier : Le bouton de fermeture est entièrement navigable et actionnable au clavier
 - Contraste des couleurs : Les couleurs respectent les ratios de contraste WCAG AA
 - Support RTL : Interface adaptée aux langues de droite à gauche
 - Mode sombre : Thème adapté aux préférences système
-- Haute contraste : Adaptation aux paramètres de contraste élevé
-- Réduction des animations : Respect des préférences de réduction de mouvemen
+- Contraste élevé : Adaptation aux paramètres de contraste élevé
+- Réduction des animations : Respect des préférences de réduction de mouvement
 
 ## Exemples d'usage avancés
 

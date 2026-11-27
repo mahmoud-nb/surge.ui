@@ -442,6 +442,8 @@ const accountOptions = [
 | `maxHeight` | `string` | `null` | Hauteur maximale avec scroll automatique |
 | `label` | `string` | `undefined` | Label du groupe |
 | `message` | `string` | `undefined` | Message affiché (style déterminé par le state) |
+| `fieldId` | `string` | - | Id du contrôle, relié au label (sinon généré) |
+| `requiredText` | `string` | - | Texte de l’astérisque « requis » pour les lecteurs d’écran (sinon traduit) |
 
 ### Types d'options
 

@@ -96,6 +96,29 @@ const strictRules = {
 | `rules` | `PasswordRules` | `{ minLength: 8, minUppercase: 1, minLowercase: 1, minDigits: 1, minSpecialChars: 1 }` | Password validation rules |
 | `showProgress` | `boolean` | `false` | Show strength progress bar |
 | `showToggle` | `boolean` | `true` | Show visibility toggle button |
+| `name` | `string` | - | Field name, for native form submission |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Field size |
+| `required` | `boolean` | `false` | Required field |
+| `placeholder` | `string` | - | Placeholder text |
+| `max` | `string \| number` | - | Maximum value (`number`, `date`… types) |
+| `disabled` | `boolean` | `false` | Disabled field |
+| `min` | `string \| number` | - | Minimum value (`number`, `date`… types) |
+| `state` | `'default' \| 'success' \| 'warning' \| 'error'` | `'default'` | Validation state |
+| `prefix` | `string` | - | Text before the input |
+| `suffix` | `string` | - | Text after the input |
+| `autocomplete` | `string` | - | Native `autocomplete` attribute (`email`, `current-password`, `off`…) |
+| `readonly` | `boolean` | `false` | Read-only |
+| `prefixIcon` | `Component` | - | Icon before the input |
+| `prefixLabel` | `string` | - | Accessible name of the text prefix when it is clickable (`@prefix-click`) |
+| `prefixIconLabel` | `string` | - | Accessible name of the prefix icon when it is clickable (`@prefix-icon-click`) |
+| `suffixLabel` | `string` | - | Accessible name of the text suffix when it is clickable (`@suffix-click`) |
+| `suffixIconLabel` | `string` | - | Accessible name of the suffix icon when it is clickable (`@suffix-icon-click`) |
+| `textAlign` | `'default' \| 'left' \| 'right' \| 'center'` | - | Alignment of the typed text |
+| `step` | `string \| number` | - | Step between two values (`number`, `date`… types) |
+| `minLength` | `number` | - | Minimum number of characters (native validation) |
+| `maxLength` | `number` | - | Maximum number of characters |
+| `pattern` | `string` | - | Native validation regular expression |
+| `v-model` | `string` | `''` | Typed password |
 
 **Inherits all props from Input component**: `size`, `state`, `disabled`, `readonly`, `required`, `placeholder`, `label`, `message`, etc.
 
@@ -128,6 +151,17 @@ interface PasswordValidation {
   }
 }
 ```
+
+### Props (PasswordField)
+
+`SuPasswordField` takes the props above, plus the field props:
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `label` | `string` | - | Field label |
+| `message` | `string` | - | Help or error message, linked through `aria-describedby` |
+| `requiredText` | `string` | - | Screen reader text of the "required" asterisk (translated otherwise) |
+| `fieldId` | `string` | - | Control id, linked to the label (generated otherwise) |
 
 ### Events
 

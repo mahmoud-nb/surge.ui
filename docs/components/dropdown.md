@@ -519,6 +519,7 @@ const selectView = (option) => {
 | `label` | `string` | `undefined` | Label du bouton ; nom accessible avec une icône seule |
 | `closeOnSelect` | `boolean` | `true` | Fermer après sélection |
 | `maxHeight` | `string` | `'300px'` | Hauteur maximale du menu |
+| `loadingLabel` | `string` | - | Texte lu pendant le chargement (sinon traduit) |
 
 Les attributs non déclarés comme props (`id`, `aria-*`, `data-*`, écouteurs) vont sur le bouton déclencheur ; `class` et `style` restent sur le conteneur. Un `id` n'apparaît donc qu'une fois, sur le bouton que le menu référence (`aria-labelledby`).
 

@@ -461,6 +461,8 @@ import { UserIcon, InformationCircleIcon } from '@heroicons/vue/24/outline'
 | `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Field size |
 | `required` | `boolean` | `false` | Indicates if field is required |
 | `disabled` | `boolean` | `false` | Disables the field |
+| `fieldId` | `string` | - | Control id, linked to the label (generated otherwise) |
+| `requiredText` | `string` | - | Screen reader text of the "required" asterisk (translated otherwise) |
 
 ### Slots
 
