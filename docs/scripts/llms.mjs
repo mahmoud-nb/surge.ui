@@ -9,7 +9,7 @@
 // L'ordre et les catégories suivent la barre latérale (nav.ts).
 // ============================================================
 
-import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs'
+import { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join, relative, resolve, sep } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { getNavItems } from '../.vitepress/nav.ts'
@@ -119,6 +119,13 @@ for (const file of listPages(docsDir)) {
   writeFileSync(target, markdown)
 }
 
+// ### Manifeste d'API de la bibliothèque (package/vue/dist/api.json, construit avant la doc)
+
+const apiSource = resolve(docsDir, '../package/vue/dist/api.json')
+const hasApi = existsSync(apiSource)
+if (hasApi) copyFileSync(apiSource, join(distDir, 'api.json'))
+else console.warn('package/vue/dist/api.json absent : lancer npm run build:lib avant la doc pour publier /api.json')
+
 // ### Sommaire et documentation complète, par langue
 
 const text = {
@@ -143,6 +150,7 @@ const text = {
       optional: 'Optional'
     },
     full: 'Full documentation in one file',
+    api: 'API manifest (JSON): props, events, slots and exposed methods of every component, extracted from the types',
     other: 'Documentation en français',
     agents: 'Usage guide shipped with the npm package (AGENTS.md)'
   },
@@ -167,6 +175,7 @@ const text = {
       optional: 'Facultatif'
     },
     full: 'Toute la documentation en un fichier',
+    api: 'Manifeste d\'API (JSON) : props, événements, slots et méthodes exposées de chaque composant, extraits des types',
     other: 'English documentation',
     agents: 'Guide d\'usage livré avec le paquet npm (AGENTS.md, en anglais)'
   }
@@ -222,6 +231,7 @@ const build = (lang) => {
     `## ${t.sections.optional}`,
     '',
     `- [${t.full}](${siteUrl}llms-full${suffix}.txt)`,
+    ...(hasApi ? [`- [${t.api}](${siteUrl}api.json)`] : []),
     `- [${t.other}](${siteUrl}${lang === 'en' ? 'llms-fr.txt' : 'llms.txt'})`,
     `- [${t.agents}](https://github.com/mahmoud-nb/surge.ui/blob/main/package/vue/AGENTS.md)`,
     ''
