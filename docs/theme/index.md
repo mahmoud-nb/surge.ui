@@ -162,7 +162,7 @@ Le composable `useTheme` est le point d'entrée principal pour gérer les thème
 
 ```vue
 <script setup lang="ts">
-import { useTheme } from '@surgeui/ds-vue';
+import { useTheme } from '@surgeui/vue';
 
 const {
   // État réactif
@@ -219,7 +219,7 @@ useTheme({
 </template>
 
 <script setup lang="ts">
-import { useTheme } from '@surgeui/ds-vue';
+import { useTheme } from '@surgeui/vue';
 
 const { setTheme } = useTheme();
 </script>
@@ -235,7 +235,7 @@ const { setTheme } = useTheme();
 </template>
 
 <script setup lang="ts">
-import { useTheme } from '@surgeui/ds-vue';
+import { useTheme } from '@surgeui/vue';
 
 const { setThemeMode } = useTheme();
 </script>
@@ -251,7 +251,7 @@ const { setThemeMode } = useTheme();
 </template>
 
 <script setup lang="ts">
-import { useTheme } from '@surgeui/ds-vue';
+import { useTheme } from '@surgeui/vue';
 
 const { toggleMode, isDarkMode } = useTheme();
 </script>
@@ -267,7 +267,7 @@ const { toggleMode, isDarkMode } = useTheme();
 </template>
 
 <script setup lang="ts">
-import { useTheme } from '@surgeui/ds-vue';
+import { useTheme } from '@surgeui/vue';
 
 const { cycleTheme, effectiveTheme } = useTheme();
 </script>
@@ -327,7 +327,7 @@ Le système supporte automatiquement le mode contraste élevé, essentiel pour l
 
 ```vue
 <script setup lang="ts">
-import { useTheme } from '@surgeui/ds-vue';
+import { useTheme } from '@surgeui/vue';
 
 const { effectiveContrast, systemContrast } = useTheme();
 // effectiveContrast: 'normal' | 'high'
@@ -347,7 +347,7 @@ const { effectiveContrast, systemContrast } = useTheme();
 </template>
 
 <script setup lang="ts">
-import { useTheme } from '@surgeui/ds-vue';
+import { useTheme } from '@surgeui/vue';
 
 const { contrastMode, setContrast } = useTheme();
 </script>
@@ -366,7 +366,7 @@ Respect de `prefers-reduced-motion` pour les utilisateurs sensibles aux mouvemen
 
 ```vue
 <script setup lang="ts">
-import { useTheme } from '@surgeui/ds-vue';
+import { useTheme } from '@surgeui/vue';
 
 const { motionMode, setMotion } = useTheme();
 </script>
@@ -479,7 +479,7 @@ Le composable `useCustomTheme` permet de gérer les variables CSS custom de mani
 
 ```vue
 <script setup lang="ts">
-import { useCustomTheme } from '@surgeui/ds-vue'
+import { useCustomTheme } from '@surgeui/vue'
 
 const {
   applyCustomTheme,    // Applique un thème custom entier
@@ -498,7 +498,7 @@ const {
 
 ```vue
 <script setup lang="ts">
-import { useCustomTheme } from '@surgeui/ds-vue'
+import { useCustomTheme } from '@surgeui/vue'
 
 const { applyCustomTheme } = useCustomTheme()
 
@@ -528,7 +528,7 @@ const applyBrandTheme = () => {
 
 ```vue
 <script setup lang="ts">
-import { useCustomTheme } from '@surgeui/ds-vue'
+import { useCustomTheme } from '@surgeui/vue'
 
 const { setCustomVariable } = useCustomTheme()
 
@@ -554,8 +554,8 @@ const handleColorChange = (color: string) => {
 
 ```vue
 <script setup lang="ts">
-import { useTheme } from '@surgeui/ds-vue'
-import { useCustomTheme } from '@surgeui/ds-vue'
+import { useTheme } from '@surgeui/vue'
+import { useCustomTheme } from '@surgeui/vue'
 
 const { setTheme, setThemeMode } = useTheme()
 const { setCustomVariable } = useCustomTheme()
@@ -822,7 +822,7 @@ interface UseThemeOptions {
 </template>
 
 <script setup lang="ts">
-import { useTheme } from '@surgeui/ds-vue';
+import { useTheme } from '@surgeui/vue';
 import ThemeToggle from '@/components/ThemeToggle.vue';
 import ThemeSelector from '@/components/ThemeSelector.vue';
 
@@ -851,7 +851,7 @@ useTheme();
 ```vue
 <script setup lang="ts">
 import { watch } from 'vue';
-import { useTheme } from '@surgeui/ds-vue';
+import { useTheme } from '@surgeui/vue';
 
 const { themeName, themeMode, effectiveThemeMode } = useTheme({
   defaultTheme: 'default',

@@ -103,7 +103,7 @@ const page = ref(1)
 | `update:modelValue` | `number` | New page (v-model) |
 | `change` | `number` | Page changed by the user |
 
-The page computation is exported on its own, for a custom pagination: `import { getPaginationItems } from '@surgeui/ds-vue'`, then `getPaginationItems({ page, count, siblings, boundaries })` returns the numbers and ellipses (`'ellipsis-start'`, `'ellipsis-end'`).
+The page computation is exported on its own, for a custom pagination: `import { getPaginationItems } from '@surgeui/vue'`, then `getPaginationItems({ page, count, siblings, boundaries })` returns the numbers and ellipses (`'ellipsis-start'`, `'ellipsis-end'`).
 
 ## Accessibility
 

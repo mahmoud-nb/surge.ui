@@ -6,18 +6,22 @@
 
 ## Installation 
 
+::: tip Nouveau nom
+Depuis la 4.0.0, le paquet s'appelle `@surgeui/vue` (anciennement `@surgeui/ds-vue`). Voir la [migration vers la 4.0](/guide/migration).
+:::
+
 ::: code-group
 
 ```bash [npm]
-npm install @surgeui/ds-vue
+npm install @surgeui/vue
 ```
 
 ```bash [yarn]
-yarn add @surgeui/ds-vue
+yarn add @surgeui/vue
 ```
 
 ```bash [pnpm]
-pnpm add @surgeui/ds-vue
+pnpm add @surgeui/vue
 ```
 
 :::
@@ -29,8 +33,8 @@ pnpm add @surgeui/ds-vue
 ```ts
 // main.ts
 import { createApp } from 'vue'
-import SurgeUI from '@surgeui/ds-vue'
-import '@surgeui/ds-vue/style.css'
+import SurgeUI from '@surgeui/vue'
+import '@surgeui/vue/style.css'
 import App from './App.vue'
 
 const app = createApp(App)
@@ -42,9 +46,9 @@ app.mount('#app')
 
 ```vue
 <script setup lang="ts">
-import '@surgeui/ds-vue/style.css'
-import { Button as SuButton } from '@surgeui/ds-vue'
-import type { ButtonProps } from '@surgeui/ds-vue/types'
+import '@surgeui/vue/style.css'
+import { Button as SuButton } from '@surgeui/vue'
+import type { ButtonProps } from '@surgeui/vue/types'
 </script>
 
 <template>
@@ -59,7 +63,7 @@ import type { ButtonProps } from '@surgeui/ds-vue/types'
 ```ts
 // main.ts
 import { createApp } from 'vue'
-import SurgeUI from '@surgeui/ds-vue'
+import SurgeUI from '@surgeui/vue'
 
 const app = createApp(App)
 
@@ -107,7 +111,7 @@ app.use(SurgeUI, {
 Les textes par défaut des composants (libellés accessibles, messages, annonces aux lecteurs d'écran) sont en français. Passez une autre locale au plugin (`locales.fr`, `locales.en` ou `locales.ar`) :
 
 ```ts
-import SurgeUI, { locales } from '@surgeui/ds-vue'
+import SurgeUI, { locales } from '@surgeui/vue'
 
 app.use(SurgeUI, { locale: locales.en })
 ```
@@ -129,7 +133,7 @@ Voir [useLocale](/composables/uselocale) pour personnaliser des messages, branch
 La prop `to` de SuButton, SuLink, SuBreadcrumb (éléments), SuDropdown (options), SuCommandPalette (commandes) et SuTabs (onglets de navigation) navigue sans recharger la page. Le lien est rendu par RouterLink s'il est enregistré (Vue Router, Nuxt), sinon par un simple `<a href>`. L'option `linkComponent` impose un autre composant :
 
 ```ts
-import SurgeUI from '@surgeui/ds-vue'
+import SurgeUI from '@surgeui/vue'
 import { NuxtLink } from '#components'
 
 app.use(SurgeUI, { linkComponent: NuxtLink })
@@ -147,7 +151,7 @@ Importez plutôt `style.layer.css`, la même feuille dans la couche `surgeui`, e
 /* main.css — Tailwind 4 */
 @layer theme, base, surgeui, components, utilities;
 @import "tailwindcss";
-@import "@surgeui/ds-vue/style.layer.css";
+@import "@surgeui/vue/style.layer.css";
 ```
 
 Les utilitaires l'emportent alors sur les styles des composants, et les styles des composants sur la base de Tailwind (preflight).
@@ -157,7 +161,7 @@ Tailwind 3 et UnoCSS n'utilisent pas de couches CSS : gardez `style.css`, import
 ```css
 /* main.css — Tailwind 3 avec postcss-import */
 @import "tailwindcss/base";
-@import "@surgeui/ds-vue/style.css";
+@import "@surgeui/vue/style.css";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 ```
@@ -168,13 +172,13 @@ Tailwind 3 et UnoCSS n'utilisent pas de couches CSS : gardez `style.css`, import
 
 ### Préréglage Tailwind
 
-`@surgeui/ds-vue/tailwind.css` (Tailwind 4) transforme les couleurs, rayons et ombres de SurgeUI en utilitaires, pour styliser vos pages avec la même source de couleurs que les composants :
+`@surgeui/vue/tailwind.css` (Tailwind 4) transforme les couleurs, rayons et ombres de SurgeUI en utilitaires, pour styliser vos pages avec la même source de couleurs que les composants :
 
 ```css
 @layer theme, base, surgeui, components, utilities;
 @import "tailwindcss";
-@import "@surgeui/ds-vue/style.layer.css";
-@import "@surgeui/ds-vue/tailwind.css";
+@import "@surgeui/vue/style.layer.css";
+@import "@surgeui/vue/tailwind.css";
 ```
 
 ```vue
@@ -206,8 +210,8 @@ Le design system inclut des types TypeScript complets pour les imports.
 
 ```vue
 <script setup lang="ts">
-import { Button as SuButton } from '@surgeui/ds-vue'
-import type { ButtonVariant } from '@surgeui/ds-vue'
+import { Button as SuButton } from '@surgeui/vue'
+import type { ButtonVariant } from '@surgeui/vue'
 
 const variant: ButtonVariant = 'primary'
 </script>
@@ -221,7 +225,7 @@ Avec `app.use(SurgeUI)`, `<SuButton>`, `<SuDialog>`… sont enregistrés globale
 // tsconfig.json
 {
   "compilerOptions": {
-    "types": ["@surgeui/ds-vue/global"]
+    "types": ["@surgeui/vue/global"]
   }
 }
 ```
@@ -230,7 +234,7 @@ Ces types couvrent le préfixe par défaut `Su`. Avec un autre préfixe, déclar
 
 ```ts
 // surgeui.d.ts
-import type { SurgeGlobalComponents } from '@surgeui/ds-vue'
+import type { SurgeGlobalComponents } from '@surgeui/vue'
 
 declare module 'vue' {
   interface GlobalComponents extends SurgeGlobalComponents<'My'> {}

@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue'
-import { useConfirm } from '@surgeui/ds-vue'
+import { useConfirm } from '@surgeui/vue'
 
 const { confirm } = useConfirm()
 const result = ref('—')
@@ -53,7 +53,7 @@ Confirms an action before running it, with a promise: `await confirm({...})` ret
 
 ```vue
 <script setup>
-import { useConfirm } from '@surgeui/ds-vue'
+import { useConfirm } from '@surgeui/vue'
 
 const { confirm } = useConfirm()
 

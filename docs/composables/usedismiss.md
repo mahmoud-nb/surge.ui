@@ -7,7 +7,7 @@ Ferme un élément superposé (popover, menu, liste déroulante, panneau) avec �
 ```vue
 <script setup>
 import { ref } from 'vue'
-import { useDismiss } from '@surgeui/ds-vue'
+import { useDismiss } from '@surgeui/vue'
 
 const isOpen = ref(false)
 const triggerRef = ref()

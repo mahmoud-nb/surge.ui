@@ -11,7 +11,7 @@ Un `<dialog>` ouvert avec `showModal()` piège déjà le focus nativement et ren
 ```vue
 <script setup>
 import { ref } from 'vue'
-import { useFocusTrap } from '@surgeui/ds-vue'
+import { useFocusTrap } from '@surgeui/vue'
 
 const isOpen = ref(false)
 const panelRef = ref()

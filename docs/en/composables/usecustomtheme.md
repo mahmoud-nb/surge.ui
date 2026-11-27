@@ -6,7 +6,7 @@ Composable for injecting custom CSS variables at runtime. Override design system
 
 ```vue
 <script setup>
-import { useCustomTheme } from '@surgeui/ds-vue'
+import { useCustomTheme } from '@surgeui/vue'
 
 const { setVariable, setVariables, removeVariable, clearAll } = useCustomTheme()
 
@@ -28,7 +28,7 @@ setVariables({
 
 ```vue
 <script setup>
-import { useCustomTheme } from '@surgeui/ds-vue'
+import { useCustomTheme } from '@surgeui/vue'
 
 const { setVariables } = useCustomTheme()
 
@@ -47,7 +47,7 @@ function applyBranding(brand) {
 
 ```vue
 <script setup>
-import { useCustomTheme } from '@surgeui/ds-vue'
+import { useCustomTheme } from '@surgeui/vue'
 
 const { removeVariable, clearAll } = useCustomTheme()
 

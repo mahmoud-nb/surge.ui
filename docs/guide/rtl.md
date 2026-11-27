@@ -15,7 +15,7 @@ Le sens peut changer sans recharger la page (sélecteur de langue) : les composa
 Pour les textes par défaut des composants en arabe, utilisez la locale fournie, ou `'auto'` qui suit `<html lang>` :
 
 ```ts
-import SurgeUI from '@surgeui/ds-vue'
+import SurgeUI from '@surgeui/vue'
 
 app.use(SurgeUI, { locale: 'auto' })
 ```

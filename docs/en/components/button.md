@@ -360,8 +360,8 @@ You can configure default button values when installing the design system:
 ```js
 // main.js
 import { createApp } from 'vue'
-import SurgeUI from '@surgeui/ds-vue'
-import '@surgeui/ds-vue/style.css'
+import SurgeUI from '@surgeui/vue'
+import '@surgeui/vue/style.css'
 
 const app = createApp(App)
 

@@ -6,18 +6,22 @@
 
 ## Installation
 
+::: tip New name
+Since 4.0.0, the package is named `@surgeui/vue` (formerly `@surgeui/ds-vue`). See [Migrating to 4.0](/en/guide/migration).
+:::
+
 ::: code-group
 
 ```bash [npm]
-npm install @surgeui/ds-vue
+npm install @surgeui/vue
 ```
 
 ```bash [yarn]
-yarn add @surgeui/ds-vue
+yarn add @surgeui/vue
 ```
 
 ```bash [pnpm]
-pnpm add @surgeui/ds-vue
+pnpm add @surgeui/vue
 ```
 
 :::
@@ -29,8 +33,8 @@ pnpm add @surgeui/ds-vue
 ```ts
 // main.ts
 import { createApp } from 'vue'
-import SurgeUI from '@surgeui/ds-vue'
-import '@surgeui/ds-vue/style.css'
+import SurgeUI from '@surgeui/vue'
+import '@surgeui/vue/style.css'
 import App from './App.vue'
 
 const app = createApp(App)
@@ -42,9 +46,9 @@ app.mount('#app')
 
 ```vue
 <script setup lang="ts">
-import '@surgeui/ds-vue/style.css'
-import { Button as SuButton } from '@surgeui/ds-vue'
-import type { ButtonProps } from '@surgeui/ds-vue/types'
+import '@surgeui/vue/style.css'
+import { Button as SuButton } from '@surgeui/vue'
+import type { ButtonProps } from '@surgeui/vue/types'
 </script>
 
 <template>
@@ -59,7 +63,7 @@ import type { ButtonProps } from '@surgeui/ds-vue/types'
 ```js
 // main.js
 import { createApp } from 'vue'
-import SurgeUI from '@surgeui/ds-vue'
+import SurgeUI from '@surgeui/vue'
 
 const app = createApp(App)
 
@@ -107,7 +111,7 @@ app.use(SurgeUI, {
 Default component texts (accessible labels, messages, screen reader announcements) are in French. Pass another locale to the plugin (`locales.fr`, `locales.en` or `locales.ar`):
 
 ```ts
-import SurgeUI, { locales } from '@surgeui/ds-vue'
+import SurgeUI, { locales } from '@surgeui/vue'
 
 app.use(SurgeUI, { locale: locales.en })
 ```
@@ -129,7 +133,7 @@ See [useLocale](/en/composables/uselocale) to customize messages, plug in vue-i1
 The `to` prop of SuButton, SuLink, SuBreadcrumb (items), SuDropdown (options), SuCommandPalette (commands) and SuTabs (navigation tabs) navigates without reloading the page. The link is rendered by RouterLink when registered (Vue Router, Nuxt), otherwise by a plain `<a href>`. The `linkComponent` option sets another component:
 
 ```ts
-import SurgeUI from '@surgeui/ds-vue'
+import SurgeUI from '@surgeui/vue'
 import { NuxtLink } from '#components'
 
 app.use(SurgeUI, { linkComponent: NuxtLink })
@@ -147,7 +151,7 @@ Import `style.layer.css` instead: the same stylesheet inside the `surgeui` layer
 /* main.css — Tailwind 4 */
 @layer theme, base, surgeui, components, utilities;
 @import "tailwindcss";
-@import "@surgeui/ds-vue/style.layer.css";
+@import "@surgeui/vue/style.layer.css";
 ```
 
 Utilities then win over component styles, and component styles win over Tailwind's base (preflight).
@@ -157,7 +161,7 @@ Tailwind 3 and UnoCSS do not use CSS layers: keep `style.css`, imported after th
 ```css
 /* main.css — Tailwind 3 with postcss-import */
 @import "tailwindcss/base";
-@import "@surgeui/ds-vue/style.css";
+@import "@surgeui/vue/style.css";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 ```
@@ -168,13 +172,13 @@ Tailwind 3 and UnoCSS do not use CSS layers: keep `style.css`, imported after th
 
 ### Tailwind preset
 
-`@surgeui/ds-vue/tailwind.css` (Tailwind 4) turns SurgeUI colors, radii and shadows into utilities, so your pages use the same color source as the components:
+`@surgeui/vue/tailwind.css` (Tailwind 4) turns SurgeUI colors, radii and shadows into utilities, so your pages use the same color source as the components:
 
 ```css
 @layer theme, base, surgeui, components, utilities;
 @import "tailwindcss";
-@import "@surgeui/ds-vue/style.layer.css";
-@import "@surgeui/ds-vue/tailwind.css";
+@import "@surgeui/vue/style.layer.css";
+@import "@surgeui/vue/tailwind.css";
 ```
 
 ```vue
@@ -206,8 +210,8 @@ The design system includes complete TypeScript types for imports.
 
 ```vue
 <script setup lang="ts">
-import { Button as SuButton } from '@surgeui/ds-vue'
-import type { ButtonVariant } from '@surgeui/ds-vue'
+import { Button as SuButton } from '@surgeui/vue'
+import type { ButtonVariant } from '@surgeui/vue'
 
 const variant: ButtonVariant = 'primary'
 </script>
@@ -221,7 +225,7 @@ With `app.use(SurgeUI)`, `<SuButton>`, `<SuDialog>`… are registered globally. 
 // tsconfig.json
 {
   "compilerOptions": {
-    "types": ["@surgeui/ds-vue/global"]
+    "types": ["@surgeui/vue/global"]
   }
 }
 ```
@@ -230,7 +234,7 @@ These types cover the default `Su` prefix. With another prefix, declare them you
 
 ```ts
 // surgeui.d.ts
-import type { SurgeGlobalComponents } from '@surgeui/ds-vue'
+import type { SurgeGlobalComponents } from '@surgeui/vue'
 
 declare module 'vue' {
   interface GlobalComponents extends SurgeGlobalComponents<'My'> {}

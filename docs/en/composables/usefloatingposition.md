@@ -12,7 +12,7 @@ Composable that positions floating elements (popover, menu, dropdown list) again
 ```vue
 <script setup>
 import { ref } from 'vue'
-import { useFloatingPosition } from '@surgeui/ds-vue'
+import { useFloatingPosition } from '@surgeui/vue'
 
 const triggerRef = ref()
 const menuRef = ref()

@@ -6,7 +6,7 @@ Modern Vue.js 3 component library with Composition API, designed to create moder
 
 - **Documentation** -  Complete guide with examples and API
 - **[Storybook](https://surgeui.com/storybook)** -  Interactive examples and component playground
-- **[npm Package](https://www.npmjs.com/package/@surgeui/ds-vue)**
+- **[npm Package](https://www.npmjs.com/package/@surgeui/vue)**
 
 ## Features
 
@@ -34,13 +34,13 @@ All components follow WCAG 2.1 AA standards:
 ## Quick Installation
 
 ```bash
-npm install @surgeui/ds-vue
+npm install @surgeui/vue
 ```
 
 ```vue
 <script setup>
-import { Button as SuButton } from '@surgeui/ds-vue'
-import '@surgeui/ds-vue/style.css'
+import { Button as SuButton } from '@surgeui/vue'
+import '@surgeui/vue/style.css'
 </script>
 
 <template>

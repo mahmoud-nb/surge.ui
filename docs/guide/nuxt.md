@@ -6,7 +6,7 @@ SurgeUI s'intègre à Nuxt 3 et 4 par un plugin. Un module `@surgeui/nuxt` (impo
 
 ```ts
 // plugins/surgeui.ts
-import SurgeUI, { locales } from '@surgeui/ds-vue'
+import SurgeUI, { locales } from '@surgeui/vue'
 import { NuxtLink } from '#components'
 
 export default defineNuxtPlugin((nuxtApp) => {
@@ -25,7 +25,7 @@ Sans `linkComponent`, les liens `to` utilisent RouterLink, que Nuxt enregistre a
 ```ts
 // nuxt.config.ts
 export default defineNuxtConfig({
-  css: ['@surgeui/ds-vue/style.css']
+  css: ['@surgeui/vue/style.css']
 })
 ```
 
@@ -35,8 +35,8 @@ Avec Tailwind CSS 4, importez plutôt la feuille en couche dans votre CSS princi
 /* assets/css/main.css */
 @layer theme, base, surgeui, components, utilities;
 @import "tailwindcss";
-@import "@surgeui/ds-vue/style.layer.css";
-@import "@surgeui/ds-vue/tailwind.css";
+@import "@surgeui/vue/style.layer.css";
+@import "@surgeui/vue/tailwind.css";
 ```
 
 ## Types des composants globaux
@@ -46,7 +46,7 @@ Avec Tailwind CSS 4, importez plutôt la feuille en couche dans votre CSS princi
 export default defineNuxtConfig({
   typescript: {
     tsConfig: {
-      compilerOptions: { types: ['@surgeui/ds-vue/global'] }
+      compilerOptions: { types: ['@surgeui/vue/global'] }
     }
   }
 })
@@ -85,7 +85,7 @@ En rendu serveur, `locale: 'auto'` ne peut pas lire `<html lang>` : passez la lo
 ```ts
 // plugins/surgeui.ts
 import { computed } from 'vue'
-import SurgeUI, { matchLocale } from '@surgeui/ds-vue'
+import SurgeUI, { matchLocale } from '@surgeui/vue'
 
 export default defineNuxtPlugin((nuxtApp) => {
   const i18n = nuxtApp.$i18n

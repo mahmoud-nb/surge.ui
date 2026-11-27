@@ -19,7 +19,7 @@ Result: `<label for>` targets the input, `aria-describedby` points to the messag
 ```vue
 <!-- ColorField.vue -->
 <script setup lang="ts">
-import { useFormField } from '@surgeui/ds-vue'
+import { useFormField } from '@surgeui/vue'
 
 const props = withDefaults(defineProps<{
   state?: 'default' | 'error' | 'success' | 'warning'

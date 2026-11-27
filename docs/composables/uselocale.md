@@ -9,7 +9,7 @@ Une prop explicite d'un composant reste toujours prioritaire sur la locale.
 ```ts
 // main.ts
 import { createApp } from 'vue'
-import SurgeUI, { locales } from '@surgeui/ds-vue'
+import SurgeUI, { locales } from '@surgeui/vue'
 
 createApp(App)
   .use(SurgeUI, { locale: locales.en })
@@ -46,7 +46,7 @@ Les composants suivent la langue de vue-i18n :
 // main.ts
 import { computed } from 'vue'
 import { createI18n } from 'vue-i18n'
-import SurgeUI, { matchLocale } from '@surgeui/ds-vue'
+import SurgeUI, { matchLocale } from '@surgeui/vue'
 
 const i18n = createI18n({ legacy: false, locale: 'fr', messages })
 
@@ -63,7 +63,7 @@ app.use(SurgeUI, {
 ```vue
 <script setup>
 import { ref } from 'vue'
-import { provideLocale, locales } from '@surgeui/ds-vue'
+import { provideLocale, locales } from '@surgeui/vue'
 
 const lang = ref('fr')
 provideLocale(() => locales[lang.value])
@@ -82,7 +82,7 @@ L'option `locale` du plugin accepte aussi une ref.
 `defineLocale` complète une locale avec des messages partiels ; les autres restent ceux de la base.
 
 ```ts
-import SurgeUI, { defineLocale, locales } from '@surgeui/ds-vue'
+import SurgeUI, { defineLocale, locales } from '@surgeui/vue'
 
 const myEnglish = defineLocale(locales.en, {
   messages: {
@@ -124,7 +124,7 @@ En français, 0 et 1 prennent la forme `one` ; en anglais, seulement 1. L'arabe 
 ```vue
 <script setup>
 import { computed } from 'vue'
-import { useLocale } from '@surgeui/ds-vue'
+import { useLocale } from '@surgeui/vue'
 
 const props = defineProps({ clearLabel: String })
 const { t, formatBytes } = useLocale()

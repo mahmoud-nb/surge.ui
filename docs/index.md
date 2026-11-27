@@ -44,13 +44,13 @@ features:
 ## Démarrer en deux lignes
 
 ```bash
-npm install @surgeui/ds-vue
+npm install @surgeui/vue
 ```
 
 ```vue
 <script setup>
-import { Button as SuButton } from '@surgeui/ds-vue'
-import '@surgeui/ds-vue/style.css'
+import { Button as SuButton } from '@surgeui/vue'
+import '@surgeui/vue/style.css'
 </script>
 
 <template>
