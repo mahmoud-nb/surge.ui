@@ -263,6 +263,7 @@ See the [CHANGELOG](https://github.com/mahmoud-nb/surge.ui/blob/main/CHANGELOG.m
 - [Documentation](https://surgeui.com/) - Guides, component API, live examples (French and English)
 - [Storybook](https://surgeui.com/storybook/) - Interactive examples and accessibility checks
 - [GitHub Repository](https://github.com/mahmoud-nb/surge.ui)
+- For AI coding assistants: [`AGENTS.md`](./AGENTS.md) (shipped in the package), [llms.txt](https://surgeui.com/llms.txt) and [llms-full.txt](https://surgeui.com/llms-full.txt)
 
 ## 🤝 Contributing
 

@@ -142,6 +142,8 @@ test-results/
 
 # Agents
 AGENTS.md
+# Guide des assistants IA livré dans le paquet npm
+!package/vue/AGENTS.md
 
 # Claude
 .claude/settings.local.json

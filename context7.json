@@ -1,0 +1,17 @@
+{
+  "$schema": "https://context7.com/schema/context7.json",
+  "projectTitle": "SurgeUI",
+  "description": "Accessible, themable Vue 3 component library (npm package @surgeui/vue): components, layouts and composables with WAI-ARIA keyboard and screen reader support, light/dark themes, RTL and translatable texts.",
+  "folders": ["docs/en", "package/vue/AGENTS.md"],
+  "excludeFolders": ["docs/.vitepress", "docs/node_modules", "package/vue/src", "package/vue/dist", "package/vue/storybook-static"],
+  "excludeFiles": ["CHANGELOG.md", "CLAUDE.md"],
+  "rules": [
+    "Install @surgeui/vue (Vue 3.5+), register the plugin with app.use(SurgeUI) and import @surgeui/vue/style.css once. The former package name @surgeui/ds-vue is deprecated.",
+    "Components are registered globally with the Su prefix (<SuButton>, <SuInputField>); named imports drop the prefix (import { Button } from '@surgeui/vue').",
+    "Form controls use v-model; use a *Field component (SuInputField, SuSelectBoxField…) or wrap a control in <SuFormField label> for label, message and validation state.",
+    "Router links use the `to` prop; icons are Vue components passed to the `icon` prop; icon-only buttons need aria-label.",
+    "Toasts: useToast() with <SuToaster /> placed once. Confirmations: useConfirm() with <SuConfirmDialog /> placed once. Announcements: useAnnouncer().",
+    "Theme with --su-* CSS custom properties and useTheme() (setTheme, setThemeMode, toggleMode); do not hard-code colors.",
+    "Removed in 4.0: useTheme().toggleTheme, setTheme('light'|'dark'), accessibility.trapFocus, accessibility.announceToScreenReader, Dropdown option separator: true, Dialog zIndex prop."
+  ]
+}
