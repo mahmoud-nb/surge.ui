@@ -141,8 +141,6 @@ interface DropdownOption {
   icon?: Component
   description?: string
   separatorBefore?: boolean        // Draws a separator before the option
-  /** @deprecated the option becomes a separator and is hidden */
-  separator?: boolean
 }
 
 // Separator alone (value and label optional)
@@ -216,10 +214,6 @@ const options = [
 ```
 
 `separatorBefore` is ignored on the first option and right after a separator (no double line).
-
-::: warning Legacy form
-`separator: true` is still accepted but deprecated: the option becomes a separator and is **not** shown, even with a label. A console warning reports it. Use `{ type: 'separator' }`, or `separatorBefore: true` to keep the option.
-:::
 
 ## Accessibility
 

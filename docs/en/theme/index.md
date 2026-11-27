@@ -149,9 +149,6 @@ type ThemeMode = 'light' | 'dark' | 'system'
 // Contrast and motion (unchanged)
 type ContrastMode = 'normal' | 'high' | 'auto'
 type MotionMode   = 'normal' | 'reduce' | 'auto'
-
-// Deprecated -  backward compatibility only
-type DeprecatedThemeName = 'light' | 'dark'
 ```
 
 ## Usage
@@ -787,17 +784,13 @@ interface UseThemeOptions {
   // Actions
   setTheme: (theme: ThemeName) => void;
   setThemeMode: (mode: ThemeMode) => void;   // NEW
-  toggleMode: () => void;                    // NEW -  replaces toggleTheme
+  toggleMode: () => void;                    // NEW
   cycleTheme: () => void;
   setContrast: (contrast: ContrastMode) => void;
   setMotion: (motion: MotionMode) => void;
   clearConfig: () => void;
 }
 ```
-
-::: warning toggleTheme deprecated
-`toggleTheme()` is kept for backward compatibility but emits a console warning. Use `toggleMode()` instead.
-:::
 
 ## Practical Examples
 
@@ -974,11 +967,11 @@ Check that the theme is in the `themes` list of `theme.config.ts` and imported i
 
 Check that `persist: true` is configured and localStorage is accessible (not in private navigation).
 
-### Console Warning on `setTheme('dark')`
+### Console Warning "Theme 'dark' is not available"
 
-`setTheme('dark')` and `setTheme('light')` are deprecated. Replace with:
+Since 4.0, `setTheme()` only picks the color identity: `setTheme('dark')` and `setTheme('light')` were removed (see [Migrating to 4.0](/en/guide/migration#removed-apis)). Replace with:
 ```typescript
-// Before (deprecated)
+// Before (removed in 4.0)
 setTheme('dark')
 
 // After

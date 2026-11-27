@@ -36,7 +36,6 @@ const props = withDefaults(defineProps<DialogProps>(), {
   display: 'center',
   closeOnOverlayClick: true,
   closeOnEscape: true,
-  zIndex: 1000,
   disableScroll: true,
   teleport: 'body'
 })

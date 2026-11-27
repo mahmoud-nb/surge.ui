@@ -8,12 +8,6 @@ export type ContrastMode = 'normal' | 'high' | 'auto';
 export type MotionMode = 'normal' | 'reduce' | 'auto';
 
 /**
- * Types dépréciés — rétrocompatibilité
- * @deprecated Utiliser ThemeName + ThemeMode à la place
- */
-export type DeprecatedThemeName = 'light' | 'dark';
-
-/**
  * Configuration du Design System
  */
 export interface ThemeConfig {

@@ -662,11 +662,6 @@ export interface DropdownItemOption {
   description?: string;
   /** Trace un séparateur avant cette option */
   separatorBefore?: boolean;
-  /**
-   * @deprecated L'option devient un séparateur et n'est pas affichée.
-   * Utiliser `{ type: 'separator' }`, ou `separatorBefore: true` pour garder l'option.
-   */
-  separator?: boolean;
 }
 /** Trait de séparation entre deux groupes d'options */
 export type DropdownSeparatorOption = { type: 'separator' } & Partial<Omit<DropdownItemOption, 'type'>>;
@@ -1261,8 +1256,6 @@ export interface DialogProps extends AccessibilityProps {
   closeOnEscape?: boolean;
   width?: string;
   height?: string;
-  /** @deprecated Sans effet : le dialog s'ouvre dans la couche supérieure du navigateur (showModal) */
-  zIndex?: number;
   disableScroll?: boolean;
   /** Nom accessible du bouton de fermeture */
   closeLabel?: string;

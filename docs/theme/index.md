@@ -149,9 +149,6 @@ type ThemeMode = 'light' | 'dark' | 'system'
 // Contraste et mouvement (inchangés)
 type ContrastMode = 'normal' | 'high' | 'auto'
 type MotionMode   = 'normal' | 'reduce' | 'auto'
-
-// Dépréciés -  rétrocompatibilité uniquement
-type DeprecatedThemeName = 'light' | 'dark'
 ```
 
 ## Utilisation
@@ -787,17 +784,13 @@ interface UseThemeOptions {
   // Actions
   setTheme: (theme: ThemeName) => void;
   setThemeMode: (mode: ThemeMode) => void;   // NOUVEAU
-  toggleMode: () => void;                    // NOUVEAU -  remplace toggleTheme
+  toggleMode: () => void;                    // NOUVEAU
   cycleTheme: () => void;
   setContrast: (contrast: ContrastMode) => void;
   setMotion: (motion: MotionMode) => void;
   clearConfig: () => void;
 }
 ```
-
-::: warning toggleTheme déprécié
-`toggleTheme()` est conservé pour la rétrocompatibilité mais émet un avertissement console. Utilisez `toggleMode()` à la place.
-:::
 
 ## Exemples pratiques
 
@@ -974,11 +967,11 @@ Vérifiez que le thème est bien dans la liste `themes` de `theme.config.ts` et 
 
 Vérifiez que `persist: true` est configuré et que localStorage est accessible (pas en navigation privée).
 
-### Avertissement console sur `setTheme('dark')`
+### Avertissement console « Theme 'dark' is not available »
 
-`setTheme('dark')` et `setTheme('light')` sont dépréciés. Remplacez par :
+Depuis la 4.0, `setTheme()` ne choisit plus que l'identité de couleur : `setTheme('dark')` et `setTheme('light')` ont été retirés (voir la [migration vers la 4.0](/guide/migration#api-retirees)). Remplacez par :
 ```typescript
-// Avant (déprécié)
+// Avant (retiré en 4.0)
 setTheme('dark')
 
 // Après

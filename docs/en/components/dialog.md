@@ -321,7 +321,6 @@ The move happens after mounting: on the server and during hydration, the `<dialo
 | `closeOnEscape` | `boolean` | `true` | Allows closing the Dialog with the `Escape` key |
 | `width` | `string` | `auto` | Custom width of the Dialog (e.g., `'500px'`, `'80%'`) |
 | `height` | `string` | `auto` | Custom height of the Dialog (e.g., `'400px'`, `'90vh'`) |
-| `zIndex` | `number` | — | **Deprecated**, no effect: the Dialog renders in the browser top layer, above any z-index |
 | `disableScroll` | `boolean` | `true` | Disables page body scrolling when the Dialog is open |
 | `teleport` | `string \| HTMLElement \| boolean` | `'body'` | Where to render the `<dialog>`: a selector or an element; `false` to keep it in place. See [Rendering in body](#rendering-in-body) |
 

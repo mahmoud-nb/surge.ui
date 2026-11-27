@@ -72,5 +72,5 @@ useFocusTrap(target, options?)
 | `getTabbableElements(container)` | Elements reachable with Tab, in DOM order |
 
 ::: info Migration
-`accessibility.trapFocus()` is deprecated: it now goes through `createFocusTrap` and will be removed in a future major version.
+`accessibility.trapFocus()` was removed in 4.0: use `createFocusTrap(container).activate()` or `useFocusTrap()` (see [Migrating to 4.0](/en/guide/migration#removed-apis)).
 :::

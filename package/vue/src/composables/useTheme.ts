@@ -7,7 +7,6 @@ import type {
   UserThemeConfig,
   ThemeMetadata,
   UseThemeOptions,
-  DeprecatedThemeName,
 } from '@/types/theme';
 
 // Mode 'system' en localStorage peut être stocké comme 'auto' dans les configs
@@ -252,33 +251,10 @@ export function useTheme(options: UseThemeOptions = {}) {
   // ========================================
 
   /**
-   * Définit le thème visuel (identité de couleur).
-   * Accepte aussi les anciens noms 'light' et 'dark' (avec warning).
+   * Définit le thème visuel (identité de couleur). Le mode clair / sombre se
+   * règle à part, avec setThemeMode() ou toggleMode().
    */
-  const setTheme = (name: ThemeName | DeprecatedThemeName) => {
-    // Rétrocompatibilité : anciens noms dépréciés
-    if (name === 'light') {
-      console.warn(
-        '[SurgeUI] theme="light" est déprécié. Utilisez theme="default" + themeMode="light".'
-      );
-      themeName.value = 'default';
-      themeMode.value = 'light';
-      saveConfig();
-      applyTheme();
-      return;
-    }
-
-    if (name === 'dark') {
-      console.warn(
-        '[SurgeUI] theme="dark" est déprécié. Utilisez theme="default" + themeMode="dark".'
-      );
-      themeName.value = 'default';
-      themeMode.value = 'dark';
-      saveConfig();
-      applyTheme();
-      return;
-    }
-
+  const setTheme = (name: ThemeName) => {
     // Vérifier la disponibilité
     const isAvailable = availableThemes.value.some((t) => t.id === name);
     if (!isAvailable) {
@@ -286,7 +262,7 @@ export function useTheme(options: UseThemeOptions = {}) {
       return;
     }
 
-    themeName.value = name as ThemeName;
+    themeName.value = name;
     saveConfig();
     applyTheme();
   };
@@ -324,14 +300,6 @@ export function useTheme(options: UseThemeOptions = {}) {
     }
     saveConfig();
     applyTheme();
-  };
-
-  /**
-   * @deprecated Utiliser toggleMode() à la place.
-   */
-  const toggleTheme = () => {
-    console.warn('[SurgeUI] toggleTheme() est déprécié. Utilisez toggleMode().');
-    toggleMode();
   };
 
   /**
@@ -410,7 +378,6 @@ export function useTheme(options: UseThemeOptions = {}) {
     setContrast,
     setMotion,
     toggleMode,
-    toggleTheme, // déprécié
     cycleTheme,
     clearConfig,
   };
