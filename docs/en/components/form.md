@@ -29,6 +29,7 @@ Form components handle data input and validation: text fields, selectors, switch
 | Component | Description |
 |-----------|-------------|
 | [Slider](/en/components/slider) | Slider for numeric values with markers |
+| [Rating](/en/components/rating) | Star rating, input or read only |
 | [FileUpload](/en/components/fileupload) | File upload with drag & drop and preview |
 
 ## Structure and validation

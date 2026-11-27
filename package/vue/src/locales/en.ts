@@ -191,6 +191,25 @@ export const en: SurgeLocale = {
       drawer: 'Menu',
       collapse: 'Collapse menu'
     },
+    copyButton: {
+      copy: 'Copy',
+      copied: 'Copied',
+      announce: 'Copied to clipboard',
+      error: 'Could not copy'
+    },
+    codeBlock: {
+      copy: 'Copy code'
+    },
+    stat: {
+      up: 'Up',
+      down: 'Down',
+      neutral: 'Unchanged'
+    },
+    rating: {
+      label: 'Rating',
+      star: { one: '{count} star out of {max}', other: '{count} stars out of {max}' },
+      value: 'Rated {value} out of {max}'
+    },
     holyGrailLayout: {
       skipLink: 'Skip to main content',
       nav: 'Main navigation',

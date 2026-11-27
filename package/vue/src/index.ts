@@ -95,6 +95,12 @@ import ThemeToggle from './components/molecules/ThemeToggle.vue'
 import PageHeader from './components/molecules/PageHeader.vue'
 import NavMenu from './components/organisms/NavMenu.vue'
 import AppShell from './components/templates/AppShell.vue'
+import CopyButton from './components/atoms/CopyButton.vue'
+import Rating from './components/atoms/Rating.vue'
+import Prose from './components/atoms/Prose.vue'
+import CodeBlock from './components/molecules/CodeBlock.vue'
+import Stat from './components/molecules/Stat.vue'
+import Timeline from './components/organisms/Timeline.vue'
 
 import * as accessibility from './utils/accessibility'
 import { SurgeuiTheme, ThemeSymbol, flattenThemeToCSS } from './plugin/theme'
@@ -116,6 +122,7 @@ export { InputField, SelectBoxField, RadioGroupField, CheckboxGroupField, Passwo
 export { FormField, FormFieldGroup }
 export { SingleColumnLayout, SidebarLayout, SplitLayout, HolyGrailLayout, MagazineLayout, GridLayout, MasonryLayout, HeroLayout, FullScreenLayout }
 export { SkipLink, ThemeToggle, PageHeader, NavMenu, AppShell }
+export { CopyButton, CodeBlock, Stat, Timeline, Rating, Prose }
 export { accessibility }
 export { getPaginationItems } from './utils/pagination'
 export type { PaginationItem, PaginationRangeOptions } from './utils/pagination'
@@ -211,6 +218,13 @@ export interface SurgeComponents {
   PageHeader: typeof PageHeader
   NavMenu: typeof NavMenu
   AppShell: typeof AppShell
+  // Données et contenu (4.0)
+  CopyButton: typeof CopyButton
+  CodeBlock: typeof CodeBlock
+  Stat: typeof Stat
+  Timeline: typeof Timeline
+  Rating: typeof Rating
+  Prose: typeof Prose
 }
 
 // Enregistrés sous le préfixe choisi (`Su` par défaut)
@@ -231,7 +245,9 @@ const components: SurgeComponents = {
   SingleColumnLayout, SidebarLayout, SplitLayout, HolyGrailLayout, MagazineLayout, GridLayout,
   MasonryLayout, HeroLayout, FullScreenLayout,
   // ## Structure d'application
-  SkipLink, ThemeToggle, PageHeader, NavMenu, AppShell
+  SkipLink, ThemeToggle, PageHeader, NavMenu, AppShell,
+  // ## Données et contenu
+  CopyButton, CodeBlock, Stat, Timeline, Rating, Prose
 }
 
 /**

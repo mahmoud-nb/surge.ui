@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, describe, expect, it } from 'vitest'
 import { mount, flushPromises, type VueWrapper } from '@vue/test-utils'
 import Dropdown from '@/components/molecules/Dropdown.vue'
 import Popover from '@/components/molecules/Popover.vue'
