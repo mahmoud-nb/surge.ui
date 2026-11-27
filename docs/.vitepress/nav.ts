@@ -29,6 +29,7 @@ export const getNavItems = (section: string = 'display', lang: string = 'fr') =>
       { text: 'Popover', link: `${langPrefix}/components/popover` },
       { text: 'Alert', link: `${langPrefix}/components/alert`},
       { text: 'Toast', link: `${langPrefix}/components/toast`, badge: NEW_BADGE },
+      { text: 'PageHeader', link: `${langPrefix}/components/pageheader`, badge: NEW_BADGE },
       { text: 'Tooltip', link: `${langPrefix}/components/tooltip`, badge: NEW_BADGE },
       { text: 'DataTable', link: `${langPrefix}/components/datatable`, badge: NEW_BADGE },
       { text: 'TreeView', link: `${langPrefix}/components/treeview`, badge: NEW_BADGE },
@@ -54,7 +55,10 @@ export const getNavItems = (section: string = 'display', lang: string = 'fr') =>
       { text: 'Breadcrumb', link: `${langPrefix}/components/breadcrumb`, badge: NEW_BADGE },
       { text: 'Pagination', link: `${langPrefix}/components/pagination`, badge: NEW_BADGE },
       { text: 'Stepper', link: `${langPrefix}/components/stepper`, badge: NEW_BADGE },
-      { text: 'CommandPalette', link: `${langPrefix}/components/commandpalette`, badge: NEW_BADGE }
+      { text: 'CommandPalette', link: `${langPrefix}/components/commandpalette`, badge: NEW_BADGE },
+      { text: 'NavMenu', link: `${langPrefix}/components/navmenu`, badge: NEW_BADGE },
+      { text: 'ThemeToggle', link: `${langPrefix}/components/themetoggle`, badge: NEW_BADGE },
+      { text: 'SkipLink', link: `${langPrefix}/components/skiplink`, badge: NEW_BADGE }
     ],
     forms:[
       { text: 'Input', link: `${langPrefix}/components/input` },
@@ -94,6 +98,7 @@ export const getNavItems = (section: string = 'display', lang: string = 'fr') =>
       { text: 'MasonryLayout', link: `${langPrefix}/components/masonrylayout`, badge: NEW_BADGE },
       { text: 'HeroLayout', link: `${langPrefix}/components/herolayout`, badge: NEW_BADGE },
       { text: 'FullScreenLayout', link: `${langPrefix}/components/fullscreenlayout`, badge: NEW_BADGE },
+      { text: 'AppShell', link: `${langPrefix}/components/appshell`, badge: NEW_BADGE },
     ],
     composables:[
       { text: 'useTheme', link: `${langPrefix}/composables/usetheme` },

@@ -16,6 +16,7 @@ Layouts (the *templates* layer of Atomic Design) structure a page or a section: 
 | Masonry | Mixed-height media feeds | [MasonryLayout](/en/components/masonrylayout) |
 | Hero | Product launches, signups | [HeroLayout](/en/components/herolayout) |
 | Full screen | Stories, one idea per screen | [FullScreenLayout](/en/components/fullscreenlayout) |
+| Application | Sidebar, top bar, drawer on mobile | [AppShell](/en/components/appshell) |
 
 ### What about F and Z patterns?
 

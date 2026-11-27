@@ -38,3 +38,6 @@ Les composants d'actions permettent à l'utilisateur d'interagir : boutons, lien
 | [Pagination](/components/pagination) | Navigation entre les pages d'une liste |
 | [Stepper](/components/stepper) | Progression d'un parcours en étapes |
 | [CommandPalette](/components/commandpalette) | Recherche de commandes au clavier (Ctrl + K) |
+| [NavMenu](/components/navmenu) | Navigation latérale : groupes, compteurs, élément actif, mode réduit |
+| [ThemeToggle](/components/themetoggle) | Bascule clair / sombre, ou choix clair, sombre, système |
+| [SkipLink](/components/skiplink) | Lien d'évitement vers le contenu principal |
