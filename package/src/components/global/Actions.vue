@@ -58,7 +58,10 @@ const handleSelectAction = (option: any) => {
 </script>
 
 <template>
-  <GlobalPreview>
+  <GlobalPreview
+    eyebrow="Global · 02"
+    description="Boutons, liens, groupes, bascules, menus déroulants et boutons flottants, composés dans des cas d’usage réels (barres d’outils, menus, éditeurs)."
+  >
     <template #head>
       <h2>Actions</h2>
     </template>
@@ -72,7 +75,6 @@ const handleSelectAction = (option: any) => {
         >
           <GridCell
             radius="md"
-            background-color="#F9F9F9"
             padding="md"
           >
             <Preview title="Barre d'outils document">
@@ -125,7 +127,7 @@ const handleSelectAction = (option: any) => {
                     />
                   </ButtonGroup>
                 </div>
-                <p style="margin-top: 1rem; font-size: 0.875rem; color: #666;">
+                <p style="margin-top: 1rem; font-size: 0.875rem; color: var(--su-text-secondary);">
                   Ceci est une barre d'outils typique avec des actions groupées et espacées.
                 </p>
               </Panel>
@@ -143,7 +145,6 @@ const handleSelectAction = (option: any) => {
         >
           <GridCell
             radius="md"
-            background-color="#F9F9F9"
             padding="md"
           >
             <Preview title="Boutons de confirmation">
@@ -151,7 +152,7 @@ const handleSelectAction = (option: any) => {
                 <Heading level="4">
                   Formulaire de contact
                 </Heading>
-                <p style="color: #666; font-size: 0.875rem; margin: 1rem 0;">
+                <p style="color: var(--su-text-secondary); font-size: 0.875rem; margin: 1rem 0;">
                   Remplissez le formulaire et cliquez sur Envoyer pour soumettre votre demande.
                 </p>
                 <div class="form-actions">
@@ -167,7 +168,6 @@ const handleSelectAction = (option: any) => {
           </GridCell>
           <GridCell
             radius="md"
-            background-color="#F9F9F9"
             padding="md"
           >
             <Preview title="Actions avec destructive">
@@ -175,7 +175,7 @@ const handleSelectAction = (option: any) => {
                 <Heading level="4">
                   Suppression d'élément
                 </Heading>
-                <p style="color: #666; font-size: 0.875rem; margin: 1rem 0;">
+                <p style="color: var(--su-text-secondary); font-size: 0.875rem; margin: 1rem 0;">
                   Êtes-vous sûr de vouloir supprimer cet élément?
                 </p>
                 <div class="form-actions">
@@ -201,7 +201,6 @@ const handleSelectAction = (option: any) => {
         >
           <GridCell
             radius="md"
-            background-color="#F9F9F9"
           >
             <Preview title="Menu utilisateur avec icônes">
               <div class="menu-demo">
@@ -216,7 +215,6 @@ const handleSelectAction = (option: any) => {
           </GridCell>
           <GridCell
             radius="md"
-            background-color="#F9F9F9"
           >
             <Preview title="Menu paramètres">
               <div class="menu-demo">
@@ -242,7 +240,6 @@ const handleSelectAction = (option: any) => {
         >
           <GridCell
             radius="md"
-            background-color="#F9F9F9"
             padding="md"
           >
             <Preview title="Menu Fichier simple">
@@ -266,7 +263,6 @@ const handleSelectAction = (option: any) => {
         >
           <GridCell
             radius="md"
-            background-color="#F9F9F9"
             padding="md"
           >
             <Preview title="Navigation horizontale">
@@ -294,7 +290,6 @@ const handleSelectAction = (option: any) => {
           </GridCell>
           <GridCell
             radius="md"
-            background-color="#F9F9F9"
             padding="md"
           >
             <Preview title="Navigation avec séparateurs">
@@ -330,7 +325,6 @@ const handleSelectAction = (option: any) => {
         >
           <GridCell
             radius="md"
-            background-color="#F9F9F9"
             padding="md"
           >
             <Preview title="Actions de tableau">
@@ -338,7 +332,7 @@ const handleSelectAction = (option: any) => {
                 <div class="table-row">
                   <div class="row-info">
                     <strong>Document: Proposition.pdf</strong>
-                    <small style="color: #999;">Modifié le 15 Mars 2025</small>
+                    <small style="color: var(--su-text-secondary);">Modifié le 15 Mars 2025</small>
                   </div>
                   <div class="row-actions">
                     <Button
@@ -377,7 +371,6 @@ const handleSelectAction = (option: any) => {
         >
           <GridCell
             radius="md"
-            background-color="#F9F9F9"
             padding="md"
           >
             <Preview title="Actions de création">
@@ -416,7 +409,6 @@ const handleSelectAction = (option: any) => {
           </GridCell>
           <GridCell
             radius="md"
-            background-color="#F9F9F9"
             padding="md"
           >
             <Preview title="Actions de gestion">
@@ -466,12 +458,11 @@ const handleSelectAction = (option: any) => {
         >
           <GridCell
             radius="md"
-            background-color="#F9F9F9"
             padding="md"
           >
             <Preview title="FAB positif">
-              <div style="height: 200px; position: relative; background: #f5f5f5; border-radius: 0.5rem;">
-                <p style="padding: 1rem; color: #999; font-size: 0.875rem;">
+              <div style="height: 200px; position: relative; background: var(--su-bg-muted); border-radius: 0.5rem;">
+                <p style="padding: 1rem; color: var(--su-text-secondary); font-size: 0.875rem;">
                   Zone interactive avec FAB en bas à droite
                 </p>
                 <FloatButton
@@ -485,12 +476,11 @@ const handleSelectAction = (option: any) => {
           </GridCell>
           <GridCell
             radius="md"
-            background-color="#F9F9F9"
             padding="md"
           >
             <Preview title="FAB avec notification">
-              <div style="height: 200px; position: relative; background: #f5f5f5; border-radius: 0.5rem;">
-                <p style="padding: 1rem; color: #999; font-size: 0.875rem;">
+              <div style="height: 200px; position: relative; background: var(--su-bg-muted); border-radius: 0.5rem;">
+                <p style="padding: 1rem; color: var(--su-text-secondary); font-size: 0.875rem;">
                   FAB avec badge de notification
                 </p>
                 <FloatButton
@@ -515,7 +505,6 @@ const handleSelectAction = (option: any) => {
         >
           <GridCell
             radius="md"
-            background-color="#F9F9F9"
             padding="md"
           >
             <Preview title="Actions de sélection">
@@ -559,7 +548,7 @@ const handleSelectAction = (option: any) => {
 <style scoped>
 .su-actions {
   padding: 2rem;
-  background-color: #fff;
+  background-color: transparent;
 }
 
 .section {
@@ -570,7 +559,7 @@ const handleSelectAction = (option: any) => {
   font-size: 1.25rem;
   font-weight: 600;
   margin-bottom: 1.5rem;
-  color: #1f2937;
+  color: var(--su-text-primary);
 }
 
 /* Toolbar styles */
@@ -579,7 +568,7 @@ const handleSelectAction = (option: any) => {
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem;
-  background-color: #f5f5f5;
+  background-color: var(--su-bg-muted);
   border-radius: 0.5rem;
   margin-bottom: 1rem;
 }
@@ -608,9 +597,9 @@ const handleSelectAction = (option: any) => {
   align-items: center;
   justify-content: space-between;
   padding: 1rem;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--su-border-default);
   border-radius: 0.5rem;
-  background-color: #fafafa;
+  background-color: var(--su-bg-muted);
 }
 
 .row-info {
@@ -627,8 +616,8 @@ const handleSelectAction = (option: any) => {
 
 /* Selection bar */
 .selection-bar {
-  background-color: #eff6ff;
-  border: 1px solid #bfdbfe;
+  background-color: color-mix(in oklab, var(--su-primary-default) 8%, transparent);
+  border: 1px solid color-mix(in oklab, var(--su-primary-default) 30%, transparent);
 }
 
 @media (width <= 768px) {

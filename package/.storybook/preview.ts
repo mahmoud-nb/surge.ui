@@ -24,6 +24,12 @@ document.head.appendChild(style)
 
 const preview: Preview = {
   parameters: {
+    // Barre latérale : accueil, vitrines Global, puis les niveaux Atomic Design
+    options: {
+      storySort: {
+        order: ['Bienvenue', 'Global', ['Affichage', 'Actions', 'Formulaires', 'Thèmes'], 'Atoms', 'Molecules', 'Organisms', 'Templates']
+      }
+    },
     actions: { argTypesRegex: '^on[A-Z].*' },
     controls: {
       matchers: {
@@ -98,6 +104,7 @@ const preview: Preview = {
         items: [
           { value: 'fr', title: 'Français' },
           { value: 'en', title: 'English' },
+          { value: 'ar', title: 'العربية' },
         ],
         dynamicTitle: true
       },

@@ -1,32 +1,267 @@
-/* Variables CSS personnalisées pour VitePress */
+/* ==========================================================================
+   Thème de la documentation — VitePress + Lumen UI (niveau « discret » pour
+   les pages, quelques effets « standard » sur l'accueil).
+
+   Effets utilisés (identifiants Lumen) : glass (en-tête), sheen (cartes,
+   démos), spotlight + lift (cartes de l'accueil), aurora + grid-fade
+   (fond du hero), gradient-text (accroche), pill, eyebrow, kbd.
+   Jetons préfixés --lm-* ; les variables VitePress (--vp-*) en découlent.
+   Les démos SurgeUI gardent leurs propres jetons (--su-*).
+   ========================================================================== */
+
+/* --- Jetons : clair ---------------------------------------------------- */
 :root {
+  --lm-bg-rgb: 255 255 255;
+  --lm-ink-rgb: 17 19 24;
+  --lm-accent-rgb: 37 99 235;      /* bleu SurgeUI */
+  --lm-accent-2-rgb: 6 182 212;    /* cyan */
+  --lm-accent-3-rgb: 139 92 246;   /* violet, lointain */
+  --lm-highlight: rgb(255 255 255 / 0.95);
+  --lm-surface-grad: linear-gradient(180deg, rgb(255 255 255 / 0.95), rgb(246 247 249 / 0.7));
+  --lm-dot: rgb(var(--lm-ink-rgb) / 0.07);
+  --lm-shadow-soft: 0 16px 40px -24px rgb(30 34 44 / 0.35);
+  --lm-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+
   --vp-c-brand-1: #2563eb;
-  --vp-c-brand-2: #3b82f6;
-  --vp-c-brand-3: #60a5fa;
-  --vp-c-brand-soft: #dbeafe;
+  --vp-c-brand-2: #1d4ed8;
+  --vp-c-brand-3: #2563eb;
+  --vp-c-brand-soft: rgb(37 99 235 / 0.12);
+
+  --vp-c-bg-soft: #f6f7f9;
+  --vp-c-text-3: #6b7180;
+  --vp-nav-bg-color: rgb(var(--lm-bg-rgb) / 0.78);
+  --vp-local-nav-bg-color: rgb(var(--lm-bg-rgb) / 0.78);
 }
 
-/* Styles pour les exemples de composants */
-.component-demo {
-  padding: 2rem;
+/* --- Jetons : sombre profond (classe .dark de VitePress) ---------------- */
+.dark {
+  --lm-bg-rgb: 7 8 11;
+  --lm-ink-rgb: 236 238 243;
+  --lm-accent-rgb: 96 165 250;
+  --lm-accent-2-rgb: 34 211 238;
+  --lm-accent-3-rgb: 139 92 246;
+  --lm-highlight: rgb(255 255 255 / 0.16);
+  --lm-surface-grad: linear-gradient(180deg, rgb(255 255 255 / 0.04), rgb(255 255 255 / 0.012));
+  --lm-dot: rgb(var(--lm-ink-rgb) / 0.06);
+  --lm-shadow-soft: 0 20px 50px -24px rgb(0 0 0 / 0.9);
+
+  --vp-c-brand-1: #60a5fa;
+  --vp-c-brand-2: #93c5fd;
+  --vp-c-brand-3: #2563eb;
+  --vp-c-brand-soft: rgb(96 165 250 / 0.16);
+
+  --vp-c-bg: #07080b;
+  --vp-c-bg-alt: #0a0c10;
+  --vp-c-bg-soft: #0d0f14;
+  --vp-c-bg-elv: #111319;
+  --vp-c-divider: rgb(255 255 255 / 0.08);
+  --vp-c-border: rgb(255 255 255 / 0.12);
+  --vp-c-gutter: #000;
+  --vp-c-text-1: #eceef3;
+  --vp-c-text-2: #9097a6;
+  --vp-c-text-3: #7d8494;
+  --vp-c-default-soft: rgb(255 255 255 / 0.06);
+  --vp-code-block-bg: #0b0d12;
+  --vp-nav-bg-color: rgb(var(--lm-bg-rgb) / 0.72);
+  --vp-local-nav-bg-color: rgb(var(--lm-bg-rgb) / 0.72);
+}
+
+/* --- [glass] En-tête translucide ----------------------------------------- */
+.VPNav,
+.VPLocalNav {
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
+  backdrop-filter: blur(12px) saturate(140%);
+}
+
+/* ==========================================================================
+   ACCUEIL
+   ========================================================================== */
+
+/* [aurora] + [grid-fade] Fond du hero : lueurs teintées et quadrillage qui
+   s'efface vers les bords. Décoratif (pseudo-éléments). */
+.VPHome .VPHero {
+  position: relative;
+  isolation: isolate;
+}
+
+.VPHome .VPHero::before,
+.VPHome .VPHero::after {
+  position: absolute;
+  inset: calc(var(--vp-nav-height) * -1) 0 -6rem;
+  z-index: -1;
+  pointer-events: none;
+  content: '';
+}
+
+.VPHome .VPHero::before {
+  background:
+    radial-gradient(48% 55% at 18% 10%, rgb(var(--lm-accent-rgb) / 0.14), transparent 70%),
+    radial-gradient(40% 45% at 88% 18%, rgb(var(--lm-accent-2-rgb) / 0.1), transparent 70%),
+    radial-gradient(60% 45% at 50% 105%, rgb(var(--lm-accent-3-rgb) / 0.08), transparent 70%);
+}
+
+.VPHome .VPHero::after {
+  background-image:
+    linear-gradient(var(--vp-c-divider) 1px, transparent 1px),
+    linear-gradient(90deg, var(--vp-c-divider) 1px, transparent 1px);
+  background-position: center;
+  background-size: 32px 32px;
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 20%, transparent 75%);
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 20%, transparent 75%);
+}
+
+/* Nom en dégradé d'accent, accroche en [gradient-text] */
+:root {
+  --vp-home-hero-name-color: transparent;
+  --vp-home-hero-name-background: linear-gradient(115deg, rgb(var(--lm-accent-rgb)) 15%, rgb(var(--lm-accent-2-rgb)) 85%);
+}
+
+.VPHome .VPHero .text {
+  background: linear-gradient(92deg, var(--vp-c-text-1) 10%, color-mix(in oklab, var(--vp-c-text-1) 50%, var(--vp-c-text-2)) 90%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* [pill] Version publiée, au-dessus du nom */
+.su-home-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin-bottom: 1.25rem;
+  padding: 0.3rem 0.85rem 0.3rem 0.65rem;
   border: 1px solid var(--vp-c-divider);
-  border-radius: 8px;
-  margin: 1rem 0;
-  background-color: var(--vp-c-bg-soft);
+  border-radius: 999px;
+  background: var(--lm-surface-grad);
+  color: var(--vp-c-text-2);
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  text-decoration: none;
+  transition: border-color 0.3s, color 0.3s;
+}
+
+.su-home-pill:hover {
+  border-color: rgb(var(--lm-accent-rgb) / 0.45);
+  color: var(--vp-c-text-1);
+}
+
+.su-home-pill__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgb(var(--lm-accent-rgb));
+  box-shadow: 0 0 10px rgb(var(--lm-accent-rgb) / 0.7);
+}
+
+.su-home-pill__version {
+  color: var(--vp-c-text-1);
+  font-family: var(--vp-font-family-mono);
+  font-size: 0.75rem;
+}
+
+.su-home-pill svg {
+  width: 0.95em;
+  height: 0.95em;
+  transition: translate 0.3s var(--lm-ease);
+}
+
+.su-home-pill:hover svg {
+  translate: 2px 0;
+}
+
+/* Cartes des points forts : [sheen] + [lift] + [spotlight] */
+.VPHome .VPFeature {
+  position: relative;
+  isolation: isolate;
+  border: 1px solid var(--vp-c-divider);
+  background:
+    linear-gradient(90deg, transparent, var(--lm-highlight), transparent) 50% 0 / 68% 1px no-repeat,
+    var(--lm-surface-grad),
+    var(--vp-c-bg-soft);
+  transition: transform 0.45s var(--lm-ease), border-color 0.3s, box-shadow 0.3s;
+}
+
+.VPHome .VPFeature:hover {
+  transform: translateY(-4px);
+  border-color: rgb(var(--lm-accent-rgb) / 0.35);
+  box-shadow: var(--lm-shadow-soft);
+}
+
+.VPHome .VPFeature .icon {
+  border: 1px solid rgb(var(--lm-accent-rgb) / 0.2);
+  background: rgb(var(--lm-accent-rgb) / 0.08);
+  color: var(--vp-c-brand-1);
+}
+
+.VPHome .VPFeature .icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+/* [spotlight] Halo sous le pointeur (position --mx / --my posée par le thème) */
+.VPHome .VPFeature::before,
+.lm-spotlight::before {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: radial-gradient(420px circle at var(--mx, -999px) var(--my, -999px), rgb(var(--lm-accent-rgb) / 0.08), transparent 45%);
+  pointer-events: none;
+  content: '';
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.VPHome .VPFeature:hover::before,
+.lm-spotlight:hover::before {
+  opacity: 1;
+}
+
+/* [eyebrow] Sur-titre de section, en chasse fixe */
+.lm-eyebrow {
+  margin: 0 0 0.5rem;
+  color: var(--vp-c-brand-1);
+  font-family: var(--vp-font-family-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* ==========================================================================
+   PAGES DE DOCUMENTATION
+   ========================================================================== */
+
+/* Démos : un plan de travail en pointillés discrets, arête [sheen] */
+.component-demo {
+  position: relative;
+  margin: 1.25rem 0;
+  padding: 1.75rem;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 14px;
+  background:
+    linear-gradient(90deg, transparent, var(--lm-highlight), transparent) 50% 0 / 68% 1px no-repeat,
+    radial-gradient(circle, var(--lm-dot) 1px, transparent 1.4px) 0 0 / 18px 18px,
+    var(--vp-c-bg-soft);
 }
 
 .component-demo .demo-section {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.75rem;
 }
 
 .component-demo .demo-section:last-child {
   margin-bottom: 0;
 }
 
-.component-demo h4 {
-  margin: 0 0 1rem 0;
-  font-size: 1rem;
-  font-weight: 600;
+/* Titre de démo en sur-titre : la démo reste au premier plan */
+.vp-doc .component-demo h4 {
+  margin: 0 0 1rem;
+  color: var(--vp-c-text-2);
+  font-family: var(--vp-font-family-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  line-height: 1.5;
+  text-transform: uppercase;
 }
 
 .component-demo .demo-buttons {
@@ -43,12 +278,46 @@
   align-items: flex-start;
 }
 
-/* Responsive */
+/* Blocs de code : surface élevée, bordure fine */
+.vp-doc div[class*='language-'] {
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 12px;
+}
+
+/* Une démo suivie de son code : les deux blocs se lisent ensemble */
+.vp-doc .component-demo + div[class*='language-'] {
+  margin-top: -0.5rem;
+}
+
+/* [kbd] Touches */
+.vp-doc kbd {
+  display: inline-block;
+  min-width: 1.6em;
+  padding: 0.05em 0.45em;
+  border: 1px solid var(--vp-c-divider);
+  border-bottom-width: 2px;
+  border-radius: 6px;
+  background: var(--vp-c-bg-soft);
+  color: var(--vp-c-text-1);
+  font-family: var(--vp-font-family-mono);
+  font-size: 0.8em;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.help-text {
+  margin-top: 0.5rem;
+  color: var(--vp-c-text-2);
+  font-size: 0.875rem;
+  font-style: italic;
+}
+
+/* --- Responsive ----------------------------------------------------------- */
 @media (max-width: 640px) {
   .component-demo {
     padding: 1rem;
   }
-  
+
   .component-demo .demo-buttons {
     flex-direction: column;
     align-items: flex-start;
@@ -61,11 +330,18 @@
     width: 100%;
     max-width: 400px;
   }
+}
 
-  .help-text {
-    font-size: 0.875rem;
-    color: var(--vp-c-text-2);
-    margin-top: 0.5rem;
-    font-style: italic;
+/* --- Mouvement réduit : survols et halos sans animation ------------------ */
+@media (prefers-reduced-motion: reduce) {
+  .VPHome .VPFeature,
+  .su-home-pill svg,
+  .lm-lift {
+    transition: none;
+  }
+
+  .VPHome .VPFeature:hover,
+  .lm-lift:hover {
+    transform: none;
   }
 }

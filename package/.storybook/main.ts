@@ -12,6 +12,8 @@ const env = loadEnv(mode, process.cwd(), 'VITE_')
 const BASE_URL = env.VITE_APP_BASE_URL || pkg.config.baseUrl
 const config: StorybookConfig = {
   stories: [
+    // Page d'accueil (Bienvenue), puis les stories des composants
+    '../src/stories/*.mdx',
     '../src/components/**/_stories/*.stories.@(js|jsx|mjs|ts|tsx)'
   ],
   addons: [
