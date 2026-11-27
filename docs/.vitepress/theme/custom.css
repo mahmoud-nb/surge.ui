@@ -73,6 +73,28 @@
   backdrop-filter: blur(12px) saturate(140%);
 }
 
+/* --- Barre latérale sous l'en-tête (écran large) ---------------------------
+   Par défaut, la barre latérale commence en haut de la page, sous l'en-tête :
+   remontée en haut, sa barre de défilement passait sous l'en-tête translucide,
+   comme les liens remis à l'écran au clavier (Maj+Tab). Elle commence donc
+   sous l'en-tête, et le haut de l'en-tête au-dessus d'elle prend son fond (le
+   rideau de VitePress, qui masquait les liens à cet endroit, devient inutile).
+   Sélecteurs plus spécifiques que ceux, scoped, de VitePress ([data-v-…]). */
+@media (min-width: 960px) {
+  .Layout > aside.VPSidebar {
+    top: calc(var(--vp-layout-top-height, 0px) + var(--vp-nav-height));
+    padding-top: 0;
+  }
+
+  .Layout > aside.VPSidebar .curtain {
+    display: none;
+  }
+
+  header.VPNav .VPNavBar.has-sidebar .title {
+    background-color: var(--vp-sidebar-bg-color);
+  }
+}
+
 /* ==========================================================================
    ACCUEIL
    ========================================================================== */
