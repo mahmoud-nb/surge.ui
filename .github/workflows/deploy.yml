@@ -14,6 +14,39 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  # Qualité : lint (JS et styles), types et tests unitaires, en parallèle
+  # de la construction. Une pull request qui casse l'un d'eux échoue avant
+  # la fusion, et le site n'est pas déployé.
+  quality:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v7
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint (ESLint)
+        run: npm run lint:js
+
+      - name: Lint (Stylelint)
+        run: npm run lint:style
+
+      - name: Type check
+        run: npm run typecheck
+
+      - name: Test
+        run: npm test
+
   # Construction : sur main, next et les pull requests (vérifie que la
   # bibliothèque, la documentation et Storybook se construisent).
   # Pas d'environnement ici : les règles de github-pages n'autorisent que
@@ -114,7 +147,7 @@ jobs:
   # protégé github-pages
   deploy:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    needs: build
+    needs: [quality, build]
     runs-on: ubuntu-latest
     environment:
       name: github-pages
