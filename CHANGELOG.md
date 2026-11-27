@@ -2,6 +2,48 @@
 
 All notable changes to this project will be documented in this file.
 
+## [4.0.0](https://github.com/mahmoud-nb/surge.ui/compare/v3.3.0...v4.0.0) (2026-11-27)
+
+
+### ⚠ BREAKING CHANGES
+
+* API retirées, avec leur remplacement :
+- useTheme().toggleTheme() : toggleMode() ;
+- setTheme('light' | 'dark') et le type DeprecatedThemeName : setTheme('default')
+  puis setThemeMode(), types ThemeName et ThemeMode ;
+- accessibility.trapFocus() : createFocusTrap() ou useFocusTrap() ;
+- accessibility.announceToScreenReader() : announce() ou useAnnouncer() ;
+- option separator: true de SuDropdown : { type: 'separator' } ou
+  separatorBefore: true ;
+- prop zIndex de SuDialog (sans effet) : à supprimer.
+
+### ♻️ Code Refactoring
+
+* déplace la bibliothèque dans package/vue ([672c0cd](https://github.com/mahmoud-nb/surge.ui/commit/672c0cd39a1eb01d3fb542eee0f0daecfec1edc4))
+* retire les API dépréciées pendant la 3.x ([dc78f00](https://github.com/mahmoud-nb/surge.ui/commit/dc78f003f1dd9ce9196850a2e83daf3ff4f32afc))
+
+
+### ✨ Features
+
+* composants de données et de contenu (Stat, Timeline, Rating, Prose, CopyButton, CodeBlock) ([13dd89e](https://github.com/mahmoud-nb/surge.ui/commit/13dd89ec530ea6b87d3367ab7c23a4945a3d358c))
+* composants de structure d'application (AppShell, NavMenu, PageHeader, ThemeToggle, SkipLink) ([138623f](https://github.com/mahmoud-nb/surge.ui/commit/138623fc500a0d2967b06aca2692182f4c203342))
+* publie la bibliothèque sous le nom `@surgeui/vue` ([fd73ac8](https://github.com/mahmoud-nb/surge.ui/commit/fd73ac8494cf51ea7d78f6f63a8336bde9917611))
+
+
+### 📚 Documentation
+
+* migre la documentation vers `@surgeui/vue` et ajoute le guide de migration vers la 4.0 ([abfa3b2](https://github.com/mahmoud-nb/surge.ui/commit/abfa3b240ebb631667cc1b0b7e886e2fbf60f8d1))
+* nouveau thème de la documentation ([b4abbd6](https://github.com/mahmoud-nb/surge.ui/commit/b4abbd61b1d06b217cf80dcc314fe8850665ec9e))
+* pages AppShell, NavMenu, PageHeader, ThemeToggle et SkipLink (FR et EN) ([ab63939](https://github.com/mahmoud-nb/surge.ui/commit/ab6393934df32f5c69f5ca0e28e8e30d85558033))
+* pages Stat, Timeline, Rating, Prose, CopyButton, CodeBlock et useClipboard (FR et EN) ([727e0d3](https://github.com/mahmoud-nb/surge.ui/commit/727e0d3afbc1328405ca6c4ea6557e720ba3144c))
+* **storybook:** page d'accueil, ordre de la barre latérale et version ([3c8d3c3](https://github.com/mahmoud-nb/surge.ui/commit/3c8d3c3eadc62fe6e19e5e167b105eceb5677271))
+* **storybook:** vitrines Global lisibles en sombre et en RTL ([c3b44f8](https://github.com/mahmoud-nb/surge.ui/commit/c3b44f8f4889cb567f9d284ca310629d7899c588))
+
+
+### 🐛 Bug Fixes
+
+* entrée CommonJS `dist/index.umd.cjs` et vérification des types ([918911d](https://github.com/mahmoud-nb/surge.ui/commit/918911d5541f5bae3891d45dd866d65a54b0ba58))
+
 ## [3.3.0](https://github.com/mahmoud-nb/surge.ui/compare/v3.2.0...v3.3.0) (2026-11-26)
 
 
