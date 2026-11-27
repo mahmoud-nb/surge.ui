@@ -5,7 +5,6 @@
   "type": "module",
   "workspaces": [
     "package/vue",
-    "package/ds-vue",
     "docs"
   ],
   "config": {
@@ -18,7 +17,7 @@
   "scripts": {
     "dev": "npm run build:lib && npm run dev -w docs",
     "build": "npm run build:lib && npm run build -w docs",
-    "build:lib": "npm run build -w package/vue && npm run build -w package/ds-vue",
+    "build:lib": "npm run build -w package/vue",
     "build:docs": "npm run build -w docs",
     "dev:lib": "npm run dev -w package/vue",
     "dev:docs": "npm run dev -w docs",
@@ -38,7 +37,7 @@
     "release:patch": "standard-version --release-as patch",
     "release:minor": "standard-version --release-as minor",
     "release:major": "standard-version --release-as major",
-    "release:publish": "npm run build:lib && npm publish -w package/vue --access public && npm publish -w package/ds-vue --access public",
+    "release:publish": "npm run build:lib && npm publish -w package/vue --access public",
     "env:sync": "cp .env docs/.env && cp .env package/vue/.env",
     "commit": "cz"
   },

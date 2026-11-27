@@ -48,7 +48,6 @@ npm workspaces monorepo:
 | Folder | Package | Content |
 |--------|---------|---------|
 | `package/vue/` | `@surgeui/vue` | Component library (published on npm), Storybook, tests |
-| `package/ds-vue/` | `@surgeui/ds-vue` | Former package name: deprecated relay to `@surgeui/vue`, published once in 4.0.0 |
 | `docs/` | `@surgeui/ds-docs` | VitePress documentation (French + `/en`) |
 
 ## 🛠️ Development
