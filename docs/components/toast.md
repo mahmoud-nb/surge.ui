@@ -142,7 +142,22 @@ toast.update(id, { title: 'Export terminé', type: 'success', duration: 4000, di
 |------|-------|-------------|
 | `default` | `{ toast, dismiss }` | Rendu personnalisé d'un toast (par défaut `SuToast`) |
 
-`SuToast` (l'élément de la pile) accepte `type`, `title`, `description`, `dismissible`, `duration`, `paused`, `action` et `dismissLabel`, et émet `dismiss` avec la raison (`'timeout'`, `'close'`, `'action'`).
+### Props de SuToast
+
+`SuToast` est l'élément de la pile, rendu par `SuToaster` (ou par son slot).
+
+| Prop | Type | Défaut | Description |
+|------|------|--------|-------------|
+| `type` | `'success' \| 'warning' \| 'error' \| 'info' \| 'neutral'` | `'neutral'` | Type (icône) |
+| `title` | `string` | - | Titre (sinon slot `title`) |
+| `description` | `string` | - | Texte complémentaire (sinon slot `description`) |
+| `dismissible` | `boolean` | `true` | Bouton de fermeture |
+| `duration` | `number` | `5000` | Durée d'affichage (ms) ; `0` = jusqu'à fermeture |
+| `paused` | `boolean` | `false` | Suspend le compte à rebours (survol, focus, onglet masqué) |
+| `action` | `{ label: string, onClick: () => void }` | - | Bouton d'action |
+| `dismissLabel` | `string` | - | Nom accessible du bouton de fermeture (sinon traduit) |
+
+`SuToast` émet `dismiss` avec la raison : `'timeout'`, `'close'` ou `'action'`.
 
 ## Accessibilité
 

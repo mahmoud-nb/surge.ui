@@ -449,6 +449,8 @@ import { UserIcon, InformationCircleIcon } from '@heroicons/vue/24/outline'
 | `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Taille du champ |
 | `required` | `boolean` | `false` | Indique si le champ est obligatoire |
 | `disabled` | `boolean` | `false` | Désactive le champ |
+| `fieldId` | `string` | - | Id du contrôle, relié au label (sinon généré) |
+| `requiredText` | `string` | - | Texte de l’astérisque « requis » pour les lecteurs d’écran (sinon traduit) |
 
 ### Slots
 

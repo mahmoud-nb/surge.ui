@@ -172,6 +172,7 @@ import { HomeIcon, ArrowRightIcon, UserIcon, ArrowTopRightOnSquareIcon } from '@
 | `externalLabel` | `string` | `"(s'ouvre dans un nouvel onglet)"` | Texte lu par les lecteurs d'écran quand le lien s'ouvre dans un nouvel onglet |
 | `icon` | `Component` | `undefined` | Icône à afficher |
 | `iconDisplay` | `'top' \| 'left' \| 'right' \| 'only'` | `'left'` | Position de l'icône |
+| `block` | `boolean` | - | Lien en bloc, sur toute la largeur |
 
 ### Attributs d'accessibilité
 

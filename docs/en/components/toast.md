@@ -142,7 +142,22 @@ toast.update(id, { title: 'Export complete', type: 'success', duration: 4000, di
 |------|-------|-------------|
 | `default` | `{ toast, dismiss }` | Custom toast rendering (`SuToast` by default) |
 
-`SuToast` (the stack item) accepts `type`, `title`, `description`, `dismissible`, `duration`, `paused`, `action` and `dismissLabel`, and emits `dismiss` with the reason (`'timeout'`, `'close'`, `'action'`).
+### SuToast props
+
+`SuToast` is the stack item, rendered by `SuToaster` (or by its slot).
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `type` | `'success' \| 'warning' \| 'error' \| 'info' \| 'neutral'` | `'neutral'` | Type (icon) |
+| `title` | `string` | - | Title (`title` slot otherwise) |
+| `description` | `string` | - | Extra text (`description` slot otherwise) |
+| `dismissible` | `boolean` | `true` | Close button |
+| `duration` | `number` | `5000` | Display time (ms); `0` = until closed |
+| `paused` | `boolean` | `false` | Pauses the countdown (hover, focus, hidden tab) |
+| `action` | `{ label: string, onClick: () => void }` | - | Action button |
+| `dismissLabel` | `string` | - | Accessible name of the close button (translated otherwise) |
+
+`SuToast` emits `dismiss` with the reason: `'timeout'`, `'close'` or `'action'`.
 
 ## Accessibility
 

@@ -490,6 +490,8 @@ const plans = [
 | `maxSelectedItems` | `number` | `undefined` | Limite de sélection multiple |
 | `label` | `string` | `undefined` | Label du SelectBox |
 | `message` | `string` | `undefined` | Message affiché (style déterminé par le state) |
+| `fieldId` | `string` | - | Id du contrôle, relié au label (sinon généré) |
+| `requiredText` | `string` | - | Texte de l’astérisque « requis » pour les lecteurs d’écran (sinon traduit) |
 
 ### Types d'options
 

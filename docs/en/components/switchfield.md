@@ -196,6 +196,11 @@ const notifications = ref(false)
 | `leftLabel` | `string` | `undefined` | Label displayed to the left of switch |
 | `rightLabel` | `string` | `undefined` | Label displayed to the right of switch |
 | `message` | `string` | `undefined` | Displayed message |
+| `fieldId` | `string` | - | Control id, linked to the label (generated otherwise) |
+| `requiredText` | `string` | - | Screen reader text of the "required" asterisk (translated otherwise) |
+| `leftIcon` | `Component` | - | Icon in the thumb when the switch is off |
+| `rightIcon` | `Component` | - | Icon in the thumb when the switch is on |
+| `padded` | `boolean` | - | Gap between the thumb and the track edge (`false`: thumb flush with the track) |
 
 ### Events
 

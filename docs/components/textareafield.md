@@ -304,7 +304,7 @@ const tweet = ref('')
 | `readonly` | `boolean` | `false` | Textarea en lecture seule |
 | `required` | `boolean` | `false` | Champ requis |
 | `placeholder` | `string` | `undefined` | Texte de placeholder |
-| `value` | `string` | `undefined` | Valeur du textarea |
+| `v-model` | `string` | `''` | Valeur du textarea |
 | `rows` | `number` | `3` | Nombre de lignes par défaut |
 | `minRows` | `number` | `2` | Nombre minimum de lignes (auto-resize) |
 | `maxRows` | `number` | `10` | Nombre maximum de lignes (auto-resize) |
@@ -315,6 +315,9 @@ const tweet = ref('')
 | `message` | `string` | `undefined` | Message affiché (style déterminé par le state) |
 | `spellcheck` | `boolean` | `true` | Vérification orthographique |
 | `wrap` | `'soft' \| 'hard' \| 'off'` | `'soft'` | Mode de retour à la ligne |
+| `fieldId` | `string` | - | Id du contrôle, relié au label (sinon généré) |
+| `requiredText` | `string` | - | Texte de l’astérisque « requis » pour les lecteurs d’écran (sinon traduit) |
+| `autocomplete` | `string` | - | Attribut `autocomplete` natif (`email`, `current-password`, `off`…) |
 
 ### Attributs d'accessibilité
 

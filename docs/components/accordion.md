@@ -143,6 +143,9 @@ Avec `attached`, les items forment un seul bloc séparé par des filets : idéal
 | `multiple` | `boolean`                         | `false`    | Si `true`, plusieurs panneaux peuvent être ouverts simultanément.           |
 | `attached` | `boolean`                         | `false`    | Regroupe les items dans un seul cadre, séparés par un filet (ignore `gap`). |
 | `gap`      | `'sm' \| 'md' \| 'lg' \| 'none'` | `'md'`     | Espacement entre les items séparés.                                         |
+| `items` | `AccordionItemData[]` | `[]` | Panneaux décrits en données (`id`, `title`, `content`, `disabled`, `open`), à la place des SuAccordionItem |
+| `v-model` | `(string \| number)[]` | `[]` | Identifiants des panneaux ouverts |
+| `level` | `1 \| 2 \| 3 \| 4 \| 5 \| 6` | `2` | Niveau de titre des en-têtes de panneaux (`h2` par défaut) |
 
 **AccordionItem**
 
@@ -151,6 +154,9 @@ Avec `attached`, les items forment un seul bloc séparé par des filets : idéal
 | `title` | `string`  | -           | Titre affiché dans le bouton. Peut être remplacé via le slot `title`. |
 | `open`  | `boolean` | `false`    | Définit l’état initial (ouvert/fermé).                                |
 | `id`    | `string`  | -           | Identifiant unique facultatif pour l’item.                            |
+| `content` | `string` | - | Contenu texte du panneau (sinon slot par défaut) |
+| `disabled` | `boolean` | `false` | Panneau non dépliable |
+| `level` | `1 \| 2 \| 3 \| 4 \| 5 \| 6` | `3` | Niveau de titre de l’en-tête |
 
 ### Slots
 
@@ -158,8 +164,8 @@ Avec `attached`, les items forment un seul bloc séparé par des filets : idéal
 
 | Nom du slot | Description                             |
 | ----------- | --------------------------------------- |
-| `title`     | Remplace le contenu du titre du bouton. |
-| `default`   | Contenu principal du panneau.           |
+| `header`    | Remplace le contenu du titre du bouton (props : `item`). |
+| `default`   | Contenu principal du panneau (props : `item`). |
 
 
 ## Accessibilité (WAI-ARIA)

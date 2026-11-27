@@ -313,6 +313,20 @@ import {
 | `textAlign` | `'left' \| 'center' \| 'right'` | `'left'` | Alignement du texte |
 | `label` | `string` | `undefined` | Label de l'input |
 | `message` | `string` | `undefined` | Message additionnel |
+| `fieldId` | `string` | - | Id du contrôle, relié au label (sinon généré) |
+| `requiredText` | `string` | - | Texte de l’astérisque « requis » pour les lecteurs d’écran (sinon traduit) |
+| `name` | `string` | - | Nom du champ, pour la soumission native du formulaire |
+| `prefixLabel` | `string` | - | Nom accessible du préfixe texte quand il est cliquable (`@prefix-click`) |
+| `prefixIconLabel` | `string` | - | Nom accessible de l’icône de préfixe quand elle est cliquable (`@prefix-icon-click`) |
+| `suffixLabel` | `string` | - | Nom accessible du suffixe texte quand il est cliquable (`@suffix-click`) |
+| `suffixIconLabel` | `string` | - | Nom accessible de l’icône de suffixe quand elle est cliquable (`@suffix-icon-click`) |
+| `autocomplete` | `string` | - | Attribut `autocomplete` natif (`email`, `current-password`, `off`…) |
+| `min` | `string \| number` | - | Valeur minimale (types `number`, `date`…) |
+| `max` | `string \| number` | - | Valeur maximale (types `number`, `date`…) |
+| `step` | `string \| number` | - | Pas entre deux valeurs (types `number`, `date`…) |
+| `minLength` | `number` | - | Nombre minimal de caractères (validation native) |
+| `maxLength` | `number` | - | Nombre maximal de caractères |
+| `pattern` | `string` | - | Expression régulière de validation native |
 
 ### Attributs d'accessibilité
 

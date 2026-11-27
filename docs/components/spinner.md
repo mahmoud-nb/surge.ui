@@ -76,6 +76,7 @@ Un composant de spinner moderne et accessible pour afficher des états de charge
 | `speed`      | `number`           | `1`           | Vitesse de l'animation en secondes  |
 | `label`      | `string`           | `'Chargement…'`| Texte accessibilité pour les lecteurs d'écran    |
 | `fill`       | `string`           | `'none'`      | Couleur de fond pour les spinners SVG   |
+| `showLabel` | `boolean` | `false` | Affiche le libellé sous le spinner (sinon lu par les lecteurs d’écran seulement) |
 
 ### Attributs d'accessibilité
 

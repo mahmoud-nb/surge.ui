@@ -230,6 +230,9 @@ const permissionOptions = [
 | `maxHeight` | `string` | `null` | Maximum height with automatic scroll |
 | `label` | `string` | `undefined` | Group label |
 | `message` | `string` | `undefined` | Displayed message |
+| `name` | `string` | - | Field name, for native form submission |
+| `fieldId` | `string` | - | Control id, linked to the label (generated otherwise) |
+| `requiredText` | `string` | - | Screen reader text of the "required" asterisk (translated otherwise) |
 
 ### Option types
 

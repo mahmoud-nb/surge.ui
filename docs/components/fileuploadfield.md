@@ -387,6 +387,11 @@ const images = ref([])
 | `browseText` | `string` | `'Parcourir'` | Texte du bouton de parcours |
 | `allowPreview` | `boolean` | `true` | Afficher les aperçus d'images |
 | `showFileList` | `boolean` | `true` | Afficher la liste des fichiers |
+| `variant` | `'default' \| 'solid' \| 'dashed' \| 'minimal'` | `'default'` | Style de la zone de dépôt |
+| `loading` | `boolean` | `false` | Chargement en cours |
+| `loadingText` | `string` | - | Titre de la zone pendant le chargement (sinon traduit) |
+| `loadingSubText` | `string` | - | Sous-titre de la zone pendant le chargement (sinon traduit) |
+| `showProgress` | `boolean` | `false` | Affiche la progression de chaque fichier |
 
 ### Types
 

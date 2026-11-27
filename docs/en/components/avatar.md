@@ -69,6 +69,8 @@ Avatar component based on the Image component to display a profile picture or us
 | `badgeColor` | `string` | `undefined` | Custom badge color |
 | `loading` | `boolean` | `false` | Loading state |
 | `clickable` | `boolean` | `false` | Clickable avatar |
+| `badgeProps` | `BadgeProps` | - | Props passed to the avatar Badge (variant, size…) |
+| `loadingLabel` | `string` | - | Text read while the image loads (translated otherwise) |
 
 ### Events
 

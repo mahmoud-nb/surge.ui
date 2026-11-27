@@ -254,6 +254,7 @@ const selectView = (option) => {
 | `label` | `string` | `undefined` | Button label; accessible name with an icon only |
 | `closeOnSelect` | `boolean` | `true` | Close after selection |
 | `maxHeight` | `string` | `'300px'` | Maximum menu height |
+| `loadingLabel` | `string` | - | Text read while loading (translated otherwise) |
 
 Attributes not declared as props (`id`, `aria-*`, `data-*`, listeners) go on the trigger button; `class` and `style` stay on the container. An `id` therefore appears only once, on the button the menu refers to (`aria-labelledby`).
 

@@ -155,6 +155,11 @@ const images = ref([])
 | `browseText` | `string` | `'Browse'` | Browse button text |
 | `allowPreview` | `boolean` | `true` | Show image previews |
 | `showFileList` | `boolean` | `true` | Show file list |
+| `variant` | `'default' \| 'solid' \| 'dashed' \| 'minimal'` | `'default'` | Drop zone style |
+| `loading` | `boolean` | `false` | Loading in progress |
+| `loadingText` | `string` | - | Drop zone title while loading (translated otherwise) |
+| `loadingSubText` | `string` | - | Drop zone subtitle while loading (translated otherwise) |
+| `showProgress` | `boolean` | `false` | Shows the progress of each file |
 
 ### Types
 

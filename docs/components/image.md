@@ -360,6 +360,9 @@ Composant Image avec support des ratios d'aspect, sources multiples, lazy loadin
 | `height` | `string \| number` | `undefined` | Hauteur de l'image |
 | `placeholder` | `boolean` | `true` | Afficher un placeholder pendant le chargement |
 | `placeholderColor` | `string` | `'#f3f4f6'` | Couleur du placeholder |
+| `loadingAriaLabel` | `string` | - | Texte ajouté au nom accessible pendant le chargement (sinon traduit) |
+| `errorAriaLabel` | `string` | - | Texte ajouté au nom accessible en cas d’erreur (sinon traduit) |
+| `errorText` | `string` | - | Message affiché quand l’image ne charge pas (sinon traduit) |
 
 ### Types
 
