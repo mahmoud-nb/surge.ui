@@ -2,6 +2,7 @@ import { afterEach, describe, expect, it } from 'vitest'
 import { mount, flushPromises, type VueWrapper } from '@vue/test-utils'
 import Dropdown from '@/components/molecules/Dropdown.vue'
 import Popover from '@/components/molecules/Popover.vue'
+import { EllipsisHorizontalIcon } from '@heroicons/vue/24/outline'
 
 let wrapper: VueWrapper | undefined
 
@@ -168,5 +169,77 @@ describe('SuDropdown — attributs et séparateurs', () => {
     const roles = menu.findAll('[role]').map(el => el.attributes('role'))
     expect(roles).toEqual(['menuitem', 'separator', 'menuitem', 'separator', 'menuitem'])
     expect(items().map(item => item.text())).toEqual(['Modifier', 'Partager', 'Supprimer'])
+  })
+})
+
+describe('SuDropdown — nom, déclencheur personnalisé, options cochées', () => {
+  it('icône seule : label devient le nom accessible du bouton', () => {
+    wrapper = mount(Dropdown, {
+      props: { label: 'Plus d’actions', icon: EllipsisHorizontalIcon, iconDisplay: 'only', options }
+    })
+    expect(trigger().attributes('aria-label')).toBe('Plus d’actions')
+    expect(trigger().text()).not.toContain('Plus d’actions')
+  })
+
+  it('ariaLabel reste prioritaire sur label', () => {
+    wrapper = mount(Dropdown, {
+      props: { label: 'Actions', ariaLabel: 'Actions du projet', icon: EllipsisHorizontalIcon, iconDisplay: 'only', options }
+    })
+    expect(trigger().attributes('aria-label')).toBe('Actions du projet')
+  })
+
+  it('slot trigger : le bouton fourni ouvre le menu et récupère le focus', async () => {
+    wrapper = mount(Dropdown, {
+      props: { options },
+      slots: {
+        trigger: `<template #trigger="{ props, isOpen }">
+          <button class="mon-avatar" v-bind="props">Profil {{ isOpen ? 'ouvert' : 'fermé' }}</button>
+        </template>`
+      },
+      attachTo: document.body
+    })
+    const custom = wrapper.find('.mon-avatar')
+    expect(wrapper.find('.su-dropdown-trigger').exists()).toBe(false)
+    expect(custom.attributes('aria-haspopup')).toBe('menu')
+    expect(custom.attributes('aria-expanded')).toBe('false')
+
+    ;(custom.element as HTMLElement).focus()
+    await keydown('ArrowDown')
+    expect(custom.attributes('aria-expanded')).toBe('true')
+    expect(custom.text()).toBe('Profil ouvert')
+    expect(wrapper.find('[role="menu"]').attributes('aria-labelledby')).toBe(custom.attributes('id'))
+    expect(focused()).toBe('Modifier')
+
+    await keydown('Escape')
+    expect(document.activeElement).toBe(custom.element)
+    expect(custom.attributes('aria-expanded')).toBe('false')
+  })
+
+  it('options cochables : menuitemcheckbox / menuitemradio et aria-checked', async () => {
+    wrapper = mount(Dropdown, {
+      props: {
+        label: 'Affichage',
+        options: [
+          { value: 'grid', label: 'Grille', type: 'radio', checked: true },
+          { value: 'list', label: 'Liste', type: 'radio', checked: false },
+          { type: 'separator' },
+          { value: 'archived', label: 'Afficher les archives', type: 'checkbox', checked: true },
+          { value: 'export', label: 'Exporter' }
+        ]
+      },
+      attachTo: document.body
+    })
+    await trigger().trigger('click')
+
+    const entries = wrapper.findAll('.su-dropdown-option')
+    expect(entries.map((entry) => entry.attributes('role'))).toEqual(['menuitemradio', 'menuitemradio', 'menuitemcheckbox', 'menuitem'])
+    expect(entries.map((entry) => entry.attributes('aria-checked'))).toEqual(['true', 'false', 'true', undefined])
+    // Coche pour les options cochées, place réservée pour toutes (libellés alignés)
+    expect(wrapper.findAll('.su-dropdown-option-check')).toHaveLength(4)
+    expect(wrapper.findAll('.su-dropdown-option-dot')).toHaveLength(1)
+    expect(wrapper.findAll('.su-dropdown-option-check-icon')).toHaveLength(1)
+
+    await entries[1].trigger('click')
+    expect(wrapper.emitted('select')?.at(-1)?.[0]).toMatchObject({ value: 'list', type: 'radio' })
   })
 })

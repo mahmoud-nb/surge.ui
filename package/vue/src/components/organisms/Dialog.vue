@@ -114,9 +114,16 @@ const readContext = () => {
   contextAttributes.value = result
 }
 
+// Tiroirs latéraux : left / right sont des alias de start / end (sens de lecture)
+const display = computed(() =>
+  props.display === 'left' ? 'start' : props.display === 'right' ? 'end' : props.display
+)
+
 const dialogClasses = computed(() => [
   'su-dialog',
-  `su-dialog--${props.display}`,
+  `su-dialog--${display.value}`,
+  // Classe de l'alias conservée pour les surcharges CSS existantes (.su-dialog--left)
+  props.display !== display.value && `su-dialog--${props.display}`,
   {
     'su-dialog--lock-scroll': props.disableScroll
   }
@@ -456,41 +463,48 @@ defineExpose({
 
   // ### Tiroirs
 
-  &--left,
-  &--right {
+  // Côté logique : start à gauche en LTR, à droite en RTL (dir du <dialog>,
+  // repris de son emplacement d'origine). Le décalage d'entrée suit le côté.
+  &--start,
+  &--end {
+    --_su-dialog-enter: -100%;
+
     width: min(24rem, 100%);
     max-width: none;
     height: 100dvh;
     max-height: none;
-  }
-
-  &--left {
     margin: 0;
-    margin-inline-end: auto;
-    border-width: 0 1px 0 0;
-    border-start-start-radius: 0;
-    border-end-start-radius: 0;
-    translate: -100% 0;
+    border-width: 0;
+    translate: var(--_su-dialog-enter) 0;
 
     &[open] {
       @starting-style {
-        translate: -100% 0;
+        translate: var(--_su-dialog-enter) 0;
       }
     }
   }
 
-  &--right {
-    margin: 0;
+  &--start {
+    margin-inline-end: auto;
+    border-inline-end-width: 1px;
+    border-start-start-radius: 0;
+    border-end-start-radius: 0;
+
+    &:dir(rtl) {
+      --_su-dialog-enter: 100%;
+    }
+  }
+
+  &--end {
+    --_su-dialog-enter: 100%;
+
     margin-inline-start: auto;
-    border-width: 0 0 0 1px;
+    border-inline-start-width: 1px;
     border-start-end-radius: 0;
     border-end-end-radius: 0;
-    translate: 100% 0;
 
-    &[open] {
-      @starting-style {
-        translate: 100% 0;
-      }
+    &:dir(rtl) {
+      --_su-dialog-enter: -100%;
     }
   }
 

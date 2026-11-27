@@ -22,6 +22,8 @@ The **Tabs** component organizes content into sections shown one at a time. It c
 - **a single panel**: the page shows the active tab's content in the default slot;
 - **navigation**: tabs with `to` change pages (Vue Router, Nuxt).
 
+Without content (no `content`, `panel` slot or default slot), no panel is rendered: the tab list acts as a filter or a switcher, and the content shown elsewhere follows the `v-model`.
+
 ## Usage
 
 ### One panel per tab

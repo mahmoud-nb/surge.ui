@@ -16,12 +16,13 @@ An accessible **Vue 3** component library: components, layouts and composables b
 
 ## ✨ Features
 
-- 🧩 **75+ components** - Display, actions, forms and 9 mobile-first layouts
+- 🧩 **85+ components** - Display, actions, forms, data (DataTable, TreeView, Timeline), app structure (AppShell, NavMenu, CommandPalette) and 9 mobile-first layouts
 - ♿ **Accessible** - WAI-ARIA patterns, full keyboard support, screen reader announcements
 - 🎨 **Themable** - 4 built-in themes × light / dark mode, CSS custom properties
-- 🌍 **Translatable** - Default texts in French and English
+- 🌍 **Translatable** - Default texts in French, English and Arabic, or following `<html lang>`
 - 🔧 **TypeScript** - Typed props, emits and composables
-- 🔄 **RTL & LTR** - Right-to-left support, including keyboard navigation
+- 🔄 **RTL & LTR** - Right-to-left support (Arabic, Hebrew, Persian), including keyboard navigation
+- 📦 **Lightweight when needed** - `createSurgeUI()`, an unplugin-vue-components resolver and one stylesheet per component
 
 ## 🚀 Quick start
 
@@ -39,7 +40,7 @@ import App from './App.vue'
 createApp(App).use(SurgeUI).mount('#app')
 ```
 
-Components are then available with the `Su` prefix: `<SuButton>`, `<SuInputField>`, `<SuDialog>`… Requires Vue **3.5+**.
+Components are then available with the `Su` prefix: `<SuButton>`, `<SuInputField>`, `<SuDialog>`… Requires Vue **3.5+**. To ship only the components you use, see [Importing only what you use](https://surgeui.com/en/guide/installation#importing-only-what-you-use).
 
 ## 🗂️ Repository
 

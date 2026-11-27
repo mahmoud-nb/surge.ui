@@ -1,4 +1,4 @@
-ButtonGroup# ButtonGroup
+# ButtonGroup
 
 ButtonGroup component for organizing and aligning buttons with controlled spacing. Supports propagation of `size` and `variant` props to child buttons and special border handling for connected buttons.
 

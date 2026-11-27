@@ -26,9 +26,13 @@ See [useLocale](/en/composables/uselocale) for the Arabic locale and its digits.
 
 - **Layout**: components use logical properties (`margin-inline`, `padding-inline`, `inset-inline`, `text-align: start`). Margins, borders, start and end icons follow the direction.
 - **Keyboard**: left and right arrows are reversed in horizontal lists (Tabs, menus), the Calendar and the Slider. In a Slider, the value grows from right to left: the right arrow decreases it.
-- **`start` and `end` positions**: the Toaster (`bottom-end` by default), the FloatButton (`end`), the Avatar status dot and badges placed on an element move to the opposite side. The former `left` and `right` values are aliases of `start` and `end`.
+- **`start` and `end` positions**: the Toaster (`bottom-end` by default), the FloatButton (`end`), the Dialog drawers (`display="start"` or `"end"`), the Avatar status dot and badges placed on an element move to the opposite side. The former `left` and `right` values are aliases of `start` and `end`.
 - **Directional icons** of components (Calendar and Pagination arrows, Breadcrumb chevrons): flipped.
 - **Dialogs**: rendered in `<body>`, they keep the `dir` and `lang` of their original location.
+
+## What stays left to right
+
+- **Keyboard shortcuts** (Kbd): isolated and written left to right, "Ctrl+K" does not become "K+Ctrl".
 
 ## Your directional icons
 

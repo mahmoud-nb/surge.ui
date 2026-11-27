@@ -66,6 +66,8 @@ const { systemTheme, systemContrast, systemMotion } = useTheme()
 </script>
 ```
 
+In `system` mode, a change of the system preference (dark mode in the evening, a changed setting) applies at once, without reloading the page: `systemTheme`, `isDarkMode` and `data-theme-mode` on `<html>` follow.
+
 ## Options
 
 ```typescript
@@ -77,6 +79,22 @@ useTheme({
   persist?: boolean              // Persist preferences (true)
 })
 ```
+
+The theme state is shared by the whole application. Each option comes from the first call that provides it: pass them in `App.vue` (its `setup` runs before the one of child components, such as `SuThemeToggle`, that call `useTheme()` without options). Preferences saved in `localStorage` still take precedence over `defaultTheme` and `defaultThemeMode`.
+
+```vue
+<!-- App.vue -->
+<script setup>
+import { useTheme } from '@surgeui/vue'
+
+useTheme({ defaultThemeMode: 'system' })
+</script>
+```
+
+## Lifecycle
+
+- **In a component**: saved preferences are read on mount (no hydration mismatch with server rendering), then the system is followed as long as a component using `useTheme` is mounted. When the last one unmounts, the `matchMedia` listeners are removed. Called in `App.vue`, following lasts for the whole life of the application.
+- **Outside a component** (`main.ts`, a store): following starts at once and lasts until the current effect scope (`effectScope`) ends, otherwise for the whole life of the page.
 
 ## API
 

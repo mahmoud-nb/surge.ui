@@ -14,7 +14,7 @@ Modern Vue.js 3 component library with Composition API, designed to create moder
 - **TypeScript** -  Full TypeScript support for better DX
 - **Composition API** -  Uses Vue 3 Composition API
 - **Responsive** -  Components adapted to all screen sizes
-- **5 Themes** -  Light, Dark, Ocean, Forest and Sunset included
+- **4 themes** - Default, Ocean, Forest and Sunset, in light and dark mode
 - **RTL & LTR** -  Native support for both text directions
 - **Accessibility** -  WCAG 2.1 AA compliant (focus, keyboard, screen readers, contrast)
 - **Performance** -  Tree-shakable, optimized CSS, transitions respecting `prefers-reduced-motion`

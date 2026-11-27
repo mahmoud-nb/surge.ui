@@ -26,9 +26,13 @@ Voir [useLocale](/composables/uselocale) pour la locale arabe et ses chiffres.
 
 - **Mise en page** : les composants utilisent des propriétés logiques (`margin-inline`, `padding-inline`, `inset-inline`, `text-align: start`). Marges, bordures, icônes de début et de fin suivent le sens.
 - **Clavier** : les flèches gauche et droite s'inversent dans les listes horizontales (Tabs, menus), le Calendar et le Slider. Dans un Slider, la valeur croît de droite à gauche : la flèche droite la diminue.
-- **Positions `start` et `end`** : le Toaster (`bottom-end` par défaut), le FloatButton (`end`), la pastille de statut de l'Avatar et les badges posés sur un élément passent du côté opposé. Les anciennes valeurs `left` et `right` sont des alias de `start` et `end`.
+- **Positions `start` et `end`** : le Toaster (`bottom-end` par défaut), le FloatButton (`end`), les tiroirs du Dialog (`display="start"` ou `"end"`), la pastille de statut de l'Avatar et les badges posés sur un élément passent du côté opposé. Les anciennes valeurs `left` et `right` sont des alias de `start` et `end`.
 - **Icônes directionnelles** des composants (flèches du Calendar, de la Pagination, chevrons du Breadcrumb) : retournées.
 - **Dialogs** : rendus dans `<body>`, ils reprennent le `dir` et la `lang` de leur emplacement d'origine.
+
+## Ce qui reste de gauche à droite
+
+- **Raccourcis clavier** (Kbd) : isolés et écrits de gauche à droite, « Ctrl+K » ne devient pas « K+Ctrl ».
 
 ## Vos icônes directionnelles
 

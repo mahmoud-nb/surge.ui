@@ -53,4 +53,5 @@ Touche ou raccourci clavier, à afficher dans un texte, une infobulle ou un menu
 
 - Structure HTML recommandée pour un raccourci : `<kbd><kbd>Ctrl</kbd>+<kbd>K</kbd></kbd>`.
 - Le séparateur est lu (« plus ») : il fait partie du raccourci.
+- Le raccourci est isolé du texte et toujours écrit de gauche à droite (`dir="ltr"`) : dans une page en arabe ou en hébreu, on lit « Ctrl+K », pas « K+Ctrl ». Un attribut `dir` passé au composant l'emporte.
 - Les symboles (⌘, ⇧) sont mal lus par certains lecteurs d'écran : ajoutez si besoin un texte avec [VisuallyHidden](/components/visuallyhidden).

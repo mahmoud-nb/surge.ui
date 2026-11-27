@@ -26,6 +26,16 @@ pnpm add @surgeui/vue
 
 :::
 
+::: warning pnpm: minimum release age
+pnpm can refuse a version published less than `minimumReleaseAge` minutes ago (24 hours by default in pnpm 11). For a new SurgeUI release, wait for that delay or add an exception limited to that version, and remove it afterwards:
+
+```yaml
+# pnpm-workspace.yaml
+minimumReleaseAgeExclude:
+  - '@surgeui/vue@4.2.0' # exact version: pnpm 10.19+
+```
+:::
+
 ## Configuration
 
 ### Global import
@@ -46,7 +56,6 @@ app.mount('#app')
 
 ```vue
 <script setup lang="ts">
-import '@surgeui/vue/style.css'
 import { Button as SuButton } from '@surgeui/vue'
 import type { ButtonProps } from '@surgeui/vue/types'
 </script>
@@ -58,42 +67,26 @@ import type { ButtonProps } from '@surgeui/vue/types'
 </template>
 ```
 
+`app.use(SurgeUI)` registers every component: all their JavaScript ends up in the bundle, used or not. To ship only the components you use, see [Importing only what you use](#importing-only-what-you-use).
+
 ### Configuration with options
 
-```js
-// main.js
+```ts
+// main.ts
 import { createApp } from 'vue'
-import SurgeUI from '@surgeui/vue'
+import SurgeUI, { locales } from '@surgeui/vue'
 
 const app = createApp(App)
 
-// Customize component prefix
 app.use(SurgeUI, {
-  prefix: 'My', // Components will be MyButton, MyInput, etc.
-  
-  // custom text color
-  textPrimaryColor: '#213222',
-  textSecondaryColor: '#454344',
-  textTeriaryColor: '#676965',
-
-  // Custom Button style
-  button: {
-    bg: '#101010',
-    color: '#FFFFFF',
-    border: 'none',
-    hoverBackground: '#383838',
-    hoverShadow: '0 0'
-  },
-
-  // custom link style
-  link: {
-    color: '#2563eb',
-    hoverColor: '#1e40af',
-    hoverBackground: 'none',
-    activeColor: '#1e3a8a',
+  prefix: 'My', // MyButton, MyInput…
+  locale: locales.en,
+  // Theme tokens (camelCase), applied in both modes
+  theme: {
+    primaryDefault: '#4f46e5',
+    primaryHover: '#4338ca',
+    textPrimary: '#1f2937'
   }
-
-  // Other options are currently under development.
 })
 ```
 
@@ -102,9 +95,14 @@ app.use(SurgeUI, {
 | Option | Description |
 |--------|-------------|
 | `prefix` | Component prefix (`Su` by default) |
-| `theme` | Theme customization |
+| `theme` | Theme tokens to override, in camelCase (`primaryDefault`, `bgSurface`, `textPrimary`…): set as `--su-custom-*` on `<html>`, for light and dark mode alike. For per-mode values, override the `--su-*` variables in CSS ([Themes](/en/theme/)) |
 | `locale` | Language of default texts: a provided locale (`locales.en`), partial messages, a ref, or `'auto'` to follow `<html lang>` |
 | `linkComponent` | Component for `to` links: NuxtLink or your own. Default: RouterLink when registered, otherwise `<a href>` |
+| `components` | Components to register, by name without prefix: `{ Button, Dialog }`. Default: all of them (none with `createSurgeUI`) |
+
+::: tip Older examples
+The `textPrimaryColor`, `button` and `link` options passed at the root (older examples on this page) are ignored: they belong in `theme`. `theme.button` (`bg`, `color`, `border`, `hoverBg`, `hoverShadow`) styles `variant="custom"` buttons, `theme.link` (`color`, `hoverColor`, `hoverBg`) styles `variant="custom"` links.
+:::
 
 ### Component language
 
@@ -140,6 +138,71 @@ app.use(SurgeUI, { linkComponent: NuxtLink })
 ```
 
 The component receives `to` and the link attributes (classes, `aria-*`, `target`). For your own components, `useLinkComponent()` returns the same component (`linkFor(to)`) and `navigate(to)`.
+
+## Importing only what you use
+
+`app.use(SurgeUI)` and `style.css` bring the whole library: about 97 kB of JavaScript and 35 kB of CSS (gzip). To ship only the components you use:
+
+### JavaScript
+
+`createSurgeUI()` installs the same plugin (locale, links, toasts, confirmations, theme) without registering every component. Register the ones you need, or import them where they are used:
+
+```ts
+// main.ts
+import { createApp } from 'vue'
+import { createSurgeUI, Button, Dialog } from '@surgeui/vue'
+
+createApp(App)
+  .use(createSurgeUI({ locale: 'auto', components: { Button, Dialog } }))
+  .mount('#app')
+```
+
+With [unplugin-vue-components](https://github.com/unplugin/unplugin-vue-components), the bundled resolver imports each component where it is used (`<SuButton>` in a template): no list to maintain.
+
+```ts
+// vite.config.ts
+import Components from 'unplugin-vue-components/vite'
+import { SurgeUIResolver } from '@surgeui/vue/resolver'
+
+export default defineConfig({
+  plugins: [vue(), Components({ resolvers: [SurgeUIResolver()] })]
+})
+```
+
+```ts
+// main.ts: the plugin is still useful for the locale, links and toasts
+app.use(createSurgeUI({ locale: 'auto' }))
+```
+
+### CSS
+
+`@surgeui/vue/css/` holds the base (tokens, themes, contrast, utilities) and one stylesheet per component. With the resolver, `importStyle` imports them along with each component, instead of `style.css`:
+
+```ts
+Components({ resolvers: [SurgeUIResolver({ importStyle: true })] })
+// Tailwind 4: the same stylesheets in the surgeui layer
+Components({ resolvers: [SurgeUIResolver({ importStyle: 'layer' })] })
+```
+
+Without the resolver, import the base, then the stylesheets of the components you use. A stylesheet only holds its own component: `css/manifest.json` lists, for each one, the stylesheets to load in order (Dialog: `Spinner.css`, `Button.css`, `Dialog.css`).
+
+```css
+@import "@surgeui/vue/css/base.css";
+@import "@surgeui/vue/css/Spinner.css";
+@import "@surgeui/vue/css/Button.css";
+@import "@surgeui/vue/css/Dialog.css";
+```
+
+| Import | CSS (gzip) |
+|--------|-----------:|
+| `style.css` (everything) | 35 kB |
+| `css/base.css` | 5.6 kB |
+| Base + Button (and Spinner) | 7.3 kB |
+| Base + Dialog (and Button, Spinner) | 8.2 kB |
+
+::: warning One source only
+Do not import `style.css` on top of the per-component stylesheets: the rules would be duplicated.
+:::
 
 ## With Tailwind CSS
 

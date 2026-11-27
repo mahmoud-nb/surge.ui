@@ -649,7 +649,14 @@ export interface AvatarGroupProps extends AccessibilityProps {
 
 // Dropdown.vue
 export interface DropdownItemOption {
-  type?: 'item';
+  /**
+   * `checkbox` : option cochable (menuitemcheckbox) ; `radio` : choix
+   * exclusif dans son groupe (menuitemradio, groupes délimités par les
+   * séparateurs). L'état vient de `checked`, que la page met à jour sur `select`.
+   */
+  type?: 'item' | 'checkbox' | 'radio';
+  /** État coché d'une option `checkbox` ou `radio` */
+  checked?: boolean;
   value: string | number;
   label: string;
   href?: string;
@@ -1251,7 +1258,12 @@ export interface ToasterProps {
 }
 
 // Dialog.vue
-export type DialogDisplay = 'center' | 'left' | 'right' | 'top' | 'bottom' | 'full';
+/**
+ * Affichage du Dialog. `start` / `end` : tiroir latéral du côté où commence
+ * ou finit la lecture (à gauche / à droite en LTR, l'inverse en RTL).
+ * `left` / `right` sont des alias de `start` / `end`.
+ */
+export type DialogDisplay = 'center' | 'start' | 'end' | 'left' | 'right' | 'top' | 'bottom' | 'full';
 export interface DialogProps extends AccessibilityProps {
   modelValue?: boolean;
   display?: DialogDisplay;

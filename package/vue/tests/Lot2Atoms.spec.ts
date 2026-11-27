@@ -51,6 +51,16 @@ describe('SuKbd', () => {
     expect(wrapper.find('.su-kbd__key').exists()).toBe(false)
     expect(wrapper.text()).toBe('Échap')
   })
+
+  it('reste de gauche à droite dans une page en arabe (Ctrl+K, pas K+Ctrl)', () => {
+    wrapper = mount(Kbd, { props: { keys: ['Ctrl', 'K'] } })
+    expect(wrapper.attributes('dir')).toBe('ltr')
+    wrapper.unmount()
+
+    // Un dir passé au composant l'emporte
+    wrapper = mount(Kbd, { props: { keys: ['Ctrl', 'K'] }, attrs: { dir: 'auto' } })
+    expect(wrapper.attributes('dir')).toBe('auto')
+  })
 })
 
 describe('SuVisuallyHidden', () => {

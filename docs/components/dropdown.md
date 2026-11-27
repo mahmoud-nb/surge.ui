@@ -1,3 +1,22 @@
+<script setup>
+import { computed, ref } from 'vue'
+
+const view = ref('grid')
+const showArchived = ref(false)
+
+const viewOptions = computed(() => [
+  { value: 'grid', label: 'Grille', type: 'radio', checked: view.value === 'grid' },
+  { value: 'list', label: 'Liste', type: 'radio', checked: view.value === 'list' },
+  { type: 'separator' },
+  { value: 'archived', label: 'Afficher les archives', type: 'checkbox', checked: showArchived.value }
+])
+
+const selectView = (option) => {
+  if (option.value === 'archived') showArchived.value = !showArchived.value
+  else view.value = option.value
+}
+</script>
+
 # Dropdown
 
 Composant Dropdown qui ressemble à un bouton mais affiche une liste d'options au clic. Chaque option peut être un lien (si elle contient un href) ou déclencher une action. Conforme aux normes W3C d'accessibilité avec support complet du clavier et des lecteurs d'écran.
@@ -120,12 +139,14 @@ const handleSelect = (option) => {
         ]"
         :icon="'EllipsisVerticalIcon'"
         iconDisplay="only"
-        aria-label="Menu des actions"
+        label="Menu des actions"
         variant="ghost"
       />
     </div>
   </div>
 </div>
+
+Avec une icône seule, `label` n'est pas affiché : il devient le nom accessible du bouton (`aria-label`). `ariaLabel` reste prioritaire s'il est fourni.
 
 ```vue
 <script setup>
@@ -144,7 +165,7 @@ const actionOptions = [
     :options="actionOptions"
     :icon="EllipsisVerticalIcon"
     iconDisplay="only"
-    aria-label="Menu des actions"
+    label="Menu des actions"
     variant="ghost"
     @select="handleSelect"
   />
@@ -396,6 +417,90 @@ const createOptions = [
 </template>
 ```
 
+### Déclencheur personnalisé
+
+Le slot `trigger` remplace le bouton intégré : un avatar, un bouton avec un compteur… Liez `props` à votre bouton : il reçoit l'`id`, les attributs ARIA (`aria-haspopup`, `aria-expanded`, `aria-controls`), le clic et le clavier. Le menu se place contre lui et lui rend le focus à la fermeture.
+
+<div class="component-demo">
+  <div class="demo-section">
+    <h4>Menu du compte</h4>
+    <div class="demo-buttons">
+      <SuDropdown
+        :options="[
+          { value: 'profile', label: 'Mon profil' },
+          { value: 'settings', label: 'Paramètres' },
+          { type: 'separator' },
+          { value: 'logout', label: 'Se déconnecter' }
+        ]"
+        placement="bottom-end"
+      >
+        <template #trigger="{ props }">
+          <SuButton v-bind="props" variant="ghost" aria-label="Compte de Marie Dupont">
+            <SuAvatar name="Marie Dupont" size="sm" />
+          </SuButton>
+        </template>
+      </SuDropdown>
+    </div>
+  </div>
+</div>
+
+```vue
+<template>
+  <SuDropdown :options="accountOptions" placement="bottom-end" @select="handleSelect">
+    <template #trigger="{ props, isOpen }">
+      <SuButton v-bind="props" variant="ghost" aria-label="Compte de Marie Dupont">
+        <SuAvatar name="Marie Dupont" size="sm" />
+      </SuButton>
+    </template>
+  </SuDropdown>
+</template>
+```
+
+Le déclencheur doit être un bouton (`<button>` ou `SuButton`) : il est atteint au clavier et s'active avec Entrée et Espace. Sans `id` lié, le premier élément du slot sert de déclencheur.
+
+### Options cochables
+
+`type: 'checkbox'` (case à cocher) ou `type: 'radio'` (choix exclusif) ajoute une coche et l'état `checked` (rôles `menuitemcheckbox` et `menuitemradio`, `aria-checked`). Le Dropdown ne garde pas l'état : mettez à jour `checked` sur `select`. Les séparateurs délimitent les groupes de boutons radio.
+
+<div class="component-demo">
+  <div class="demo-section">
+    <h4>Affichage d'une liste</h4>
+    <div class="demo-buttons">
+      <SuDropdown
+        label="Affichage"
+        :options="viewOptions"
+        :close-on-select="false"
+        @select="selectView"
+      />
+    </div>
+  </div>
+</div>
+
+```vue
+<script setup>
+import { computed, ref } from 'vue'
+
+const view = ref('grid')
+const showArchived = ref(false)
+
+const viewOptions = computed(() => [
+  { value: 'grid', label: 'Grille', type: 'radio', checked: view.value === 'grid' },
+  { value: 'list', label: 'Liste', type: 'radio', checked: view.value === 'list' },
+  { type: 'separator' },
+  { value: 'archived', label: 'Afficher les archives', type: 'checkbox', checked: showArchived.value }
+])
+
+const selectView = (option) => {
+  if (option.value === 'archived') showArchived.value = !showArchived.value
+  else view.value = option.value
+}
+</script>
+
+<template>
+  <SuDropdown label="Affichage" :options="viewOptions" :close-on-select="false" @select="selectView" />
+</template>
+```
+
 ## API
 
 ### Props
@@ -411,7 +516,7 @@ const createOptions = [
 | `loading` | `boolean` | `false` | État de chargement |
 | `icon` | `Component` | `undefined` | Icône du bouton |
 | `iconDisplay` | `'left' \| 'right' \| 'only'` | `'left'` | Position de l'icône |
-| `label` | `string` | `undefined` | Label du bouton |
+| `label` | `string` | `undefined` | Label du bouton ; nom accessible avec une icône seule |
 | `closeOnSelect` | `boolean` | `true` | Fermer après sélection |
 | `maxHeight` | `string` | `'300px'` | Hauteur maximale du menu |
 
@@ -424,6 +529,8 @@ Les attributs non déclarés comme props (`id`, `aria-*`, `data-*`, écouteurs) 
 interface DropdownOption {
   value: string | number
   label: string
+  type?: 'item' | 'checkbox' | 'radio' // Option cochable (menuitemcheckbox, menuitemradio)
+  checked?: boolean                // État coché d'une option checkbox ou radio
   href?: string                    // Si présent, l'option devient un lien
   to?: string | RouteLocationRaw   // Lien du routeur (RouterLink) ; désactivée, l'option ne navigue pas
   target?: '_blank' | '_self' | '_parent' | '_top'
@@ -442,7 +549,8 @@ type DropdownSeparatorOption = { type: 'separator' }
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `ariaLabel` | `string` | `undefined` | Label accessible |
+| `ariaLabel` | `string` | `undefined` | Label accessible (prioritaire sur `label`) |
+| `ariaLabelledBy` | `string` | `undefined` | ID de l'élément qui nomme le bouton |
 | `ariaDescribedBy` | `string` | `undefined` | ID de l'élément de description |
 | `role` | `string` | `undefined` | Rôle ARIA personnalisé |
 | `tabIndex` | `number` | `0` | Ordre de tabulation |
@@ -457,6 +565,12 @@ type DropdownSeparatorOption = { type: 'separator' }
 | `@focus` | `(event: FocusEvent) => void` | Émis lors du focus sur le bouton |
 | `@blur` | `(event: FocusEvent) => void` | Émis lors de la perte de focus |
 
+### Slots
+
+| Slot | Props | Description |
+|------|-------|-------------|
+| `trigger` | `{ props, isOpen }` | Déclencheur à la place du bouton intégré ; `props` (id, ARIA, clic, clavier) se lie à votre bouton |
+
 ### Méthodes exposées
 
 | Méthode | Type | Description |
@@ -465,7 +579,7 @@ type DropdownSeparatorOption = { type: 'separator' }
 | `open()` | `() => void` | Ouvre le menu |
 | `close()` | `() => void` | Ferme le menu |
 | `dropdownRef` | `Ref<HTMLDivElement>` | Référence au conteneur |
-| `triggerRef` | `Ref<HTMLButtonElement>` | Référence au bouton |
+| `triggerRef` | `Ref<HTMLElement>` | Référence au déclencheur (bouton intégré ou celui du slot) |
 
 ## Différence entre liens et actions
 
@@ -574,12 +688,12 @@ Le composant Dropdown respecte les normes WCAG 2.1 AA :
   @select="handleSelect"
 />
 
-<!-- Dropdown avec icône seule (OBLIGATOIRE: aria-label) -->
+<!-- Dropdown avec icône seule (label ou aria-label obligatoire : il nomme le bouton) -->
 <SuDropdown 
   :options="options"
   :icon="EllipsisVerticalIcon"
   iconDisplay="only"
-  aria-label="Menu des options"
+  label="Menu des options"
   @select="handleSelect"
 />
 
@@ -810,7 +924,7 @@ const fileMenuOptions = [
 ### ✅ À faire
 - Utiliser des icônes cohérentes pour les actions similaires
 - Grouper les options logiquement avec des séparateurs
-- Fournir un `aria-label` pour les dropdowns avec icône seule
+- Fournir un `label` (ou `aria-label`) pour les dropdowns avec icône seule
 - Utiliser `trigger="hover"` pour la navigation principale
 - Limiter le nombre d'options (max 10-12 pour l'UX)
 
