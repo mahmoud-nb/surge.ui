@@ -49,7 +49,7 @@ jobs:
           mkdir -p dist-combined
           cp -r docs/.vitepress/dist/* dist-combined/
           mkdir -p dist-combined/storybook
-          cp -r package/storybook-static/* dist-combined/storybook/
+          cp -r package/vue/storybook-static/* dist-combined/storybook/
 
       - name: Upload Pages Artifact
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'

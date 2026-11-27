@@ -1,6 +1,6 @@
 import type { StorybookConfig } from '@storybook/vue3-vite'
 import { loadEnv } from 'vite'
-import pkg from '../../package.json'
+import pkg from '../../../package.json'
 
 const mode = process.env.NODE_ENV || 'development'
 const env = loadEnv(mode, process.cwd(), 'VITE_')
