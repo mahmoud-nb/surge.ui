@@ -58,7 +58,9 @@ export default defineConfig({
       entry: resolve(__dirname, 'src/index.ts'),
       name: 'SurgeUI',
       formats: ['es', 'umd'],
-      fileName: (format) => `index.${format}.js`
+      // UMD en .cjs : le paquet est "type": "module", un .js y serait lu comme
+      // un module ES et require('@surgeui/vue') renverrait un objet vide
+      fileName: (format) => (format === 'umd' ? 'index.umd.cjs' : `index.${format}.js`)
     },
     rollupOptions: {
       external: ['vue'],

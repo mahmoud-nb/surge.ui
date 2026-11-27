@@ -74,12 +74,29 @@ jobs:
       - name: Lint
         run: npm run lint:js
 
+      - name: Type check
+        run: npm run typecheck
+
       - name: Test
         run: npm test
 
       # Bibliothèque, puis relais (copie des feuilles de style)
       - name: Build library
         run: npm run build:lib
+
+      # require('@surgeui/vue') doit exposer les composants et le plugin
+      # (entrée CommonJS dist/index.umd.cjs, relais compris)
+      - name: Check CommonJS entry
+        run: |
+          node -e "
+            for (const name of ['@surgeui/vue', '@surgeui/ds-vue']) {
+              const lib = require(name)
+              if (!lib.Button || typeof lib.default?.install !== 'function') {
+                console.error('Entrée CommonJS incomplète : ' + name)
+                process.exit(1)
+              }
+            }
+          "
 
       - name: Publish @surgeui/vue
         if: steps.registry.outputs.vue == 'false'

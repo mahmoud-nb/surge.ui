@@ -25,6 +25,7 @@
     "storybook": "npm run storybook -w package/vue",
     "build-storybook": "npm run build-storybook -w package/vue",
     "test": "npm run test -w package/vue",
+    "typecheck": "npm run typecheck -w package/vue",
     "lint": "npm run lint:js && npm run lint:style",
     "lint:fix": "npm run lint:js:fix && npm run lint:style:fix",
     "lint:js": "eslint . --ext .js,.ts,.vue",
