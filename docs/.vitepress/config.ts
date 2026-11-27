@@ -70,6 +70,7 @@ export default defineConfig({
               { text: 'Démarrage rapide', link: '/guide/get-started' },
               { text: 'Installation', link: '/guide/installation' },
               { text: 'Migration vers la 4.0', link: '/guide/migration', badge: NEW_BADGE },
+              { text: 'Assistants IA', link: '/guide/ai', badge: NEW_BADGE },
               { text: 'Nuxt', link: '/guide/nuxt', badge: NEW_BADGE },
               { text: 'RTL (droite à gauche)', link: '/guide/rtl', badge: NEW_BADGE }
             ]
@@ -133,6 +134,7 @@ export default defineConfig({
               { text: 'Getting Started', link: '/en/guide/get-started' },
               { text: 'Installation', link: '/en/guide/installation' },
               { text: 'Migrating to 4.0', link: '/en/guide/migration', badge: NEW_BADGE },
+              { text: 'AI assistants', link: '/en/guide/ai', badge: NEW_BADGE },
               { text: 'Nuxt', link: '/en/guide/nuxt', badge: NEW_BADGE },
               { text: 'RTL (right to left)', link: '/en/guide/rtl', badge: NEW_BADGE }
             ]

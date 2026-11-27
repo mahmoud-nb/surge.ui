@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vitepress dev",
-    "build": "vitepress build",
+    "build": "vitepress build && npm run llms",
+    "llms": "node --disable-warning=ExperimentalWarning scripts/llms.mjs",
     "preview": "vitepress preview"
   },
   "dependencies": {
