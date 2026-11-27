@@ -239,6 +239,13 @@ Components are built to meet **WCAG 2.1 AA**:
 - **Screen readers** - persistent live regions for announcements, named landmarks (HolyGrailLayout, with skip link)
 - **Preferences** - `prefers-reduced-motion`, `prefers-contrast: more`, minimum touch targets
 
+## ⬆️ Upgrading to 4.0
+
+- The package is renamed `@surgeui/vue`: replace `@surgeui/ds-vue` in your dependencies and imports (subpaths unchanged).
+- Removed deprecated APIs: `useTheme().toggleTheme()` (use `toggleMode()`), `setTheme('light' | 'dark')` and the `DeprecatedThemeName` type (use `setTheme('default')` + `setThemeMode()`), `accessibility.trapFocus()` (use `createFocusTrap()` / `useFocusTrap()`), `accessibility.announceToScreenReader()` (use `announce()` / `useAnnouncer()`), the Dropdown option `separator: true` (use `{ type: 'separator' }` or `separatorBefore: true`) and the `SuDialog` `zIndex` prop.
+
+See [Migrating to 4.0](https://surgeui.com/en/guide/migration).
+
 ## ⬆️ Upgrading to 3.0
 
 Version 3.0 contains breaking changes:

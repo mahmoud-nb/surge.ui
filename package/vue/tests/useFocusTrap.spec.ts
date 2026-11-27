@@ -1,6 +1,5 @@
 import { afterEach, describe, expect, it } from 'vitest'
 import { createFocusTrap, getTabbableElements } from '@/composables/useFocusTrap'
-import { trapFocus } from '@/utils/accessibility'
 
 const traps: { deactivate: () => void }[] = []
 
@@ -116,16 +115,5 @@ describe('createFocusTrap', () => {
     trap(container).activate()
     expect(document.activeElement).toBe(container)
     expect(container.getAttribute('tabindex')).toBe('-1')
-  })
-
-  it('trapFocus (obsolète) passe par le même piège', () => {
-    const container = panel(['Un', 'Deux'])
-    const release = trapFocus(container)
-    traps.push({ deactivate: release })
-
-    expect(document.activeElement).toBe(buttons(container)[0])
-    buttons(container)[1].focus()
-    tab()
-    expect(document.activeElement).toBe(buttons(container)[0])
   })
 })

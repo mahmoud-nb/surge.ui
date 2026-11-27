@@ -77,14 +77,14 @@ type Story = StoryObj<typeof meta>
 const basicOptions = [
   { value: 'profile', label: 'Mon profil', icon: UserIcon },
   { value: 'settings', label: 'Paramètres', icon: CogIcon },
-  { value: 'separator1', separator: true },
+  { type: 'separator' as const },
   { value: 'logout', label: 'Déconnexion', icon: ArrowUturnLeftIcon }
 ]
 
 const actionOptions = [
   { value: 'new', label: 'Nouveau document', icon: PlusIcon },
   { value: 'open', label: 'Ouvrir', icon: DocumentIcon },
-  { value: 'separator1', separator: true },
+  { type: 'separator' as const },
   { value: 'share', label: 'Partager', icon: ShareIcon },
   { value: 'delete', label: 'Supprimer', icon: TrashIcon }
 ]
@@ -92,7 +92,7 @@ const actionOptions = [
 const linkOptions = [
   { value: 'docs', label: 'Documentation', href: '/docs', icon: DocumentIcon },
   { value: 'help', label: 'Centre d\'aide', href: '/help', icon: UserIcon },
-  { value: 'separator1', separator: true },
+  { type: 'separator' as const },
   { value: 'github', label: 'GitHub', href: 'https://github.com', target: '_blank', icon: ShareIcon },
   { value: 'contact', label: 'Contact', href: 'mailto:contact@example.com', icon: UserIcon }
 ]
@@ -100,7 +100,7 @@ const linkOptions = [
 const mixedOptions = [
   { value: 'profile', label: 'Mon profil', icon: UserIcon },
   { value: 'docs', label: 'Documentation', href: '/docs', icon: DocumentIcon },
-  { value: 'separator1', separator: true },
+  { type: 'separator' as const },
   { value: 'settings', label: 'Paramètres', icon: CogIcon },
   { value: 'help', label: 'Aide', href: 'https://help.example.com', target: '_blank', icon: UserIcon }
 ]
@@ -398,7 +398,7 @@ export const WithDescriptions: Story = {
         description: 'Partir d\'un modèle existant',
         icon: DocumentIcon 
       },
-      { value: 'separator1', separator: true },
+      { type: 'separator' as const },
       { 
         value: 'import', 
         label: 'Importer', 
@@ -447,7 +447,7 @@ export const WithDisabledOptions: Story = {
     options: [
       { value: 'edit', label: 'Modifier', icon: CogIcon },
       { value: 'share', label: 'Partager', icon: ShareIcon, disabled: true },
-      { value: 'separator1', separator: true },
+      { type: 'separator' as const },
       { value: 'delete', label: 'Supprimer', icon: TrashIcon, disabled: true }
     ],
     label: 'Actions',
@@ -474,9 +474,9 @@ export const UserProfileMenu: Story = {
       const userOptions = [
         { value: 'profile', label: 'Mon profil', href: '/profile', icon: UserIcon },
         { value: 'settings', label: 'Paramètres', href: '/settings', icon: CogIcon },
-        { value: 'separator1', separator: true },
+        { type: 'separator' as const },
         { value: 'help', label: 'Centre d\'aide', href: 'https://help.example.com', target: '_blank', icon: DocumentIcon },
-        { value: 'separator2', separator: true },
+        { type: 'separator' as const },
         { value: 'logout', label: 'Déconnexion', icon: ArrowUturnLeftIcon }
       ]
       
@@ -514,9 +514,9 @@ export const ContextMenu: Story = {
         { value: 'copy', label: 'Copier', description: 'Ctrl+C' },
         { value: 'cut', label: 'Couper', description: 'Ctrl+X' },
         { value: 'paste', label: 'Coller', description: 'Ctrl+V' },
-        { value: 'separator1', separator: true },
+        { type: 'separator' as const },
         { value: 'select-all', label: 'Tout sélectionner', description: 'Ctrl+A' },
-        { value: 'separator2', separator: true },
+        { type: 'separator' as const },
         { value: 'properties', label: 'Propriétés' }
       ]
       
@@ -550,7 +550,7 @@ export const NavigationDropdown: Story = {
         { value: 'products', label: 'Tous les produits', href: '/products' },
         { value: 'laptops', label: 'Ordinateurs portables', href: '/products/laptops' },
         { value: 'phones', label: 'Téléphones', href: '/products/phones' },
-        { value: 'separator1', separator: true },
+        { type: 'separator' as const },
         { value: 'accessories', label: 'Accessoires', href: '/products/accessories' },
         { value: 'support', label: 'Support', href: '/support' }
       ]
@@ -595,7 +595,7 @@ export const Interactive: Story = {
       const quickActions = [
         { value: 'new-project', label: 'Nouveau projet', icon: PlusIcon },
         { value: 'new-file', label: 'Nouveau fichier', icon: DocumentIcon },
-        { value: 'separator1', separator: true },
+        { type: 'separator' as const },
         { value: 'settings', label: 'Paramètres', icon: CogIcon },
         { value: 'help', label: 'Aide', href: '/help', icon: UserIcon }
       ]

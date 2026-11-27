@@ -71,5 +71,5 @@ A live region (`aria-live`) is only read if it **already exists** when its conte
 | `clearAnnouncements()` | Clears every announcement |
 
 ::: info Migration
-`accessibility.announceToScreenReader()` is deprecated: it now goes through `announce` and will be removed in a future major version.
+`accessibility.announceToScreenReader()` was removed in 4.0: use `announce(message, { priority })` or `useAnnouncer()` (see [Migrating to 4.0](/en/guide/migration#removed-apis)).
 :::

@@ -74,3 +74,39 @@ During a gradual migration (monorepo, third-party dependency still on the former
 - **3.3.0**: last full release published as `@surgeui/ds-vue`.
 - **4.0.0**: first `@surgeui/vue` release; `@surgeui/ds-vue@4.0.0` is a relay, then the former name is marked as deprecated on npm.
 - **4.0.1 and later**: published as `@surgeui/vue` only.
+
+## Removed APIs
+
+These APIs were deprecated during 3.x. They are removed in 4.0.0:
+
+| Removed | Replacement |
+|---------|-------------|
+| `useTheme().toggleTheme()` | `toggleMode()` |
+| `setTheme('light')`, `setTheme('dark')` | `setTheme('default')` for the identity, then `setThemeMode('light')` or `setThemeMode('dark')` |
+| `DeprecatedThemeName` type | `ThemeName` (color identity) and `ThemeMode` (brightness) |
+| `accessibility.trapFocus(container)` | `createFocusTrap(container)` then `activate()`, or `useFocusTrap()` in a component |
+| `accessibility.announceToScreenReader(message, priority)` | `announce(message, { priority })`, or `useAnnouncer()` in a component |
+| `SuDropdown` option `separator: true` | `{ type: 'separator' }` for a standalone separator, `separatorBefore: true` for a line before an option |
+| `SuDialog` `zIndex` prop | None: it had no effect, the dialog opens in the browser top layer |
+
+```ts
+// Before
+import { accessibility } from '@surgeui/ds-vue'
+
+const release = accessibility.trapFocus(panel)
+accessibility.announceToScreenReader('Changes saved', 'polite')
+
+// After
+import { createFocusTrap, announce } from '@surgeui/vue'
+
+const trap = createFocusTrap(panel, { returnFocus: false })
+trap.activate()
+const release = trap.deactivate
+announce('Changes saved', { priority: 'polite' })
+```
+
+Notes:
+
+- By default, `createFocusTrap()` gives focus back to the element that had it before activation; `{ returnFocus: false }` reproduces the former `trapFocus()` behavior.
+- A menu option that keeps `separator: true` is now shown as a regular option (and TypeScript reports the unknown property).
+- Preferences saved in the browser by an older version (`theme: 'light'` or `'dark'`) are still converted on load by `useTheme()`.
