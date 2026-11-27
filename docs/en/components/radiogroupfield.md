@@ -193,7 +193,7 @@ const accountOptions = [
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `options` | `RadioOption[]` | `[]` | List of radio options |
-| `value` | `string \| number` | `undefined` | Selected value |
+| `v-model` | `string \| number` | `undefined` | Selected value |
 | `name` | `string` | `undefined` | Radio group name (auto-generated if not provided) |
 | `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Element size |
 | `state` | `'default' \| 'error' \| 'success' \| 'warning'` | `'default'` | Visual state |

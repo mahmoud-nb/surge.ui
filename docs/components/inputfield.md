@@ -305,7 +305,7 @@ import {
 | `readonly` | `boolean` | `false` | Input en lecture seule |
 | `required` | `boolean` | `false` | Champ requis |
 | `placeholder` | `string` | `undefined` | Texte de placeholder |
-| `value` | `string \| number` | `undefined` | Valeur de l'input |
+| `v-model` | `string \| number` | `undefined` | Valeur de l'input |
 | `prefix` | `string` | `undefined` | Préfixe texte |
 | `suffix` | `string` | `undefined` | Suffixe texte |
 | `prefixIcon` | `Component` | `undefined` | Icône de préfixe |

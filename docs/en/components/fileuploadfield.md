@@ -138,7 +138,7 @@ const images = ref([])
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `value` | `UploadedFile[]` | `[]` | List of uploaded files |
+| `v-model` | `UploadedFile[]` | `[]` | List of uploaded files |
 | `multiple` | `boolean` | `false` | Allow multiple selection |
 | `accept` | `string` | `undefined` | Accepted file types (MIME types or extensions) |
 | `maxSize` | `number` | `10485760` | Maximum file size in bytes (10MB default) |

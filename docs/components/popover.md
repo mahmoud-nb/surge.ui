@@ -236,7 +236,6 @@ const handleSubmit = (close: () => void) => {
 | `modelValue` | `boolean` | `undefined` | Contrôle l'état ouvert du popover (v-model) |
 | `placement` | `'top' \| 'top-start' \| 'top-end' \| 'bottom' \| 'bottom-start' \| 'bottom-end' \| 'left' \| 'left-start' \| 'left-end' \| 'right' \| 'right-start' \| 'right-end'` | `'bottom'` | Position du popover par rapport au déclencheur |
 | `trigger` | `'click' \| 'hover' \| 'focus' \| 'manual'` | `'click'` | Mode de déclenchement du popover |
-| `offset` | `number` | `8` | Distance en pixels entre le déclencheur et le popover |
 | `showArrow` | `boolean` | `true` | Affiche ou masque la flèche pointant vers le déclencheur |
 | `closable` | `boolean` | `false` | Affiche un bouton de fermeture dans le popover |
 | `closeOnClickOutside` | `boolean` | `true` | Ferme le popover lors d'un clic en dehors |
@@ -250,9 +249,6 @@ const handleSubmit = (close: () => void) => {
 | `ariaLabelledby` | `string` | `undefined` | ID de l'élément qui labélise le popover |
 | `ariaDescribedby` | `string` | `undefined` | ID de l'élément qui décrit le popover |
 | `closeAriaLabel` | `string` | `'Fermer'` | Label ARIA du bouton de fermeture |
-| `width` | `string \| number` | `'auto'` | Largeur du popover |
-| `maxWidth` | `string \| number` | `'320px'` | Largeur maximale du popover |
-| `maxHeight` | `string \| number` | `'none'` | Hauteur maximale du popover |
 
 ### Attributs d'accessibilité
 
@@ -378,7 +374,6 @@ const fetchUserData = async () => {
   <SuPopover 
     ref="popoverRef"
     :placement="currentPlacement"
-    :offset="20"
   >
     <template #trigger>
       <button>Ouvrir</button>

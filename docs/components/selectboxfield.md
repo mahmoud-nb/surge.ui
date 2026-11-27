@@ -470,7 +470,7 @@ const plans = [
 |------|------|---------|-------------|
 | `options` | `SelectOption[]` | `[]` | Liste des options disponibles |
 | `groups` | `SelectGroup[]` | `[]` | Options organisées en groupes |
-| `value` | `string \| number \| (string \| number)[]` | `undefined` | Valeur sélectionnée |
+| `v-model` | `string \| number \| (string \| number)[]` | `undefined` | Valeur sélectionnée |
 | `multiple` | `boolean` | `false` | Sélection multiple |
 | `searchable` | `boolean` | `false` | Recherche intégrée |
 | `clearable` | `boolean` | `false` | Bouton d'effacement |

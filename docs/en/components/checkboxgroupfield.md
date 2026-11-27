@@ -219,7 +219,7 @@ const permissionOptions = [
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `options` | `CheckboxOption[]` | `[]` | List of checkbox options |
-| `value` | `(string \| number)[]` | `[]` | Selected values |
+| `v-model` | `(string \| number)[]` | `[]` | Selected values |
 | `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Element size |
 | `state` | `'default' \| 'error' \| 'success' \| 'warning'` | `'default'` | Visual state |
 | `disabled` | `boolean` | `false` | Disable the entire group |

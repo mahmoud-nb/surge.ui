@@ -653,7 +653,7 @@ Cette approche est équivalente à :
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `value` | `number \| [number, number]` | `min` | Valeur du slider (nombre simple ou tableau pour dual-range) |
+| `v-model` | `number \| [number, number]` | `min` | Valeur du slider (nombre simple ou tableau pour dual-range) |
 | `min` | `number` | `0` | Valeur minimale |
 | `max` | `number` | `100` | Valeur maximale |
 | `step` | `number` | `1` | Pas d'incrémentation |
@@ -667,7 +667,6 @@ Cette approche est équivalente à :
 | `showTicks` | `boolean` | `false` | Afficher les graduations |
 | `showLabels` | `boolean` | `false` | Afficher les labels min/max |
 | `formatValue` | `(value: number) => string` | `undefined` | Fonction de formatage des valeurs |
-| `dir` | `'ltr' \| 'rtl' \| 'auto'` | `'auto'` | Direction du texte |
 
 ### Attributs d'accessibilité
 

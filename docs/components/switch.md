@@ -217,44 +217,6 @@ const theme = ref(false)
 </template>
 ```
 
-### Position des labels
-
-<div class="component-demo">
-  <div class="demo-section">
-    <h4>Labels extérieurs vs intérieurs</h4>
-    <div class="demo-inputs">
-      <SuSwitch 
-        leftLabel="OFF"
-        rightLabel="ON"
-        labelPosition="outside"
-      />
-      <SuSwitch 
-        leftLabel="OFF"
-        rightLabel="ON"
-        labelPosition="inside"
-      />
-    </div>
-  </div>
-</div>
-
-```vue
-<template>
-  <!-- Labels à l'extérieur (défaut) -->
-  <SuSwitch 
-    leftLabel="OFF"
-    rightLabel="ON"
-    labelPosition="outside"
-  />
-  
-  <!-- Labels à l'intérieur -->
-  <SuSwitch 
-    leftLabel="OFF"
-    rightLabel="ON"
-    labelPosition="inside"
-  />
-</template>
-```
-
 ### États spéciaux
 
 <div class="component-demo">
@@ -596,7 +558,6 @@ const settings = ref({
 | `leftIcon` | `Component` | `undefined` | Icône affichée dans la pastille quand le switch est désactivé (aucune par défaut) |
 | `rightIcon` | `Component` | `undefined` | Icône affichée dans la pastille quand le switch est activé (aucune par défaut) |
 | `padded` | `boolean` | `true` | Marge entre la pastille et le bord de la piste. `false` : la pastille affleure le bord |
-| `labelPosition` | `'outside' \| 'inside'` | `'outside'` | Position des labels |
 
 ### Props d'accessibilité (héritées de SuFormField)
 

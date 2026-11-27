@@ -370,7 +370,7 @@ const images = ref([])
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `value` | `UploadedFile[]` | `[]` | Liste des fichiers téléchargés |
+| `v-model` | `UploadedFile[]` | `[]` | Liste des fichiers téléchargés |
 | `multiple` | `boolean` | `false` | Autoriser la sélection multiple |
 | `accept` | `string` | `undefined` | Types de fichiers acceptés (MIME types ou extensions) |
 | `maxSize` | `number` | `10485760` | Taille maximale par fichier en octets (10MB par défaut) |

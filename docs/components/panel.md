@@ -50,8 +50,10 @@ Il peut être rendu sous forme de `<section>` ou de `<div>` selon le contexte, e
 
 | Prop       | Type      | Défaut      | Description                                                                       |
 | ---------- | --------- | ----------- | --------------------------------------------------------------------------------- |
-| `as`       | `string`  | `'section'` | Définit la balise HTML utilisée pour le conteneur principal (`section` ou `div`). |
-| `outlined` | `boolean` | `false`     | Ajoute un contour au panneau.                                                     |
+| `tag` | `'div' \| 'section' \| 'article' \| 'aside' \| 'header' \| 'footer'` | `'div'` | Balise HTML du conteneur. |
+| `variant` | `'default' \| 'subtle' \| 'highlight'` | `'default'` | Fond du panneau. |
+| `radius` | `'none' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| 'full'` | `'sm'` | Rayon des coins. |
+| `bordered` | `boolean` | `false`     | Ajoute un contour au panneau.                                                     |
 | `elevated` | `boolean` | `false`     | Ajoute une ombre pour un effet de profondeur.                                     |
 | `class`    | `string`  | -            | Classes CSS supplémentaires.                                                      |
 
@@ -67,7 +69,7 @@ Il peut être rendu sous forme de `<section>` ou de `<div>` selon le contexte, e
 ## 🧱 Exemple avec options de style
 
 <div class="component-demo">
-  <SuPanel outlined elevated>
+  <SuPanel bordered elevated>
     <template #head>
       <SuHeading level="3">Résumé de la commande</SuHeading>
     </template>
@@ -79,7 +81,7 @@ Il peut être rendu sous forme de `<section>` ou de `<div>` selon le contexte, e
 </div>
 
 ```vue
-<SuPanel outlined elevated>
+<SuPanel bordered elevated>
   <template #head>
     <SuHeading level="3">Résumé de la commande</SuHeading>
   </template>
@@ -95,7 +97,7 @@ Il peut être rendu sous forme de `<section>` ou de `<div>` selon le contexte, e
 ## Bonnes pratiques
 
 - Utilisez la balise `<section>` pour des blocs sémantiquement distincts.
-- Utilisez la prop as="div" pour des panneaux purement visuels ou imbriqués.
+- Gardez `div` (par défaut) pour des panneaux purement visuels ou imbriqués ; `tag` choisit une autre balise (`section`, `article`, `aside`…).
 - Le slot head devrait toujours contenir un titre accessible (Heading ou équivalent).
 
 
@@ -133,11 +135,11 @@ Le composant Panel respecte les critères WCAG 2.1 niveau AA et suit les bonnes 
 **Panneaux imbriqués**
 
 <div class="component-demo">
-  <SuPanel outlined>
+  <SuPanel bordered>
     <template #head>
       <SuHeading level="3">Section principale</SuHeading>
     </template>
-    <SuPanel as="div" outlined>
+    <SuPanel bordered>
       <template #head>
         <SuHeading level="3">Sous-section</SuHeading>
       </template>
@@ -147,11 +149,11 @@ Le composant Panel respecte les critères WCAG 2.1 niveau AA et suit les bonnes 
 </div>
 
 ```vue
-<SuPanel outlined>
+<SuPanel bordered>
   <template #head>
     <SuHeading level="3">Section principale</SuHeading>
   </template>
-  <SuPanel as="div" outlined>
+  <SuPanel bordered>
     <template #head>
       <SuHeading level="3">Sous-section</SuHeading>
     </template>

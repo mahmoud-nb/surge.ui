@@ -295,7 +295,7 @@ const plans = [
 |------|------|---------|-------------|
 | `options` | `SelectOption[]` | `[]` | List of available options |
 | `groups` | `SelectGroup[]` | `[]` | Options organized in groups |
-| `value` | `string \| number \| (string \| number)[]` | `undefined` | Selected value |
+| `v-model` | `string \| number \| (string \| number)[]` | `undefined` | Selected value |
 | `multiple` | `boolean` | `false` | Multiple selection |
 | `searchable` | `boolean` | `false` | Integrated search |
 | `clearable` | `boolean` | `false` | Clear button |

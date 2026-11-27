@@ -188,7 +188,7 @@ import {
 | `readonly` | `boolean` | `false` | Read-only input |
 | `required` | `boolean` | `false` | Required field |
 | `placeholder` | `string` | `undefined` | Placeholder text |
-| `value` | `string \| number` | `undefined` | Input value |
+| `v-model` | `string \| number` | `undefined` | Input value |
 | `prefix` | `string` | `undefined` | Text prefix |
 | `suffix` | `string` | `undefined` | Text suffix |
 | `prefixIcon` | `Component` | `undefined` | Prefix icon |

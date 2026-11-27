@@ -29,8 +29,9 @@ It supports different heading levels (`h1`–`h6`) or custom tags, while maintai
 
 | Prop    | Type   | Default | Description         |
 | ------- | ------ | ------- | -------------------------------------- |
-| `level` | `1 \| 2 \| 3 \| 4 \| 5 \| 6` | `1`     | Defines the visual and semantic level of the heading.                                                          |
-| `as`    | `string`                     | -        | Optional HTML tag to render instead of the default (`h1`–`h6`). Useful for styling without breaking semantics. |
+| `level` | `1 \| 2 \| 3 \| 4 \| 5 \| 6 \| 'div'` | `2` | Heading level (`h1` to `h6`), or `'div'` for styled text that is not a heading. |
+| `variant` | `'primary' \| 'secondary' \| 'tertiary'` | `'primary'` | Text color (`--su-text-primary`, `-secondary`, `-tertiary`). |
+| `truncate` | `boolean` | `false` | Single line, cut with an ellipsis. |
 | `class` | `string`                     | -        | Additional custom classes.                                                                                     |
 
 
@@ -48,10 +49,10 @@ It supports different heading levels (`h1`–`h6`) or custom tags, while maintai
 
 ### Custom Tag Example
 
-You can render a heading visually like an `h2` but semantically as a `div`:
+For styled text that is not a heading, set `level` to `'div'`:
 
 ```vue
-<Heading as="div" level="2">Visually h2, but semantically a div</Heading>
+<SuHeading level="div">Styled like a heading, but not a heading</SuHeading>
 ```
 
 ### Accessibility

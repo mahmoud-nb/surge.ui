@@ -33,8 +33,9 @@ Il prend en charge différents niveaux de titres (`h1` à `h6`) ou des balises p
 
 | Prop    | Type                         | Par défaut | Description                                                                                                         |
 | ------- | ---------------------------- | ---------- | ------------------------------------------------------------------------------------------------------------------- |
-| `level` | `1 \| 2 \| 3 \| 4 \| 5 \| 6` | `1`        | Définit le niveau visuel et sémantique du titre.                                                                    |
-| `as`    | `string`                     | -           | Balise HTML optionnelle à utiliser à la place du niveau (`h1`–`h6`). Utile pour le style sans casser la sémantique. |
+| `level` | `1 \| 2 \| 3 \| 4 \| 5 \| 6 \| 'div'` | `2` | Niveau du titre (`h1` à `h6`), ou `'div'` pour un texte stylé sans valeur de titre. |
+| `variant` | `'primary' \| 'secondary' \| 'tertiary'` | `'primary'` | Couleur du texte (`--su-text-primary`, `-secondary`, `-tertiary`). |
+| `truncate` | `boolean` | `false` | Une seule ligne, coupée par des points de suspension. |
 | `class` | `string`                     | -           | Classes CSS personnalisées additionnelles.                                                                          |
 
 
