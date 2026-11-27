@@ -13,11 +13,11 @@ Arguments reçus : $ARGUMENTS
 
 ## Étapes
 
-1. **Localise le composant** dans `package/src/components/` (atoms / molecules / organisms)
+1. **Localise le composant** dans `package/vue/src/components/` (atoms / molecules / organisms)
 2. **Lis le fichier `.vue`** pour comprendre les slots, emits et comportements
-3. **Lis les props dans `package/src/types/index.ts`** — cherche `<Nom>Props` et les types associés (`<Nom>Variant`, etc.)
+3. **Lis les props dans `package/vue/src/types/index.ts`** — cherche `<Nom>Props` et les types associés (`<Nom>Variant`, etc.)
 4. **Vérifie si un fichier stories existe déjà** dans `_stories/` — si oui, propose de le compléter plutôt que de remplacer
-5. **Génère le fichier stories** à `package/src/components/<layer>/_stories/<NomComposant>.stories.ts`
+5. **Génère le fichier stories** à `package/vue/src/components/<layer>/_stories/<NomComposant>.stories.ts`
 
 ## Règles Storybook obligatoires
 

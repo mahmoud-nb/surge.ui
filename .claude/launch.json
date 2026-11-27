@@ -4,7 +4,7 @@
     {
       "name": "storybook",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "storybook", "-w", "package", "--", "--no-open"],
+      "runtimeArgs": ["run", "storybook", "-w", "package/vue", "--", "--no-open"],
       "port": 6006
     },
     {

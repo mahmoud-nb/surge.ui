@@ -13,7 +13,7 @@ Arguments reçus : $ARGUMENTS
 
 ## Fichiers sources
 
-Les tokens sont dans `package/src/styles/themes/<theme>/tokens/<mode>.scss`.
+Les tokens sont dans `package/vue/src/styles/themes/<theme>/tokens/<mode>.scss`.
 Thèmes disponibles : `default`, `ocean`, `forest`, `sunset`
 Modes : `light`, `dark`
 

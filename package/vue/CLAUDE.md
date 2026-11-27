@@ -1,7 +1,7 @@
-# CLAUDE.md — package/
+# CLAUDE.md — package/vue/
 
-Contexte spécifique au workspace `@surgeui/ds-vue` (bibliothèque de composants Vue 3).
-Le fichier racine `../CLAUDE.md` fournit l'architecture globale, les commandes et les conventions.
+Contexte spécifique au workspace `@surgeui/vue` (bibliothèque de composants Vue 3).
+Le fichier racine `../../CLAUDE.md` fournit l'architecture globale, les commandes et les conventions.
 
 ## Styles SCSS
 
@@ -147,4 +147,4 @@ export const Default: Story = { args: { variant: 'primary' } }
 4. `docs/components/<name>.md` — documentation francaise
 5. `docs/en/components/<name>.md` — documentation anglaise
 6. `src/index.ts` — import + export nommé + enregistrement plugin (`app.component`)
-7. `docs/.vitepress/config.ts` — ajouter dans `getNavItems()` au bon groupe (display/actions/forms)
+7. `docs/.vitepress/nav.ts` — ajouter dans `getNavItems()` au bon groupe (display/actions/forms/layouts)

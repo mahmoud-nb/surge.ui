@@ -10,13 +10,13 @@ Le fichier racine `../CLAUDE.md` fournit l'architecture globale, les commandes e
 - **Config** : `.vitepress/config.ts`
 - **Theme custom** : `.vitepress/theme/index.ts` — enregistre le plugin SurgeUI + 22 icones Heroicons globales
 - **Styles custom** : `.vitepress/theme/custom.css` — classes `.component-demo`, `.demo-section`, `.demo-buttons`
-- Les composants SurgeUI sont importes via `@surgeui/ds-vue` (symlink `file:../package`)
+- Les composants SurgeUI sont importes via `@surgeui/vue` (symlink `file:../package/vue`)
 
 ## Navigation et sidebar
 
-Configuree dans `.vitepress/config.ts` via `getNavItems(section, lang)`.
+Configuree dans `.vitepress/nav.ts` via `getNavItems(section, lang)` (importee par `.vitepress/config.ts`).
 
-- 3 groupes de composants : **display**, **actions**, **forms**
+- Sections : **display**, **actions**, **forms**, **layouts**, **composables** (le script `scripts/llms.mjs` suit le même ordre)
 - `lang` controle le prefixe : FR = `''`, EN = `'/en'`
 - Pour ajouter un composant : ajouter l'entree dans le bon groupe de `getNavItems()`
 
@@ -95,5 +95,5 @@ Pour d'autres icones, utiliser `<script setup>` avec import depuis `@heroicons/v
 
 1. Creer `components/<name>.md` (FR)
 2. Creer `en/components/<name>.md` (EN)
-3. Ajouter dans `getNavItems()` de `.vitepress/config.ts` dans le groupe adequat
+3. Ajouter dans `getNavItems()` de `.vitepress/nav.ts` dans le groupe adequat
 4. Verifier la navigation FR + EN avec `npm run dev:docs`
