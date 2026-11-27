@@ -238,7 +238,7 @@ const notifications = ref(false)
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `value` | `boolean` | `false` | État du switch (activé/désactivé) |
+| `v-model` | `boolean` | `false` | État du switch (activé/désactivé) |
 | `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Taille du switch |
 | `state` | `'default' \| 'error' \| 'success' \| 'warning'` | `'default'` | État visuel du switch |
 | `disabled` | `boolean` | `false` | Désactive le switch |

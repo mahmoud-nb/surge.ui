@@ -431,7 +431,7 @@ const accountOptions = [
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `options` | `RadioOption[]` | `[]` | Liste des options radio |
-| `value` | `string \| number` | `undefined` | Valeur sélectionnée |
+| `v-model` | `string \| number` | `undefined` | Valeur sélectionnée |
 | `name` | `string` | `undefined` | Nom du groupe radio (généré automatiquement si non fourni) |
 | `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Taille des éléments |
 | `state` | `'default' \| 'error' \| 'success' \| 'warning'` | `'default'` | État visuel |

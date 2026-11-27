@@ -236,7 +236,6 @@ const handleSubmit = (close: () => void) => {
 | `modelValue` | `boolean` | `undefined` | Controls the open state of the popover (v-model) |
 | `placement` | `'top' \| 'top-start' \| 'top-end' \| 'bottom' \| 'bottom-start' \| 'bottom-end' \| 'left' \| 'left-start' \| 'left-end' \| 'right' \| 'right-start' \| 'right-end'` | `'bottom'` | Position of the popover relative to the trigger |
 | `trigger` | `'click' \| 'hover' \| 'focus' \| 'manual'` | `'click'` | Method to trigger the popover |
-| `offset` | `number` | `8` | Distance in pixels between trigger and popover |
 | `showArrow` | `boolean` | `true` | Shows or hides the arrow pointing to the trigger |
 | `closable` | `boolean` | `false` | Displays a close button in the popover |
 | `closeOnClickOutside` | `boolean` | `true` | Closes the popover when clicking outside |
@@ -250,9 +249,6 @@ const handleSubmit = (close: () => void) => {
 | `ariaLabelledby` | `string` | `undefined` | ID of the element that labels the popover |
 | `ariaDescribedby` | `string` | `undefined` | ID of the element that describes the popover |
 | `closeAriaLabel` | `string` | `'Close'` | ARIA label for the close button |
-| `width` | `string \| number` | `'auto'` | Width of the popover |
-| `maxWidth` | `string \| number` | `'320px'` | Maximum width of the popover |
-| `maxHeight` | `string \| number` | `'none'` | Maximum height of the popover |
 
 ### Accessibility Attributes
 
@@ -378,7 +374,6 @@ const fetchUserData = async () => {
   <SuPopover 
     ref="popoverRef"
     :placement="currentPlacement"
-    :offset="20"
   >
     <template #trigger>
       <button>Open</button>

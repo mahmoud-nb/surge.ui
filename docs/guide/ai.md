@@ -9,8 +9,10 @@ Les assistants de code (Claude Code, Cursor, Copilot…) connaissent mal une bib
 | [`/llms.txt`](https://surgeui.com/llms.txt) | Sommaire de la documentation (format [llmstxt.org](https://llmstxt.org)) : règles d'usage, puis une ligne par page |
 | [`/llms-full.txt`](https://surgeui.com/llms-full.txt) | Toute la documentation anglaise dans un seul fichier |
 | [`/llms-fr.txt`](https://surgeui.com/llms-fr.txt), [`/llms-full-fr.txt`](https://surgeui.com/llms-full-fr.txt) | Les mêmes, en français |
+| [`/api.json`](https://surgeui.com/api.json) | Manifeste d'API : props (type, valeur par défaut, obligatoire, description), événements, slots et méthodes exposées de chaque composant, extraits des types |
 | Pages `.md` | Chaque page existe en Markdown : ajoutez `.md` à son adresse, par exemple [`/components/button.md`](https://surgeui.com/components/button.md) |
 | `AGENTS.md` | Guide d'usage livré dans le paquet npm (`node_modules/@surgeui/vue/AGENTS.md`), à la version installée : mise en place, règles, catalogue des composants, API retirées en 4.0 |
+| `dist/api.json` | Le manifeste d'API, livré aussi dans le paquet (`@surgeui/vue/api.json`) : l'API exacte de la version installée |
 
 Les versions Markdown ne contiennent pas les démos en direct : seulement le texte, les exemples de code et les tableaux d'API.
 

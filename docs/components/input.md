@@ -462,7 +462,6 @@ import {
 | `readonly` | `boolean` | `false` | Input en lecture seule |
 | `required` | `boolean` | `false` | Champ requis |
 | `placeholder` | `string` | `undefined` | Texte de placeholder |
-| `value` | `string \| number` | `undefined` | Valeur de l'input |
 | `modelValue` | `string \| number` | `undefined` | Valeur v-model |
 | `prefix` | `string` | `undefined` | Préfixe texte |
 | `suffix` | `string` | `undefined` | Suffixe texte |

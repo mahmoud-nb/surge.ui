@@ -50,8 +50,10 @@ It can be rendered as either a `<section>` or a `<div>`, and includes dedicated 
 
 | Prop       | Type      | Default     | Description                                                            |
 | ---------- | --------- | ----------- | ---------------------------------------------------------------------- |
-| `as`       | `string`  | `'section'` | Defines the HTML tag used for the main container (`section` or `div`). |
-| `outlined` | `boolean` | `false`     | Adds a border around the panel.                                        |
+| `tag` | `'div' \| 'section' \| 'article' \| 'aside' \| 'header' \| 'footer'` | `'div'` | HTML tag of the container. |
+| `variant` | `'default' \| 'subtle' \| 'highlight'` | `'default'` | Panel background. |
+| `radius` | `'none' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| 'full'` | `'sm'` | Corner radius. |
+| `bordered` | `boolean` | `false`     | Adds a border around the panel.                                        |
 | `elevated` | `boolean` | `false`     | Adds a shadow for a raised visual effect.                              |
 | `class`    | `string`  | -            | Additional CSS classes to apply.                                       |
 
@@ -67,7 +69,7 @@ It can be rendered as either a `<section>` or a `<div>`, and includes dedicated 
 ## Example with style options
 
 <div class="component-demo">
-<SuPanel outlined elevated>
+<SuPanel bordered elevated>
   <template #head>
     <SuHeading level="3">Order Summary</SuHeading>
   </template>
@@ -79,7 +81,7 @@ It can be rendered as either a `<section>` or a `<div>`, and includes dedicated 
 </div>
 
 ```vue
-<SuPanel outlined elevated>
+<SuPanel bordered elevated>
   <template #head>
     <SuHeading level="3">Order Summary</SuHeading>
   </template>
@@ -96,7 +98,7 @@ It can be rendered as either a `<section>` or a `<div>`, and includes dedicated 
 ## Best practices
 
 - Use the `<section>` tag for semantically distinct blocks.
-- Use the as="div" prop for purely visual or nested panels.
+- Keep `div` (the default) for purely visual or nested panels; `tag` picks another element (`section`, `article`, `aside`…).
 - The head slot should always include an accessible heading (Heading or equivalent).
 
 
@@ -133,12 +135,12 @@ The Panel component complies with WCAG 2.1 Level AA and follows W3C ARIA best pr
 **Nested panels**
 
 ```vue
-<SuPanel outlined>
+<SuPanel bordered>
   <template #head>
     <SuHeading level="2">Main Section</SuHeading>
   </template>
 
-  <SuPanel as="div" outlined>
+  <SuPanel bordered>
     <template #head>
       <SuHeading level="3">Subsection</SuHeading>
     </template>

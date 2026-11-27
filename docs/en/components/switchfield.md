@@ -186,7 +186,7 @@ const notifications = ref(false)
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `value` | `boolean` | `false` | Switch state (on/off) |
+| `v-model` | `boolean` | `false` | Switch state (on/off) |
 | `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Switch size |
 | `state` | `'default' \| 'error' \| 'success' \| 'warning'` | `'default'` | Switch visual state |
 | `disabled` | `boolean` | `false` | Disable the switch |

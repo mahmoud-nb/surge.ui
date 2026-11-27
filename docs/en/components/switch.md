@@ -84,28 +84,6 @@ import { SunIcon, MoonIcon } from '@heroicons/vue/24/outline'
 </template>
 ```
 
-### Label positions
-
-```vue
-<template>
-  <!-- Outside labels (default) -->
-  <SuSwitch 
-    leftLabel="OFF"
-    rightLabel="ON"
-    labelPosition="outside"
-  />
-  
-  <!-- Inside labels -->
-  <SuSwitch 
-    leftLabel="OFF"
-    rightLabel="ON"
-    labelPosition="inside"
-  />
-</template>
-```
-
-## Usage with SuFormField
-
 ### Basic usage
 
 ```vue
@@ -227,7 +205,6 @@ const settings = ref({
 | `leftIcon` | `Component` | `undefined` | Icon shown in the thumb when the switch is off (none by default) |
 | `rightIcon` | `Component` | `undefined` | Icon shown in the thumb when the switch is on (none by default) |
 | `padded` | `boolean` | `true` | Gap between the thumb and the track edge. `false`: the thumb sits flush with the edge |
-| `labelPosition` | `'outside' \| 'inside'` | `'outside'` | Label position |
 
 ### Accessibility props (inherited from SuFormField)
 

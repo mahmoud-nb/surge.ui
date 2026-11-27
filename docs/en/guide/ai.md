@@ -9,8 +9,10 @@ Coding assistants (Claude Code, Cursor, Copilot…) know little about a recent l
 | [`/llms.txt`](https://surgeui.com/llms.txt) | Documentation index ([llmstxt.org](https://llmstxt.org) format): usage rules, then one line per page |
 | [`/llms-full.txt`](https://surgeui.com/llms-full.txt) | The whole English documentation in one file |
 | [`/llms-fr.txt`](https://surgeui.com/llms-fr.txt), [`/llms-full-fr.txt`](https://surgeui.com/llms-full-fr.txt) | The same, in French |
+| [`/api.json`](https://surgeui.com/api.json) | API manifest: props (type, default, required, description), events, slots and exposed methods of every component, extracted from the types |
 | `.md` pages | Every page exists in Markdown: add `.md` to its address, for example [`/en/components/button.md`](https://surgeui.com/en/components/button.md) |
 | `AGENTS.md` | Usage guide shipped in the npm package (`node_modules/@surgeui/vue/AGENTS.md`), matching the installed version: setup, rules, component catalog, APIs removed in 4.0 |
+| `dist/api.json` | The API manifest, also shipped in the package (`@surgeui/vue/api.json`): the exact API of the installed version |
 
 The Markdown versions leave out the live demos: only the text, code examples and API tables.
 

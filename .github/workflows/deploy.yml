@@ -40,6 +40,10 @@ jobs:
       - name: Build Vue Library
         run: npm run build:lib
 
+      # Aucune prop documentée ne doit manquer dans le code (manifeste dist/api.json)
+      - name: Check documented props
+        run: npm run api:check -w docs -- --strict
+
       - name: Build Documentation
         run: npm run build:docs
 

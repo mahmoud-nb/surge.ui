@@ -239,7 +239,7 @@ This approach is equivalent to:
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `value` | `number \| [number, number]` | `min` | Slider value (single number or array for dual-range) |
+| `v-model` | `number \| [number, number]` | `min` | Slider value (single number or array for dual-range) |
 | `min` | `number` | `0` | Minimum value |
 | `max` | `number` | `100` | Maximum value |
 | `step` | `number` | `1` | Increment step |
@@ -253,7 +253,6 @@ This approach is equivalent to:
 | `showTicks` | `boolean` | `false` | Show tick marks |
 | `showLabels` | `boolean` | `false` | Show min/max labels |
 | `formatValue` | `(value: number) => string` | `undefined` | Value formatting function |
-| `dir` | `'ltr' \| 'rtl' \| 'auto'` | `'auto'` | Text direction |
 
 ### Accessibility Attributes
 
