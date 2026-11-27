@@ -60,8 +60,11 @@ jobs:
             echo "published=false" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Lint
+      - name: Lint (ESLint)
         run: npm run lint:js
+
+      - name: Lint (Stylelint)
+        run: npm run lint:style
 
       - name: Type check
         run: npm run typecheck
