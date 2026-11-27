@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## [4.1.0](https://github.com/mahmoud-nb/surge.ui/compare/v4.0.0...v4.1.0) (2026-11-27)
+
+
+### ✨ Features
+
+* guide AGENTS.md pour les assistants IA, livré dans le paquet ([656d004](https://github.com/mahmoud-nb/surge.ui/commit/656d004cd51638fa817b26513b505daacfc52576))
+* manifeste d'API `dist/api.json` généré depuis les types ([e767af5](https://github.com/mahmoud-nb/surge.ui/commit/e767af50de1630949f018a69a2a2b934d60509bd))
+
+
+### 📚 Documentation
+
+* corrige les props documentées absentes du code ([c87d755](https://github.com/mahmoud-nb/surge.ui/commit/c87d7557aa695bfe5acc2cb7209773d55085fe67))
+* llms.txt, llms-full.txt et pages Markdown pour les assistants IA ([6db0007](https://github.com/mahmoud-nb/surge.ui/commit/6db000771bd1361701af10d9486ae6d43fdae4a4))
+* publie /api.json et le signale aux assistants IA (llms.txt, page Assistants IA) ([1b95d9f](https://github.com/mahmoud-nb/surge.ui/commit/1b95d9f458fd03b137ade7c0094a5f170d36f6c2))
+
 ## [4.0.0](https://github.com/mahmoud-nb/surge.ui/compare/v3.3.0...v4.0.0) (2026-11-27)
 
 
