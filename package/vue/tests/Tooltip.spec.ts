@@ -89,4 +89,12 @@ describe('SuTooltip', () => {
     wrapper = undefined
     expect(button.getAttribute('aria-describedby')).toBe('hint')
   })
+
+  it('describe: false : infobulle visuelle seulement, le déclencheur garde sa description', () => {
+    mountTooltip({ describe: false })
+    expect(wrapper!.find('button').attributes('aria-describedby')).toBe('hint')
+    const tooltip = wrapper!.find('.su-tooltip__content')
+    expect(tooltip.attributes('role')).toBeUndefined()
+    expect(tooltip.attributes('aria-hidden')).toBe('true')
+  })
 })

@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { computed, ref, useId } from 'vue'
+import { computed, useId } from 'vue'
 import type { HolyGrailLayoutProps } from '@/types'
 import { useLocale } from '@/composables/useLocale'
+import SkipLink from '../atoms/SkipLink.vue'
 
 // Mise en page d'application : en-tête, navigation, contenu principal,
 // colonne complémentaire et pied de page.
@@ -38,12 +39,8 @@ const slots = defineSlots<{
   footer?(): any
 }>()
 
+// Cible du lien d'évitement (SkipLink lui donne le focus par programme)
 const mainId = `holy-grail-main-${useId()}`
-const mainRef = ref<HTMLElement>()
-
-// Le lien d'évitement donne le focus au contenu principal sans dépendre
-// du routage par ancre (#) de l'application
-const focusMain = () => mainRef.value?.focus()
 
 const tags = computed(() => props.landmarks
   ? { header: 'header', nav: 'nav', main: 'main', aside: 'aside', footer: 'footer' }
@@ -74,14 +71,12 @@ const styles = computed(() => ({
     :class="classes()"
     :style="styles"
   >
-    <a
+    <SkipLink
       v-if="landmarks && skipLink"
       class="su-holy-grail-layout__skip-link"
-      :href="`#${mainId}`"
-      @click.prevent="focusMain"
-    >
-      {{ skipLinkText }}
-    </a>
+      :target="mainId"
+      :label="skipLinkText"
+    />
 
     <component
       :is="tags.header"
@@ -104,7 +99,6 @@ const styles = computed(() => ({
       <component
         :is="tags.main"
         :id="mainId"
-        ref="mainRef"
         class="su-holy-grail-layout__main"
         :tabindex="landmarks && skipLink ? -1 : undefined"
       >
@@ -150,32 +144,6 @@ const styles = computed(() => ({
 
   &--full-height {
     min-block-size: 100svh;
-  }
-
-  // Lien d'évitement : visible seulement au focus clavier
-  &__skip-link {
-    @include sr-only;
-
-    &:focus-visible {
-      position: absolute;
-      inset-block-start: $spacing-2;
-      inset-inline-start: $spacing-2;
-      z-index: calc(var(--su-z-sticky) + 1);
-      clip-path: none;
-      inline-size: auto;
-      block-size: auto;
-      margin: 0;
-      padding: $spacing-2 $spacing-3;
-      overflow: visible;
-      border-radius: var(--su-radius-control);
-      background-color: var(--su-bg-surface-elevated);
-      color: var(--su-text-primary);
-      font-weight: var(--su-font-weight-medium);
-      white-space: nowrap;
-      box-shadow: var(--su-shadow-popover);
-
-      @include focus-ring;
-    }
   }
 
   &--sticky-header &__header {

@@ -170,6 +170,27 @@ export const en: SurgeLocale = {
       grid: 'Grid',
       list: 'List'
     },
+    skipLink: {
+      label: 'Skip to main content'
+    },
+    themeToggle: {
+      toggle: 'Dark mode',
+      group: 'Appearance',
+      light: 'Light',
+      dark: 'Dark',
+      system: 'System'
+    },
+    pageHeader: {
+      back: 'Back'
+    },
+    navMenu: {
+      label: 'Main navigation'
+    },
+    appShell: {
+      menu: 'Open menu',
+      drawer: 'Menu',
+      collapse: 'Collapse menu'
+    },
     holyGrailLayout: {
       skipLink: 'Skip to main content',
       nav: 'Main navigation',
