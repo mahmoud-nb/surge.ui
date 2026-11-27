@@ -36,7 +36,7 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/mahmoud-nb/surge.ui.git",
-    "directory": "package"
+    "directory": "package/vue"
   },
   "keywords": [
     "Vue",

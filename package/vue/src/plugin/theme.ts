@@ -3,7 +3,7 @@ import type { DialogDisplay, LinkSize, LinkUnderline, LinkVariant } from '@/type
 
 /**
  * Tokens sémantiques pour la personnalisation complète du thème
- * Correspond à la définition des tokens SCSS dans package/src/styles/tokens/
+ * Correspond à la définition des tokens SCSS dans package/vue/src/styles/tokens/
  */
 export interface SurgeuiTheme {
   // === Texte ===

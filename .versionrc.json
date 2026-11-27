@@ -22,7 +22,7 @@
       "type": "json"
     },
     {
-      "filename": "package/package.json",
+      "filename": "package/vue/package.json",
       "type": "json"
     }
   ],
@@ -32,7 +32,7 @@
       "type": "json"
     },
     {
-      "filename": "package/package.json",
+      "filename": "package/vue/package.json",
       "type": "json"
     }
   ],

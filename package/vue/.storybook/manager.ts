@@ -4,7 +4,7 @@ import pkg from '../package.json'
 
 // ============================================================
 // Interface de Storybook : marque SurgeUI avec la version publiée
-// (lue dans package/package.json, mis à jour par standard-version)
+// (lue dans package/vue/package.json, mis à jour par standard-version)
 // et lien vers la documentation.
 // ============================================================
 

@@ -81,7 +81,7 @@ docs/.vitepress/cache/
 
 # Storybook build output
 storybook-static/
-package/storybook-static/
+package/vue/storybook-static/
 
 # TypeScript build info
 *.tsbuildinfo
@@ -108,7 +108,7 @@ ehthumbs.db
 Thumbs.db
 
 # Package build outputs
-package/dist/
+package/vue/dist/
 
 # Vue build outputs
 *.vue.d.ts
