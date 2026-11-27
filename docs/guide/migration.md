@@ -75,6 +75,12 @@ Pendant une migration progressive (monorepo, dépendance tierce encore sur l'anc
 - **4.0.0** : premier `@surgeui/vue` ; `@surgeui/ds-vue@4.0.0` est un relais, puis l'ancien nom est marqué comme déprécié sur npm.
 - **4.0.1 et suivantes** : publiées uniquement sous `@surgeui/vue`.
 
+## Fichiers du paquet
+
+Le bundle UMD s'appelle désormais `dist/index.umd.cjs` (auparavant `dist/index.umd.js`). Les imports et `require('@surgeui/vue')` passent par le champ `exports` du paquet : rien à changer, sauf un chemin écrit en dur vers l'ancien fichier (balise `<script>` vers un CDN, configuration de Jest).
+
+Ce changement corrige `require()` : en 3.x, il renvoyait un objet vide sous Node (projets CommonJS, Jest), car le fichier `.js` d'un paquet `"type": "module"` est lu comme un module ES.
+
 ## API retirées
 
 Ces API étaient dépréciées pendant la 3.x. Elles sont supprimées en 4.0.0 :

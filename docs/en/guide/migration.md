@@ -75,6 +75,12 @@ During a gradual migration (monorepo, third-party dependency still on the former
 - **4.0.0**: first `@surgeui/vue` release; `@surgeui/ds-vue@4.0.0` is a relay, then the former name is marked as deprecated on npm.
 - **4.0.1 and later**: published as `@surgeui/vue` only.
 
+## Package files
+
+The UMD bundle is now named `dist/index.umd.cjs` (previously `dist/index.umd.js`). Imports and `require('@surgeui/vue')` go through the package `exports` field: nothing to change, except a hard-coded path to the old file (`<script>` tag to a CDN, Jest configuration).
+
+This change fixes `require()`: in 3.x, it returned an empty object in Node (CommonJS projects, Jest), because the `.js` file of a `"type": "module"` package is read as an ES module.
+
 ## Removed APIs
 
 These APIs were deprecated during 3.x. They are removed in 4.0.0:
