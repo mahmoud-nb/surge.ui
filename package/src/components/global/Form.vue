@@ -122,9 +122,12 @@ const handleSurveySubmit = () => {
 </script>
 
 <template>
-  <GlobalPreview>
+  <GlobalPreview
+    eyebrow="Global · 03"
+    description="Formulaires complets : champs, listes, cases, interrupteurs, curseurs, fichiers et mots de passe, reliés à SuFormField (libellés, messages, validation)."
+  >
     <template #head>
-      <h2>Formulaires Complets</h2>
+      <h2>Formulaires</h2>
     </template>
     <div class="su-form">
       <!-- FORMULAIRE DE CONTACT -->
@@ -136,7 +139,6 @@ const handleSurveySubmit = () => {
         >
           <GridCell
             radius="md"
-            background-color="#F9F9F9"
             :padding="2"
           >
             <form
@@ -244,7 +246,6 @@ const handleSurveySubmit = () => {
         >
           <GridCell
             radius="md"
-            background-color="#F9F9F9"
             :padding="2"
           >
             <form
@@ -364,7 +365,6 @@ const handleSurveySubmit = () => {
         >
           <GridCell
             radius="md"
-            background-color="#F9F9F9"
             :padding="2"
           >
             <form
@@ -438,7 +438,6 @@ const handleSurveySubmit = () => {
         >
           <GridCell
             radius="md"
-            background-color="#F9F9F9"
             :padding="2"
           >
             <form
@@ -555,7 +554,6 @@ const handleSurveySubmit = () => {
         >
           <GridCell
             radius="md"
-            background-color="#F9F9F9"
             :padding="2"
           >
             <form
@@ -625,7 +623,6 @@ const handleSurveySubmit = () => {
         >
           <GridCell
             radius="md"
-            background-color="#F9F9F9"
             :padding="2"
           >
             <form class="form-container">
@@ -733,7 +730,7 @@ const handleSurveySubmit = () => {
 <style scoped>
 .su-form {
   padding: 2rem;
-  background-color: #fff;
+  background-color: transparent;
 }
 
 .section {
@@ -744,7 +741,7 @@ const handleSurveySubmit = () => {
   font-size: 1.25rem;
   font-weight: 600;
   margin-bottom: 1.5rem;
-  color: #1f2937;
+  color: var(--su-text-primary);
 }
 
 .form-container {
@@ -757,12 +754,12 @@ const handleSurveySubmit = () => {
   font-size: 1.5rem;
   font-weight: 700;
   margin: 0 0 0.25rem;
-  color: #1f2937;
+  color: var(--su-text-primary);
 }
 
 .form-description {
   margin: 0 0 1rem;
-  color: #6b7280;
+  color: var(--su-text-secondary);
   font-size: 0.95rem;
 }
 
@@ -779,18 +776,18 @@ const handleSurveySubmit = () => {
 
 .settings-group {
   padding: 1.5rem;
-  background-color: #f3f4f6;
+  background-color: var(--su-bg-muted);
   border-radius: 0.5rem;
-  border-left: 3px solid #3b82f6;
+  border-left: 3px solid var(--su-primary-default);
 }
 
 .settings-title {
   font-size: 1rem;
   font-weight: 600;
   margin: 0 0 1rem;
-  color: #1f2937;
+  color: var(--su-text-primary);
   padding-bottom: 1rem;
-  border-bottom: 1px solid #d1d5db;
+  border-bottom: 1px solid var(--su-border-default);
 }
 
 .settings-group > div {
@@ -806,7 +803,7 @@ const handleSurveySubmit = () => {
   gap: 1rem;
   margin-top: 1rem;
   padding-top: 1.5rem;
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid var(--su-border-default);
 }
 
 .login-form {
@@ -817,18 +814,18 @@ const handleSurveySubmit = () => {
   text-align: center;
   margin-top: 1.5rem;
   font-size: 0.9rem;
-  color: #6b7280;
+  color: var(--su-text-secondary);
 }
 
 .link {
-  color: #3b82f6;
+  color: var(--su-primary-default);
   text-decoration: none;
   font-weight: 600;
   transition: color 0.2s;
 }
 
 .link:hover {
-  color: #2563eb;
+  color: var(--su-link-hover);
 }
 
 @media (width <= 768px) {

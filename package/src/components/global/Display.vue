@@ -94,9 +94,12 @@ const teamAvatars = ref([
 </script>
 
 <template>
-  <GlobalPreview>
+  <GlobalPreview
+    eyebrow="Global · 01"
+    description="Titres, panneaux, images, avatars, badges, dialogs, alertes, onglets, accordéons et indicateurs de progression, dans tous leurs états."
+  >
     <template #head>
-      <h2>Display</h2>
+      <h2>Affichage</h2>
     </template>
     <div class="su-display">
       <!-- HEADING -->
@@ -108,7 +111,6 @@ const teamAvatars = ref([
         >
           <GridCell
             radius="md"
-            background-color="#F9F9F9"
           >
             <Preview title="Niveau 1 (h1)">
               <Heading
@@ -121,7 +123,6 @@ const teamAvatars = ref([
           </GridCell>
           <GridCell
             radius="md"
-            background-color="#F9F9F9"
           >
             <Preview title="Niveau 2 (h2)">
               <Heading
@@ -134,7 +135,6 @@ const teamAvatars = ref([
           </GridCell>
           <GridCell
             radius="md"
-            background-color="#F9F9F9"
           >
             <Preview title="Niveau 3 (h3)">
               <Heading
@@ -147,7 +147,6 @@ const teamAvatars = ref([
           </GridCell>
           <GridCell
             radius="md"
-            background-color="#F9F9F9"
           >
             <Preview title="Niveau 4 (h4)">
               <Heading
@@ -170,7 +169,6 @@ const teamAvatars = ref([
         >
           <GridCell
             radius="md"
-            background-color="#F9F9F9"
             padding="md"
           >
             <Preview title="Ratio 16/9">
@@ -183,7 +181,6 @@ const teamAvatars = ref([
           </GridCell>
           <GridCell
             radius="md"
-            background-color="#F9F9F9"
             padding="md"
           >
             <Preview title="Ratio 1/1">
@@ -196,7 +193,6 @@ const teamAvatars = ref([
           </GridCell>
           <GridCell
             radius="md"
-            background-color="#F9F9F9"
             padding="md"
           >
             <Preview title="Ratio 4/3">
@@ -209,7 +205,6 @@ const teamAvatars = ref([
           </GridCell>
           <GridCell
             radius="md"
-            background-color="#F9F9F9"
             padding="md"
           >
             <Preview title="Fit: cover">
@@ -233,7 +228,6 @@ const teamAvatars = ref([
         >
           <GridCell
             radius="md"
-            background-color="#F9F9F9"
           >
             <Preview title="Panel standard">
               <Panel variant="default">
@@ -251,7 +245,6 @@ const teamAvatars = ref([
           </GridCell>
           <GridCell
             radius="md"
-            background-color="#F9F9F9"
           >
             <Preview title="Panel bordé">
               <Panel
@@ -272,7 +265,6 @@ const teamAvatars = ref([
           </GridCell>
           <GridCell
             radius="md"
-            background-color="#F9F9F9"
           >
             <Preview title="Panel surélevé">
               <Panel
@@ -293,7 +285,6 @@ const teamAvatars = ref([
           </GridCell>
           <GridCell
             radius="md"
-            background-color="#F9F9F9"
           >
             <Preview title="Panel surélevé et bordé">
               <Panel
@@ -322,7 +313,6 @@ const teamAvatars = ref([
         <GridLayout view-toggle>
           <GridCell
             radius="md"
-            background-color="#F9F9F9"
           >
             <Preview title="Extra petite">
               <Avatar
@@ -335,7 +325,6 @@ const teamAvatars = ref([
           </GridCell>
           <GridCell
             radius="md"
-            background-color="#F9F9F9"
           >
             <Preview title="Petite">
               <Avatar
@@ -348,7 +337,6 @@ const teamAvatars = ref([
           </GridCell>
           <GridCell
             radius="md"
-            background-color="#F9F9F9"
           >
             <Preview title="Moyen avec image">
               <Avatar
@@ -363,7 +351,6 @@ const teamAvatars = ref([
           </GridCell>
           <GridCell
             radius="md"
-            background-color="#F9F9F9"
           >
             <Preview title="Large avec badge">
               <Avatar
@@ -377,7 +364,6 @@ const teamAvatars = ref([
           </GridCell>
           <GridCell
             radius="md"
-            background-color="#F9F9F9"
           >
             <Preview title="Extra large carré">
               <Avatar
@@ -390,7 +376,6 @@ const teamAvatars = ref([
           </GridCell>
           <GridCell
             radius="md"
-            background-color="#F9F9F9"
           >
             <Preview title="2XL">
               <Avatar
@@ -414,7 +399,6 @@ const teamAvatars = ref([
         >
           <GridCell
             radius="md"
-            background-color="#F9F9F9"
           >
             <Preview title="Groupe complet">
               <AvatarGroup
@@ -427,7 +411,6 @@ const teamAvatars = ref([
           </GridCell>
           <GridCell
             radius="md"
-            background-color="#F9F9F9"
           >
             <Preview title="Maximum 3 avatars">
               <AvatarGroup
@@ -441,7 +424,6 @@ const teamAvatars = ref([
           </GridCell>
           <GridCell
             radius="md"
-            background-color="#F9F9F9"
           >
             <Preview title="Taille petite, espacés">
               <AvatarGroup
@@ -454,7 +436,6 @@ const teamAvatars = ref([
           </GridCell>
           <GridCell
             radius="md"
-            background-color="#F9F9F9"
           >
             <Preview title="Taille large">
               <AvatarGroup
@@ -475,7 +456,6 @@ const teamAvatars = ref([
         <GridLayout view-toggle>
           <GridCell
             radius="md"
-            background-color="#F9F9F9"
           >
             <Preview title="Défaut">
               <Badge variant="default">
@@ -485,7 +465,6 @@ const teamAvatars = ref([
           </GridCell>
           <GridCell
             radius="md"
-            background-color="#F9F9F9"
           >
             <Preview title="Primary">
               <Badge variant="primary">
@@ -495,7 +474,6 @@ const teamAvatars = ref([
           </GridCell>
           <GridCell
             radius="md"
-            background-color="#F9F9F9"
           >
             <Preview title="Secondary">
               <Badge variant="secondary">
@@ -505,7 +483,6 @@ const teamAvatars = ref([
           </GridCell>
           <GridCell
             radius="md"
-            background-color="#F9F9F9"
           >
             <Preview title="Success">
               <Badge variant="success">
@@ -515,7 +492,6 @@ const teamAvatars = ref([
           </GridCell>
           <GridCell
             radius="md"
-            background-color="#F9F9F9"
           >
             <Preview title="Warning">
               <Badge variant="warning">
@@ -525,7 +501,6 @@ const teamAvatars = ref([
           </GridCell>
           <GridCell
             radius="md"
-            background-color="#F9F9F9"
           >
             <Preview title="Error">
               <Badge variant="error">
@@ -535,7 +510,6 @@ const teamAvatars = ref([
           </GridCell>
           <GridCell
             radius="md"
-            background-color="#F9F9F9"
           >
             <Preview title="Petit">
               <Badge size="sm">
@@ -545,7 +519,6 @@ const teamAvatars = ref([
           </GridCell>
           <GridCell
             radius="md"
-            background-color="#F9F9F9"
           >
             <Preview title="Moyen">
               <Badge size="md">
@@ -555,7 +528,6 @@ const teamAvatars = ref([
           </GridCell>
           <GridCell
             radius="md"
-            background-color="#F9F9F9"
           >
             <Preview title="Grand">
               <Badge size="lg">
@@ -565,7 +537,6 @@ const teamAvatars = ref([
           </GridCell>
           <GridCell
             radius="md"
-            background-color="#F9F9F9"
           >
             <Preview title="Avec icône">
               <Badge
@@ -589,7 +560,6 @@ const teamAvatars = ref([
         >
           <GridCell
             radius="md"
-            background-color="#F9F9F9"
           >
             <Preview title="Info">
               <Alert
@@ -602,7 +572,6 @@ const teamAvatars = ref([
           </GridCell>
           <GridCell
             radius="md"
-            background-color="#F9F9F9"
           >
             <Preview title="Success">
               <Alert
@@ -615,7 +584,6 @@ const teamAvatars = ref([
           </GridCell>
           <GridCell
             radius="md"
-            background-color="#F9F9F9"
           >
             <Preview title="Warning">
               <Alert
@@ -628,7 +596,6 @@ const teamAvatars = ref([
           </GridCell>
           <GridCell
             radius="md"
-            background-color="#F9F9F9"
           >
             <Preview title="Error">
               <Alert
@@ -651,7 +618,6 @@ const teamAvatars = ref([
         >
           <GridCell
             radius="md"
-            background-color="#F9F9F9"
             padding="md"
           >
             <Preview title="Petit">
@@ -665,7 +631,6 @@ const teamAvatars = ref([
           </GridCell>
           <GridCell
             radius="md"
-            background-color="#F9F9F9"
             padding="md"
           >
             <Preview title="Moyen">
@@ -679,7 +644,6 @@ const teamAvatars = ref([
           </GridCell>
           <GridCell
             radius="md"
-            background-color="#F9F9F9"
             padding="md"
           >
             <Preview title="Grand">
@@ -693,7 +657,6 @@ const teamAvatars = ref([
           </GridCell>
           <GridCell
             radius="md"
-            background-color="#F9F9F9"
             padding="md"
           >
             <Preview title="Succès">
@@ -707,7 +670,6 @@ const teamAvatars = ref([
           </GridCell>
           <GridCell
             radius="md"
-            background-color="#F9F9F9"
             padding="md"
           >
             <Preview title="Avertissement">
@@ -721,7 +683,6 @@ const teamAvatars = ref([
           </GridCell>
           <GridCell
             radius="md"
-            background-color="#F9F9F9"
             padding="md"
           >
             <Preview title="Erreur">
@@ -742,7 +703,6 @@ const teamAvatars = ref([
         <GridLayout view-toggle>
           <GridCell
             radius="md"
-            background-color="#F9F9F9"
           >
             <Preview title="Classic">
               <Spinner
@@ -755,7 +715,6 @@ const teamAvatars = ref([
           </GridCell>
           <GridCell
             radius="md"
-            background-color="#F9F9F9"
           >
             <Preview title="Modern">
               <Spinner
@@ -768,7 +727,6 @@ const teamAvatars = ref([
           </GridCell>
           <GridCell
             radius="md"
-            background-color="#F9F9F9"
           >
             <Preview title="Dots">
               <Spinner
@@ -781,7 +739,6 @@ const teamAvatars = ref([
           </GridCell>
           <GridCell
             radius="md"
-            background-color="#F9F9F9"
           >
             <Preview title="Pulse">
               <Spinner
@@ -794,7 +751,6 @@ const teamAvatars = ref([
           </GridCell>
           <GridCell
             radius="md"
-            background-color="#F9F9F9"
           >
             <Preview title="Bars">
               <Spinner
@@ -807,13 +763,12 @@ const teamAvatars = ref([
           </GridCell>
           <GridCell
             radius="md"
-            background-color="#F9F9F9"
           >
             <Preview title="Custom color">
               <Spinner
                 type="classic"
                 size="48"
-                color="#3b82f6"
+                color="var(--su-primary-default)"
                 label="Chargement..."
                 show-label
               />
@@ -831,7 +786,6 @@ const teamAvatars = ref([
         >
           <GridCell
             radius="md"
-            background-color="#F9F9F9"
             padding="md"
           >
             <Preview title="Onglets basiques">
@@ -850,7 +804,6 @@ const teamAvatars = ref([
         >
           <GridCell
             radius="md"
-            background-color="#F9F9F9"
             padding="md"
           >
             <Preview title="Accordéon simple">
@@ -874,7 +827,6 @@ const teamAvatars = ref([
         >
           <GridCell
             radius="md"
-            background-color="#F9F9F9"
           >
             <Preview title="Dialog centré">
               <Button
@@ -913,7 +865,7 @@ const teamAvatars = ref([
 <style scoped>
 .su-display {
   padding: 2rem;
-  background-color: #fff;
+  background-color: transparent;
 }
 
 .section {
@@ -924,6 +876,6 @@ const teamAvatars = ref([
   font-size: 1.25rem;
   font-weight: 600;
   margin-bottom: 1.5rem;
-  color: #1f2937;
+  color: var(--su-text-primary);
 }
 </style>

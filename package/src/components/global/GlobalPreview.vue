@@ -1,183 +1,163 @@
 <script setup lang="ts">
-  import { ref } from 'vue'
-  import Heading from '../atoms/Heading.vue'
-  import Panel from '../atoms/Panel.vue'
-  import Button from '../atoms/Button.vue'
-  import ThemeSelector from './ThemeSelector.vue'
-  //import ThemeSelector2 from './ThemeSelector2.vue'
-  import { useTheme } from '@/composables/useTheme'
-  import { useCustomTheme } from '@/composables/useCustomTheme'
+// ============================================================
+// Gabarit des vitrines « Global » de Storybook : en-tête, puis les
+// sections de la page.
+//
+// Thème, mode, sens de lecture et langue viennent de la barre d'outils
+// de Storybook (décorateur de .storybook/preview.ts) : la page n'impose
+// rien, sinon le bouton RTL ou le mode sombre seraient sans effet.
+// ============================================================
 
-  const { themeName, themeMode, effectiveThemeMode, contrastMode, motionMode } = useTheme()
-  const { applyCustomTheme, resetCustomTheme } = useCustomTheme()
-  const textDirection = ref('ltr')
-  const showCustomThemeExample = ref(false)
-
-  // Functions for custom theme examples
-  const applyRedBrandTheme = () => {
-    applyCustomTheme({
-      textPrimary: '#dc2626',
-      primaryDefault: '#dc2626',
-      primaryHover: '#b91c1c',
-      primaryActive: '#991b1b',
-      primaryText: '#ffffff'
-    })
-    showCustomThemeExample.value = true
-  }
-
-  const applyBlueSkyTheme = () => {
-    applyCustomTheme({
-      textPrimary: '#1e3a8a',
-      bgSurface: '#f0f9ff',
-      bgCanvas: '#e0f2fe',
-      primaryDefault: '#3b82f6',
-      primaryHover: '#2563eb',
-      primaryActive: '#1d4ed8',
-      primaryText: '#ffffff',
-      borderDefault: '#bfdbfe'
-    })
-    showCustomThemeExample.value = true
-  }
-
-  const resetCustom = () => {
-    resetCustomTheme()
-    showCustomThemeExample.value = false
-  }
-
- 
+withDefaults(defineProps<{
+  /** Sur-titre (ex. « Global · 01 ») */
+  eyebrow?: string
+  /** Présentation de la page, sous le titre */
+  description?: string
+}>(), {
+  eyebrow: 'SurgeUI · Global',
+  description: undefined
+})
 </script>
 
 <template>
-  <div
-    class="su-global-preview"
-    :data-theme="themeName"
-    :data-theme-mode="effectiveThemeMode"
-  >  
-    <ThemeSelector />
-    <Panel
-      bordered
-      elevated
-    >
-      <template #head>
-        <Heading level="2">
-          Aperçu global du Design System
-        </Heading>
-      </template>
-
-      <p>
-        Testez ici les styles généraux, les couleurs, les typographies et les comportements RTL/dark des composants.
+  <div class="su-global-preview">
+    <header class="su-global-preview__hero">
+      <p class="su-global-preview__eyebrow">
+        {{ eyebrow }}
       </p>
-
-      <ul>
-        <li><strong>Thème :</strong> {{ themeName }}</li>
-        <li><strong>Mode :</strong> {{ themeMode }} <em>(effectif : {{ effectiveThemeMode }})</em></li>
-        <!-- <li><strong>Direction :</strong> {{ textDirection === 'rtl' ? 'Droite à gauche' : 'Gauche à droite' }}</li> -->
-        <li><strong>Contraste :</strong> {{ contrastMode === 'high' ? 'Élevé' : 'Normal' }}</li>
-        <li><strong>Animations :</strong> {{ motionMode === 'reduce' ? 'Réduites' : 'Normal' }}</li>
-      </ul>
-
-      <template #footer>
-        <small>Respect des normes WCAG 2.1 AA et W3C</small>
-      </template>
-    </Panel>
-
-    <!-- Section Personnalisation Avancée -->
-    <Panel
-      bordered
-      elevated
-    >
-      <template #head>
-        <Heading level="2">
-          Personnalisation Avancée - Variables CSS Custom
-        </Heading>
-      </template>
-
-      <p>
-        Découvrez comment appliquer des thèmes personnalisés en définissant des variables CSS globales.
-      </p>
-
-      <div style="display: flex; gap: 12px; margin-top: 16px;">
-        <Button
-          variant="primary"
-          size="sm"
-          @click="applyRedBrandTheme"
-        >
-          Appliquer Thème Red Brand
-        </Button>
-
-        <Button
-          variant="secondary"
-          size="sm"
-          @click="applyBlueSkyTheme"
-        >
-          Appliquer Thème Blue Sky
-        </Button>
-
-        <Button
-          variant="ghost"
-          size="sm"
-          @click="resetCustom"
-        >
-          Réinitialiser
-        </Button>
-      </div>
-
-      <div
-        v-if="showCustomThemeExample"
-        style="
-          margin-top: 20px;
-          padding: 16px;
-          background-color: var(--su-bg-canvas);
-          border-radius: 8px;
-          border-left: 4px solid var(--su-custom-primary-default, var(--su-primary-default));
-        "
-      >
-        <p style="margin: 0 0 12px; font-weight: 600;">
-          ✓ Thème personnalisé appliqué !
-        </p>
-        <p style="margin: 0; font-size: 14px; color: var(--su-text-secondary);">
-          Les variables CSS <code>--su-custom-*</code> surcharges les variables du thème sélectionné.
-          Observez comme les couleurs reflètent votre sélection, même en changeant de thème.
-        </p>
-      </div>
-
-      <template #footer>
-        <small>Les variables CSS custom utilisent le préfixe <code>--su-custom-</code></small>
-      </template>
-    </Panel>
-
-    <div 
-      class="su-global-preview__content"
-      :dir="textDirection === 'rtl' ? 'rtl' : 'ltr'"
-    >
-      <header
-        v-if="$slots.head"
-        class="su-global-preview__head"
-      >
+      <div class="su-global-preview__title">
         <slot name="head" />
-      </header>
-      <div class="su-global-preview__body">
-        <slot />
       </div>
-      <footer
-        v-if="$slots.footer"
-        class="su-global-preview__footer"
+      <p
+        v-if="description"
+        class="su-global-preview__lead"
       >
-        <slot name="footer" />
-      </footer>
+        {{ description }}
+      </p>
+      <ul
+        class="su-global-preview__controls"
+        aria-label="Réglages de la barre d'outils"
+      >
+        <li>Theme</li>
+        <li>Theme Mode</li>
+        <li>Direction</li>
+        <li>Langue</li>
+      </ul>
+    </header>
+
+    <div class="su-global-preview__body">
+      <slot />
     </div>
+
+    <footer
+      v-if="$slots.footer"
+      class="su-global-preview__footer"
+    >
+      <slot name="footer" />
+    </footer>
   </div>
 </template>
 
-<style scoped>
-.su-global-preview {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  padding: 1rem;
+<style lang="scss">
+@use '../../styles/abstracts' as *;
 
+// Non scopé : les règles de section s'appliquent au contenu des pages
+// (fourni par Display, Actions et Form)
+.su-global-preview {
+  max-width: 1200px;
+  margin-inline: auto;
+
+  &__hero {
+    position: relative;
+    isolation: isolate;
+    margin-bottom: $spacing-8;
+    padding: $spacing-8 $spacing-6;
+    overflow: hidden;
+    border: 1px solid var(--su-border-alpha);
+    border-radius: var(--su-radius-container);
+    background: var(--su-bg-surface);
+    box-shadow: var(--su-shadow-control);
+
+    // Lueur d'accent discrète en haut à gauche (décorative)
+    &::before {
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background: radial-gradient(60% 80% at 0% 0%, with-alpha(primary-default, 12%), transparent 70%);
+      content: '';
+      pointer-events: none;
+    }
+  }
+
+  &__eyebrow {
+    margin: 0 0 $spacing-2;
+    color: var(--su-primary-default);
+    font-family: var(--su-font-family-mono, ui-monospace, monospace);
+    font-size: var(--su-font-size-xs);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  &__title h2 {
+    margin: 0;
+    color: var(--su-text-primary);
+    font-size: var(--su-font-size-3xl);
+    font-weight: var(--su-font-weight-semibold);
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+  }
+
+  &__lead {
+    max-width: 62ch;
+    margin: $spacing-3 0 0;
+    color: var(--su-text-secondary);
+    font-size: var(--su-font-size-base);
+    line-height: 1.6;
+  }
+
+  // Rappel des réglages disponibles dans la barre d'outils
   &__controls {
-    padding: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing-2;
+    margin: $spacing-5 0 0;
+    padding: 0;
+    list-style: none;
+
+    li {
+      padding: 0.125rem 0.5rem;
+      border: 1px solid var(--su-border-alpha);
+      border-radius: var(--su-radius-full);
+      background: var(--su-bg-canvas);
+      color: var(--su-text-secondary);
+      font-size: var(--su-font-size-xs);
+    }
+  }
+
+  // Sections des pages : titre en sur-titre, séparées par un filet
+  &__body .section {
+    margin-bottom: $spacing-10;
+    padding-top: $spacing-6;
+    border-top: 1px solid var(--su-border-alpha);
+
+    &:first-child {
+      padding-top: 0;
+      border-top: 0;
+    }
+
+    > h3 {
+      margin: 0 0 $spacing-5;
+      color: var(--su-text-primary);
+      font-size: var(--su-font-size-lg);
+      font-weight: var(--su-font-weight-semibold);
+      letter-spacing: -0.01em;
+    }
+  }
+
+  &__footer {
+    margin-top: $spacing-8;
+    color: var(--su-text-secondary);
+    font-size: var(--su-font-size-sm);
   }
 }
 </style>
