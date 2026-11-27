@@ -26,7 +26,8 @@
   ],
   "files": [
     "dist",
-    "global.d.ts"
+    "global.d.ts",
+    "AGENTS.md"
   ],
   "author": {
     "name": "Mahmoud NBET",
