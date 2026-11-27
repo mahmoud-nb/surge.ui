@@ -41,3 +41,4 @@ Les composants d'actions permettent à l'utilisateur d'interagir : boutons, lien
 | [NavMenu](/components/navmenu) | Navigation latérale : groupes, compteurs, élément actif, mode réduit |
 | [ThemeToggle](/components/themetoggle) | Bascule clair / sombre, ou choix clair, sombre, système |
 | [SkipLink](/components/skiplink) | Lien d'évitement vers le contenu principal |
+| [CopyButton](/components/copybutton) | Copie dans le presse-papiers, résultat annoncé |
