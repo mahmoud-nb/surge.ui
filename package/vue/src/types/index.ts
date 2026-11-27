@@ -1593,3 +1593,108 @@ export interface AppShellProps {
   /** Nom du bouton qui réduit la barre latérale */
   collapseLabel?: string
 }
+
+// ============================================================
+// DONNÉES ET CONTENU (4.0)
+// ============================================================
+
+// CopyButton.vue
+export interface CopyButtonProps {
+  /** Texte copié dans le presse-papiers */
+  value: string
+  /** Nom du bouton (défaut : locale `copyButton.copy`) */
+  label?: string
+  /** Texte affiché après la copie (défaut : locale `copyButton.copied`) */
+  copiedLabel?: string
+  /** Icône seule : le nom reste lu par les lecteurs d'écran */
+  iconOnly?: boolean
+  variant?: ButtonVariant
+  size?: ButtonSize
+  /** Durée de l'état « copié » (ms) */
+  timeout?: number
+}
+
+// CodeBlock.vue
+export interface CodeBlockProps {
+  code: string
+  /** Langage : affiché, et posé en data-language pour un colorateur */
+  language?: string
+  /** Titre (nom de fichier), légende du bloc */
+  title?: string
+  /** Bouton de copie */
+  copyable?: boolean
+  /** Numéros de ligne (non copiés) */
+  lineNumbers?: boolean
+  /** Hauteur maximale : défilement au-delà */
+  maxHeight?: string
+  /** Nom du bouton de copie (défaut : locale `codeBlock.copy`) */
+  copyLabel?: string
+}
+
+// Stat.vue
+export type StatTrend = 'up' | 'down' | 'neutral'
+export interface StatProps {
+  label: string
+  /** Valeur : un nombre est formaté dans la langue courante (`format`) */
+  value?: string | number
+  format?: Intl.NumberFormatOptions
+  /** Variation : nombre (ratio : 0.125 → « +12,5 % ») ou texte affiché tel quel */
+  delta?: number | string
+  deltaFormat?: Intl.NumberFormatOptions
+  /** Sens de la variation (défaut : signe de `delta`) */
+  trend?: StatTrend
+  /** Une baisse est une bonne nouvelle (coûts, délais) : couleurs inversées */
+  invertTrend?: boolean
+  /** Contexte de la variation (« vs mois dernier ») */
+  deltaLabel?: string
+  icon?: Component
+  /** La carte entière devient un lien */
+  to?: LinkTo
+  href?: string
+  /** Valeur en cours de chargement (squelette) */
+  loading?: boolean
+}
+
+// Timeline.vue
+export type TimelineVariant = 'default' | 'primary' | 'success' | 'warning' | 'error'
+export interface TimelineItem {
+  id?: string | number
+  title: string
+  description?: string
+  /** Date et heure de l'événement */
+  date: Date | string | number
+  author?: string
+  icon?: Component
+  variant?: TimelineVariant
+}
+export interface TimelineProps {
+  items: TimelineItem[]
+  /** Regroupe les événements par jour, sous un titre */
+  groupByDay?: boolean
+  /** Niveau des titres de jour */
+  headingLevel?: 2 | 3 | 4 | 5 | 6
+  /** Date de référence pour « aujourd'hui » et « hier » */
+  now?: Date | string | number
+}
+
+// Rating.vue
+export interface RatingProps extends AccessibilityProps {
+  /** Nombre d'étoiles */
+  max?: number
+  /** Lecture seule : affiche une note, décimale possible (4,5) */
+  readonly?: boolean
+  /** Choisir de nouveau la note courante la remet à zéro */
+  clearable?: boolean
+  name?: string
+  size?: Size
+  state?: State
+  disabled?: boolean
+  required?: boolean
+}
+
+// Prose.vue
+export interface ProseProps {
+  /** Élément rendu */
+  as?: string
+  size?: Size
+}
