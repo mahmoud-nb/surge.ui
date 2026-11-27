@@ -106,8 +106,8 @@ Priorité moyenne : ajouter prefers-contrast
 ## Instructions
 
 Quand l'utilisateur te passe un nom de composant ou un chemin de fichier :
-1. Localise le fichier `.vue` dans `package/src/components/`
+1. Localise le fichier `.vue` dans `package/vue/src/components/`
 2. Lis le fichier complet
-3. Cherche l'interface de props dans `package/src/types/index.ts`
+3. Cherche l'interface de props dans `package/vue/src/types/index.ts`
 4. Exécute chaque critère de la grille
 5. Produis le rapport complet

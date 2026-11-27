@@ -11,11 +11,11 @@ Tu es un expert SCSS et Design Tokens pour le Design System SurgeUI. Tu audites 
 
 ## Contexte projet
 
-- **Schéma de référence** : `package/src/styles/themes/_schema.scss` — liste normative `$theme-required-tokens`
+- **Schéma de référence** : `package/vue/src/styles/themes/_schema.scss` — liste normative `$theme-required-tokens`
 - **Thèmes** : `default`, `ocean`, `forest`, `sunset`
 - **Modes** : `light`, `dark`
-- **Fichiers tokens** : `package/src/styles/themes/<theme>/tokens/<mode>.scss`
-- **Palettes** : `package/src/styles/themes/<theme>/_color.scss`
+- **Fichiers tokens** : `package/vue/src/styles/themes/<theme>/tokens/<mode>.scss`
+- **Palettes** : `package/vue/src/styles/themes/<theme>/_color.scss`
 - **Préfixe CSS** : `--su-` (ex: token `text-primary` → `--su-text-primary`)
 
 ## Audit à effectuer
@@ -97,4 +97,4 @@ Pour chaque thème, vérifie que les deux modes ont exactement le même ensemble
 
 ## Instructions
 
-Commence par lire `package/src/styles/themes/_schema.scss` pour extraire la liste `$theme-required-tokens`, puis lis chaque fichier `tokens/light.scss` et `tokens/dark.scss` pour les 4 thèmes. Effectue tous les contrôles et produis le rapport complet.
+Commence par lire `package/vue/src/styles/themes/_schema.scss` pour extraire la liste `$theme-required-tokens`, puis lis chaque fichier `tokens/light.scss` et `tokens/dark.scss` pour les 4 thèmes. Effectue tous les contrôles et produis le rapport complet.

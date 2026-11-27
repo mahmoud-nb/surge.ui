@@ -15,7 +15,7 @@ Arguments reçus : $ARGUMENTS
 ## Contexte du projet
 
 - **Monorepo** : `package/` (bibliothèque) + `docs/` (VitePress FR + EN)
-- **Alias** : `@/` → `package/src/`
+- **Alias** : `@/` → `package/vue/src/`
 - **Préfixe CSS** : `su-` (BEM : `.su-<nom>`, `.su-<nom>--variant`, `.su-<nom>__element`)
 - **Préfixe composant** : `Su` (enregistrement global : `SuTag`, `SuTooltip`…)
 - **Styles** : SCSS scopé inline dans le `.vue`, `@use '../../styles/main' as *`
@@ -141,22 +141,22 @@ Description courte du composant.
 
 ## Fichiers à créer
 
-Avant de créer, lis d'abord `package/src/index.ts` et `package/src/types/index.ts` pour comprendre les patterns d'export existants.
+Avant de créer, lis d'abord `package/vue/src/index.ts` et `package/vue/src/types/index.ts` pour comprendre les patterns d'export existants.
 
 Crée ces fichiers dans l'ordre :
 
-1. **`package/src/types/index.ts`** — Ajouter après la dernière interface du layer correspondant :
+1. **`package/vue/src/types/index.ts`** — Ajouter après la dernière interface du layer correspondant :
    - Export type `<Nom>Variant` si nécessaire
    - Interface `<Nom>Props extends AccessibilityProps`
 
-2. **`package/src/components/<layer>/<NomComposant>.vue`** — Composant complet avec :
+2. **`package/vue/src/components/<layer>/<NomComposant>.vue`** — Composant complet avec :
    - `<script setup lang="ts">` + import types + `withDefaults`
    - Classes BEM calculées avec `computed`
    - Attributs ARIA avec `computed`
    - Template sémantique
    - `<style scoped lang="scss">` avec BEM + dark mode + high-contrast + reduced-motion
 
-3. **`package/src/components/<layer>/_stories/<NomComposant>.stories.ts`** — Stories complètes :
+3. **`package/vue/src/components/<layer>/_stories/<NomComposant>.stories.ts`** — Stories complètes :
    - `Default`, `Variants`, `Sizes` au minimum
    - `argTypes` explicites pour chaque prop
 
@@ -167,7 +167,7 @@ Crée ces fichiers dans l'ordre :
 
 5. **`docs/en/components/<nomcomposant>.md`** — Documentation EN (même structure, texte en anglais)
 
-6. **`package/src/index.ts`** — Ajouter :
+6. **`package/vue/src/index.ts`** — Ajouter :
    - Import du composant dans la bonne section (Display / Action / Form)
    - Export nommé
    - Enregistrement dans `install()` avec le préfixe

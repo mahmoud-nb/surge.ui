@@ -2,7 +2,7 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-> **Docs workspace-spécifiques :** voir `package/CLAUDE.md` (bibliothèque de composants) et `docs/CLAUDE.md` (site de documentation).
+> **Docs workspace-spécifiques :** voir `package/vue/CLAUDE.md` (bibliothèque de composants) et `docs/CLAUDE.md` (site de documentation).
 
 ## Commands
 
@@ -23,7 +23,7 @@ npm run dev                # Build lib then start docs dev server
 
 # Tests (Vitest + @vue/test-utils + happy-dom)
 npm test                   # Run once (from root or package/)
-npm run test:watch -w package
+npm run test:watch -w package/vue
 
 # Linting
 npm run lint               # ESLint + Stylelint (read-only check)
@@ -32,21 +32,21 @@ npm run lint:fix           # ESLint + Stylelint with auto-fix
 # Releases (conventional commits via commitizen)
 npm run commit             # Interactive conventional commit prompt
 npm run release            # standard-version (auto semver bump)
-npm run release:publish    # build lib + npm publish -w package (manual fallback)
+npm run release:publish    # build lib + npm publish -w package/vue (manual fallback)
 ```
 
-Tests live in `package/tests/*.spec.ts` (Vitest, `happy-dom` environment, configured in `package/vite.config.ts`, CSS disabled). Validate changes with `npm test`, `npm run build:lib` and `npm run lint`. `no-descending-specificity` is disabled in `.stylelintrc.json`: it flags every BEM parent modifier (`.su-x--mod .su-x__el`) declared before the element's base rule. When a lower-specificity rule must override (disabled state, superscript…), check the cascade yourself (`:where()` keeps specificity low, local custom properties avoid the conflict). Put `@include motion-reduce` / `high-contrast` inside the original rule, never in a second block with the same selector.
+Tests live in `package/vue/tests/*.spec.ts` (Vitest, `happy-dom` environment, configured in `package/vue/vite.config.ts`, CSS disabled). Validate changes with `npm test`, `npm run build:lib` and `npm run lint`. `no-descending-specificity` is disabled in `.stylelintrc.json`: it flags every BEM parent modifier (`.su-x--mod .su-x__el`) declared before the element's base rule. When a lower-specificity rule must override (disabled state, superscript…), check the cascade yourself (`:where()` keeps specificity low, local custom properties avoid the conflict). Put `@include motion-reduce` / `high-contrast` inside the original rule, never in a second block with the same selector.
 
-Release flow: `npm run release:dry` → `npm run release` (bumps package.json + package/package.json, CHANGELOG, tag `vX.Y.Z`) → `npm install --package-lock-only` → `git push --follow-tags origin main`. Pushing the tag triggers `.github/workflows/release.yml`: checks tag = package version, lint, tests, build, `npm publish -w package --provenance` (secret `NPM_TOKEN`, skipped if the version is already on npm) and a GitHub release from the CHANGELOG section. Always push tags: `standard-version` computes the next changelog from the latest tag.
+Release flow: `npm run release:dry` → `npm run release` (bumps package.json + package/vue/package.json, CHANGELOG, tag `vX.Y.Z`) → `npm install --package-lock-only` → `git push --follow-tags origin main`. Pushing the tag triggers `.github/workflows/release.yml`: checks tag = package version, lint, tests, build, `npm publish -w package/vue --provenance` (secret `NPM_TOKEN`, skipped if the version is already on npm) and a GitHub release from the CHANGELOG section. Always push tags: `standard-version` computes the next changelog from the latest tag.
 
 ## Architecture
 
 **Monorepo** with two npm workspaces:
 
-- `package/` → `@surgeui/ds-vue` — the Vue 3 component library published to npm
+- `package/vue/` → `@surgeui/vue` — the Vue 3 component library published to npm
 - `docs/` → `@surgeui/ds-docs` — VitePress bilingual documentation (FR root + `/en` locale)
 
-### Component Library (`package/src/`)
+### Component Library (`package/vue/src/`)
 
 **Atomic Design** hierarchy under `components/`:
 
@@ -61,10 +61,10 @@ Release flow: `npm run release:dry` → `npm run release` (bumps package.json + 
 
 **Type system:** All component prop interfaces live in `types/index.ts` (~700 lines). Shared base types: `Variant`, `Size`, `State`, `Radius`, `AccessibilityProps`. Components import from `@/types`.
 
-**Entry point:** `src/index.ts` exports all components individually and as a Vue plugin (`app.use(SurgeUI, { prefix: 'Su' })`). Components are registered globally with the configurable prefix (default `Su`).
+**Entry point:** `src/index.ts` exports all components individually and as a Vue plugin (`app.use(SurgeUI, { prefix: 'Su' })`). Components are registered globally with the configurable prefix (default `Su`). `createSurgeUI(options)` installs the same plugin but registers only `options.components` (tree-shakable). Keep module-level code free of side effects (no `ref()`/`computed()` at the top of a module: create shared state lazily), or named imports stop being tree-shaken.
 
 **Composables** (`composables/`):
-- `useTheme` — theme switching (light/dark/ocean/forest/sunset), localStorage persistence, system preference detection
+- `useTheme` — theme (default/ocean/forest/sunset) × mode (light/dark/system), localStorage persistence; shared state created on first call, system preferences followed through `matchMedia` while a consumer is mounted; options come from the first call that sets them (call it in App.vue)
 - `useCustomTheme` — runtime CSS variable injection
 - `useUniqueId` — deterministic unique IDs for accessibility
 - `useFloatingPosition` — positions popovers, menus and lists against their trigger (`@floating-ui/dom`: `position: fixed`, flip, shift, arrow, `data-placement`); used by Popover, Dropdown and SelectBox
@@ -76,6 +76,8 @@ Release flow: `npm run release:dry` → `npm run release` (bumps package.json + 
 - `useToast` / `createToaster()` — toast queue provided by the plugin (`ToasterKey`, one per app, SSR-safe; browser fallback store without the plugin); `show/success/error/warning/info/update/dismiss`, each toast announced through `useAnnouncer`; rendered by `SuToaster` (top layer `popover="manual"`, timers paused on hover/focus/hidden tab)
 - `useConfirm` / `createConfirmer()` — promise-based confirmations provided by the plugin (`ConfirmerKey`); rendered one at a time by `SuConfirmDialog` (`role="alertdialog"`, autofocus on Cancel for `tone: 'danger'`); falls back to `window.confirm()` when no dialog is mounted
 - `useListNavigation` / `useTypeahead` — arrows, Home/End, typeahead, disabled items skipped, RTL-aware horizontal arrows; `virtual` mode (aria-activedescendant: SelectBox) or `roving` mode (DOM focus: Dropdown menu, Tabs, Accordion)
+- `useLinkComponent` — `to` links through RouterLink, NuxtLink (plugin option `linkComponent`) or a plain `<a>`
+- `useClipboard`, `useBreakpoint`, `usePrice` — clipboard copy with announcement, reactive breakpoints, localized prices
 
 **Styles** (`styles/`):
 - SCSS with `api: 'modern-compiler'`
@@ -84,11 +86,11 @@ Release flow: `npm run release:dry` → `npm run release` (bumps package.json + 
 - `styles/index.scss` is the only file that emits global CSS (imported once by `src/index.ts`); components import `styles/abstracts` (functions/mixins only, no CSS output)
 - BEM naming: `.su-button`, `.su-button--primary`, `.su-button__icon`
 - Theme config in `src/theme.config.ts`
-- Build produces a single CSS bundle (`cssCodeSplit: false`)
+- Build produces a single CSS bundle (`cssCodeSplit: false`: `dist/style.css`, `style.layer.css`), plus `dist/css/` (base + one stylesheet per component, `layer/` variant, `manifest.json` of dependencies) and `dist/resolver.js` for unplugin-vue-components, written by `scripts/component-css.ts`. A component that reuses another one's classes without importing it gets it as a CSS dependency automatically.
 
 **Accessibility utilities** (`utils/accessibility.ts`): `trapFocus()` (deprecated, delegates to `createFocusTrap()`), `announceToScreenReader()` (deprecated, delegates to `announce()`), `getContrastRatio()` (WCAG 2.1), `generateId()`.
 
-### Storybook (`package/.storybook/`)
+### Storybook (`package/vue/.storybook/`)
 
 Storybook 8 with `@storybook/vue3-vite`. Stories live in `components/<layer>/_stories/<Component>.stories.ts` using CSF3 format. All stories should have `tags: ['autodocs']`. `@storybook/addon-a11y` is installed (Accessibility panel). Keep it on the same version as the other Storybook packages (8.6.14) to avoid loading two Storybook cores.
 
@@ -100,9 +102,9 @@ VitePress with bilingual structure:
 - French (root): `docs/components/<name>.md`, `docs/guide/`, `docs/theme/`
 - English: `docs/en/components/<name>.md`, `docs/en/guide/`, `docs/en/theme/`
 
-Sidebar navigation is configured via `getNavItems()` in `docs/.vitepress/config.ts` — components are grouped into display, actions, and forms. Both languages share the same function (parametrized by `lang`).
+Sidebar navigation is configured via `getNavItems()` in `docs/.vitepress/nav.ts` (imported by `config.ts`) — sections: display, actions, forms, layouts, composables. Both languages share the same function (parametrized by `lang`).
 
-The docs site imports components from `@surgeui/ds-vue` (symlinked via `file:../package`). Live demos use the `Su` prefix directly in markdown: `<SuButton variant="primary">`.
+The docs site imports components from `@surgeui/vue` (symlinked via `file:../package/vue`). Live demos use the `Su` prefix directly in markdown: `<SuButton variant="primary">`.
 
 ## Conventions
 
@@ -114,8 +116,8 @@ The docs site imports components from `@surgeui/ds-vue` (symlinked via `file:../
 - **Form controls:** call `useFormField(props, { labelable, focus, idPrefix })` and use its effective `id`, `state`, `size`, `disabled`, `required`, `describedBy`, `labelledBy` instead of the raw props, so the control links itself to `SuFormField`.
 - **Overlays & lists:** close floating elements with `useDismiss` (never ad-hoc document listeners), trap focus with `useFocusTrap` (menus must not trap), navigate lists with `useListNavigation` (never re-implement arrow/typeahead handling).
 - **Announcements:** use `useAnnouncer()` (never create ad-hoc `aria-live` nodes); do not announce what assistive tech already reads (native checked state, `aria-valuetext`).
-- **Path alias:** `@/` maps to `package/src/` in both Vite and TypeScript configs.
-- **CSS:** SCSS in components with a single import: `@use '../../styles/abstracts' as *;`. Use design tokens (`--su-*`), spacing (`$spacing-*`) and the functions/mixins from `styles/abstracts/` (`token()`, `with-alpha()`, `@include transition(...)`, `@include focus-ring`, `@include control-surface`). See `package/CLAUDE.md`.
+- **Path alias:** `@/` maps to `package/vue/src/` in both Vite and TypeScript configs.
+- **CSS:** SCSS in components with a single import: `@use '../../styles/abstracts' as *;`. Use design tokens (`--su-*`), spacing (`$spacing-*`) and the functions/mixins from `styles/abstracts/` (`token()`, `with-alpha()`, `@include transition(...)`, `@include focus-ring`, `@include control-surface`). See `package/vue/CLAUDE.md`.
 
 <!-- threadmind:start -->
 ## ThreadMind — Context Management
