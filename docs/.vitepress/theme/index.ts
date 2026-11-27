@@ -1,8 +1,8 @@
 import DefaultTheme from 'vitepress/theme'
 import { inBrowser } from 'vitepress'
-import SurgeUI, { locales } from '@surgeui/ds-vue'
+import SurgeUI, { locales } from '@surgeui/vue'
 import type { Router } from 'vitepress'
-import '@surgeui/ds-vue/style.css'
+import '@surgeui/vue/style.css'
 import './custom.css'
 // Mise en page : thème par défaut + pastille de version sur l'accueil
 import Layout from './Layout.vue'

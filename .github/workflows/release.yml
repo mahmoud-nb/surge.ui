@@ -1,6 +1,7 @@
 name: Release
 
-# Publication de @surgeui/ds-vue sur npm et création de la release GitHub
+# Publication de @surgeui/vue et de son relais déprécié @surgeui/ds-vue sur npm,
+# puis création de la release GitHub
 # au push d'un tag de version (créé par `npm run release` puis
 # `git push --follow-tags origin main`).
 on:
@@ -37,13 +38,20 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # Le tag doit correspondre à la version de la bibliothèque
-      - name: Check tag matches package version
+      # Le tag doit correspondre à la version de la bibliothèque, et le relais
+      # à cette même version (sa version et sa dépendance @surgeui/vue)
+      - name: Check tag matches package versions
         run: |
           TAG_VERSION="${GITHUB_REF_NAME#v}"
           PKG_VERSION="$(node -p "require('./package/vue/package.json').version")"
+          RELAY_VERSION="$(node -p "require('./package/ds-vue/package.json').version")"
+          RELAY_DEP="$(node -p "require('./package/ds-vue/package.json').dependencies['@surgeui/vue']")"
           if [ "$TAG_VERSION" != "$PKG_VERSION" ]; then
             echo "::error::Le tag $GITHUB_REF_NAME ne correspond pas à la version de package/vue/package.json ($PKG_VERSION)"
+            exit 1
+          fi
+          if [ "$RELAY_VERSION" != "$PKG_VERSION" ] || [ "$RELAY_DEP" != "$PKG_VERSION" ]; then
+            echo "::error::package/ds-vue/package.json (version $RELAY_VERSION, dépendance @surgeui/vue $RELAY_DEP) doit suivre la version $PKG_VERSION"
             exit 1
           fi
           echo "VERSION=$PKG_VERSION" >> "$GITHUB_ENV"
@@ -52,12 +60,16 @@ jobs:
       - name: Check npm registry
         id: registry
         run: |
-          if npm view "@surgeui/ds-vue@$VERSION" version >/dev/null 2>&1; then
-            echo "::notice::@surgeui/ds-vue@$VERSION est déjà publiée sur npm"
-            echo "published=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "published=false" >> "$GITHUB_OUTPUT"
-          fi
+          check() {
+            if npm view "$1@$VERSION" version >/dev/null 2>&1; then
+              echo "::notice::$1@$VERSION est déjà publiée sur npm"
+              echo "$2=true" >> "$GITHUB_OUTPUT"
+            else
+              echo "$2=false" >> "$GITHUB_OUTPUT"
+            fi
+          }
+          check @surgeui/vue vue
+          check @surgeui/ds-vue relay
 
       - name: Lint
         run: npm run lint:js
@@ -65,12 +77,22 @@ jobs:
       - name: Test
         run: npm test
 
+      # Bibliothèque, puis relais (copie des feuilles de style)
       - name: Build library
         run: npm run build:lib
 
-      - name: Publish to npm
-        if: steps.registry.outputs.published == 'false'
+      - name: Publish @surgeui/vue
+        if: steps.registry.outputs.vue == 'false'
         run: npm publish -w package/vue --access public --provenance
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      # Relais déprécié, publié après la bibliothèque dont il dépend et une
+      # seule fois : @surgeui/ds-vue@4.0.0 est la dernière version de l'ancien nom
+      # (package/ds-vue est retiré du dépôt après cette release)
+      - name: Publish @surgeui/ds-vue (relay)
+        if: steps.registry.outputs.relay == 'false' && env.VERSION == '4.0.0'
+        run: npm publish -w package/ds-vue --access public --provenance
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 

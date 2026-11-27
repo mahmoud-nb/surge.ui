@@ -2,7 +2,7 @@
 // par défaut « Su » : props, événements et slots de <SuButton>, <SuDialog>…
 // vérifiés dans les templates (Volar, vue-tsc).
 //
-// tsconfig.json : { "compilerOptions": { "types": ["@surgeui/ds-vue/global"] } }
+// tsconfig.json : { "compilerOptions": { "types": ["@surgeui/vue/global"] } }
 //
 // Autre préfixe : déclarer soi-même
 //   declare module 'vue' { interface GlobalComponents extends SurgeGlobalComponents<'Ui'> {} }
