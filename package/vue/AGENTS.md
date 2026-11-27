@@ -2,6 +2,8 @@
 
 `@surgeui/vue` is an accessible, themable Vue 3 component library. This file is shipped with the npm package so that coding assistants use the API of the installed version instead of guessing. Full documentation: https://surgeui.com/llms.txt (index) and https://surgeui.com/llms-full.txt (everything, English); each page also exists in Markdown, e.g. https://surgeui.com/en/components/button.md.
 
+**Exact API of the installed version:** `node_modules/@surgeui/vue/dist/api.json` (also `import api from '@surgeui/vue/api.json'`) lists, for every component, its props (type, default, required, description), events with their payload, slots and exposed methods. It is generated from the component types at build time: check it before using a prop.
+
 ## Setup
 
 ```ts

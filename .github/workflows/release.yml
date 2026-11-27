@@ -82,6 +82,12 @@ jobs:
               console.error('Entrée CommonJS incomplète')
               process.exit(1)
             }
+            // Manifeste d'API (dist/api.json) généré par le build
+            const api = require('@surgeui/vue/api.json')
+            if (Object.keys(api.components).length < 80 || api.version !== process.env.VERSION) {
+              console.error('Manifeste api.json absent, incomplet ou d\'une autre version')
+              process.exit(1)
+            }
           "
 
       - name: Publish @surgeui/vue

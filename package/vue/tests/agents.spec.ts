@@ -22,7 +22,9 @@ describe('AGENTS.md', () => {
     expect(missing).toEqual([])
   })
 
-  it('est publié avec le paquet', () => {
+  it('est publié avec le paquet, avec le manifeste d’API', () => {
     expect(pkg.files).toContain('AGENTS.md')
+    expect(pkg.exports['./api.json']).toBe('./dist/api.json')
+    expect(pkg.scripts.build).toContain('npm run api')
   })
 })
