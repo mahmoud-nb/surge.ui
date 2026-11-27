@@ -2,10 +2,12 @@
 
 An accessible **Vue 3** component library: components, layouts and composables built with the Composition API and TypeScript, themable through CSS custom properties.
 
-[![npm](https://img.shields.io/npm/v/@surgeui/ds-vue)](https://www.npmjs.com/package/@surgeui/ds-vue)
+[![npm](https://img.shields.io/npm/v/@surgeui/vue)](https://www.npmjs.com/package/@surgeui/vue)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Vue 3](https://img.shields.io/badge/Vue-3.5+-4FC08D.svg)](https://vuejs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-Ready-3178C6.svg)](https://www.typescriptlang.org/)
+
+> Published as `@surgeui/ds-vue` up to 3.x. Its 4.0.0 version is a deprecated relay to this package, and later versions are only published as `@surgeui/vue`. See [Migrating to 4.0](https://surgeui.com/en/guide/migration).
 
 ## ✨ Features
 
@@ -26,7 +28,7 @@ An accessible **Vue 3** component library: components, layouts and composables b
 ### Installation
 
 ```bash
-npm install @surgeui/ds-vue
+npm install @surgeui/vue
 ```
 
 ### Global installation (recommended)
@@ -36,8 +38,8 @@ Registers every component with the `Su` prefix (`SuButton`, `SuInputField`, …)
 ```ts
 // main.ts
 import { createApp } from 'vue'
-import SurgeUI from '@surgeui/ds-vue'
-import '@surgeui/ds-vue/style.css'
+import SurgeUI from '@surgeui/vue'
+import '@surgeui/vue/style.css'
 import App from './App.vue'
 
 createApp(App)
@@ -57,9 +59,9 @@ Components are exported **without** the prefix:
 
 ```vue
 <script setup lang="ts">
-import '@surgeui/ds-vue/style.css'
-import { Button as SuButton, InputField as SuInputField } from '@surgeui/ds-vue'
-import type { ButtonProps } from '@surgeui/ds-vue'
+import '@surgeui/vue/style.css'
+import { Button as SuButton, InputField as SuInputField } from '@surgeui/vue'
+import type { ButtonProps } from '@surgeui/vue'
 </script>
 
 <template>
@@ -71,7 +73,7 @@ import type { ButtonProps } from '@surgeui/ds-vue'
 ### Plugin options
 
 ```ts
-import SurgeUI, { locales } from '@surgeui/ds-vue'
+import SurgeUI, { locales } from '@surgeui/vue'
 
 app.use(SurgeUI, {
   prefix: 'Su',           // Component prefix: SuButton, SuDialog…
@@ -125,7 +127,7 @@ Four themes (`default`, `ocean`, `forest`, `sunset`), each in light and dark mod
 
 ```vue
 <script setup>
-import { useTheme } from '@surgeui/ds-vue'
+import { useTheme } from '@surgeui/vue'
 
 const { setTheme, setThemeMode, toggleMode, isDarkMode } = useTheme()
 </script>
@@ -201,7 +203,7 @@ Priority: `--su-custom-*` variables (CSS or plugin `theme` option) → theme tok
 Default component texts (accessible labels, placeholders, error messages, announcements) are in French; English is provided. An explicit prop always wins.
 
 ```ts
-import SurgeUI, { defineLocale, locales } from '@surgeui/ds-vue'
+import SurgeUI, { defineLocale, locales } from '@surgeui/vue'
 
 app.use(SurgeUI, {
   locale: defineLocale(locales.en, {

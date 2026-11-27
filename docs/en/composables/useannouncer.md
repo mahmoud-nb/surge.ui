@@ -6,7 +6,7 @@ Announces a message to screen readers without displaying it: the outcome of an a
 
 ```vue
 <script setup>
-import { useAnnouncer } from '@surgeui/ds-vue'
+import { useAnnouncer } from '@surgeui/vue'
 
 const { announce } = useAnnouncer()
 
@@ -26,7 +26,7 @@ const upload = (file) => {
 Outside a component (store, service), call the `announce` function directly:
 
 ```ts
-import { announce } from '@surgeui/ds-vue'
+import { announce } from '@surgeui/vue'
 
 announce('3 results')
 ```

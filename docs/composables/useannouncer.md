@@ -6,7 +6,7 @@ Annonce un message aux lecteurs d'écran sans l'afficher : résultat d'une actio
 
 ```vue
 <script setup>
-import { useAnnouncer } from '@surgeui/ds-vue'
+import { useAnnouncer } from '@surgeui/vue'
 
 const { announce } = useAnnouncer()
 
@@ -26,7 +26,7 @@ const upload = (file) => {
 Hors composant (store, service), utilisez la fonction `announce` directement :
 
 ```ts
-import { announce } from '@surgeui/ds-vue'
+import { announce } from '@surgeui/vue'
 
 announce('3 résultats')
 ```

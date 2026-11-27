@@ -6,7 +6,7 @@ Composable for reactive price and currency formatting. Based on `Intl.NumberForm
 
 ```vue
 <script setup>
-import { usePrice } from '@surgeui/ds-vue'
+import { usePrice } from '@surgeui/vue'
 
 const { formatted, integerPart, decimalPart, currencySymbol } = usePrice({
   amount: 1299.99,
@@ -27,7 +27,7 @@ const { formatted, integerPart, decimalPart, currencySymbol } = usePrice({
 
 ```vue
 <script setup>
-import { usePrice } from '@surgeui/ds-vue'
+import { usePrice } from '@surgeui/vue'
 
 const price = usePrice({ amount: 1299.99 })
 </script>
@@ -46,7 +46,7 @@ const price = usePrice({ amount: 1299.99 })
 ```vue
 <script setup>
 import { ref } from 'vue'
-import { usePrice } from '@surgeui/ds-vue'
+import { usePrice } from '@surgeui/vue'
 
 const amount = ref(49.99)
 const { formatted } = usePrice({ amount })
@@ -62,7 +62,7 @@ function applyDiscount() {
 
 ```vue
 <script setup>
-import { usePrice } from '@surgeui/ds-vue'
+import { usePrice } from '@surgeui/vue'
 
 const eur = usePrice({ amount: 29.99, currency: 'EUR', locale: 'fr-FR' })
 const usd = usePrice({ amount: 29.99, currency: 'USD', locale: 'en-US' })
@@ -84,7 +84,7 @@ const jpy = usePrice({ amount: 3000, currency: 'JPY', locale: 'ja-JP' })
 
 ```vue
 <script setup>
-import { usePrice } from '@surgeui/ds-vue'
+import { usePrice } from '@surgeui/vue'
 
 const { formatted } = usePrice({
   amount: 0,
@@ -100,7 +100,7 @@ const { formatted } = usePrice({
 
 ```vue
 <script setup>
-import { usePrice } from '@surgeui/ds-vue'
+import { usePrice } from '@surgeui/vue'
 
 const price = usePrice({ amount: 29.99, currency: 'EUR', locale: 'fr-FR' })
 
@@ -113,7 +113,7 @@ const price = usePrice({ amount: 29.99, currency: 'EUR', locale: 'fr-FR' })
 
 ```vue
 <script setup>
-import { usePrice } from '@surgeui/ds-vue'
+import { usePrice } from '@surgeui/vue'
 
 const price = usePrice({ amount: 1299.99 })
 

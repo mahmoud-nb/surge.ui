@@ -117,7 +117,7 @@ export { parseDateInput, getFirstDayOfWeek } from './utils/date'
 
 /**
  * Composants enregistrés par le plugin, par nom sans préfixe. Les types
- * globaux (`@surgeui/ds-vue/global`) en découlent ; l'objet `components`
+ * globaux (`@surgeui/vue/global`) en découlent ; l'objet `components`
  * ci-dessous doit avoir exactement ces clés (sinon erreur de compilation).
  */
 export interface SurgeComponents {
@@ -223,7 +223,7 @@ const components: SurgeComponents = {
 /**
  * Composants globaux sous un préfixe, pour typer les templates :
  * `declare module 'vue' { interface GlobalComponents extends SurgeGlobalComponents<'Ui'> {} }`.
- * Pour le préfixe par défaut, ajouter `@surgeui/ds-vue/global` aux `types` du tsconfig.
+ * Pour le préfixe par défaut, ajouter `@surgeui/vue/global` aux `types` du tsconfig.
  */
 export type SurgeGlobalComponents<Prefix extends string = 'Su'> = {
   [Name in keyof SurgeComponents as `${Prefix}${Name}`]: SurgeComponents[Name]

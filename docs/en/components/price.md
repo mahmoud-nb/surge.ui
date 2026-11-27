@@ -202,7 +202,7 @@ The `usePrice` composable can be used independently to format prices in your com
 
 ```vue
 <script setup>
-import { usePrice } from '@surgeui/ds-vue'
+import { usePrice } from '@surgeui/vue'
 
 const { formatted, integerPart, decimalPart, currencySymbol } = usePrice({
   amount: 1299.99,

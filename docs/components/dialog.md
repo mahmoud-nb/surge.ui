@@ -39,7 +39,7 @@ Composant Dialog polyvalent pour afficher des modales (centrées) ou des tiroirs
 ```vue
 <script setup>
 import { ref } from 'vue'
-import { Dialog, Button } from '@surgeui/ds-vue'
+import { Dialog, Button } from '@surgeui/vue'
 
 const showCenterModal = ref(false)
 </script>

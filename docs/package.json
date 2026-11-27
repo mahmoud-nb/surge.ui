@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@heroicons/vue": "^2.2.0",
-    "@surgeui/ds-vue": "file:../package/vue"
+    "@surgeui/vue": "file:../package/vue"
   },
   "devDependencies": {
     "@types/node": "^24.10.1",

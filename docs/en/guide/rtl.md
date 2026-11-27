@@ -15,7 +15,7 @@ The direction can change without a page reload (language switcher): components a
 For the components' default texts in Arabic, use the provided locale, or `'auto'` which follows `<html lang>`:
 
 ```ts
-import SurgeUI from '@surgeui/ds-vue'
+import SurgeUI from '@surgeui/vue'
 
 app.use(SurgeUI, { locale: 'auto' })
 ```

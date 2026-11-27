@@ -24,6 +24,10 @@
     {
       "filename": "package/vue/package.json",
       "type": "json"
+    },
+    {
+      "filename": "package/ds-vue/package.json",
+      "updater": "package/ds-vue/scripts/version-updater.cjs"
     }
   ],
   "packageFiles": [
