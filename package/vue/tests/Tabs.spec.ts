@@ -95,3 +95,25 @@ describe('SuTabs — navigation', () => {
     expect(wrapper.find('[role="tabpanel"]').exists()).toBe(false)
   })
 })
+
+describe('SuTabs — sans contenu', () => {
+  it('aucun panneau vide ni aria-controls quand les onglets n’ont pas de contenu', () => {
+    wrapper = mount(Tabs, { props: { tabs: [{ label: 'Tous' }, { label: 'Actifs' }, { label: 'Archivés' }] } })
+    expect(wrapper.findAll('[role="tabpanel"]')).toHaveLength(0)
+    expect(wrapper.findAll('[role="tab"]').map((tab) => tab.attributes('aria-controls'))).toEqual([undefined, undefined, undefined])
+  })
+
+  it('un panneau par onglet dès qu’un onglet a un contenu ou avec le slot panel', () => {
+    wrapper = mount(Tabs, { props: { tabs: [{ label: 'A', content: 'Texte A' }, { label: 'B' }] } })
+    expect(wrapper.findAll('[role="tabpanel"]')).toHaveLength(2)
+    wrapper.unmount()
+
+    wrapper = mount(Tabs, {
+      props: { tabs: [{ label: 'A' }, { label: 'B' }] },
+      slots: { panel: '<template #panel="{ tab }"><p>{{ tab.label }}</p></template>' }
+    })
+    const panels = wrapper.findAll('[role="tabpanel"]')
+    expect(panels).toHaveLength(2)
+    expect(wrapper.find('[role="tab"]').attributes('aria-controls')).toBe(panels[0].attributes('id'))
+  })
+})

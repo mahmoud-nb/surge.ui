@@ -53,6 +53,8 @@ En CSS, `data-theme-mode` vaut `light` ou `dark`. Le mode `system` est un régla
 
 La rétrocompatibilité est assurée : `[data-theme='light']` et `[data-theme='dark']` fonctionnent toujours en CSS (alias définis dans `default/index.scss`).
 
+Chaque mode pose aussi `color-scheme` (`light` ou `dark`) sur l'élément qui porte le thème : en sombre, les barres de défilement, les listes déroulantes natives, les champs date et couleur et les cases du navigateur passent en sombre avec le reste.
+
 ### Sans attributs, ou avec la classe .dark
 
 Les attributs absents ont une valeur de repli, ce qui permet d'utiliser SurgeUI sans useTheme, par exemple avec le mode sombre de Tailwind :

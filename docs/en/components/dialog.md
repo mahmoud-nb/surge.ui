@@ -57,14 +57,14 @@ const showCenterModal = ref(false)
 </template>
 ```
 
-### Left Side Drawer (display="left")
+### Side drawer, start side (display="start")
 
 <div class="component-demo">
   <div class="demo-section">
     <h4>Side Menu</h4>
     <div class="demo-buttons">
       <SuButton @click="showLeftDrawer = true">Open Left Drawer</SuButton>
-      <SuDialog v-model:modelValue="showLeftDrawer" display="left" title="Navigation Menu" width="300px">
+      <SuDialog v-model:modelValue="showLeftDrawer" display="start" title="Navigation Menu" width="300px">
         <template #default>
           <SuLinkGroup direction="vertical" gap="md">
             <SuLink href="/dashboard">Dashboard</SuLink>
@@ -90,7 +90,7 @@ const showLeftDrawer = ref(false)
 
 <template>
   <SuButton @click="showLeftDrawer = true">Open Left Drawer</SuButton>
-  <SuDialog v-model:modelValue="showLeftDrawer" display="left" title="Navigation Menu" width="300px">
+  <SuDialog v-model:modelValue="showLeftDrawer" display="start" title="Navigation Menu" width="300px">
     <template #default>
       <SuLinkGroup direction="vertical" gap="md">
         <SuLink href="/dashboard">Dashboard</SuLink>
@@ -106,14 +106,14 @@ const showLeftDrawer = ref(false)
 </template>
 ```
 
-### Right Side Drawer (display="right")
+### Side drawer, end side (display="end")
 
 <div class="component-demo">
   <div class="demo-section">
     <h4>Product Details Panel</h4>
     <div class="demo-buttons">
       <SuButton @click="showRightDrawer = true">Open Right Drawer</SuButton>
-      <SuDialog v-model:modelValue="showRightDrawer" display="right" title="Product Details" width="450px">
+      <SuDialog v-model:modelValue="showRightDrawer" display="end" title="Product Details" width="450px">
         <template #default>
           <h3>Product X</h3>
           <p>Detailed description of Product X. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
@@ -136,7 +136,7 @@ const showRightDrawer = ref(false)
 
 <template>
   <SuButton @click="showRightDrawer = true">Open Right Drawer</SuButton>
-  <SuDialog v-model:modelValue="showRightDrawer" display="right" title="Product Details" width="450px">
+  <SuDialog v-model:modelValue="showRightDrawer" display="end" title="Product Details" width="450px">
     <template #default>
       <h3>Product X</h3>
       <p>Detailed description of Product X. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
@@ -313,7 +313,7 @@ The move happens after mounting: on the server and during hydration, the `<dialo
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `modelValue` | `boolean` | `false` | Controls the open/close state of the Dialog (used with `v-model`) |
-| `display` | `'center' \| 'left' \| 'right' \| 'top' \| 'bottom' \| 'full'` | `'center'` | Display mode of the Dialog |
+| `display` | `'center' \| 'start' \| 'end' \| 'top' \| 'bottom' \| 'full'` | `'center'` | Display mode of the Dialog; `left` and `right` are aliases of `start` and `end` |
 | `title` | `string` | `undefined` | Title of the Dialog (displayed in the `head` slot by default and for `aria-labelledby`) |
 | `description` | `string` | `undefined` | Description shown under the title and linked to the Dialog with `aria-describedby` (not rendered when the `head` slot is used) |
 | `closeLabel` | `string` | `'Fermer'` | Accessible name of the close button |
@@ -382,8 +382,8 @@ The Dialog component is designed to comply with WCAG 2.1 AA standards:
 The `Dialog` component uses CSS transitions for smooth opening and closing. The `display` prop applies specific styles to position the Dialog correctly.
 
 - **`display="center"`**: Centered modal, with a scale animation.
-- **`display="left"` / `display="right"`**: Side drawers, with a horizontal translation animation.
+- **`display="start"` / `display="end"`**: Side drawers on the side where reading starts or ends (left / right in English, the opposite in Arabic), with a horizontal translation animation. `left` and `right` are aliases.
 - **`display="top"` / `display="bottom"`**: Vertical drawers, with a vertical translation animation.
 - **`display="full"`**: Full screen, with a slight scale animation.
 
-You can customize the width (`width`) and height (`height`) for `center`, `left`, `right`, `top`, `bottom` modes. For `full` mode, the Dialog always occupies 100% of the width and height.
+You can customize the width (`width`) and height (`height`) for `center`, `start`, `end`, `top`, `bottom` modes. For `full` mode, the Dialog always occupies 100% of the width and height.

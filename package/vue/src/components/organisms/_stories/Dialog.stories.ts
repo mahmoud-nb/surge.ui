@@ -22,7 +22,7 @@ const meta: Meta<typeof Dialog> = {
     },
     display: {
       control: { type: 'select' },
-      options: ['center', 'left', 'right', 'top', 'bottom', 'full'],
+      options: ['center', 'start', 'end', 'top', 'bottom', 'full', 'left', 'right'],
       description: 'Mode d\'affichage du Dialog (modale centrée, tiroir latéral, etc.)'
     },
     title: {
@@ -117,7 +117,7 @@ export const CenterModal: Story = createDialogStory({
 
 export const LeftDrawer: Story = createDialogStory({
   modelValue: false,
-  display: 'left',
+  display: 'start',
   title: 'Tiroir Gauche',
   description: 'Contenu du tiroir latéral gauche.',
   closeOnOverlayClick: true,
@@ -128,7 +128,7 @@ export const LeftDrawer: Story = createDialogStory({
 
 export const RightDrawer: Story = createDialogStory({
   modelValue: false,
-  display: 'right',
+  display: 'end',
   title: 'Tiroir Droit',
   description: 'Contenu du tiroir latéral droit.',
   closeOnOverlayClick: true,

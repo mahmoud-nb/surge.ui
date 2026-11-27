@@ -11,13 +11,14 @@ An accessible **Vue 3** component library: components, layouts and composables b
 
 ## ✨ Features
 
-- 🧩 **75+ components** - Display, actions, forms and 9 mobile-first layouts
+- 🧩 **85+ components** - Display, actions, forms, data (DataTable, TreeView, Timeline), app structure (AppShell, NavMenu, CommandPalette) and 9 mobile-first layouts
 - ♿ **Accessible** - WAI-ARIA patterns (combobox, menu button, tabs, accordion, dialog), full keyboard support, screen reader announcements
 - 🎨 **Themable** - 4 built-in themes × light / dark mode, CSS custom properties (`--su-*`)
-- 🌍 **Translatable** - Default texts in French and English, customizable messages
+- 🌍 **Translatable** - Default texts in French, English and Arabic (or following `<html lang>`), customizable messages
 - 🔧 **TypeScript** - Typed props, emits and composables
 - 📱 **Responsive** - Mobile first; layouts adapt to their **container** width (container queries)
-- 🔄 **RTL & LTR** - Right-to-left support, including keyboard navigation
+- 🔄 **RTL & LTR** - Right-to-left support (Arabic, Hebrew, Persian), including keyboard navigation
+- 📦 **Lightweight when needed** - `createSurgeUI()`, an unplugin-vue-components resolver and one stylesheet per component
 
 ## Quick Start
 
@@ -70,6 +71,30 @@ import type { ButtonProps } from '@surgeui/vue'
 </template>
 ```
 
+### Importing only what you use
+
+`app.use(SurgeUI)` registers every component. `createSurgeUI()` installs the same plugin (locale, links, toasts, confirmations) and registers only the components you pass; the others stay out of the bundle:
+
+```ts
+import { createSurgeUI, Button, Dialog } from '@surgeui/vue'
+
+app.use(createSurgeUI({ locale: 'auto', components: { Button, Dialog } }))
+```
+
+With [unplugin-vue-components](https://github.com/unplugin/unplugin-vue-components), the bundled resolver imports components where templates use them, and their CSS with `importStyle` (`@surgeui/vue/css/base.css` plus one stylesheet per component, instead of `style.css`):
+
+```ts
+// vite.config.ts
+import Components from 'unplugin-vue-components/vite'
+import { SurgeUIResolver } from '@surgeui/vue/resolver'
+
+export default defineConfig({
+  plugins: [vue(), Components({ resolvers: [SurgeUIResolver({ importStyle: true })] })]
+})
+```
+
+See [Importing only what you use](https://surgeui.com/en/guide/installation#importing-only-what-you-use).
+
 ### Plugin options
 
 ```ts
@@ -88,10 +113,10 @@ app.use(SurgeUI, {
 
 | Category | Components |
 |----------|------------|
-| Display | Heading, Panel, Icon, Image, Avatar, AvatarGroup, Badge, Card, Alert, Tabs, Accordion, Dialog, Popover, Progress, Spinner, Price |
-| Actions | Button, ButtonGroup, Link, LinkGroup, Toggle, ToggleGroup, Dropdown, FloatButton |
-| Forms | Input, Textarea, Password, SelectBox, RadioGroup, CheckboxGroup, Switch, Slider, FileUpload, OtpInput, FormField, FormFieldGroup, and a `*Field` version of each control (label + message) |
-| Layouts | SingleColumnLayout, SidebarLayout, SplitLayout, HolyGrailLayout, MagazineLayout, GridLayout, MasonryLayout, HeroLayout, FullScreenLayout |
+| Display | Heading, Panel, Divider, Kbd, VisuallyHidden, Icon, Image, Avatar, AvatarGroup, Badge, Tag, Card, Alert, Toast, Toaster, Tooltip, Popover, Dialog, ConfirmDialog, Tabs, Accordion, Progress, Spinner, Skeleton, EmptyState, Price, Stat, Timeline, PageHeader, CodeBlock, Prose, DataTable, TreeView |
+| Actions | Button, ButtonGroup, Link, LinkGroup, Toggle, ToggleGroup, Dropdown, FloatButton, Breadcrumb, Pagination, Stepper, CommandPalette, NavMenu, ThemeToggle, SkipLink, CopyButton |
+| Forms | Input, Textarea, NumberInput, Password, Autocomplete, SelectBox, DatePicker, Calendar, Checkbox, RadioGroup, CheckboxGroup, Switch, Slider, FileUpload, OtpInput, Rating, FormField, FormFieldGroup, and a `*Field` version of each control (label + message) |
+| Layouts | AppShell, SingleColumnLayout, SidebarLayout, SplitLayout, HolyGrailLayout, MagazineLayout, GridLayout, MasonryLayout, HeroLayout, FullScreenLayout |
 
 ### Composables
 
@@ -101,7 +126,11 @@ app.use(SurgeUI, {
 | `useCustomTheme` | Runtime CSS variable overrides |
 | `useBreakpoint` | Reactive breakpoints |
 | `usePrice` | Localized price formatting |
-| `useLocale` | Default component texts (`provideLocale`, `defineLocale`) |
+| `useLocale` | Default component texts in French, English or Arabic (`provideLocale`, `defineLocale`, `locale: 'auto'`) |
+| `useToast` | Toast notifications, rendered by `SuToaster` |
+| `useConfirm` | Promise-based confirmations, rendered by `SuConfirmDialog` |
+| `useClipboard` | Copy to the clipboard, with an announcement |
+| `useLinkComponent` | Router links (`to`) with RouterLink, NuxtLink or your own component |
 | `useFormField` | Links a custom control to `SuFormField` (id, label, message, states) |
 | `useAnnouncer` | Screen reader announcements through persistent live regions |
 | `useFocusTrap` | Stacked focus traps for panels and modal popovers |
@@ -200,7 +229,7 @@ Priority: `--su-custom-*` variables (CSS or plugin `theme` option) → theme tok
 
 ## 🌍 Languages
 
-Default component texts (accessible labels, placeholders, error messages, announcements) are in French; English is provided. An explicit prop always wins.
+Default component texts (accessible labels, placeholders, error messages, announcements) are in French; English and Arabic are provided (`locales.en`, `locales.ar`). With `locale: 'auto'`, the language follows `<html lang>`. An explicit prop always wins.
 
 ```ts
 import SurgeUI, { defineLocale, locales } from '@surgeui/vue'

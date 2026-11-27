@@ -254,7 +254,7 @@ const hasBadge = (item: NavMenuItem) => item.badge !== undefined && item.badge !
                   class="su-nav-menu__badge"
                   :variant="item.badgeVariant ?? 'default'"
                   size="sm"
-                  :aria-hidden="item.badgeLabel ? 'true' : undefined"
+                  :aria-hidden="item.badgeLabel ? true : undefined"
                 >
                   {{ item.badge }}
                 </Badge>
@@ -295,7 +295,7 @@ const hasBadge = (item: NavMenuItem) => item.badge !== undefined && item.badge !
                     class="su-nav-menu__badge"
                     :variant="child.badgeVariant ?? 'default'"
                     size="sm"
-                    :aria-hidden="child.badgeLabel ? 'true' : undefined"
+                    :aria-hidden="child.badgeLabel ? true : undefined"
                   >
                     {{ child.badge }}
                   </Badge>

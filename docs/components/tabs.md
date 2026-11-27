@@ -22,6 +22,8 @@ Le composant **Tabs** (onglets) organise un contenu en sections affichées une �
 - **un panneau unique** : la page affiche le contenu de l'onglet actif dans le slot par défaut ;
 - **une navigation** : des onglets avec `to` changent de page (Vue Router, Nuxt).
 
+Sans contenu (ni `content`, ni slot `panel`, ni slot par défaut), aucun panneau n'est rendu : la liste d'onglets sert de filtre ou de sélecteur, et le contenu affiché ailleurs suit le `v-model`.
+
 ## Exemples d'utilisation
 
 ### Un panneau par onglet

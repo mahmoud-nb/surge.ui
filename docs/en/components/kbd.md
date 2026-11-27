@@ -53,4 +53,5 @@ A keyboard key or shortcut, to display in text, a tooltip or a menu.
 
 - Recommended HTML structure for a shortcut: `<kbd><kbd>Ctrl</kbd>+<kbd>K</kbd></kbd>`.
 - The separator is read ("plus"): it is part of the shortcut.
+- The shortcut is isolated from the surrounding text and always written left to right (`dir="ltr"`): on an Arabic or Hebrew page, it reads "Ctrl+K", not "K+Ctrl". A `dir` attribute passed to the component wins.
 - Symbols (⌘, ⇧) are poorly read by some screen readers: add text with [VisuallyHidden](/en/components/visuallyhidden) when needed.

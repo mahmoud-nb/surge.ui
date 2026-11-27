@@ -1,3 +1,22 @@
+<script setup>
+import { computed, ref } from 'vue'
+
+const view = ref('grid')
+const showArchived = ref(false)
+
+const viewOptions = computed(() => [
+  { value: 'grid', label: 'Grid', type: 'radio', checked: view.value === 'grid' },
+  { value: 'list', label: 'List', type: 'radio', checked: view.value === 'list' },
+  { type: 'separator' },
+  { value: 'archived', label: 'Show archived', type: 'checkbox', checked: showArchived.value }
+])
+
+const selectView = (option) => {
+  if (option.value === 'archived') showArchived.value = !showArchived.value
+  else view.value = option.value
+}
+</script>
+
 # Dropdown
 
 Dropdown component that looks like a button but displays a list of options when clicked. Each option can be a link (if it contains an href) or trigger an action. Compliant with W3C accessibility standards with complete keyboard and screen reader support.
@@ -105,6 +124,118 @@ const handleSelect = (option) => {
 </template>
 ```
 
+### Icon only
+
+<div class="component-demo">
+  <div class="demo-section">
+    <h4>Dropdown with an icon only</h4>
+    <div class="demo-buttons">
+      <SuDropdown
+        :options="[
+          { value: 'edit', label: 'Edit' },
+          { value: 'duplicate', label: 'Duplicate' },
+          { type: 'separator' },
+          { value: 'delete', label: 'Delete', icon: 'TrashIcon' }
+        ]"
+        :icon="'CogIcon'"
+        iconDisplay="only"
+        label="Actions menu"
+        variant="ghost"
+      />
+    </div>
+  </div>
+</div>
+
+With an icon only, `label` is not displayed: it becomes the button's accessible name (`aria-label`). `ariaLabel` still wins when provided.
+
+```vue
+<SuDropdown :options="options" :icon="EllipsisVerticalIcon" iconDisplay="only" label="Actions menu" variant="ghost" />
+```
+
+### Custom trigger
+
+The `trigger` slot replaces the built-in button: an avatar, a button with a counter… Bind `props` to your button: it receives the `id`, the ARIA attributes (`aria-haspopup`, `aria-expanded`, `aria-controls`), the click and keyboard handlers. The menu is positioned against it and focus returns to it on close.
+
+<div class="component-demo">
+  <div class="demo-section">
+    <h4>Account menu</h4>
+    <div class="demo-buttons">
+      <SuDropdown
+        :options="[
+          { value: 'profile', label: 'My profile' },
+          { value: 'settings', label: 'Settings' },
+          { type: 'separator' },
+          { value: 'logout', label: 'Log out' }
+        ]"
+        placement="bottom-end"
+      >
+        <template #trigger="{ props }">
+          <SuButton v-bind="props" variant="ghost" aria-label="Account of Jane Doe">
+            <SuAvatar name="Jane Doe" size="sm" />
+          </SuButton>
+        </template>
+      </SuDropdown>
+    </div>
+  </div>
+</div>
+
+```vue
+<template>
+  <SuDropdown :options="accountOptions" placement="bottom-end" @select="handleSelect">
+    <template #trigger="{ props, isOpen }">
+      <SuButton v-bind="props" variant="ghost" aria-label="Account of Jane Doe">
+        <SuAvatar name="Jane Doe" size="sm" />
+      </SuButton>
+    </template>
+  </SuDropdown>
+</template>
+```
+
+The trigger must be a button (`<button>` or `SuButton`): it is reachable with the keyboard and activated with Enter and Space. Without a bound `id`, the first element of the slot is used as the trigger.
+
+### Checkable options
+
+`type: 'checkbox'` or `type: 'radio'` (exclusive choice) adds a check mark and the `checked` state (`menuitemcheckbox` and `menuitemradio` roles, `aria-checked`). The Dropdown does not keep the state: update `checked` on `select`. Separators delimit radio groups.
+
+<div class="component-demo">
+  <div class="demo-section">
+    <h4>List display</h4>
+    <div class="demo-buttons">
+      <SuDropdown
+        label="View"
+        :options="viewOptions"
+        :close-on-select="false"
+        @select="selectView"
+      />
+    </div>
+  </div>
+</div>
+
+```vue
+<script setup>
+import { computed, ref } from 'vue'
+
+const view = ref('grid')
+const showArchived = ref(false)
+
+const viewOptions = computed(() => [
+  { value: 'grid', label: 'Grid', type: 'radio', checked: view.value === 'grid' },
+  { value: 'list', label: 'List', type: 'radio', checked: view.value === 'list' },
+  { type: 'separator' },
+  { value: 'archived', label: 'Show archived', type: 'checkbox', checked: showArchived.value }
+])
+
+const selectView = (option) => {
+  if (option.value === 'archived') showArchived.value = !showArchived.value
+  else view.value = option.value
+}
+</script>
+
+<template>
+  <SuDropdown label="View" :options="viewOptions" :close-on-select="false" @select="selectView" />
+</template>
+```
+
 ## API
 
 ### Props
@@ -120,7 +251,7 @@ const handleSelect = (option) => {
 | `loading` | `boolean` | `false` | Loading state |
 | `icon` | `Component` | `undefined` | Button icon |
 | `iconDisplay` | `'left' \| 'right' \| 'only'` | `'left'` | Icon position |
-| `label` | `string` | `undefined` | Button label |
+| `label` | `string` | `undefined` | Button label; accessible name with an icon only |
 | `closeOnSelect` | `boolean` | `true` | Close after selection |
 | `maxHeight` | `string` | `'300px'` | Maximum menu height |
 
@@ -133,6 +264,8 @@ Attributes not declared as props (`id`, `aria-*`, `data-*`, listeners) go on the
 interface DropdownOption {
   value: string | number
   label: string
+  type?: 'item' | 'checkbox' | 'radio' // Checkable option (menuitemcheckbox, menuitemradio)
+  checked?: boolean                // Checked state of a checkbox or radio option
   href?: string                    // If present, option becomes a link
   to?: string | RouteLocationRaw   // Router link (RouterLink); disabled, the option does not navigate
   target?: '_blank' | '_self' | '_parent' | '_top'
@@ -156,6 +289,12 @@ type DropdownSeparatorOption = { type: 'separator' }
 | `@close` | `() => void` | Emitted when menu closes |
 | `@focus` | `(event: FocusEvent) => void` | Emitted when button receives focus |
 | `@blur` | `(event: FocusEvent) => void` | Emitted when button loses focus |
+
+### Slots
+
+| Slot | Props | Description |
+|------|-------|-------------|
+| `trigger` | `{ props, isOpen }` | Trigger replacing the built-in button; bind `props` (id, ARIA, click, keyboard) to your button |
 
 ## Difference between links and actions
 
@@ -245,12 +384,12 @@ The Dropdown component follows WCAG 2.1 AA standards:
   @select="handleSelect"
 />
 
-<!-- Dropdown with icon only (REQUIRED: aria-label) -->
+<!-- Dropdown with icon only (label or aria-label required: it names the button) -->
 <SuDropdown 
   :options="options"
   :icon="EllipsisVerticalIcon"
   iconDisplay="only"
-  aria-label="Options menu"
+  label="Options menu"
   @select="handleSelect"
 />
 

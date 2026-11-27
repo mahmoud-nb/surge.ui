@@ -1,5 +1,5 @@
 <script setup lang="ts" generic="T extends string | number = number">
-import { computed, nextTick, onBeforeUnmount, onMounted, reactive, ref, watch, useId, type Component } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, reactive, ref, watch, useId, useSlots, type Component } from 'vue'
 import type { TabItem, TabsProps } from '@/types'
 import { useListNavigation } from '@/composables/useListNavigation'
 import { useLinkComponent } from '@/composables/useLinkComponent'
@@ -19,6 +19,13 @@ const props = withDefaults(defineProps<TabsProps<T>>(), {
 })
 
 const emit = defineEmits<{ 'update:modelValue': [value: T] }>()
+const slots = useSlots()
+
+// Panneaux par onglet : seulement s'il y a un contenu à y mettre (sinon un
+// panneau vide et focalisable par onglet, sans rien à lire)
+const hasPanels = computed(() =>
+  !!slots.panel || props.tabs.some((tab) => tab.content !== undefined && tab.content !== '')
+)
 
 const tabsId = useId()
 const tabId = (index: number) => `tab-${tabsId}-${index}`
@@ -264,7 +271,7 @@ const tabClasses = (index: number) => [
         :ref="(el: unknown) => setTabRef(el, index)"
         type="button"
         role="tab"
-        :aria-controls="$slots.default ? (index === activeIndex ? singlePanelId : undefined) : panelId(index)"
+        :aria-controls="$slots.default ? (index === activeIndex ? singlePanelId : undefined) : hasPanels ? panelId(index) : undefined"
         :aria-selected="index === activeIndex"
         :tabindex="index === activeIndex ? 0 : -1"
         :class="tabClasses(index)"
@@ -309,8 +316,9 @@ const tabClasses = (index: number) => [
       />
     </div>
 
-    <!-- Un panneau par onglet -->
-    <template v-else-if="!isNavigation">
+    <!-- Un panneau par onglet (slot `panel` ou `content`) ; sans contenu, aucun
+         panneau : la liste d'onglets sert alors de filtre ou de sélecteur -->
+    <template v-else-if="!isNavigation && hasPanels">
       <div
         v-for="(tab, index) in tabs"
         v-show="index === activeIndex"

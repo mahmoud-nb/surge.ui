@@ -53,6 +53,8 @@ In CSS, `data-theme-mode` is `light` or `dark`. The `system` mode is a [useTheme
 
 Backward compatibility is ensured: `[data-theme='light']` and `[data-theme='dark']` still work in CSS (aliases defined in `default/index.scss`).
 
+Each mode also sets `color-scheme` (`light` or `dark`) on the element that carries the theme: in dark mode, scrollbars, native select lists, date and color inputs and browser checkboxes turn dark along with the rest.
+
 ### Without attributes, or with the .dark class
 
 Missing attributes have a fallback value, so SurgeUI works without useTheme, for instance with Tailwind's dark mode:

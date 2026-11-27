@@ -1,10 +1,8 @@
-**SuSpinner**
-=============
+# Spinner
 
 A modern and accessible spinner component for displaying loading states in your Vue.js applications. This component offers multiple design variants and follows accessibility best practices.
 
-**Usage Examples**
-------------------
+## Usage Examples
 
 ### Classic Spinner
 
@@ -127,10 +125,9 @@ A modern and accessible spinner component for displaying loading states in your 
 </template>
 ```
 
-**API**
--------
+## API
 
-### **Props**
+### Props
 
 |    Prop      |    Type            |    Default    |    Description                |
 |--------------|--------------------|---------------|-------------------------------|
@@ -143,7 +140,7 @@ A modern and accessible spinner component for displaying loading states in your 
 | `fill`       | `string`           | `'none'`      | Background color for SVG spinners    |
 
 
-### **Accessibility Attributes**
+### Accessibility Attributes
 
 |    Attribute      |    Value               |    Description                     |
 |-------------------|------------------------|------------------------------------|
@@ -152,7 +149,7 @@ A modern and accessible spinner component for displaying loading states in your 
 | `aria-hidden`     | `"true"` (on SVG)      | Hides decorative elements from screen readers |
 | `focusable`       | `"false"` (on SVG)     | Prevents focus on SVG elements |
 
-### **HTML Validation Attributes**
+### HTML Validation Attributes
 
 |    Attribute       |    Element               |    Description                     |
 |--------------------|--------------------------|------------------------------------|
@@ -164,12 +161,11 @@ A modern and accessible spinner component for displaying loading states in your 
 | `stroke-dasharray` | SVG elements | Creates dash effect for animation  |
 
 
-**Accessibility**
------------------
+## Accessibility
 
 The SuSpinner component complies with WCAG 2.1 AA standards and W3C best practices for accessibility. It's designed to be usable by all people, including those using assistive technologies.
 
-### **Accessibility Features**
+### Accessibility Features
 
 *   **Dynamic Announcements**: The component uses `role="status"` and `aria-live="polite"` to inform screen reader users of status changes without interrupting their reading flow.
     
@@ -182,8 +178,7 @@ The SuSpinner component complies with WCAG 2.1 AA standards and W3C best practic
 *   **Hidden Decorative Elements**: Purely decorative elements like SVGs are hidden from accessibility trees to avoid unnecessary noise.
     
 
-**Advanced Usage Examples**
----------------------------
+## Advanced Usage Examples
 
 ### Loading Button Integration
 

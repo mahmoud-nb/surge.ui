@@ -26,15 +26,16 @@ createApp(App)
 - Import one stylesheet once: `@surgeui/vue/style.css`. With Tailwind CSS 4, import `@surgeui/vue/style.layer.css` and `@surgeui/vue/tailwind.css` after `@layer theme, base, surgeui, components, utilities;` and `@import "tailwindcss";`.
 - Typed templates: add `"types": ["@surgeui/vue/global"]` to `compilerOptions` in tsconfig.json. Run `vue-tsc` to catch wrong props.
 - Nuxt: register the plugin in `plugins/surgeui.ts` with `linkComponent: NuxtLink`, add the stylesheet to `css` in nuxt.config.ts (see https://surgeui.com/en/guide/nuxt.md).
+- Smaller bundles: `app.use(createSurgeUI({ components: { Button, Dialog } }))` installs the same plugin but registers only those components; with unplugin-vue-components, `SurgeUIResolver()` from `@surgeui/vue/resolver` imports components where templates use them (`importStyle: true` also imports `@surgeui/vue/css/base.css` and each component's stylesheet, instead of `style.css`).
 - Former package name: `@surgeui/ds-vue` (up to 3.x, deprecated). Always use `@surgeui/vue`.
 
 ## Rules
 
 1. **Names.** Components are registered globally with the `Su` prefix: `<SuButton>`, `<SuInputField>`, `<SuDataTable>`. Named imports have no prefix: `import { Button, InputField } from '@surgeui/vue'`. Do not invent components: use the catalog below.
 2. **Forms.** Controls use `v-model`. For a label, a help or error message and a validation state, use a `*Field` component (`<SuInputField label="Email" message="…" state="error" required>`) or wrap a control in `<SuFormField label="…">`. States: `'default' | 'error' | 'success' | 'warning'`. Sizes: `'sm' | 'md' | 'lg'`.
-3. **Links and icons.** Router links use the `to` prop (`<SuButton to="/settings">`), plain links `href`. Icons are Vue components passed as props (`:icon="PlusIcon"` from `@heroicons/vue/24/outline`). An icon-only button needs a name: `icon-display="only"` with `aria-label`.
+3. **Links and icons.** Router links use the `to` prop (`<SuButton to="/settings">`), plain links `href`. Icons are Vue components passed as props (`:icon="PlusIcon"` from `@heroicons/vue/24/outline`). An icon-only button needs a name: `icon-display="only"` with `aria-label` (on `SuDropdown`, `label` is used as the name).
 4. **Overlays and feedback.** `SuDialog` opens with `v-model` and needs a `title` (or `aria-label`). Toasts: `const toast = useToast(); toast.success('Saved')`, with `<SuToaster />` placed once in the app. Confirmations: `const { confirm } = useConfirm(); if (await confirm({ title: 'Delete?', tone: 'danger' })) …`, with `<SuConfirmDialog />` placed once. Screen reader announcements: `useAnnouncer().announce('3 results')`; never add your own `aria-live` regions.
-5. **Theming.** Style with the `--su-*` CSS custom properties (`var(--su-text-primary)`, `var(--su-bg-surface)`, `var(--su-primary-default)`); do not hard-code colors. Switch theme and mode with `useTheme()`: `setTheme('ocean')`, `setThemeMode('dark' | 'light' | 'system')`, `toggleMode()`. Themes: `default`, `ocean`, `forest`, `sunset`.
+5. **Theming.** Style with the `--su-*` CSS custom properties (`var(--su-text-primary)`, `var(--su-bg-surface)`, `var(--su-primary-default)`); do not hard-code colors. Switch theme and mode with `useTheme()`: `setTheme('ocean')`, `setThemeMode('dark' | 'light' | 'system')`, `toggleMode()`; pass options once in App.vue (`useTheme({ defaultThemeMode: 'system' })`). Themes: `default`, `ocean`, `forest`, `sunset`.
 6. **Texts and direction.** Default texts come from the locale (`fr`, `en`, `ar`); text props such as `closeLabel` override them. Right-to-left works with `dir="rtl"` on `<html>` or a container, with no extra setup.
 7. **Layout.** Page structure: `SuAppShell` (sidebar, top bar, drawer on mobile) with `SuNavMenu` and `SuPageHeader`; page layouts: `SuSidebarLayout`, `SuGridLayout`, `SuHolyGrailLayout`…; written content: `SuProse` (or the `su-prose` class).
 8. **Accessibility.** Keep visible labels, one `h1` per page (`SuPageHeader` renders `h1` by default; set `level` otherwise), and the keyboard behavior the components provide (do not replace their buttons or links with `div`s).
@@ -68,7 +69,7 @@ Each component has a Markdown page: `https://surgeui.com/en/components/<name in 
 - **Badge**: small status label; `dot` and `pulse` variants
 - **Tag**: removable label (filter, keyword)
 - **Price**: formatted price (currency, locale)
-- **Dialog**: modal or drawer (`display`: center, left, right, top, bottom, full)
+- **Dialog**: modal or drawer (`display`: center, start, end, top, bottom, full; left / right are aliases of start / end)
 - **ConfirmDialog**: renders `useConfirm()` requests
 - **Popover**: anchored floating panel
 - **Tooltip**: short description on hover and keyboard focus
@@ -93,7 +94,7 @@ Each component has a Markdown page: `https://surgeui.com/en/components/<name in 
 - **Link**, **LinkGroup**: links with icons and separators
 - **FloatButton**: floating action button
 - **Toggle**, **ToggleGroup**: pressed / not pressed buttons, exclusive or multiple
-- **Dropdown**: menu button with items, links and separators
+- **Dropdown**: menu button with items, links, separators and checkable items (`type: 'checkbox' | 'radio'` with `checked`); custom trigger through the `trigger` slot (`v-bind="props"` on your button)
 - **Breadcrumb**: breadcrumb trail
 - **Pagination**: pages of a list
 - **CommandPalette**: command search (Ctrl + K)

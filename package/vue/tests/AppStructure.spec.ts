@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import { mount, flushPromises, type VueWrapper } from '@vue/test-utils'
 import { defineComponent, h, ref } from 'vue'
 import { HomeIcon, InboxIcon } from '@heroicons/vue/24/outline'
@@ -157,6 +157,15 @@ describe('SuNavMenu', () => {
     expect(wrapper.find(`#${groupList.attributes('aria-labelledby')}`).text()).toBe('Gestion')
     expect(wrapper.find('.sr-only').text()).toBe('3 messages non lus')
     await expectNoAxeViolations()
+  })
+
+  it('masque le compteur visuel (badgeLabel) sans avertissement Vue', () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    wrapper = mount(NavMenu, { props: { items } })
+    const badge = wrapper.find('.su-nav-menu__badge')
+    expect(badge.attributes('aria-hidden')).toBe('true')
+    expect(warn.mock.calls.filter(([message]) => String(message).includes('[Vue warn]'))).toEqual([])
+    warn.mockRestore()
   })
 
   it('v-model : élément actif (aria-current) et parent déplié', async () => {

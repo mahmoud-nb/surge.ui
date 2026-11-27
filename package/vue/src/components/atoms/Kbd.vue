@@ -5,6 +5,9 @@ import type { KbdProps } from '@/types'
 // ============================================================
 // KBD — touche ou raccourci clavier. Un raccourci suit la structure
 // HTML recommandée : <kbd><kbd>Ctrl</kbd>+<kbd>K</kbd></kbd>.
+// Isolé et toujours de gauche à droite (dir="ltr") : en arabe ou en
+// hébreu, « Ctrl+K » ne doit pas se lire « K+Ctrl ». Un attribut dir
+// passé au composant l'emporte.
 // ============================================================
 
 const props = withDefaults(defineProps<KbdProps>(), {
@@ -22,7 +25,10 @@ const classes = computed(() => [
 </script>
 
 <template>
-  <kbd :class="classes">
+  <kbd
+    :class="classes"
+    dir="ltr"
+  >
     <template v-if="isCombo">
       <template
         v-for="(key, index) in keys"
@@ -77,6 +83,7 @@ const classes = computed(() => [
   @include kbd-key;
 
   vertical-align: middle;
+  unicode-bidi: isolate;
 
   &--sm {
     --_su-kbd-size: 1.125rem;

@@ -1,4 +1,15 @@
-import { ref, computed, watch, onMounted } from 'vue';
+import {
+  ref,
+  computed,
+  watch,
+  effectScope,
+  getCurrentInstance,
+  getCurrentScope,
+  onMounted,
+  onScopeDispose,
+  shallowReactive,
+  type EffectScope,
+} from 'vue';
 import type {
   ThemeName,
   ThemeMode,
@@ -8,17 +19,23 @@ import type {
   ThemeMetadata,
   UseThemeOptions,
 } from '@/types/theme';
+import themeConfig from '@/theme.config';
 
 // Mode 'system' en localStorage peut être stocké comme 'auto' dans les configs
 // sauvegardées avant la migration — on gère les deux cas dans loadConfig.
 const LEGACY_AUTO = 'auto';
-import themeConfig from '@/theme.config';
+
+/** 'auto' (ancien nom) → 'system' ; valeur inconnue → undefined */
+const normalizeMode = (mode: string | undefined): ThemeMode | undefined => {
+  if (mode === LEGACY_AUTO) return 'system';
+  return mode === 'light' || mode === 'dark' || mode === 'system' ? mode : undefined;
+};
 
 // ============================================================
 // MÉTADONNÉES DES THÈMES
 // ============================================================
 
-const ALL_THEMES: ThemeMetadata[] = [
+const themeMetadata = (): ThemeMetadata[] => [
   {
     id: 'default',
     name: 'Défaut',
@@ -54,65 +71,46 @@ const ALL_THEMES: ThemeMetadata[] = [
 ];
 
 // ============================================================
-// STATE (module-level singleton)
+// ÉTAT PARTAGÉ — créé au premier appel de useTheme, dans une portée
+// détachée (indépendante du composant qui l'appelle en premier) : une
+// application qui n'utilise pas useTheme n'embarque rien de ce module.
 // ============================================================
-let isInitialized = false;
-const themeName = ref<ThemeName>(themeConfig.defaultTheme);
-const themeMode = ref<ThemeMode>(themeConfig.defaultThemeMode ?? 'system');
-const contrastMode = ref<ContrastMode>('auto');
-const motionMode = ref<MotionMode>('auto');
+function createThemeState() {
+  const ALL_THEMES = themeMetadata();
 
-// ============================================================
-// COMPOSABLE
-// ============================================================
-
-export function useTheme(options: UseThemeOptions = {}) {
-  const opts = {
-    availableThemes: options.availableThemes || themeConfig.themes,
-    defaultTheme: options.defaultTheme || themeConfig.defaultTheme,
-    defaultThemeMode: options.defaultThemeMode || themeConfig.defaultThemeMode || 'auto',
-    storageKey: options.storageKey || themeConfig.storageKey || 'su-theme-config',
-    persist: options.persist !== false,
-  };
-
-  // ========================================
-  // Détection système
-  // ========================================
-
-  const systemTheme = computed<'light' | 'dark'>(() => {
-    if (typeof window === 'undefined') return 'light';
-    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  // Réglages : chaque option vient du premier appel qui la donne. Les setup
+  // s'exécutent du parent vers les enfants : les options passées dans App.vue
+  // l'emportent sur les appels sans option des composants (ThemeToggle…).
+  const settings = shallowReactive({
+    availableThemes: themeConfig.themes,
+    defaultTheme: themeConfig.defaultTheme,
+    defaultThemeMode: normalizeMode(themeConfig.defaultThemeMode) ?? 'system',
+    storageKey: themeConfig.storageKey || 'su-theme-config',
+    persist: true,
   });
+  const explicit = new Set<keyof typeof settings>();
 
-  const systemContrast = computed<'normal' | 'high'>(() => {
-    if (typeof window === 'undefined') return 'normal';
-    return window.matchMedia('(prefers-contrast: more)').matches ? 'high' : 'normal';
-  });
+  const themeName = ref<ThemeName>(settings.defaultTheme);
+  const themeMode = ref<ThemeMode>(settings.defaultThemeMode);
+  const contrastMode = ref<ContrastMode>('auto');
+  const motionMode = ref<MotionMode>('auto');
 
-  const systemMotion = computed<'normal' | 'reduce'>(() => {
-    if (typeof window === 'undefined') return 'normal';
-    return window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'reduce' : 'normal';
-  });
+  // Préférences système : de vraies sources réactives, mises à jour par les
+  // écouteurs matchMedia (un computed sur matchMedia ne serait jamais recalculé)
+  const systemTheme = ref<'light' | 'dark'>('light');
+  const systemContrast = ref<'normal' | 'high'>('normal');
+  const systemMotion = ref<'normal' | 'reduce'>('normal');
 
-  // ========================================
-  // Thèmes disponibles
-  // ========================================
+  // Préférences enregistrées : lues une fois, au premier démarrage
+  let configLoaded = false;
+
+  // ============================================================
+  // RÉSOLUTION (partagée par tous les appels)
+  // ============================================================
 
   const availableThemes = computed(() =>
-    ALL_THEMES.filter((t) => t.available)
+    ALL_THEMES.filter((t) => t.available && settings.availableThemes.includes(t.id))
   );
-
-  const systemThemes = computed(() =>
-    availableThemes.value.filter((t) => t.category === 'system')
-  );
-
-  const colorThemes = computed(() =>
-    availableThemes.value.filter((t) => t.category === 'color')
-  );
-
-  // ========================================
-  // Résolution — thème effectif
-  // ========================================
 
   const effectiveTheme = computed<ThemeName>(() => {
     const isAvailable = availableThemes.value.some((t) => t.id === themeName.value);
@@ -123,41 +121,23 @@ export function useTheme(options: UseThemeOptions = {}) {
     return themeName.value;
   });
 
-  // ========================================
-  // Résolution — mode effectif (light | dark)
-  // ========================================
-
-  const effectiveThemeMode = computed<'light' | 'dark'>(() => {
-    if (themeMode.value === 'system') {
-      return systemTheme.value;
-    }
-    return themeMode.value;
-  });
+  const effectiveThemeMode = computed<'light' | 'dark'>(() =>
+    themeMode.value === 'system' ? systemTheme.value : themeMode.value
+  );
 
   const isDarkMode = computed(() => effectiveThemeMode.value === 'dark');
 
-  // ========================================
-  // Autres modes effectifs
-  // ========================================
+  const effectiveContrast = computed<'normal' | 'high'>(() =>
+    contrastMode.value === 'auto' ? systemContrast.value : contrastMode.value
+  );
 
-  const effectiveContrast = computed<'normal' | 'high'>(() => {
-    return contrastMode.value === 'auto' ? systemContrast.value : contrastMode.value;
-  });
+  const effectiveMotion = computed<'normal' | 'reduce'>(() =>
+    motionMode.value === 'auto' ? systemMotion.value : motionMode.value
+  );
 
-  const effectiveMotion = computed<'normal' | 'reduce'>(() => {
-    return motionMode.value === 'auto' ? systemMotion.value : motionMode.value;
-  });
-
-  const currentThemeMetadata = computed(() => {
-    return (
-      availableThemes.value.find((t) => t.id === effectiveTheme.value) ||
-      availableThemes.value[0]
-    );
-  });
-
-  // ========================================
-  // Application au DOM
-  // ========================================
+  // ============================================================
+  // DOM ET PERSISTANCE
+  // ============================================================
 
   const applyTheme = () => {
     if (typeof document === 'undefined') return;
@@ -170,12 +150,8 @@ export function useTheme(options: UseThemeOptions = {}) {
     root.classList.toggle('theme-dark', isDarkMode.value);
   };
 
-  // ========================================
-  // Persistance
-  // ========================================
-
   const saveConfig = () => {
-    if (!opts.persist || typeof localStorage === 'undefined') return;
+    if (!settings.persist || typeof localStorage === 'undefined') return;
 
     try {
       const config: UserThemeConfig = {
@@ -184,67 +160,215 @@ export function useTheme(options: UseThemeOptions = {}) {
         contrast: contrastMode.value,
         motion: motionMode.value,
       };
-      localStorage.setItem(opts.storageKey, JSON.stringify(config));
+      localStorage.setItem(settings.storageKey, JSON.stringify(config));
     } catch (error) {
       console.error('[SurgeUI] Erreur sauvegarde thème:', error);
     }
   };
 
   const loadConfig = () => {
-    if (!opts.persist || typeof localStorage === 'undefined') return;
+    if (!settings.persist || typeof localStorage === 'undefined') return;
 
     try {
-      const stored = localStorage.getItem(opts.storageKey);
-      if (stored) {
-        const config = JSON.parse(stored) as Record<string, string>;
+      const stored = localStorage.getItem(settings.storageKey);
+      if (!stored) return;
+      const config = JSON.parse(stored) as Record<string, string>;
 
-        // Rétrocompatibilité : anciens thèmes 'light' / 'dark' en localStorage
-        if (config.theme === 'light') {
-          themeName.value = 'default';
-          themeMode.value = 'light';
-        } else if (config.theme === 'dark') {
-          themeName.value = 'default';
-          themeMode.value = 'dark';
-        } else {
-          // Valider le thème stocké
-          if (availableThemes.value.some((t) => t.id === config.theme)) {
-            themeName.value = config.theme as ThemeName;
-          }
+      // Rétrocompatibilité : anciens thèmes 'light' / 'dark' en localStorage
+      if (config.theme === 'light' || config.theme === 'dark') {
+        themeName.value = 'default';
+        themeMode.value = config.theme;
+      } else {
+        if (availableThemes.value.some((t) => t.id === config.theme)) {
+          themeName.value = config.theme as ThemeName;
+        }
+        // Migration 'auto' → 'system' pour les configs sauvegardées avant la v2
+        const storedMode = normalizeMode(config.themeMode);
+        if (storedMode) themeMode.value = storedMode;
+      }
 
-          // Migration 'auto' → 'system' pour les configs sauvegardées avant la v2
-          const storedMode = config.themeMode === LEGACY_AUTO ? 'system' : config.themeMode;
-          if (storedMode === 'light' || storedMode === 'dark' || storedMode === 'system') {
-            themeMode.value = storedMode;
-          }
-        }
-
-        const storedContrast = config.contrast;
-        if (storedContrast === 'normal' || storedContrast === 'high' || storedContrast === 'auto') {
-          contrastMode.value = storedContrast;
-        }
-        const storedMotion = config.motion;
-        if (storedMotion === 'normal' || storedMotion === 'reduce' || storedMotion === 'auto') {
-          motionMode.value = storedMotion;
-        }
+      const storedContrast = config.contrast;
+      if (storedContrast === 'normal' || storedContrast === 'high' || storedContrast === 'auto') {
+        contrastMode.value = storedContrast;
+      }
+      const storedMotion = config.motion;
+      if (storedMotion === 'normal' || storedMotion === 'reduce' || storedMotion === 'auto') {
+        motionMode.value = storedMotion;
       }
     } catch (error) {
       console.error('[SurgeUI] Erreur chargement thème:', error);
     }
   };
 
-  const clearConfig = () => {
-    if (!opts.persist || typeof localStorage === 'undefined') return;
-
-    try {
-      localStorage.removeItem(opts.storageKey);
-      themeName.value = opts.defaultTheme;
-      themeMode.value = opts.defaultThemeMode as ThemeMode;
-      contrastMode.value = 'auto';
-      motionMode.value = 'auto';
-    } catch (error) {
-      console.error('[SurgeUI] Erreur suppression config thème:', error);
+  /** Options d'un appel : retenues si aucun appel précédent ne les a données */
+  const configure = (options: UseThemeOptions) => {
+    const given: Partial<typeof settings> = {
+      availableThemes: options.availableThemes,
+      defaultTheme: options.defaultTheme,
+      defaultThemeMode: normalizeMode(options.defaultThemeMode),
+      storageKey: options.storageKey,
+      persist: options.persist,
+    };
+    let defaultsChanged = false;
+    for (const [key, value] of Object.entries(given) as [keyof typeof settings, unknown][]) {
+      if (value === undefined || value === '' || explicit.has(key)) continue;
+      explicit.add(key);
+      Object.assign(settings, { [key]: value });
+      if (key === 'defaultTheme' || key === 'defaultThemeMode') defaultsChanged = true;
     }
+    if (!defaultsChanged) return;
+
+    themeName.value = settings.defaultTheme;
+    themeMode.value = settings.defaultThemeMode;
+    // Préférences déjà lues : elles restent prioritaires sur les défauts
+    if (configLoaded) loadConfig();
   };
+
+  // ============================================================
+  // ÉCOUTE DU SYSTÈME — active tant qu'un appel en a besoin
+  // ============================================================
+
+  let consumers = 0;
+  let scope: EffectScope | undefined;
+  let stopListening: (() => void) | undefined;
+
+  const start = () => {
+    if (typeof window === 'undefined') return;
+
+    if (!configLoaded) {
+      configLoaded = true;
+      loadConfig();
+    }
+
+    if (typeof window.matchMedia === 'function') {
+      const darkQuery = window.matchMedia('(prefers-color-scheme: dark)');
+      const contrastQuery = window.matchMedia('(prefers-contrast: more)');
+      const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+      const read = () => {
+        systemTheme.value = darkQuery.matches ? 'dark' : 'light';
+        systemContrast.value = contrastQuery.matches ? 'high' : 'normal';
+        systemMotion.value = motionQuery.matches ? 'reduce' : 'normal';
+      };
+      read();
+
+      const queries = [darkQuery, contrastQuery, motionQuery];
+      queries.forEach((query) => query.addEventListener('change', read));
+      stopListening = () => queries.forEach((query) => query.removeEventListener('change', read));
+    }
+
+    // Portée détachée : l'application au DOM ne dépend d'aucun composant
+    scope = effectScope(true);
+    scope.run(() => {
+      watch([effectiveTheme, effectiveThemeMode, effectiveContrast, effectiveMotion], applyTheme, {
+        immediate: true,
+      });
+    });
+  };
+
+  const stop = () => {
+    stopListening?.();
+    stopListening = undefined;
+    scope?.stop();
+    scope = undefined;
+  };
+
+  const acquire = () => {
+    consumers += 1;
+    if (consumers === 1) start();
+  };
+
+  const release = () => {
+    consumers = Math.max(0, consumers - 1);
+    if (consumers === 0) stop();
+  };
+
+  return {
+    settings,
+    themeName,
+    themeMode,
+    contrastMode,
+    motionMode,
+    systemTheme,
+    systemContrast,
+    systemMotion,
+    availableThemes,
+    effectiveTheme,
+    effectiveThemeMode,
+    isDarkMode,
+    effectiveContrast,
+    effectiveMotion,
+    applyTheme,
+    saveConfig,
+    configure,
+    acquire,
+    release,
+  };
+}
+
+let state: ReturnType<typeof createThemeState> | undefined;
+
+const getState = () => (state ??= effectScope(true).run(createThemeState)!);
+
+// ============================================================
+// COMPOSABLE
+// ============================================================
+
+/**
+ * Thème, mode clair / sombre, contraste et mouvement, partagés par toute
+ * l'application et posés sur `<html>` (data-theme, data-theme-mode…).
+ *
+ * - Dans un composant : le système est suivi du montage au démontage du
+ *   dernier composant qui l'utilise (appelez-le dans App.vue pour le suivre
+ *   en permanence). Les préférences enregistrées sont lues au montage, sans
+ *   écart d'hydratation en rendu serveur.
+ * - Hors composant (main.ts, store) : suivi aussitôt, jusqu'à la fin de la
+ *   portée d'effets courante, ou pour toute la vie de la page.
+ */
+export function useTheme(options: UseThemeOptions = {}) {
+  const {
+    settings,
+    themeName,
+    themeMode,
+    contrastMode,
+    motionMode,
+    systemTheme,
+    systemContrast,
+    systemMotion,
+    availableThemes,
+    effectiveTheme,
+    effectiveThemeMode,
+    isDarkMode,
+    effectiveContrast,
+    effectiveMotion,
+    applyTheme,
+    saveConfig,
+    configure,
+    acquire,
+    release,
+  } = getState();
+
+  configure(options);
+
+  if (getCurrentInstance()) {
+    let acquired = false;
+    onMounted(() => {
+      acquired = true;
+      acquire();
+    });
+    onScopeDispose(() => {
+      if (acquired) release();
+    });
+  } else if (typeof window !== 'undefined') {
+    acquire();
+    if (getCurrentScope()) onScopeDispose(release);
+  }
+
+  const systemThemes = computed(() => availableThemes.value.filter((t) => t.category === 'system'));
+  const colorThemes = computed(() => availableThemes.value.filter((t) => t.category === 'color'));
+  const currentThemeMetadata = computed(
+    () => availableThemes.value.find((t) => t.id === effectiveTheme.value) || availableThemes.value[0]
+  );
 
   // ========================================
   // Actions
@@ -255,23 +379,18 @@ export function useTheme(options: UseThemeOptions = {}) {
    * règle à part, avec setThemeMode() ou toggleMode().
    */
   const setTheme = (name: ThemeName) => {
-    // Vérifier la disponibilité
-    const isAvailable = availableThemes.value.some((t) => t.id === name);
-    if (!isAvailable) {
+    if (!availableThemes.value.some((t) => t.id === name)) {
       console.warn(`[SurgeUI] Theme '${name}' is not available in the current build.`);
       return;
     }
-
     themeName.value = name;
     saveConfig();
     applyTheme();
   };
 
-  /**
-   * Définit le mode luminosité (light / dark / system).
-   */
+  /** Définit le mode luminosité (light / dark / system). */
   const setThemeMode = (mode: ThemeMode) => {
-    themeMode.value = mode;
+    themeMode.value = normalizeMode(mode) ?? 'system';
     saveConfig();
     applyTheme();
   };
@@ -288,63 +407,35 @@ export function useTheme(options: UseThemeOptions = {}) {
     applyTheme();
   };
 
-  /**
-   * Bascule entre light et dark (ou auto → dark si on ne sait pas).
-   */
+  /** Bascule entre clair et sombre (depuis 'system' : l'opposé du mode appliqué). */
   const toggleMode = () => {
-    if (themeMode.value === 'system') {
-      // Quitter 'system' en fixant le mode opposé à celui actuellement appliqué
-      themeMode.value = systemTheme.value === 'dark' ? 'light' : 'dark';
-    } else {
-      themeMode.value = isDarkMode.value ? 'light' : 'dark';
-    }
+    themeMode.value = isDarkMode.value ? 'light' : 'dark';
     saveConfig();
     applyTheme();
   };
 
-  /**
-   * Cycle à travers les thèmes disponibles (identité visuelle uniquement).
-   */
+  /** Cycle à travers les thèmes disponibles (identité visuelle uniquement). */
   const cycleTheme = () => {
     const current = availableThemes.value.findIndex((t) => t.id === themeName.value);
     const next = (current + 1) % availableThemes.value.length;
     setTheme(availableThemes.value[next].id);
   };
 
-  // ========================================
-  // Initialisation
-  // ========================================
-  onMounted(() => {
-    if (isInitialized) return;
-    isInitialized = true;
-
-    loadConfig();
-    applyTheme();
-
-    watch(
-      [effectiveTheme, effectiveThemeMode, effectiveContrast, effectiveMotion],
-      applyTheme,
-      { immediate: false }
-    );
-
-    if (typeof window !== 'undefined') {
-      const darkQuery = window.matchMedia('(prefers-color-scheme: dark)');
-      const contrastQuery = window.matchMedia('(prefers-contrast: more)');
-      const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-
-      const handler = () => applyTheme();
-
-      darkQuery.addEventListener('change', handler);
-      contrastQuery.addEventListener('change', handler);
-      motionQuery.addEventListener('change', handler);
-
-      return () => {
-        darkQuery.removeEventListener('change', handler);
-        contrastQuery.removeEventListener('change', handler);
-        motionQuery.removeEventListener('change', handler);
-      };
+  /** Oublie les préférences enregistrées et revient aux défauts. */
+  const clearConfig = () => {
+    try {
+      if (settings.persist && typeof localStorage !== 'undefined') {
+        localStorage.removeItem(settings.storageKey);
+      }
+    } catch (error) {
+      console.error('[SurgeUI] Erreur suppression config thème:', error);
     }
-  });
+    themeName.value = settings.defaultTheme;
+    themeMode.value = settings.defaultThemeMode;
+    contrastMode.value = 'auto';
+    motionMode.value = 'auto';
+    applyTheme();
+  };
 
   // ========================================
   // API publique
@@ -361,9 +452,9 @@ export function useTheme(options: UseThemeOptions = {}) {
     effectiveThemeMode,
     effectiveContrast,
     effectiveMotion,
-    systemTheme,
-    systemContrast,
-    systemMotion,
+    systemTheme: computed(() => systemTheme.value),
+    systemContrast: computed(() => systemContrast.value),
+    systemMotion: computed(() => systemMotion.value),
     currentThemeMetadata,
     isDarkMode,
 

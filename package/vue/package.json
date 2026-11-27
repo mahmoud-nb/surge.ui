@@ -19,7 +19,12 @@
     "./style.css": "./dist/style.css",
     "./style.layer.css": "./dist/style.layer.css",
     "./tailwind.css": "./dist/tailwind.css",
-    "./api.json": "./dist/api.json"
+    "./api.json": "./dist/api.json",
+    "./css/*": "./dist/css/*",
+    "./resolver": {
+      "types": "./dist/resolver.d.ts",
+      "default": "./dist/resolver.js"
+    }
   },
   "types": "./dist/index.d.ts",
   "sideEffects": [

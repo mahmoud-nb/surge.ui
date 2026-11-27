@@ -58,14 +58,14 @@ const showCenterModal = ref(false)
 </template>
 ```
 
-### Tiroir latéral gauche (display="left")
+### Tiroir latéral, côté début (display="start")
 
 <div class="component-demo">
   <div class="demo-section">
     <h4>Menu latéral</h4>
     <div class="demo-buttons">
       <SuButton @click="showLeftDrawer = true">Ouvrir Tiroir Gauche</SuButton>
-      <SuDialog v-model:modelValue="showLeftDrawer" display="left" title="Menu de Navigation" width="300px">
+      <SuDialog v-model:modelValue="showLeftDrawer" display="start" title="Menu de Navigation" width="300px">
         <template #default>
           <SuLinkGroup direction="vertical" gap="md">
             <SuLink href="/dashboard">Tableau de bord</SuLink>
@@ -91,7 +91,7 @@ const showLeftDrawer = ref(false)
 
 <template>
   <SuButton @click="showLeftDrawer = true">Ouvrir Tiroir Gauche</SuButton>
-  <SuDialog v-model:modelValue="showLeftDrawer" display="left" title="Menu de Navigation" width="300px">
+  <SuDialog v-model:modelValue="showLeftDrawer" display="start" title="Menu de Navigation" width="300px">
     <template #default>
       <SuLinkGroup direction="vertical" gap="md">
         <SuLink href="/dashboard">Tableau de bord</SuLink>
@@ -107,14 +107,14 @@ const showLeftDrawer = ref(false)
 </template>
 ```
 
-### Tiroir latéral droit (display="right")
+### Tiroir latéral, côté fin (display="end")
 
 <div class="component-demo">
   <div class="demo-section">
     <h4>Panneau de détails</h4>
     <div class="demo-buttons">
       <SuButton @click="showRightDrawer = true">Ouvrir Tiroir Droit</SuButton>
-      <SuDialog v-model:modelValue="showRightDrawer" display="right" title="Détails du Produit" width="450px">
+      <SuDialog v-model:modelValue="showRightDrawer" display="end" title="Détails du Produit" width="450px">
         <template #default>
           <h3>Produit X</h3>
           <p>Description détaillée du produit X. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
@@ -137,7 +137,7 @@ const showRightDrawer = ref(false)
 
 <template>
   <SuButton @click="showRightDrawer = true">Ouvrir Tiroir Droit</SuButton>
-  <SuDialog v-model:modelValue="showRightDrawer" display="right" title="Détails du Produit" width="450px">
+  <SuDialog v-model:modelValue="showRightDrawer" display="end" title="Détails du Produit" width="450px">
     <template #default>
       <h3>Produit X</h3>
       <p>Description détaillée du produit X. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
@@ -314,7 +314,7 @@ Le déplacement a lieu après le montage : côté serveur et pendant l'hydratati
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `modelValue` | `boolean` | `false` | Contrôle l'état d'ouverture/fermeture du Dialog (utilisé avec `v-model`) |
-| `display` | `'center' \| 'left' \| 'right' \| 'top' \| 'bottom' \| 'full'` | `'center'` | Mode d'affichage du Dialog |
+| `display` | `'center' \| 'start' \| 'end' \| 'top' \| 'bottom' \| 'full'` | `'center'` | Mode d'affichage du Dialog ; `left` et `right` sont des alias de `start` et `end` |
 | `title` | `string` | `undefined` | Titre du Dialog (affiché dans le slot `head` par défaut et pour `aria-labelledby`) |
 | `description` | `string` | `undefined` | Description affichée sous le titre et reliée au Dialog par `aria-describedby` (non rendue si le slot `head` est utilisé) |
 | `closeLabel` | `string` | `'Fermer'` | Nom accessible du bouton de fermeture |
@@ -383,8 +383,8 @@ Le composant Dialog est conçu en respectant les normes WCAG 2.1 AA :
 Le composant `Dialog` utilise des transitions CSS pour une ouverture et une fermeture fluides. La prop `display` applique des styles spécifiques pour positionner le Dialog correctement.
 
 - **`display="center"`** : Modale centrée, avec une animation de scale.
-- **`display="left"` / `display="right"`** : Tiroirs latéraux, avec une animation de translation horizontale.
+- **`display="start"` / `display="end"`** : Tiroirs latéraux du côté où commence ou finit la lecture (à gauche / à droite en français, l'inverse en arabe), avec une animation de translation horizontale. `left` et `right` en sont des alias.
 - **`display="top"` / `display="bottom"`** : Tiroirs verticaux, avec une animation de translation verticale.
 - **`display="full"`** : Plein écran, avec une légère animation de scale.
 
-Vous pouvez personnaliser la largeur (`width`) et la hauteur (`height`) pour les modes `center`, `left`, `right`, `top`, `bottom`. Pour le mode `full`, le Dialog occupe toujours 100% de la largeur et de la hauteur.
+Vous pouvez personnaliser la largeur (`width`) et la hauteur (`height`) pour les modes `center`, `start`, `end`, `top`, `bottom`. Pour le mode `full`, le Dialog occupe toujours 100% de la largeur et de la hauteur.

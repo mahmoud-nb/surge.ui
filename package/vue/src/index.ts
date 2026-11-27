@@ -1,4 +1,4 @@
-import type { App, Component } from 'vue'
+import type { App, Component, Plugin } from 'vue'
 // Styles globaux (tokens, thèmes, contraste, utilitaires) — émis une seule fois
 import './styles/index.scss'
 
@@ -275,50 +275,77 @@ export interface SurgeUIOptions {
    * enregistré, sinon un simple <a href>.
    */
   linkComponent?: Component | string
+  /**
+   * Composants à enregistrer globalement, sous le préfixe : `{ Button, Dialog }`.
+   * Avec `createSurgeUI`, seuls ceux-ci entrent dans le bundle ; le plugin
+   * par défaut (`app.use(SurgeUI)`) les enregistre tous.
+   */
+  components?: Partial<SurgeComponents>
 }
 
 const defaultTheme: SurgeuiTheme = {}
 
+const install = (app: App, options: SurgeUIOptions, registered: Partial<SurgeComponents>) => {
+  const { prefix = 'Su', theme = {}, locale, linkComponent } = options
+  const mergedTheme = { ...defaultTheme, ...theme }
+
+  // Injection globale du thème pour accès reactif dans les composants
+  app.provide(ThemeSymbol, mergedTheme)
+
+  // Locale des textes par défaut (libellés, annonces)
+  if (locale === 'auto') {
+    const documentLocale = createDocumentLocale()
+    app.provide(LocaleKey, documentLocale.locale)
+    app.onUnmount(documentLocale.stop)
+  } else {
+    app.provide(LocaleKey, computed(() => defineLocale(fr, toValue(locale))))
+  }
+
+  // Composant des liens `to` (RouterLink par défaut)
+  if (linkComponent) app.provide(LinkComponentKey, linkComponent)
+
+  // File des toasts (useToast) : une par application
+  app.provide(ToasterKey, createToaster())
+
+  // Confirmations (useConfirm) : une file par application
+  app.provide(ConfirmerKey, createConfirmer())
+
+  // Génération et application des variables CSS personnalisées
+  // (côté client uniquement : document n'existe pas en SSR)
+  if (typeof document !== 'undefined') {
+    const root = document.documentElement
+    const cssVariables = flattenThemeToCSS(mergedTheme)
+    for (const [varName, value] of Object.entries(cssVariables)) {
+      root.style.setProperty(varName, value)
+    }
+  }
+
+  // Enregistrement global sous le préfixe (SuButton, SuDialog…)
+  for (const [name, component] of Object.entries(registered)) {
+    if (component) app.component(`${prefix}${name}`, component as Component)
+  }
+}
+
+/**
+ * Plugin à la carte : locale, liens, toasts, confirmations et thème, sans
+ * enregistrer d'office tous les composants. Seuls ceux de `components` sont
+ * enregistrés ; les autres s'importent par leur nom (`import { Button }`)
+ * ou à l'usage avec `@surgeui/vue/resolver`, et restent hors du bundle
+ * s'ils ne servent pas.
+ *
+ * @example
+ * app.use(createSurgeUI({ locale: 'auto', components: { Button, Dialog } }))
+ */
+export function createSurgeUI(options: SurgeUIOptions = {}): Plugin {
+  return {
+    install: (app: App) => install(app, options, options.components ?? {})
+  }
+}
+
+/** Plugin complet : enregistre tous les composants (ou seulement ceux de `components`) */
 export default {
   install(app: App, options: SurgeUIOptions = {}) {
-    const { prefix = 'Su', theme = {}, locale, linkComponent } = options
-    const mergedTheme = { ...defaultTheme, ...theme }
-
-    // Injection globale du thème pour accès reactif dans les composants
-    app.provide(ThemeSymbol, mergedTheme)
-
-    // Locale des textes par défaut (libellés, annonces)
-    if (locale === 'auto') {
-      const documentLocale = createDocumentLocale()
-      app.provide(LocaleKey, documentLocale.locale)
-      app.onUnmount(documentLocale.stop)
-    } else {
-      app.provide(LocaleKey, computed(() => defineLocale(fr, toValue(locale))))
-    }
-
-    // Composant des liens `to` (RouterLink par défaut)
-    if (linkComponent) app.provide(LinkComponentKey, linkComponent)
-
-    // File des toasts (useToast) : une par application
-    app.provide(ToasterKey, createToaster())
-
-    // Confirmations (useConfirm) : une file par application
-    app.provide(ConfirmerKey, createConfirmer())
-
-    // Génération et application des variables CSS personnalisées
-    // (côté client uniquement : document n'existe pas en SSR)
-    if (typeof document !== 'undefined') {
-      const root = document.documentElement
-      const cssVariables = flattenThemeToCSS(mergedTheme)
-      for (const [varName, value] of Object.entries(cssVariables)) {
-        root.style.setProperty(varName, value)
-      }
-    }
-
-    // Enregistrement global sous le préfixe (SuButton, SuDialog…)
-    for (const [name, component] of Object.entries(components)) {
-      app.component(`${prefix}${name}`, component)
-    }
+    install(app, options, options.components ?? components)
   }
 }
 export * from './composables'

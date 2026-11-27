@@ -39,7 +39,12 @@ export interface ToastItem extends ToastOptions {
 
 type TypedToastOptions = Omit<ToastOptions, 'type' | 'title'>
 
-export interface Toaster {
+/**
+ * File de toasts renvoyée par `useToast()` et `createToaster()`. Nommée
+ * `ToasterStore` pour ne pas se confondre avec le composant `Toaster`
+ * (SuToaster), exporté sous le même nom à la racine du paquet.
+ */
+export interface ToasterStore {
   /** Toasts en cours, du plus ancien au plus récent */
   toasts: Readonly<Ref<readonly ToastItem[]>>
   /** Affiche un toast (un texte seul devient le titre) ; renvoie son id */
@@ -54,7 +59,7 @@ export interface Toaster {
   dismiss: (id?: string) => void
 }
 
-export const ToasterKey: InjectionKey<Toaster> = Symbol('SurgeToaster')
+export const ToasterKey: InjectionKey<ToasterStore> = Symbol('SurgeToaster')
 
 const announceToast = (toast: ToastItem) => {
   if (toast.announce === false) return
@@ -63,7 +68,7 @@ const announceToast = (toast: ToastItem) => {
 }
 
 /** Crée un store de toasts (fourni par le plugin sous `ToasterKey`) */
-export function createToaster(): Toaster {
+export function createToaster(): ToasterStore {
   const toasts = shallowRef<ToastItem[]>([])
   let counter = 0
 
@@ -109,7 +114,7 @@ export function createToaster(): Toaster {
   }
 }
 
-let defaultToaster: Toaster | undefined
+let defaultToaster: ToasterStore | undefined
 
 /**
  * Accès aux toasts : celui fourni par le plugin, sinon un store par défaut
@@ -119,7 +124,7 @@ let defaultToaster: Toaster | undefined
  * const toast = useToast()
  * toast.success('Projet enregistré', { action: { label: 'Annuler', onClick: undo } })
  */
-export function useToast(): Toaster {
+export function useToast(): ToasterStore {
   const provided = hasInjectionContext() ? inject(ToasterKey, null) : null
   if (provided) return provided
   if (typeof window === 'undefined') return createToaster()

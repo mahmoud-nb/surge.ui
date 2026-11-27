@@ -69,5 +69,9 @@ $_registered-themes: () !default;
 @mixin generate-mode-vars($theme-map, $mode, $prefix: 'su') {
   $base: if($mode == 'dark', semantic.$semantic-dark, semantic.$semantic-light);
 
+  // Rendu natif du navigateur dans le même mode : barres de défilement,
+  // listes déroulantes, champs date, couleur, cases… (hérité par les descendants)
+  color-scheme: #{$mode};
+
   @include generate-theme-vars(map.merge($base, $theme-map), $prefix);
 }

@@ -5,6 +5,7 @@ import dts from 'vite-plugin-dts'
 import { copyFileSync, existsSync, readFileSync, writeFileSync } from 'fs'
 import { resolve, dirname } from 'path'
 import { fileURLToPath } from 'url'
+import { componentCss } from './scripts/component-css'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
@@ -44,7 +45,9 @@ export default defineConfig({
       rollupTypes: false
     }),
     cssLayer(),
-    tailwindPreset()
+    tailwindPreset(),
+    // dist/css/ (base + un fichier par composant) et dist/resolver.js
+    componentCss({ root: __dirname })
   ],
   css: {
     preprocessorOptions: {

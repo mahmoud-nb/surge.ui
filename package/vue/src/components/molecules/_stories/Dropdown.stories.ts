@@ -1,6 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import { CogIcon, UserIcon, ArrowUturnLeftIcon, PlusIcon, DocumentIcon, TrashIcon, ShareIcon } from '@heroicons/vue/24/outline'
+import { computed, ref } from 'vue'
 import Dropdown from '../Dropdown.vue'
+import Button from '../../atoms/Button.vue'
+import Avatar from '../../atoms/Avatar.vue'
 
 const meta: Meta<typeof Dropdown> = {
   title: 'Molecules/Dropdown',
@@ -198,7 +201,8 @@ export const IconOnly: Story = {
     options: basicOptions,
     icon: CogIcon,
     iconDisplay: 'only',
-    ariaLabel: 'Menu des options'
+    // Icône seule : label devient le nom accessible du bouton
+    label: 'Menu des options'
   },
   render: (args) => ({
     components: { Dropdown },
@@ -649,5 +653,65 @@ export const Interactive: Story = {
         />
       </div>
     `
+  })
+}
+
+export const CustomTrigger: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Slot `trigger` : un déclencheur fourni par la page (ici un avatar dans un SuButton). `props` se lie au bouton : id, ARIA, clic et clavier ; le focus lui revient à la fermeture.'
+      }
+    }
+  },
+  render: () => ({
+    components: { Dropdown, Button, Avatar },
+    setup() {
+      const accountOptions = [
+        { value: 'profile', label: 'Mon profil', icon: UserIcon },
+        { value: 'settings', label: 'Paramètres', icon: CogIcon },
+        { type: 'separator' as const },
+        { value: 'logout', label: 'Se déconnecter', icon: ArrowUturnLeftIcon }
+      ]
+      return { accountOptions }
+    },
+    template: `
+      <Dropdown :options="accountOptions" placement="bottom-end">
+        <template #trigger="{ props }">
+          <Button v-bind="props" variant="ghost" aria-label="Compte de Marie Dupont">
+            <Avatar name="Marie Dupont" size="sm" />
+          </Button>
+        </template>
+      </Dropdown>
+    `
+  })
+}
+
+export const CheckableOptions: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Options `type: 'radio'` (menuitemradio) et `type: 'checkbox'` (menuitemcheckbox) avec `checked`, mis à jour par la page sur `select`."
+      }
+    }
+  },
+  render: () => ({
+    components: { Dropdown },
+    setup() {
+      const view = ref('grid')
+      const showArchived = ref(false)
+      const options = computed(() => [
+        { value: 'grid', label: 'Grille', type: 'radio' as const, checked: view.value === 'grid' },
+        { value: 'list', label: 'Liste', type: 'radio' as const, checked: view.value === 'list' },
+        { type: 'separator' as const },
+        { value: 'archived', label: 'Afficher les archives', type: 'checkbox' as const, checked: showArchived.value }
+      ])
+      const select = (option: { value: string | number }) => {
+        if (option.value === 'archived') showArchived.value = !showArchived.value
+        else view.value = String(option.value)
+      }
+      return { options, select }
+    },
+    template: '<Dropdown label="Affichage" :options="options" :close-on-select="false" @select="select" />'
   })
 }

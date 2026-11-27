@@ -112,7 +112,15 @@ for (const file of listPages(docsDir)) {
   if (/^---\n[\s\S]*?layout:\s*home[\s\S]*?\n---/.test(source.replace(/\r\n/g, '\n'))) continue
   const markdown = clean(source)
   const route = routeOf(file)
-  pages.set(route, { route, markdown, title: titleOf(markdown), description: descriptionOf(markdown) })
+  // Sans titre « # … », le sommaire aurait une entrée vide : titre du
+  // frontmatter, sinon nom du fichier, et un avertissement pour corriger la page
+  let title = titleOf(markdown)
+  if (!title) {
+    title = source.replace(/\r\n/g, '\n').match(/^---\n[\s\S]*?^title:\s*(.+)$[\s\S]*?\n---/m)?.[1].trim().replace(/^['"]|['"]$/g, '') ||
+      route.split('/').filter(Boolean).pop() || route
+    console.warn(`llms : ${relative(docsDir, file)} n'a pas de titre de niveau 1 (# Titre) ; repli sur « ${title} »`)
+  }
+  pages.set(route, { route, markdown, title, description: descriptionOf(markdown) })
 
   const target = join(distDir, route.endsWith('/') ? `${route}index.md` : `${route}.md`)
   mkdirSync(dirname(target), { recursive: true })
@@ -132,7 +140,7 @@ const text = {
   en: {
     summary: `Accessible, themable Vue 3 component library (npm package \`@surgeui/vue\`, version ${libPkg.version}): components, layouts and composables with WAI-ARIA keyboard and screen reader support, light/dark themes, RTL and translatable texts (French, English, Arabic).`,
     rules: [
-      'Install `@surgeui/vue` (Vue 3.5+), register the plugin with `app.use(SurgeUI)` and import `@surgeui/vue/style.css` once.',
+      'Install `@surgeui/vue` (Vue 3.5+), register the plugin with `app.use(SurgeUI)` and import `@surgeui/vue/style.css` once. For smaller bundles: `createSurgeUI({ components: { Button } })`, or the `@surgeui/vue/resolver` resolver for unplugin-vue-components.',
       'Components are registered globally with the `Su` prefix (`<SuButton>`, `<SuInputField>`); named imports drop it (`import { Button } from \'@surgeui/vue\'`).',
       'Form controls use `v-model`. Wrap a control in `<SuFormField label="…">` or use a `*Field` component (`SuInputField`, `SuSelectBoxField`…) for label, message and validation state.',
       'Theme with the `--su-*` CSS custom properties and `useTheme()`; do not hard-code colors.',
@@ -157,7 +165,7 @@ const text = {
   fr: {
     summary: `Bibliothèque de composants Vue 3 accessibles et thématisables (paquet npm \`@surgeui/vue\`, version ${libPkg.version}) : composants, mises en page et composables, clavier et lecteurs d'écran (motifs WAI-ARIA), thèmes clair et sombre, RTL, textes traduisibles (français, anglais, arabe).`,
     rules: [
-      'Installer `@surgeui/vue` (Vue 3.5+), enregistrer le plugin avec `app.use(SurgeUI)` et importer `@surgeui/vue/style.css` une fois.',
+      'Installer `@surgeui/vue` (Vue 3.5+), enregistrer le plugin avec `app.use(SurgeUI)` et importer `@surgeui/vue/style.css` une fois. Pour un bundle plus léger : `createSurgeUI({ components: { Button } })`, ou le résolveur `@surgeui/vue/resolver` pour unplugin-vue-components.',
       'Les composants sont enregistrés globalement avec le préfixe `Su` (`<SuButton>`, `<SuInputField>`) ; les imports nommés n\'en ont pas (`import { Button } from \'@surgeui/vue\'`).',
       'Les contrôles de formulaire utilisent `v-model`. Envelopper un contrôle dans `<SuFormField label="…">` ou utiliser un composant `*Field` (`SuInputField`, `SuSelectBoxField`…) pour le label, le message et l\'état de validation.',
       'Thèmes : propriétés CSS `--su-*` et `useTheme()` ; pas de couleur codée en dur.',

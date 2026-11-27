@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed, ref, nextTick, useAttrs, useId, type Component, type StyleValue } from 'vue'
-import { ChevronDownIcon } from '@heroicons/vue/24/outline'
+import { computed, ref, nextTick, onMounted, onUpdated, useAttrs, useId, useSlots, type Component, type StyleValue } from 'vue'
+import { CheckIcon, ChevronDownIcon } from '@heroicons/vue/24/outline'
 import type { DropdownItemOption, DropdownOption, DropdownProps, DropdownSeparatorOption } from '@/types'
 import { useFloatingPosition } from '@/composables/useFloatingPosition'
 import { useLocale } from '@/composables/useLocale'
@@ -39,6 +39,7 @@ const emit = defineEmits<{
 }>()
 
 const attrs = useAttrs()
+const slots = useSlots()
 
 // Attributs du parent destinés au déclencheur : tous sauf class et style
 const triggerAttrs = (all: Record<string, unknown>) =>
@@ -46,7 +47,8 @@ const triggerAttrs = (all: Record<string, unknown>) =>
 
 // Refs
 const dropdownRef = ref<HTMLDivElement>()
-const triggerRef = ref<HTMLButtonElement>()
+// Bouton intégré, ou élément du slot `trigger` (retrouvé par son id)
+const triggerRef = ref<HTMLElement>()
 const menuRef = ref<HTMLDivElement>()
 
 // État local
@@ -88,8 +90,15 @@ const optionElement = (option: DropdownOption): { is: Component | string; attrs:
   return { is: 'a', attrs: { href: option.href, target, rel } }
 }
 
+// Option cochable : rôle menuitemcheckbox / menuitemradio et aria-checked
+const optionRole = (option: DropdownOption) =>
+  option.type === 'checkbox' ? 'menuitemcheckbox' : option.type === 'radio' ? 'menuitemradio' : 'menuitem'
+const isCheckable = (option: DropdownOption) => option.type === 'checkbox' || option.type === 'radio'
+
 // Items du menu (sans les séparateurs) et leurs éléments DOM
 const menuItems = computed(() => props.options.filter((option): option is DropdownItemOption => !isSeparator(option)))
+// Une option cochable : toutes les options réservent la place de la coche (libellés alignés)
+const hasCheckable = computed(() => menuItems.value.some(isCheckable))
 const itemRefs = ref<(HTMLElement | null)[]>([])
 const setItemRef = (el: unknown, option: unknown) => {
   const index = menuItems.value.indexOf(option as never)
@@ -140,6 +149,8 @@ const menuClasses = computed(() => [
   }
 ])
 
+const isIconOnly = computed(() => !!props.icon && props.iconDisplay === 'only')
+
 // Attributs ARIA
 const ariaAttributes = computed(() => {
   const attrs: Record<string, any> = {
@@ -147,15 +158,43 @@ const ariaAttributes = computed(() => {
     'aria-expanded': isOpen.value,
     'aria-controls': isOpen.value ? menuId.value : undefined
   }
-  
-  if (props.ariaLabel) attrs['aria-label'] = props.ariaLabel
+
+  // Icône seule : le libellé, non affiché, devient le nom accessible du bouton
+  const name = props.ariaLabel ?? (isIconOnly.value && !slots.trigger ? props.label : undefined)
+  if (name) attrs['aria-label'] = name
+  if (props.ariaLabelledBy) attrs['aria-labelledby'] = props.ariaLabelledBy
   if (props.ariaDescribedBy) attrs['aria-describedby'] = props.ariaDescribedBy
   if (props.role) attrs['role'] = props.role
   if (props.disabled) attrs['aria-disabled'] = 'true'
   if (props.loading) attrs['aria-busy'] = 'true'
-  
+
   return attrs
 })
+
+// Slot `trigger` : déclencheur fourni par la page (SuButton, avatar…).
+// `props` se lie à l'élément focalisable (un bouton) : id, ARIA, clic,
+// clavier ; le menu se positionne contre lui et lui rend le focus.
+const triggerSlotProps = computed(() => ({
+  ...triggerAttrs(attrs),
+  ...ariaAttributes.value,
+  id: dropdownId.value,
+  disabled: props.disabled || props.loading || undefined,
+  onClick: toggleDropdown,
+  onKeydown: handleTriggerKeydown,
+  onFocus: handleFocus,
+  onBlur: handleBlur
+}))
+
+// Élément du slot : celui qui porte l'id lié, sinon le premier enfant
+const syncTrigger = () => {
+  if (!slots.trigger) return
+  const root = dropdownRef.value
+  if (!root) return
+  const selector = `[id="${dropdownId.value.replace(/["\\]/g, '\\$&')}"]`
+  triggerRef.value = root.querySelector<HTMLElement>(selector) ?? (root.firstElementChild as HTMLElement | null) ?? undefined
+}
+onMounted(syncTrigger)
+onUpdated(syncTrigger)
 
 // Gestion des événements
 
@@ -166,6 +205,7 @@ const ariaAttributes = computed(() => {
 const openDropdown = async (focus: 'first' | 'last' | 'none' = 'first') => {
   if (props.disabled || props.loading || isOpen.value) return
 
+  syncTrigger()
   isOpen.value = true
   emit('open')
 
@@ -273,6 +313,7 @@ useDismiss([triggerRef, menuRef], {
 
 // Méthodes exposées
 const focus = () => {
+  syncTrigger()
   triggerRef.value?.focus()
 }
 
@@ -292,9 +333,9 @@ defineExpose({
   triggerRef
 })
 
-// Validation pour les boutons avec icône seule
-if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !props.label) {
-  console.warn('Dropdown with icon and iconDisplay="only" should have an ariaLabel or label for accessibility')
+// Icône seule : le nom accessible vient de label (ou ariaLabel, ariaLabelledBy)
+if (isIconOnly.value && !slots.trigger && !props.ariaLabel && !props.ariaLabelledBy && !props.label) {
+  console.warn('[SuDropdown] Un déclencheur avec iconDisplay="only" doit recevoir label ou ariaLabel pour être accessible.')
 }
 </script>
 
@@ -306,8 +347,17 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !props.lab
     @mouseenter="handleMouseEnter"
     @mouseleave="handleMouseLeave"
   >
+    <!-- Déclencheur fourni par la page : `props` à lier à son bouton -->
+    <slot
+      v-if="$slots.trigger"
+      name="trigger"
+      :props="triggerSlotProps"
+      :is-open="isOpen"
+    />
+
     <!-- Trigger Button -->
     <button
+      v-else
       v-bind="{ ...triggerAttrs($attrs), ...ariaAttributes }"
       :id="dropdownId"
       ref="triggerRef"
@@ -407,14 +457,35 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !props.lab
               class="su-dropdown-option"
               :class="{
                 'su-dropdown-option--disabled': option.disabled,
-                'su-dropdown-option--focused': menuItems.indexOf(option) === activeIndex
+                'su-dropdown-option--focused': menuItems.indexOf(option) === activeIndex,
+                'su-dropdown-option--checked': isCheckable(option) && option.checked
               }"
-              role="menuitem"
+              :role="optionRole(option)"
+              :aria-checked="isCheckable(option) ? (option.checked ? 'true' : 'false') : undefined"
               :aria-disabled="option.disabled || undefined"
               tabindex="-1"
               @click="selectOption(option)"
               @mousemove="hoverItem(option)"
             >
+              <!-- Coche (options cochables) ; place réservée pour aligner les libellés -->
+              <span
+                v-if="hasCheckable"
+                class="su-dropdown-option-check"
+                :class="{ 'su-dropdown-option-check--radio': option.type === 'radio' }"
+                aria-hidden="true"
+              >
+                <template v-if="isCheckable(option) && option.checked">
+                  <span
+                    v-if="option.type === 'radio'"
+                    class="su-dropdown-option-dot"
+                  />
+                  <CheckIcon
+                    v-else
+                    class="su-dropdown-option-check-icon"
+                  />
+                </template>
+              </span>
+
               <!-- Icône de l'option -->
               <component 
                 :is="option.icon" 
@@ -463,7 +534,7 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !props.lab
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @use '../../styles/abstracts' as *;
 
 // ============================================================
@@ -598,6 +669,34 @@ if (props.icon && props.iconDisplay === 'only' && !props.ariaLabel && !props.lab
 
   &-label {
     @include truncate;
+  }
+
+  // Coche : colonne fixe, vide pour les options non cochées
+  &-check {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 1rem;
+    height: 1rem;
+    color: var(--su-text-primary);
+  }
+
+  &-check-icon {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  &-dot {
+    width: 0.375rem;
+    height: 0.375rem;
+    border-radius: 50%;
+    background-color: currentcolor;
+
+    @include high-contrast {
+      width: 0.5rem;
+      height: 0.5rem;
+    }
   }
 
   &-description {

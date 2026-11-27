@@ -172,3 +172,23 @@ describe('SuDialog — rendu serveur', () => {
     expect(html).toMatch(/<main><!--teleport start--><dialog[^>]*class="su-dialog/)
   })
 })
+
+describe('SuDialog — tiroirs start / end', () => {
+  it('display="start" / "end" : tiroirs du côté du sens de lecture', () => {
+    mountDialog({ display: 'start' })
+    expect(wrapper!.find('dialog').classes()).toContain('su-dialog--start')
+    wrapper!.unmount()
+
+    mountDialog({ display: 'end' })
+    expect(wrapper!.find('dialog').classes()).toContain('su-dialog--end')
+  })
+
+  it('left / right sont des alias de start / end (ancienne classe conservée)', () => {
+    mountDialog({ display: 'left' })
+    expect(wrapper!.find('dialog').classes()).toEqual(expect.arrayContaining(['su-dialog--start', 'su-dialog--left']))
+    wrapper!.unmount()
+
+    mountDialog({ display: 'right' })
+    expect(wrapper!.find('dialog').classes()).toEqual(expect.arrayContaining(['su-dialog--end', 'su-dialog--right']))
+  })
+})

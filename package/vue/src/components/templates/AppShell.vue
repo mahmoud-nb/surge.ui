@@ -208,7 +208,7 @@ const styles = computed(() => ({
       v-if="$slots.sidebar"
       v-model="open"
       class="su-app-shell__drawer"
-      display="left"
+      display="start"
       width="min(20rem, 85vw)"
       :aria-label="texts.drawer"
     >
