@@ -1,0 +1,62 @@
+import { Meta } from '@storybook/blocks'
+import pkg from '../../package.json'
+
+<Meta title="Bienvenue" />
+
+<div className="su-sb-welcome">
+
+<p className="su-sb-welcome__eyebrow">SurgeUI · v{pkg.version}</p>
+
+# Design System Vue 3
+
+<div className="su-sb-welcome__lead">Composants accessibles (WCAG AA), thématisables et prêts pour le RTL. Chaque composant a ses stories et sa page Docs ; les vitrines <strong>Global</strong> les montrent ensemble, dans des cas d’usage réels.</div>
+
+<div className="su-sb-welcome__cards">
+  <a className="su-sb-welcome__card" href="./?path=/story/global-affichage--affichage" target="_top">
+    <span className="su-sb-welcome__card-index">01</span>
+    <strong>Affichage</strong>
+    <span>Titres, badges, dialogs, onglets, alertes, progression</span>
+  </a>
+  <a className="su-sb-welcome__card" href="./?path=/story/global-actions--actions" target="_top">
+    <span className="su-sb-welcome__card-index">02</span>
+    <strong>Actions</strong>
+    <span>Boutons, liens, menus, barres d’outils</span>
+  </a>
+  <a className="su-sb-welcome__card" href="./?path=/story/global-formulaires--formulaires" target="_top">
+    <span className="su-sb-welcome__card-index">03</span>
+    <strong>Formulaires</strong>
+    <span>Champs, listes, validation, formulaire complet</span>
+  </a>
+  <a className="su-sb-welcome__card" href="./?path=/story/global-thèmes--themes" target="_top">
+    <span className="su-sb-welcome__card-index">04</span>
+    <strong>Thèmes</strong>
+    <span>Variables CSS personnalisées à la volée</span>
+  </a>
+</div>
+
+## Barre d’outils
+
+Les réglages en haut de l’aperçu s’appliquent à toutes les stories :
+
+- **Theme** : default, ocean, forest, sunset
+- **Theme Mode** : clair, sombre
+- **Direction** : LTR, RTL
+- **Langue** : français, anglais, arabe
+
+Le panneau **Accessibility** (addon a11y) analyse chaque story avec axe.
+
+## Organisation
+
+- **Global** : vitrines qui assemblent les composants.
+- **Atoms** : composants de base (Button, Input, Badge…).
+- **Molecules** : compositions (champs avec libellé, menus, sélecteurs de date…).
+- **Organisms** : ensembles complexes (Dialog, Tabs, DataTable…).
+- **Templates** : gabarits de page.
+
+## Ressources
+
+- [Documentation](https://surgeui.com/)
+- [Notes de version v{pkg.version}](https://github.com/mahmoud-nb/surge.ui/releases/tag/v{pkg.version})
+- [Paquet npm @surgeui/ds-vue](https://www.npmjs.com/package/@surgeui/ds-vue)
+
+</div>
