@@ -4,7 +4,8 @@ title: SurgeUI DS Vue
 parentId: null
 author: mahmoud-b73a
 createdAt: 2026-05-03T12:25:56.435Z
-updatedAt: 2026-05-19T18:31:38.307Z
+updatedAt: 2026-11-27T07:38:34.928Z
+commit: 02c670bc477ae9b061dd6eee689943199016e545
 ---
 
 # SurgeUI DS Vue — Résumé principal
