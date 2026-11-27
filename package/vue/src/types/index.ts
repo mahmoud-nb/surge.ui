@@ -745,6 +745,11 @@ export interface TooltipProps {
   closeDelay?: number;
   showArrow?: boolean;
   disabled?: boolean;
+  /**
+   * Relie l'infobulle au déclencheur par aria-describedby (défaut). `false` :
+   * infobulle visuelle seulement, quand elle répète le nom déjà lu (icône seule)
+   */
+  describe?: boolean;
 }
 
 // Breadcrumb.vue
@@ -1483,4 +1488,108 @@ export interface FullScreenLayoutProps {
   height?: string
   /** Nom accessible de la zone de défilement */
   label?: string
+}
+
+// ============================================================
+// STRUCTURE D'APPLICATION (4.0)
+// ============================================================
+
+// SkipLink.vue
+export interface SkipLinkProps {
+  /** id de l'élément atteint (contenu principal) */
+  target?: string
+  /** Texte du lien (défaut : locale `skipLink.label`) */
+  label?: string
+}
+
+// ThemeToggle.vue
+/** `button` : bascule clair / sombre ; `segmented` : clair, sombre ou système */
+export type ThemeToggleVariant = 'button' | 'segmented'
+export interface ThemeToggleProps {
+  variant?: ThemeToggleVariant
+  size?: Size
+  /** Nom du bouton (variante `button`) ou du groupe (variante `segmented`) */
+  label?: string
+  /** Libellés des options de la variante `segmented` */
+  lightLabel?: string
+  darkLabel?: string
+  systemLabel?: string
+}
+
+// PageHeader.vue
+export interface PageHeaderProps {
+  title?: string
+  description?: string
+  /** Fil d'Ariane au-dessus du titre */
+  breadcrumb?: BreadcrumbItem[]
+  /** Lien de retour au-dessus du titre */
+  back?: LinkTo
+  /** Texte du lien de retour (défaut : locale `pageHeader.back`) */
+  backLabel?: string
+  /** Niveau du titre (h1 par défaut) */
+  level?: 1 | 2 | 3 | 4 | 5 | 6
+}
+
+// NavMenu.vue
+export interface NavMenuItem {
+  type?: 'item'
+  label: string
+  /** Identifiant (v-model, clé de rendu) */
+  value?: string | number
+  /** Lien du routeur (RouterLink ou `linkComponent` du plugin) */
+  to?: LinkTo
+  href?: string
+  target?: LinkTarget
+  rel?: string
+  icon?: Component
+  /** Compteur ou courte étiquette affichée après le libellé */
+  badge?: string | number
+  badgeVariant?: BadgeVariant
+  /** Texte lu à la place du compteur (ex. « 3 messages non lus ») */
+  badgeLabel?: string
+  /** Force l'état actif (sinon : v-model, puis route courante) */
+  active?: boolean
+  disabled?: boolean
+  /** Sous-éléments (un niveau) : l'élément devient un bouton qui les déplie */
+  items?: NavMenuItem[]
+  /** Sous-éléments dépliés au premier rendu */
+  defaultOpen?: boolean
+}
+/** Groupe d'éléments, avec un titre facultatif */
+export interface NavMenuGroup {
+  type: 'group'
+  label?: string
+  items: NavMenuItem[]
+}
+export type NavMenuEntry = NavMenuItem | NavMenuGroup
+export interface NavMenuProps {
+  items: NavMenuEntry[]
+  /** Comparaison avec la route courante : chemin exact, ou préfixe (sections) */
+  match?: 'exact' | 'prefix'
+  /** Nom de la navigation (défaut : locale `navMenu.label`) */
+  label?: string
+}
+
+// AppShell.vue
+export type AppShellBreakpoint = 'md' | 'lg' | 'xl'
+export interface AppShellProps {
+  /** En dessous de ce point de rupture, la barre latérale devient un tiroir */
+  breakpoint?: AppShellBreakpoint
+  /** Largeur de la barre latérale */
+  sidebarWidth?: string
+  /** Largeur de la barre latérale réduite en icônes */
+  collapsedWidth?: string
+  /** Bouton qui réduit la barre latérale en icônes (grand écran) */
+  collapsible?: boolean
+  /** Barre du haut collante */
+  stickyHeader?: boolean
+  /** Lien d'évitement vers le contenu principal */
+  skipLink?: boolean
+  skipLinkLabel?: string
+  /** Nom du bouton qui ouvre le tiroir */
+  menuLabel?: string
+  /** Nom du tiroir */
+  drawerLabel?: string
+  /** Nom du bouton qui réduit la barre latérale */
+  collapseLabel?: string
 }

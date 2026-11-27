@@ -235,6 +235,27 @@ export const ar: SurgeLocale = {
       grid: 'شبكة',
       list: 'قائمة'
     },
+    skipLink: {
+      label: 'الانتقال إلى المحتوى الرئيسي'
+    },
+    themeToggle: {
+      toggle: 'الوضع الداكن',
+      group: 'المظهر',
+      light: 'فاتح',
+      dark: 'داكن',
+      system: 'النظام'
+    },
+    pageHeader: {
+      back: 'رجوع'
+    },
+    navMenu: {
+      label: 'التنقل الرئيسي'
+    },
+    appShell: {
+      menu: 'فتح القائمة',
+      drawer: 'القائمة',
+      collapse: 'تصغير القائمة'
+    },
     holyGrailLayout: {
       skipLink: 'الانتقال إلى المحتوى الرئيسي',
       nav: 'التنقل الرئيسي',

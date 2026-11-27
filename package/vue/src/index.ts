@@ -90,6 +90,11 @@ import GridLayout from './components/templates/GridLayout.vue'
 import MasonryLayout from './components/templates/MasonryLayout.vue'
 import HeroLayout from './components/templates/HeroLayout.vue'
 import FullScreenLayout from './components/templates/FullScreenLayout.vue'
+import SkipLink from './components/atoms/SkipLink.vue'
+import ThemeToggle from './components/molecules/ThemeToggle.vue'
+import PageHeader from './components/molecules/PageHeader.vue'
+import NavMenu from './components/organisms/NavMenu.vue'
+import AppShell from './components/templates/AppShell.vue'
 
 import * as accessibility from './utils/accessibility'
 import { SurgeuiTheme, ThemeSymbol, flattenThemeToCSS } from './plugin/theme'
@@ -110,6 +115,7 @@ export { Input, Textarea, SelectBox, RadioGroup, Checkbox, CheckboxGroup, Number
 export { InputField, SelectBoxField, RadioGroupField, CheckboxGroupField, PasswordField, SwitchField, FileUploadField, TextareaField, SliderField, OtpInputField, NumberInputField }
 export { FormField, FormFieldGroup }
 export { SingleColumnLayout, SidebarLayout, SplitLayout, HolyGrailLayout, MagazineLayout, GridLayout, MasonryLayout, HeroLayout, FullScreenLayout }
+export { SkipLink, ThemeToggle, PageHeader, NavMenu, AppShell }
 export { accessibility }
 export { getPaginationItems } from './utils/pagination'
 export type { PaginationItem, PaginationRangeOptions } from './utils/pagination'
@@ -199,6 +205,12 @@ export interface SurgeComponents {
   MasonryLayout: typeof MasonryLayout
   HeroLayout: typeof HeroLayout
   FullScreenLayout: typeof FullScreenLayout
+  // Structure d'application (4.0)
+  SkipLink: typeof SkipLink
+  ThemeToggle: typeof ThemeToggle
+  PageHeader: typeof PageHeader
+  NavMenu: typeof NavMenu
+  AppShell: typeof AppShell
 }
 
 // Enregistrés sous le préfixe choisi (`Su` par défaut)
@@ -217,7 +229,9 @@ const components: SurgeComponents = {
   SwitchField, SliderField, FileUploadField, OtpInputField, NumberInputField, FormFieldGroup,
   // ## Templates (layouts)
   SingleColumnLayout, SidebarLayout, SplitLayout, HolyGrailLayout, MagazineLayout, GridLayout,
-  MasonryLayout, HeroLayout, FullScreenLayout
+  MasonryLayout, HeroLayout, FullScreenLayout,
+  // ## Structure d'application
+  SkipLink, ThemeToggle, PageHeader, NavMenu, AppShell
 }
 
 /**
