@@ -66,8 +66,12 @@
   --vp-local-nav-bg-color: rgb(var(--lm-bg-rgb) / 0.72);
 }
 
-/* --- [glass] En-tête translucide ----------------------------------------- */
-.VPNav,
+/* --- [glass] En-tête translucide -----------------------------------------
+   Sur la barre (.VPNavBar), pas sur .VPNav : un backdrop-filter fait de
+   l'élément le bloc conteneur de ses descendants en position: fixed, et le
+   menu mobile (.VPNavScreen, dans .VPNav) s'ouvrait alors avec une hauteur
+   nulle, limité aux 64 px de l'en-tête. */
+.VPNavBar,
 .VPLocalNav {
   -webkit-backdrop-filter: blur(12px) saturate(140%);
   backdrop-filter: blur(12px) saturate(140%);
