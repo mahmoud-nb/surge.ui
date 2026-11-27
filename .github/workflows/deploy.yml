@@ -1,10 +1,12 @@
 name: Deploy to GitHub Pages
 
+# next : intégration de la prochaine version majeure, construite mais jamais
+# déployée (surgeui.com reste sur la version publiée jusqu'à sa fusion dans main)
 on:
   push:
-    branches: [ main ]
+    branches: [ main, next ]
   pull_request:
-    branches: [ main ]
+    branches: [ main, next ]
 
 # Permet l'annulation des déploiements concurrents
 concurrency:
@@ -12,7 +14,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # Construction : sur main comme sur les pull requests (vérifie que la
+  # Construction : sur main, next et les pull requests (vérifie que la
   # bibliothèque, la documentation et Storybook se construisent).
   # Pas d'environnement ici : les règles de github-pages n'autorisent que
   # main, une pull request serait refusée avant la première étape.

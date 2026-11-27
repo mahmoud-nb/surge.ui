@@ -13,9 +13,10 @@
     { "type": "ci", "section": "👷 CI/CD", "hidden": true }
   ],
   "preMajor": false,
-  "commitUrlFormat": "https://mahmoud-nb.github.io/surge.ui/commit/{{hash}}",
-  "compareUrlFormat": "https://mahmoud-nb.github.io/surge.ui/compare/{{previousTag}}...{{currentTag}}",
-  "issueUrlFormat": "https://mahmoud-nb.github.io/surge.ui/issues/{{id}}",
+  "commitUrlFormat": "https://github.com/mahmoud-nb/surge.ui/commit/{{hash}}",
+  "compareUrlFormat": "https://github.com/mahmoud-nb/surge.ui/compare/{{previousTag}}...{{currentTag}}",
+  "issueUrlFormat": "https://github.com/mahmoud-nb/surge.ui/issues/{{id}}",
+  "issuePrefixes": ["GH-"],
   "bumpFiles": [
     {
       "filename": "package.json",
@@ -24,6 +25,10 @@
     {
       "filename": "package/vue/package.json",
       "type": "json"
+    },
+    {
+      "filename": "package/ds-vue/package.json",
+      "updater": "package/ds-vue/scripts/version-updater.cjs"
     }
   ],
   "packageFiles": [

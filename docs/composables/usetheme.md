@@ -6,7 +6,7 @@ Composable pour la gestion des themes, du mode clair/sombre, du contraste et du 
 
 ```vue
 <script setup>
-import { useTheme } from '@surgeui/ds-vue'
+import { useTheme } from '@surgeui/vue'
 
 const {
   themeName,
@@ -34,7 +34,7 @@ const {
 
 ```vue
 <script setup>
-import { useTheme } from '@surgeui/ds-vue'
+import { useTheme } from '@surgeui/vue'
 
 const { setTheme, setThemeMode, availableThemes } = useTheme()
 
@@ -56,7 +56,7 @@ Le composable detecte automatiquement les preferences systeme :
 
 ```vue
 <script setup>
-import { useTheme } from '@surgeui/ds-vue'
+import { useTheme } from '@surgeui/vue'
 
 const { systemTheme, systemContrast, systemMotion } = useTheme()
 

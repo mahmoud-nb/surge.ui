@@ -1,8 +1,6 @@
 /**
  * Utilitaires pour l'accessibilité
  */
-import { announce } from '@/composables/useAnnouncer'
-import { createFocusTrap } from '@/composables/useFocusTrap'
 
 /**
  * Génère un ID unique pour les éléments
@@ -26,26 +24,6 @@ export function isFocusable(element: HTMLElement): boolean {
   ]
   
   return focusableSelectors.some(selector => element.matches(selector))
-}
-
-/**
- * Gère le focus trap dans un conteneur
- * @deprecated Utiliser useFocusTrap() ou createFocusTrap() (composables) :
- * pièges empilables, liste des éléments recalculée, focus rendu à la sortie.
- */
-export function trapFocus(container: HTMLElement): () => void {
-  const trap = createFocusTrap(container, { returnFocus: false })
-  trap.activate()
-  return trap.deactivate
-}
-
-/**
- * Annonce un message aux lecteurs d'écran
- * @deprecated Utiliser `announce()` ou `useAnnouncer()` (composables) : régions live
- * persistantes, annonces fiables et compatibles avec les dialogs modaux.
- */
-export function announceToScreenReader(message: string, priority: 'polite' | 'assertive' = 'polite'): void {
-  announce(message, { priority })
 }
 
 /**

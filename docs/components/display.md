@@ -30,6 +30,11 @@ Les composants d'affichage servent à présenter du contenu visuel : titres, ima
 | [ConfirmDialog](/components/confirmdialog) | Confirmation par promesse avec useConfirm() |
 | [Dialog](/components/dialog) | Modale/tiroir polyvalent (center, left, right, top, bottom, full) |
 | [Popover](/components/popover) | Bulle contextuelle avec placement intelligent |
+| [PageHeader](/components/pageheader) | En-tête de page : fil d'Ariane, titre, description, actions |
+| [Stat](/components/stat) | Carte d'indicateur : valeur, variation, mini-graphique |
+| [Timeline](/components/timeline) | Fil d'activité regroupé par jour |
+| [CodeBlock](/components/codeblock) | Bloc de code légendé avec copie |
+| [Prose](/components/prose) | Typographie d'un contenu rédigé (Markdown, CMS) |
 | [Tooltip](/components/tooltip) | Infobulle au survol et au focus clavier |
 | [Alert](/components/alert) | Alerte informative avec types success, warning, error, info |
 | [Toast](/components/toast) | Notifications éphémères avec useToast() et SuToaster |

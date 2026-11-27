@@ -31,7 +31,7 @@ import { ref } from 'vue'
 const userMenuOptions = ref([
   { value: 'profile', label: 'Mon profil', icon: UserIcon },
   { value: 'settings', label: 'Paramètres', icon: CogIcon },
-  { value: 'separator1', separator: true },
+  { type: 'separator' as const },
   { value: 'logout', label: 'Déconnexion', icon: ArrowRightIcon }
 ])
 
@@ -39,7 +39,7 @@ const documentMenuOptions = ref([
   { value: 'new', label: 'Nouveau', icon: PlusIcon },
   { value: 'open', label: 'Ouvrir', icon: DocumentIcon },
   { value: 'save', label: 'Enregistrer', icon: ArrowDownTrayIcon },
-  { value: 'separator1', separator: true },
+  { type: 'separator' as const },
   { value: 'delete', label: 'Supprimer', icon: TrashIcon }
 ])
 
@@ -47,7 +47,7 @@ const moreActionsOptions = ref([
   { value: 'edit', label: 'Éditer', icon: PencilIcon },
   { value: 'share', label: 'Partager', icon: ShareIcon },
   { value: 'print', label: 'Imprimer', icon: PrinterIcon },
-  { value: 'separator1', separator: true },
+  { type: 'separator' as const },
   { value: 'duplicate', label: 'Dupliquer' },
   { value: 'archive', label: 'Archiver' }
 ])

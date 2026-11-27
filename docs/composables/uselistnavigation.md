@@ -14,7 +14,7 @@ Navigation clavier dans une liste : flèches, Début / Fin et saisie rapide, en 
 ```vue
 <script setup>
 import { ref } from 'vue'
-import { useListNavigation } from '@surgeui/ds-vue'
+import { useListNavigation } from '@surgeui/vue'
 
 const actions = [
   { label: 'Modifier' },

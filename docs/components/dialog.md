@@ -39,7 +39,7 @@ Composant Dialog polyvalent pour afficher des modales (centrées) ou des tiroirs
 ```vue
 <script setup>
 import { ref } from 'vue'
-import { Dialog, Button } from '@surgeui/ds-vue'
+import { Dialog, Button } from '@surgeui/vue'
 
 const showCenterModal = ref(false)
 </script>
@@ -322,7 +322,6 @@ Le déplacement a lieu après le montage : côté serveur et pendant l'hydratati
 | `closeOnEscape` | `boolean` | `true` | Permet de fermer le Dialog avec la touche `Escape` |
 | `width` | `string` | `auto` | Largeur personnalisée du Dialog (ex: `'500px'`, `'80%'`) |
 | `height` | `string` | `auto` | Hauteur personnalisée du Dialog (ex: `'400px'`, `'90vh'`) |
-| `zIndex` | `number` | — | **Obsolète**, sans effet : le Dialog s'affiche dans la couche supérieure du navigateur, au-dessus de tout z-index |
 | `disableScroll` | `boolean` | `true` | Désactive le défilement du corps de la page lorsque le Dialog est ouvert |
 | `teleport` | `string \| HTMLElement \| boolean` | `'body'` | Où rendre le `<dialog>` : sélecteur ou élément ; `false` pour le laisser sur place. Voir [Rendu dans body](#rendu-dans-body) |
 

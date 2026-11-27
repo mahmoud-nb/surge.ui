@@ -6,7 +6,7 @@ Composable for reactive breakpoint detection. Uses `window.matchMedia` for perfo
 
 ```vue
 <script setup>
-import { useBreakpoint } from '@surgeui/ds-vue'
+import { useBreakpoint } from '@surgeui/vue'
 
 const { current, isUp, isDown, isBetween, matches } = useBreakpoint()
 </script>
@@ -37,7 +37,7 @@ const { current, isUp, isDown, isBetween, matches } = useBreakpoint()
 
 ```vue
 <script setup>
-import { useBreakpoint } from '@surgeui/ds-vue'
+import { useBreakpoint } from '@surgeui/vue'
 
 const { isUp, isDown } = useBreakpoint()
 </script>
@@ -61,7 +61,7 @@ const { isUp, isDown } = useBreakpoint()
 ```vue
 <script setup>
 import { computed } from 'vue'
-import { useBreakpoint } from '@surgeui/ds-vue'
+import { useBreakpoint } from '@surgeui/vue'
 
 const { current } = useBreakpoint()
 
@@ -81,7 +81,7 @@ const columns = computed(() => {
 
 ```vue
 <script setup>
-import { useBreakpoint } from '@surgeui/ds-vue'
+import { useBreakpoint } from '@surgeui/vue'
 
 const { isBetween } = useBreakpoint()
 
@@ -94,7 +94,7 @@ const isTablet = isBetween('sm', 'lg')
 
 ```vue
 <script setup>
-import { useBreakpoint } from '@surgeui/ds-vue'
+import { useBreakpoint } from '@surgeui/vue'
 
 const { current, matches } = useBreakpoint({
   breakpoints: {

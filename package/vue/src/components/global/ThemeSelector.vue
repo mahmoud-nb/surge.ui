@@ -35,7 +35,7 @@
           { value: 'dark', label: 'Sombre' },
           { value: 'system', label: 'Système' }
         ]"
-        @update:model-value="setThemeMode($event as 'light' | 'dark' | 'auto')"
+        @update:model-value="setThemeMode($event as 'light' | 'dark' | 'system')"
       />
     </div>
 
@@ -225,10 +225,11 @@ const availableThemesOptions = computed(() =>
   availableThemes.value.map((t) => ({ value: t.id, label: t.name }))
 )
 
+// Écart avec les réglages par défaut (thème « default », mode « system »)
 const hasChanges = computed(() => {
   return (
-    themeName.value !== 'auto' ||
-    themeMode.value !== 'auto' ||
+    themeName.value !== 'default' ||
+    themeMode.value !== 'system' ||
     contrastMode.value !== 'auto' ||
     motionMode.value !== 'auto'
   )

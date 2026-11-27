@@ -252,8 +252,9 @@
   margin-bottom: 0;
 }
 
-/* Titre de démo en sur-titre : la démo reste au premier plan */
-.vp-doc .component-demo h4 {
+/* Titre de démo en sur-titre : la démo reste au premier plan
+   (pas les titres rendus par les composants : classes su-*) */
+.vp-doc .component-demo h4:not([class*='su-']) {
   margin: 0 0 1rem;
   color: var(--vp-c-text-2);
   font-family: var(--vp-font-family-mono);

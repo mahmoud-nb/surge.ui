@@ -14,7 +14,7 @@ Keyboard navigation in a list: arrows, Home / End and typeahead, skipping disabl
 ```vue
 <script setup>
 import { ref } from 'vue'
-import { useListNavigation } from '@surgeui/ds-vue'
+import { useListNavigation } from '@surgeui/vue'
 
 const actions = [
   { label: 'Edit' },

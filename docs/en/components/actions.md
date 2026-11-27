@@ -38,3 +38,7 @@ Action components enable user interaction: buttons, links, toggles, dropdown men
 | [Pagination](/en/components/pagination) | Navigation between the pages of a list |
 | [Stepper](/en/components/stepper) | Progress through a multi-step flow |
 | [CommandPalette](/en/components/commandpalette) | Keyboard command search (Ctrl + K) |
+| [NavMenu](/en/components/navmenu) | Side navigation: groups, counters, active item, collapsed mode |
+| [ThemeToggle](/en/components/themetoggle) | Light / dark toggle, or light, dark, system choice |
+| [SkipLink](/en/components/skiplink) | Skip link to the main content |
+| [CopyButton](/en/components/copybutton) | Copy to clipboard, result announced |

@@ -5,6 +5,7 @@
   "type": "module",
   "workspaces": [
     "package/vue",
+    "package/ds-vue",
     "docs"
   ],
   "config": {
@@ -16,14 +17,15 @@
   },
   "scripts": {
     "dev": "npm run build:lib && npm run dev -w docs",
-    "build": "npm run build -w package/vue && npm run build -w docs",
-    "build:lib": "npm run build -w package/vue",
+    "build": "npm run build:lib && npm run build -w docs",
+    "build:lib": "npm run build -w package/vue && npm run build -w package/ds-vue",
     "build:docs": "npm run build -w docs",
     "dev:lib": "npm run dev -w package/vue",
     "dev:docs": "npm run dev -w docs",
     "storybook": "npm run storybook -w package/vue",
     "build-storybook": "npm run build-storybook -w package/vue",
     "test": "npm run test -w package/vue",
+    "typecheck": "npm run typecheck -w package/vue",
     "lint": "npm run lint:js && npm run lint:style",
     "lint:fix": "npm run lint:js:fix && npm run lint:style:fix",
     "lint:js": "eslint . --ext .js,.ts,.vue",
@@ -36,7 +38,7 @@
     "release:patch": "standard-version --release-as patch",
     "release:minor": "standard-version --release-as minor",
     "release:major": "standard-version --release-as major",
-    "release:publish": "npm run build:lib && npm publish -w package/vue --access public",
+    "release:publish": "npm run build:lib && npm publish -w package/vue --access public && npm publish -w package/ds-vue --access public",
     "env:sync": "cp .env docs/.env && cp .env package/vue/.env",
     "commit": "cz"
   },

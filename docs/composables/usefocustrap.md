@@ -11,7 +11,7 @@ Un `<dialog>` ouvert avec `showModal()` piège déjà le focus nativement et ren
 ```vue
 <script setup>
 import { ref } from 'vue'
-import { useFocusTrap } from '@surgeui/ds-vue'
+import { useFocusTrap } from '@surgeui/vue'
 
 const isOpen = ref(false)
 const panelRef = ref()
@@ -72,5 +72,5 @@ useFocusTrap(target, options?)
 | `getTabbableElements(container)` | Éléments atteignables par Tab, dans l'ordre du DOM |
 
 ::: info Migration
-`accessibility.trapFocus()` est obsolète : il passe désormais par `createFocusTrap` et sera retiré dans une prochaine version majeure.
+`accessibility.trapFocus()` a été retiré en 4.0 : utilisez `createFocusTrap(container).activate()` ou `useFocusTrap()` (voir la [migration vers la 4.0](/guide/migration#api-retirees)).
 :::

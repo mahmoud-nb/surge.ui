@@ -6,7 +6,7 @@ Announces a message to screen readers without displaying it: the outcome of an a
 
 ```vue
 <script setup>
-import { useAnnouncer } from '@surgeui/ds-vue'
+import { useAnnouncer } from '@surgeui/vue'
 
 const { announce } = useAnnouncer()
 
@@ -26,7 +26,7 @@ const upload = (file) => {
 Outside a component (store, service), call the `announce` function directly:
 
 ```ts
-import { announce } from '@surgeui/ds-vue'
+import { announce } from '@surgeui/vue'
 
 announce('3 results')
 ```
@@ -71,5 +71,5 @@ A live region (`aria-live`) is only read if it **already exists** when its conte
 | `clearAnnouncements()` | Clears every announcement |
 
 ::: info Migration
-`accessibility.announceToScreenReader()` is deprecated: it now goes through `announce` and will be removed in a future major version.
+`accessibility.announceToScreenReader()` was removed in 4.0: use `announce(message, { priority })` or `useAnnouncer()` (see [Migrating to 4.0](/en/guide/migration#removed-apis)).
 :::

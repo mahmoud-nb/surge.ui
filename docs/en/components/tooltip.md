@@ -92,6 +92,7 @@ The placement flips automatically when space runs out.
 | `closeDelay` | `number` | `100` | Delay before closing (ms), time to move the pointer onto the tooltip |
 | `showArrow` | `boolean` | `false` | Shows an arrow |
 | `disabled` | `boolean` | `false` | Disables the tooltip |
+| `describe` | `boolean` | `true` | Ties the tooltip to its trigger (`aria-describedby`). `false`: visual tooltip only, when it repeats the name already read (named icon-only button) |
 | `modelValue` | `boolean` | `false` | Controlled open state (v-model, optional) |
 
 ### Events

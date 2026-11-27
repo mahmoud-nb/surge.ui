@@ -7,7 +7,7 @@ Closes a layered element (popover, menu, dropdown list, panel) with Escape, a po
 ```vue
 <script setup>
 import { ref } from 'vue'
-import { useDismiss } from '@surgeui/ds-vue'
+import { useDismiss } from '@surgeui/vue'
 
 const isOpen = ref(false)
 const triggerRef = ref()

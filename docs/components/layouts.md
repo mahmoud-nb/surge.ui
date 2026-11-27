@@ -16,6 +16,7 @@ Les layouts (couche *templates* de l'Atomic Design) structurent une page ou une 
 | Masonry | Fils de médias de hauteurs variables | [MasonryLayout](/components/masonrylayout) |
 | Hero | Lancements de produit, inscriptions | [HeroLayout](/components/herolayout) |
 | Plein écran | Récits, une idée par écran | [FullScreenLayout](/components/fullscreenlayout) |
+| Application | Barre latérale, barre du haut, tiroir sur mobile | [AppShell](/components/appshell) |
 
 ### Et les parcours en F et en Z ?
 

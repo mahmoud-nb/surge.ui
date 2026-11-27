@@ -1,14 +1,14 @@
 {
-  "name": "@surgeui/ds-vue",
+  "name": "@surgeui/vue",
   "version": "3.3.0",
   "type": "module",
-  "main": "./dist/index.umd.js",
+  "main": "./dist/index.umd.cjs",
   "module": "./dist/index.es.js",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.es.js",
-      "require": "./dist/index.umd.js"
+      "require": "./dist/index.umd.cjs"
     },
     "./types": {
       "types": "./dist/types/index.d.ts"
@@ -59,6 +59,7 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build --output-dir storybook-static",
     "test": "vitest run",
+    "typecheck": "vue-tsc --noEmit -p tsconfig.json",
     "test:watch": "vitest"
   },
   "devDependencies": {
@@ -74,6 +75,7 @@
     "@types/node": "^24.10.1",
     "@vitejs/plugin-vue": "^5.0.0",
     "@vue/test-utils": "^2.5.1",
+    "axe-core": "^4.14.1",
     "happy-dom": "^20.14.6",
     "storybook": "^8.0.0",
     "typescript": "^5.5.3",

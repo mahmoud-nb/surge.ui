@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, describe, expect, it } from 'vitest'
 import { mount, flushPromises, type VueWrapper } from '@vue/test-utils'
 import Dropdown from '@/components/molecules/Dropdown.vue'
 import Popover from '@/components/molecules/Popover.vue'
@@ -14,7 +14,7 @@ afterEach(() => {
 const options = [
   { value: 'edit', label: 'Modifier' },
   { value: 'duplicate', label: 'Dupliquer' },
-  { separator: true },
+  { type: 'separator' as const },
   { value: 'archive', label: 'Archiver', disabled: true },
   { value: 'delete', label: 'Supprimer' }
 ]
@@ -168,15 +168,5 @@ describe('SuDropdown — attributs et séparateurs', () => {
     const roles = menu.findAll('[role]').map(el => el.attributes('role'))
     expect(roles).toEqual(['menuitem', 'separator', 'menuitem', 'separator', 'menuitem'])
     expect(items().map(item => item.text())).toEqual(['Modifier', 'Partager', 'Supprimer'])
-  })
-
-  it("garde l'ancienne forme separator: true et signale une option nommée qui disparaît", () => {
-    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
-    wrapper = mount(Dropdown, {
-      props: { label: 'Actions', options: [{ value: 'x', label: 'Supprimer', separator: true }] }
-    })
-
-    expect(warn).toHaveBeenCalledWith(expect.stringContaining('« Supprimer »'))
-    warn.mockRestore()
   })
 })

@@ -90,6 +90,17 @@ import GridLayout from './components/templates/GridLayout.vue'
 import MasonryLayout from './components/templates/MasonryLayout.vue'
 import HeroLayout from './components/templates/HeroLayout.vue'
 import FullScreenLayout from './components/templates/FullScreenLayout.vue'
+import SkipLink from './components/atoms/SkipLink.vue'
+import ThemeToggle from './components/molecules/ThemeToggle.vue'
+import PageHeader from './components/molecules/PageHeader.vue'
+import NavMenu from './components/organisms/NavMenu.vue'
+import AppShell from './components/templates/AppShell.vue'
+import CopyButton from './components/atoms/CopyButton.vue'
+import Rating from './components/atoms/Rating.vue'
+import Prose from './components/atoms/Prose.vue'
+import CodeBlock from './components/molecules/CodeBlock.vue'
+import Stat from './components/molecules/Stat.vue'
+import Timeline from './components/organisms/Timeline.vue'
 
 import * as accessibility from './utils/accessibility'
 import { SurgeuiTheme, ThemeSymbol, flattenThemeToCSS } from './plugin/theme'
@@ -110,6 +121,8 @@ export { Input, Textarea, SelectBox, RadioGroup, Checkbox, CheckboxGroup, Number
 export { InputField, SelectBoxField, RadioGroupField, CheckboxGroupField, PasswordField, SwitchField, FileUploadField, TextareaField, SliderField, OtpInputField, NumberInputField }
 export { FormField, FormFieldGroup }
 export { SingleColumnLayout, SidebarLayout, SplitLayout, HolyGrailLayout, MagazineLayout, GridLayout, MasonryLayout, HeroLayout, FullScreenLayout }
+export { SkipLink, ThemeToggle, PageHeader, NavMenu, AppShell }
+export { CopyButton, CodeBlock, Stat, Timeline, Rating, Prose }
 export { accessibility }
 export { getPaginationItems } from './utils/pagination'
 export type { PaginationItem, PaginationRangeOptions } from './utils/pagination'
@@ -117,7 +130,7 @@ export { parseDateInput, getFirstDayOfWeek } from './utils/date'
 
 /**
  * Composants enregistrés par le plugin, par nom sans préfixe. Les types
- * globaux (`@surgeui/ds-vue/global`) en découlent ; l'objet `components`
+ * globaux (`@surgeui/vue/global`) en découlent ; l'objet `components`
  * ci-dessous doit avoir exactement ces clés (sinon erreur de compilation).
  */
 export interface SurgeComponents {
@@ -199,6 +212,19 @@ export interface SurgeComponents {
   MasonryLayout: typeof MasonryLayout
   HeroLayout: typeof HeroLayout
   FullScreenLayout: typeof FullScreenLayout
+  // Structure d'application (4.0)
+  SkipLink: typeof SkipLink
+  ThemeToggle: typeof ThemeToggle
+  PageHeader: typeof PageHeader
+  NavMenu: typeof NavMenu
+  AppShell: typeof AppShell
+  // Données et contenu (4.0)
+  CopyButton: typeof CopyButton
+  CodeBlock: typeof CodeBlock
+  Stat: typeof Stat
+  Timeline: typeof Timeline
+  Rating: typeof Rating
+  Prose: typeof Prose
 }
 
 // Enregistrés sous le préfixe choisi (`Su` par défaut)
@@ -217,13 +243,17 @@ const components: SurgeComponents = {
   SwitchField, SliderField, FileUploadField, OtpInputField, NumberInputField, FormFieldGroup,
   // ## Templates (layouts)
   SingleColumnLayout, SidebarLayout, SplitLayout, HolyGrailLayout, MagazineLayout, GridLayout,
-  MasonryLayout, HeroLayout, FullScreenLayout
+  MasonryLayout, HeroLayout, FullScreenLayout,
+  // ## Structure d'application
+  SkipLink, ThemeToggle, PageHeader, NavMenu, AppShell,
+  // ## Données et contenu
+  CopyButton, CodeBlock, Stat, Timeline, Rating, Prose
 }
 
 /**
  * Composants globaux sous un préfixe, pour typer les templates :
  * `declare module 'vue' { interface GlobalComponents extends SurgeGlobalComponents<'Ui'> {} }`.
- * Pour le préfixe par défaut, ajouter `@surgeui/ds-vue/global` aux `types` du tsconfig.
+ * Pour le préfixe par défaut, ajouter `@surgeui/vue/global` aux `types` du tsconfig.
  */
 export type SurgeGlobalComponents<Prefix extends string = 'Su'> = {
   [Name in keyof SurgeComponents as `${Prefix}${Name}`]: SurgeComponents[Name]

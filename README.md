@@ -2,7 +2,7 @@
 
 An accessible **Vue 3** component library: components, layouts and composables built with the Composition API and TypeScript.
 
-[![npm](https://img.shields.io/npm/v/@surgeui/ds-vue)](https://www.npmjs.com/package/@surgeui/ds-vue)
+[![npm](https://img.shields.io/npm/v/@surgeui/vue)](https://www.npmjs.com/package/@surgeui/vue)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Vue 3](https://img.shields.io/badge/Vue-3.5+-4FC08D.svg)](https://vuejs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-Ready-3178C6.svg)](https://www.typescriptlang.org/)
@@ -11,7 +11,7 @@ An accessible **Vue 3** component library: components, layouts and composables b
 
 - **[Documentation](https://surgeui.com/)** - Guides and component API (French and English)
 - **[Storybook](https://surgeui.com/storybook/)** - Interactive examples and accessibility checks
-- **[npm package](https://www.npmjs.com/package/@surgeui/ds-vue)** - Installation and usage: see the [library README](./package/README.md)
+- **[npm package](https://www.npmjs.com/package/@surgeui/vue)** - Installation and usage: see the [library README](./package/vue/README.md)
 - **[CHANGELOG](./CHANGELOG.md)** - Release notes, including the breaking changes of 3.0
 
 ## ✨ Features
@@ -26,14 +26,14 @@ An accessible **Vue 3** component library: components, layouts and composables b
 ## 🚀 Quick start
 
 ```bash
-npm install @surgeui/ds-vue
+npm install @surgeui/vue
 ```
 
 ```ts
 // main.ts
 import { createApp } from 'vue'
-import SurgeUI from '@surgeui/ds-vue'
-import '@surgeui/ds-vue/style.css'
+import SurgeUI from '@surgeui/vue'
+import '@surgeui/vue/style.css'
 import App from './App.vue'
 
 createApp(App).use(SurgeUI).mount('#app')
@@ -47,7 +47,8 @@ npm workspaces monorepo:
 
 | Folder | Package | Content |
 |--------|---------|---------|
-| `package/` | `@surgeui/ds-vue` | Component library (published on npm), Storybook, tests |
+| `package/vue/` | `@surgeui/vue` | Component library (published on npm), Storybook, tests |
+| `package/ds-vue/` | `@surgeui/ds-vue` | Former package name: deprecated relay to `@surgeui/vue`, published once in 4.0.0 |
 | `docs/` | `@surgeui/ds-docs` | VitePress documentation (French + `/en`) |
 
 ## 🛠️ Development

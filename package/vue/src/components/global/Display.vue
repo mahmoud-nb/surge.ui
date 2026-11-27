@@ -20,6 +20,7 @@ import GlobalPreview from './GlobalPreview.vue'
 import {
   CheckIcon
 } from '@heroicons/vue/24/outline'
+import type { AvatarProps } from '@/types'
 
 // État pour les dialogs et interactions
 const dialogOpen = ref(false)
@@ -61,7 +62,7 @@ const accordionItems = ref([
   }
 ])
 
-const teamAvatars = ref([
+const teamAvatars = ref<(AvatarProps & { id: string })[]>([
   {
     id: '1',
     name: 'Alice Johnson',
@@ -314,18 +315,6 @@ const teamAvatars = ref([
           <GridCell
             radius="md"
           >
-            <Preview title="Extra petite">
-              <Avatar
-                name="Alice"
-                size="xs"
-                variant="circle"
-                status="online"
-              />
-            </Preview>
-          </GridCell>
-          <GridCell
-            radius="md"
-          >
             <Preview title="Petite">
               <Avatar
                 name="Bob"
@@ -377,12 +366,12 @@ const teamAvatars = ref([
           <GridCell
             radius="md"
           >
-            <Preview title="2XL">
+            <Preview title="Extra large avec image">
               <Avatar
                 src="https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=100"
                 name="Frank"
                 alt="Frank"
-                size="2xl"
+                size="xl"
                 variant="circle"
               />
             </Preview>
@@ -811,7 +800,7 @@ const teamAvatars = ref([
                 :items="accordionItems"
                 :multiple="true"
                 gap="md"
-                level="3"
+                :level="3"
               />
             </Preview>
           </GridCell>

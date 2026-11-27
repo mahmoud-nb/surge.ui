@@ -109,12 +109,15 @@ export default [
     },
   },
   
-  // Fichiers de configuration exécutés par Node (Vite, Storybook, VitePress)
+  // Fichiers exécutés par Node (configuration Vite, Storybook, VitePress,
+  // scripts de build, modules CommonJS du relais @surgeui/ds-vue)
   {
     files: [
       '**/*.config.{js,ts,mjs,mts}',
       '**/.storybook/**/*.{js,ts}',
       '**/.vitepress/config.{js,ts,mts}',
+      '**/scripts/**/*.{js,mjs,cjs}',
+      '**/*.cjs',
     ],
     languageOptions: {
       globals: nodeGlobals,

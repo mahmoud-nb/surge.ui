@@ -49,10 +49,6 @@ const meta: Meta<typeof Dialog> = {
       control: 'text',
       description: 'Hauteur personnalisée du Dialog (ex: "400px", "90vh")'
     },
-    zIndex: {
-      control: 'number',
-      description: 'Z-index du Dialog et de son overlay'
-    },
     disableScroll: {
       control: 'boolean',
       description: 'Désactive le défilement du corps de la page lorsque le Dialog est ouvert'

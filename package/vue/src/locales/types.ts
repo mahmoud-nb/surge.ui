@@ -229,6 +229,51 @@ export interface SurgeMessages {
     grid: LocaleMessage
     list: LocaleMessage
   }
+  skipLink: {
+    label: string
+  }
+  themeToggle: {
+    /** Nom du bouton bascule (pressé = sombre) */
+    toggle: string
+    /** Nom du groupe de la variante segmented */
+    group: string
+    light: string
+    dark: string
+    system: string
+  }
+  pageHeader: {
+    back: string
+  }
+  navMenu: {
+    label: string
+  }
+  appShell: {
+    menu: string
+    drawer: string
+    collapse: string
+  }
+  copyButton: {
+    copy: string
+    copied: string
+    /** Annonce après la copie */
+    announce: string
+    error: string
+  }
+  codeBlock: {
+    copy: string
+  }
+  stat: {
+    up: string
+    down: string
+    neutral: string
+  }
+  rating: {
+    label: string
+    /** Nom d'une étoile : pluriel sur {count}, paramètre {max} */
+    star: LocaleMessage
+    /** Note en lecture seule : {value} sur {max} */
+    value: string
+  }
   holyGrailLayout: {
     skipLink: LocaleMessage
     nav: LocaleMessage

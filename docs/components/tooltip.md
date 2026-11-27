@@ -92,6 +92,7 @@ Le placement est retourné automatiquement s'il manque de place.
 | `closeDelay` | `number` | `100` | Délai avant la fermeture (ms), le temps d'amener le pointeur sur l'infobulle |
 | `showArrow` | `boolean` | `false` | Affiche une flèche |
 | `disabled` | `boolean` | `false` | Désactive l'infobulle |
+| `describe` | `boolean` | `true` | Relie l'infobulle au déclencheur (`aria-describedby`). `false` : infobulle visuelle seulement, quand elle répète le nom déjà lu (bouton à icône seule nommé) |
 | `modelValue` | `boolean` | `false` | Ouverture contrôlée (v-model, facultatif) |
 
 ### Événements

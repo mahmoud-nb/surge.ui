@@ -29,6 +29,7 @@ Les composants de formulaire permettent la saisie et la validation de données :
 | Composant | Description |
 |-----------|-------------|
 | [Slider](/components/slider) | Curseur pour valeurs numériques avec marqueurs |
+| [Rating](/components/rating) | Note en étoiles, saisie ou lecture seule |
 | [FileUpload](/components/fileupload) | Upload de fichiers avec drag & drop et prévisualisation |
 
 ## Structure et validation

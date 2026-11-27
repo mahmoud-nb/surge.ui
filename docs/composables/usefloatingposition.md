@@ -12,7 +12,7 @@ Composable de positionnement des éléments flottants (popover, menu, liste dér
 ```vue
 <script setup>
 import { ref } from 'vue'
-import { useFloatingPosition } from '@surgeui/ds-vue'
+import { useFloatingPosition } from '@surgeui/vue'
 
 const triggerRef = ref()
 const menuRef = ref()

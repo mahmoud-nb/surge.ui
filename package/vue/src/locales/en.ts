@@ -170,6 +170,46 @@ export const en: SurgeLocale = {
       grid: 'Grid',
       list: 'List'
     },
+    skipLink: {
+      label: 'Skip to main content'
+    },
+    themeToggle: {
+      toggle: 'Dark mode',
+      group: 'Appearance',
+      light: 'Light',
+      dark: 'Dark',
+      system: 'System'
+    },
+    pageHeader: {
+      back: 'Back'
+    },
+    navMenu: {
+      label: 'Main navigation'
+    },
+    appShell: {
+      menu: 'Open menu',
+      drawer: 'Menu',
+      collapse: 'Collapse menu'
+    },
+    copyButton: {
+      copy: 'Copy',
+      copied: 'Copied',
+      announce: 'Copied to clipboard',
+      error: 'Could not copy'
+    },
+    codeBlock: {
+      copy: 'Copy code'
+    },
+    stat: {
+      up: 'Up',
+      down: 'Down',
+      neutral: 'Unchanged'
+    },
+    rating: {
+      label: 'Rating',
+      star: { one: '{count} star out of {max}', other: '{count} stars out of {max}' },
+      value: 'Rated {value} out of {max}'
+    },
     holyGrailLayout: {
       skipLink: 'Skip to main content',
       nav: 'Main navigation',

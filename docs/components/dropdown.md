@@ -432,8 +432,6 @@ interface DropdownOption {
   icon?: Component
   description?: string
   separatorBefore?: boolean        // Trace un séparateur avant l'option
-  /** @deprecated l'option devient un séparateur et disparaît */
-  separator?: boolean
 }
 
 // Séparateur seul (value et label facultatifs)
@@ -526,10 +524,6 @@ const options = [
 ```
 
 `separatorBefore` est ignoré sur la première option et juste après un séparateur (pas de double trait).
-
-::: warning Ancienne forme
-`separator: true` reste accepté mais est déprécié : l'option devient un séparateur et n'est **pas** affichée, même avec un libellé. Un avertissement le signale dans la console. Utilisez `{ type: 'separator' }`, ou `separatorBefore: true` pour garder l'option.
-:::
 
 ## Positionnement
 

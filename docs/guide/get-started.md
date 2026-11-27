@@ -6,7 +6,7 @@ Bibliothèque de composants Vue.js 3 avec Composition API, conçue pour créer d
 
 - **Documentation** -  Guide complet avec exemples et API
 - **[Storybook](https://surgeui.com/storybook)** -  Exemples interactifs et playground des composants
-- **[npm Package](https://www.npmjs.com/package/@surgeui/ds-vue)**
+- **[npm Package](https://www.npmjs.com/package/@surgeui/vue)**
 
 ## Fonctionnalités
 
@@ -34,13 +34,13 @@ Tous les composants respectent les normes WCAG 2.1 AA :
 ## Installation rapide
 
 ```bash
-npm install @surgeui/ds-vue
+npm install @surgeui/vue
 ```
 
 ```vue
 <script setup>
-import { Button as SuButton } from '@surgeui/ds-vue'
-import '@surgeui/ds-vue/style.css'
+import { Button as SuButton } from '@surgeui/vue'
+import '@surgeui/vue/style.css'
 </script>
 
 <template>

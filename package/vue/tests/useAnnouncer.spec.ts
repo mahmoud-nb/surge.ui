@@ -2,7 +2,6 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { defineComponent, h } from 'vue'
 import { mount } from '@vue/test-utils'
 import { announce, clearAnnouncements, ensureAnnouncerRegions, useAnnouncer } from '@/composables/useAnnouncer'
-import { announceToScreenReader } from '@/utils/accessibility'
 
 const region = (priority: 'polite' | 'assertive') =>
   document.body.querySelector<HTMLElement>(`[data-su-announcer="${priority}"]`)
@@ -79,14 +78,5 @@ describe('useAnnouncer', () => {
 
     vi.advanceTimersByTime(1000)
     expect(region('polite')?.textContent).toBe('')
-  })
-
-  it('announceToScreenReader (obsolète) passe par les mêmes régions', () => {
-    ensureAnnouncerRegions()
-    announceToScreenReader('Ancienne API', 'assertive')
-    vi.advanceTimersByTime(100)
-
-    expect(region('assertive')?.textContent).toBe('Ancienne API')
-    expect(document.querySelectorAll('[data-su-announcer]')).toHaveLength(2)
   })
 })

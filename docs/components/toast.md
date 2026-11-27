@@ -1,5 +1,5 @@
 <script setup>
-import { useToast } from '@surgeui/ds-vue'
+import { useToast } from '@surgeui/vue'
 
 const toast = useToast()
 
@@ -47,7 +47,7 @@ Placez `SuToaster` une fois, à la racine de l'application. Le plugin fournit la
 
 ```vue
 <script setup>
-import { useToast } from '@surgeui/ds-vue'
+import { useToast } from '@surgeui/vue'
 
 const toast = useToast()
 </script>

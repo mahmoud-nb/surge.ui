@@ -149,9 +149,6 @@ type ThemeMode = 'light' | 'dark' | 'system'
 // Contraste et mouvement (inchangés)
 type ContrastMode = 'normal' | 'high' | 'auto'
 type MotionMode   = 'normal' | 'reduce' | 'auto'
-
-// Dépréciés -  rétrocompatibilité uniquement
-type DeprecatedThemeName = 'light' | 'dark'
 ```
 
 ## Utilisation
@@ -162,7 +159,7 @@ Le composable `useTheme` est le point d'entrée principal pour gérer les thème
 
 ```vue
 <script setup lang="ts">
-import { useTheme } from '@surgeui/ds-vue';
+import { useTheme } from '@surgeui/vue';
 
 const {
   // État réactif
@@ -219,7 +216,7 @@ useTheme({
 </template>
 
 <script setup lang="ts">
-import { useTheme } from '@surgeui/ds-vue';
+import { useTheme } from '@surgeui/vue';
 
 const { setTheme } = useTheme();
 </script>
@@ -235,7 +232,7 @@ const { setTheme } = useTheme();
 </template>
 
 <script setup lang="ts">
-import { useTheme } from '@surgeui/ds-vue';
+import { useTheme } from '@surgeui/vue';
 
 const { setThemeMode } = useTheme();
 </script>
@@ -251,7 +248,7 @@ const { setThemeMode } = useTheme();
 </template>
 
 <script setup lang="ts">
-import { useTheme } from '@surgeui/ds-vue';
+import { useTheme } from '@surgeui/vue';
 
 const { toggleMode, isDarkMode } = useTheme();
 </script>
@@ -267,7 +264,7 @@ const { toggleMode, isDarkMode } = useTheme();
 </template>
 
 <script setup lang="ts">
-import { useTheme } from '@surgeui/ds-vue';
+import { useTheme } from '@surgeui/vue';
 
 const { cycleTheme, effectiveTheme } = useTheme();
 </script>
@@ -327,7 +324,7 @@ Le système supporte automatiquement le mode contraste élevé, essentiel pour l
 
 ```vue
 <script setup lang="ts">
-import { useTheme } from '@surgeui/ds-vue';
+import { useTheme } from '@surgeui/vue';
 
 const { effectiveContrast, systemContrast } = useTheme();
 // effectiveContrast: 'normal' | 'high'
@@ -347,7 +344,7 @@ const { effectiveContrast, systemContrast } = useTheme();
 </template>
 
 <script setup lang="ts">
-import { useTheme } from '@surgeui/ds-vue';
+import { useTheme } from '@surgeui/vue';
 
 const { contrastMode, setContrast } = useTheme();
 </script>
@@ -366,7 +363,7 @@ Respect de `prefers-reduced-motion` pour les utilisateurs sensibles aux mouvemen
 
 ```vue
 <script setup lang="ts">
-import { useTheme } from '@surgeui/ds-vue';
+import { useTheme } from '@surgeui/vue';
 
 const { motionMode, setMotion } = useTheme();
 </script>
@@ -479,7 +476,7 @@ Le composable `useCustomTheme` permet de gérer les variables CSS custom de mani
 
 ```vue
 <script setup lang="ts">
-import { useCustomTheme } from '@surgeui/ds-vue'
+import { useCustomTheme } from '@surgeui/vue'
 
 const {
   applyCustomTheme,    // Applique un thème custom entier
@@ -498,7 +495,7 @@ const {
 
 ```vue
 <script setup lang="ts">
-import { useCustomTheme } from '@surgeui/ds-vue'
+import { useCustomTheme } from '@surgeui/vue'
 
 const { applyCustomTheme } = useCustomTheme()
 
@@ -528,7 +525,7 @@ const applyBrandTheme = () => {
 
 ```vue
 <script setup lang="ts">
-import { useCustomTheme } from '@surgeui/ds-vue'
+import { useCustomTheme } from '@surgeui/vue'
 
 const { setCustomVariable } = useCustomTheme()
 
@@ -554,8 +551,8 @@ const handleColorChange = (color: string) => {
 
 ```vue
 <script setup lang="ts">
-import { useTheme } from '@surgeui/ds-vue'
-import { useCustomTheme } from '@surgeui/ds-vue'
+import { useTheme } from '@surgeui/vue'
+import { useCustomTheme } from '@surgeui/vue'
 
 const { setTheme, setThemeMode } = useTheme()
 const { setCustomVariable } = useCustomTheme()
@@ -787,17 +784,13 @@ interface UseThemeOptions {
   // Actions
   setTheme: (theme: ThemeName) => void;
   setThemeMode: (mode: ThemeMode) => void;   // NOUVEAU
-  toggleMode: () => void;                    // NOUVEAU -  remplace toggleTheme
+  toggleMode: () => void;                    // NOUVEAU
   cycleTheme: () => void;
   setContrast: (contrast: ContrastMode) => void;
   setMotion: (motion: MotionMode) => void;
   clearConfig: () => void;
 }
 ```
-
-::: warning toggleTheme déprécié
-`toggleTheme()` est conservé pour la rétrocompatibilité mais émet un avertissement console. Utilisez `toggleMode()` à la place.
-:::
 
 ## Exemples pratiques
 
@@ -822,7 +815,7 @@ interface UseThemeOptions {
 </template>
 
 <script setup lang="ts">
-import { useTheme } from '@surgeui/ds-vue';
+import { useTheme } from '@surgeui/vue';
 import ThemeToggle from '@/components/ThemeToggle.vue';
 import ThemeSelector from '@/components/ThemeSelector.vue';
 
@@ -851,7 +844,7 @@ useTheme();
 ```vue
 <script setup lang="ts">
 import { watch } from 'vue';
-import { useTheme } from '@surgeui/ds-vue';
+import { useTheme } from '@surgeui/vue';
 
 const { themeName, themeMode, effectiveThemeMode } = useTheme({
   defaultTheme: 'default',
@@ -974,11 +967,11 @@ Vérifiez que le thème est bien dans la liste `themes` de `theme.config.ts` et 
 
 Vérifiez que `persist: true` est configuré et que localStorage est accessible (pas en navigation privée).
 
-### Avertissement console sur `setTheme('dark')`
+### Avertissement console « Theme 'dark' is not available »
 
-`setTheme('dark')` et `setTheme('light')` sont dépréciés. Remplacez par :
+Depuis la 4.0, `setTheme()` ne choisit plus que l'identité de couleur : `setTheme('dark')` et `setTheme('light')` ont été retirés (voir la [migration vers la 4.0](/guide/migration#api-retirees)). Remplacez par :
 ```typescript
-// Avant (déprécié)
+// Avant (retiré en 4.0)
 setTheme('dark')
 
 // Après

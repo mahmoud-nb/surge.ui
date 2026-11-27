@@ -14,6 +14,7 @@ import { useTypeahead } from './useTypeahead'
 import { useToast, createToaster, ToasterKey } from './useToast'
 import { useConfirm, createConfirmer, ConfirmerKey } from './useConfirm'
 import { useLinkComponent, LinkComponentKey } from './useLinkComponent'
+import { useClipboard } from './useClipboard'
 
 export {
   useTheme,
@@ -50,10 +51,12 @@ export {
   ConfirmerKey,
   useLinkComponent,
   LinkComponentKey,
+  useClipboard,
 }
 
 export type { FloatingPositionOptions } from './useFloatingPosition'
 export type { AnnounceOptions, AnnouncePriority } from './useAnnouncer'
+export type { UseClipboardOptions } from './useClipboard'
 export type {
   FormFieldContext,
   FormFieldControl,

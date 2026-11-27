@@ -235,6 +235,46 @@ export const ar: SurgeLocale = {
       grid: 'شبكة',
       list: 'قائمة'
     },
+    skipLink: {
+      label: 'الانتقال إلى المحتوى الرئيسي'
+    },
+    themeToggle: {
+      toggle: 'الوضع الداكن',
+      group: 'المظهر',
+      light: 'فاتح',
+      dark: 'داكن',
+      system: 'النظام'
+    },
+    pageHeader: {
+      back: 'رجوع'
+    },
+    navMenu: {
+      label: 'التنقل الرئيسي'
+    },
+    appShell: {
+      menu: 'فتح القائمة',
+      drawer: 'القائمة',
+      collapse: 'تصغير القائمة'
+    },
+    copyButton: {
+      copy: 'نسخ',
+      copied: 'تم النسخ',
+      announce: 'تم النسخ إلى الحافظة',
+      error: 'تعذّر النسخ'
+    },
+    codeBlock: {
+      copy: 'نسخ الشيفرة'
+    },
+    stat: {
+      up: 'ارتفاع',
+      down: 'انخفاض',
+      neutral: 'دون تغيير'
+    },
+    rating: {
+      label: 'التقييم',
+      star: { zero: '{count} نجمة من {max}', one: 'نجمة واحدة من {max}', two: 'نجمتان من {max}', few: '{count} نجوم من {max}', many: '{count} نجمة من {max}', other: '{count} نجمة من {max}' },
+      value: 'التقييم: {value} من {max}'
+    },
     holyGrailLayout: {
       skipLink: 'الانتقال إلى المحتوى الرئيسي',
       nav: 'التنقل الرئيسي',

@@ -20,7 +20,8 @@ const props = withDefaults(defineProps<TooltipProps>(), {
   openDelay: 300,
   closeDelay: 100,
   showArrow: false,
-  disabled: false
+  disabled: false,
+  describe: true
 })
 
 const isOpen = defineModel<boolean>({ default: false })
@@ -131,7 +132,8 @@ const unlinkTrigger = () => {
 }
 
 const linkTrigger = () => {
-  const trigger = hasContent.value ? getTrigger() : null
+  // describe: false : infobulle visuelle seulement (elle répète le nom du déclencheur)
+  const trigger = hasContent.value && props.describe ? getTrigger() : null
   if (trigger !== describedElement) unlinkTrigger()
   if (!trigger) return
   trigger.setAttribute('aria-describedby', mergeIds(trigger.getAttribute('aria-describedby'), tooltipId) as string)
@@ -169,7 +171,8 @@ defineExpose({
         v-show="isOpen"
         :id="tooltipId"
         ref="tooltipRef"
-        role="tooltip"
+        :role="describe ? 'tooltip' : undefined"
+        :aria-hidden="describe ? undefined : 'true'"
         class="su-tooltip__content"
         :data-placement="actualPlacement"
       >

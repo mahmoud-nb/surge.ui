@@ -30,6 +30,11 @@ Display components present visual content: headings, images, badges, modals, pro
 | [ConfirmDialog](/en/components/confirmdialog) | Promise-based confirmation with useConfirm() |
 | [Dialog](/en/components/dialog) | Versatile modal/drawer (center, left, right, top, bottom, full) |
 | [Popover](/en/components/popover) | Contextual popover with smart placement |
+| [PageHeader](/en/components/pageheader) | Page header: breadcrumb, title, description, actions |
+| [Stat](/en/components/stat) | Metric card: value, change, small chart |
+| [Timeline](/en/components/timeline) | Activity feed grouped by day |
+| [CodeBlock](/en/components/codeblock) | Captioned code block with copy |
+| [Prose](/en/components/prose) | Typography for written content (Markdown, CMS) |
 | [Tooltip](/en/components/tooltip) | Tooltip on hover and keyboard focus |
 | [Alert](/en/components/alert) | Informational alert with success, warning, error, info types |
 | [Toast](/en/components/toast) | Short-lived notifications with useToast() and SuToaster |

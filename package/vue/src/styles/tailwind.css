@@ -1,5 +1,5 @@
 /*
- * Préréglage Tailwind CSS 4 — @surgeui/ds-vue/tailwind.css
+ * Préréglage Tailwind CSS 4 — @surgeui/vue/tailwind.css
  *
  * Les couleurs, rayons et ombres de SurgeUI deviennent des utilitaires
  * Tailwind : bg-su-surface, text-su-muted, border-su-border,
@@ -9,8 +9,8 @@
  *
  *   @layer theme, base, surgeui, components, utilities;
  *   @import "tailwindcss";
- *   @import "@surgeui/ds-vue/style.layer.css";
- *   @import "@surgeui/ds-vue/tailwind.css";
+ *   @import "@surgeui/vue/style.layer.css";
+ *   @import "@surgeui/vue/tailwind.css";
  */
 
 @theme inline {
